@@ -1,0 +1,243 @@
+// *----------------------------------*\
+//  Settings > extends
+// *----------------------------------*/
+.input-style{
+    position: relative;
+    input, &.e-select, textarea{
+        height: 40px;
+        min-width: 100%;
+        border: 1px solid #CCCCCC;
+        background-color: #fff;
+        border-radius: 4px;
+        font-family: var(--font-secondary);
+        font-size: 16px;
+        color: var(--blue);
+        &::placeholder{
+            font-size: 16px;
+            font-weight: 400;
+            color: #A69EB9;
+        }
+        &:focus, &:active{
+            outline: none;
+        }
+        &--secondary{
+            border: 1px solid var(--violet);
+            &::placeholder{
+                color: var(--violet);
+            }
+        }
+    }
+    textarea{
+        padding: 11px;
+        min-height: 50px;
+        height: auto;
+    }
+    input{
+        padding-left: 11px;
+    }
+    &.e-input--big{
+        height: 60px;
+        @include media-breakpoint-down(sm){
+          height: 40px;
+        }
+        input{
+            height: 60px;
+            @include media-breakpoint-down(sm){
+              height: 40px;
+            }
+        }
+    }
+    &.e-input--search--big{
+        height: 60px;
+        @include media-breakpoint-down(sm){
+          height: 40px;
+        }
+        input{
+            height: 60px;
+            @include media-breakpoint-down(sm){
+              height: 40px;
+            }
+        }
+    }
+    &.e-input--search{
+        input{
+            padding-right: 11px;
+            @include media-breakpoint-up(md) {
+                padding-right: 40px;
+            }
+            &::placeholder{
+                font-weight: 600;
+            }
+        }
+        button{
+            background: none;
+            border: 0;
+            position: absolute;
+            right: 15px;
+            top: calc(50% - 12px);
+            &:active, &:focus{
+                outline: 0;
+            }
+            svg{
+                use{
+                    fill: grey;
+                }
+            }
+            &[type="submit"] {
+                cursor: pointer;
+                transition: .2s ease-in-out;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+    &.e-input--search--outside{
+        display: flex;
+        align-items: center;
+        input{
+            min-width: 0;
+            flex-grow: 1;
+            padding-right: 15px;
+        }
+        button{
+            flex: 0 0 auto;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--blue-light);
+            margin-left: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            top: auto;
+            right: auto;
+            svg{
+                use{
+                    fill: #fff;
+                }
+            }
+        }
+        &.e-input--search--big{
+            button{
+                width: 50px;
+                height: 50px;
+                background: var(--blue-light);
+                @include media-breakpoint-down(sm){
+                  width: 35px;
+                  height: 35px;
+                }
+                svg{
+                  @include media-breakpoint-down(sm){
+                    width: 12px;
+                    height: 12px;
+                  }
+                }
+            }
+        }
+    }
+  &.e-input--autocomplete{
+    position: relative;
+  }
+}
+
+// @extend .select-style
+.select-style{
+    position: relative;
+    select{
+        color: #525252;
+        padding: 0 40px 0 18px;
+        font-family: var(--font-primary);
+        background: transparent;
+        border: none;
+        width: 100%;
+        height: 100%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        line-height: normal;
+        &::-ms-expand {
+            display: none;
+        }
+        &:focus, &:active{
+            outline: none;
+        }
+    }
+    &:after, &:before{
+        content: "";
+        display: block;
+        position: absolute;
+        border-width: 0 1px 1px 0;
+        border-style: solid;
+        pointer-events: none;
+        transition: var(--global-transition);
+        width: 12px;
+        height: 12px;
+
+        border-color: var(--violet);
+        right: 5px;
+    }
+    &:after{
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%) rotate(45deg);
+    }
+    &:before{
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%) rotate(-135deg);
+        display: none;
+    }
+    &.e-select--secondary{
+        background: transparent;
+        select{
+            color: var(--violet);
+            &::placeholder{
+                color: var(--violet);
+            }
+        }
+    }
+    &.e-select--small{
+        max-width: 80px;
+        min-width: 80px;
+        select{
+            padding: 0 22px 0 10px;
+        }
+        &:after{
+            width: 7px;
+            height: 7px;
+            right: 10px;
+        }
+        &:after{
+            transform: translateY(-50%) rotate(45deg);
+        }
+        &:before{
+            display: none;
+        }
+    }
+    &.e-select--medium{
+        max-width: 200px;
+        min-width: 200px;
+        select{
+            padding: 0 22px 0 10px;
+        }
+        &:after{
+            width: 7px;
+            height: 7px;
+            right: 10px;
+        }
+        &:after{
+            transform: translateY(-50%) rotate(45deg);
+        }
+        &:before{
+            display: none;
+        }
+    }
+}
+.e-field--search{
+    .e-input--search{
+        position: initial !important;
+    }
+}

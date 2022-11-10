@@ -1,0 +1,62 @@
+// *----------------------------------*\
+//  Elements > input-radio
+// *----------------------------------*/
+
+.e-input-radio{
+    input[type="radio"] {
+        position: fixed;
+        left: -9999px;
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        & + label {
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            padding-left: 35px;
+            position: relative;
+            cursor: pointer;
+            &:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 20px;
+                height: 20px;
+                border: 1px solid var(--blue-light);
+                border-radius: 50%;
+            }
+            &:after {
+                content: "";
+                left: 5px;
+                top: 5px;
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--blue-light);
+                opacity: 0;
+                transform: scale(0);
+                transition: var(--global-transition);
+            }
+        }
+        &:checked {
+            & + label {
+                &:after {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+        }
+    }
+    &--big{
+        input[type="checkbox"] {
+            & + label {
+                font-size: 18px;
+                color: var(--violet);
+                line-height: 1.2;
+            }
+        }
+    }
+}

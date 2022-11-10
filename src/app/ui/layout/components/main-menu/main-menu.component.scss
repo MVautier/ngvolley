@@ -1,0 +1,95 @@
+.header {
+    &__menu {
+      position: relative;
+      top: 0;
+      height: var(--header_height_bottom);
+      background: var(--white);
+      border-bottom: 1px solid var(--light_grey);
+      transition: all 0.3s ease;
+      z-index: 1;
+      &.hide {
+        top: calc(var(--header_height_bottom) * -1);
+      }
+      .desktop,
+      .mobile {
+        height: 100%;
+      }
+      .desktop {
+        display: block;
+        text-align: center;
+        @media screen and (max-width: 1025px) {
+          display: none;
+        }
+      }
+      .mobile {
+        display: none;
+        @media screen and (max-width: 1025px) {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .product-menu {
+        height: 100%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        .link {
+          position: relative;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          line-height: 19px;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: var(--blue);
+          padding: 0 35px;
+          transition: all 0.3s ease;
+          &:hover {
+            color: var(--blue);
+          }
+        }
+      }
+    }
+  }
+  .nav-item {
+    position: relative;
+    height: 100%;
+    transition: all 0.3s ease;
+    &:hover {
+      background: var(--light_grey);
+    }
+    .nav__btn {
+      height: 100%;
+      padding: 0 35px;
+      font-size: 16px;
+      line-height: 19px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .submenu {
+      position: fixed;
+      transform: none;
+      left: 0;
+      top: var(--header_height);
+      width: 100vw;
+      height: calc(100vh - var(--header_height));
+      background: var(--white);
+      overflow: auto;
+      opacity: 0;
+      visibility: hidden;
+    }
+    &.submenu--visible {
+      .nav__btn {
+        background: var(--black);
+        color: var(--white);
+      }
+      .submenu {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+  

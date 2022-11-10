@@ -1,0 +1,12 @@
+.link{
+  font-size: 16px;
+  color: var(--blue);
+  transition: var(--global-transition);
+  cursor: pointer;
+  &--header{
+    color: var(--primary-color);
+  }
+  &--primary{
+    color: var(--primary-color);
+  }
+}

@@ -1,0 +1,20 @@
+<div class="mobile-menu" [ngClass]="{ 'mobile-menu--open': showMobileMenu }">
+    <div class="menu">
+        <div class="top">
+            <button class="close icon-cross"[attr.aria-label]="'Fermer'" (click)="onClose()"></button>
+            <a routerLink="/">
+                <img src="/assets/images/logo-arcade.svg?tmp=1"/>
+            </a>
+        </div>
+
+        <nav class="nav">
+            <div class="nav__group">
+                <a class="link product icon-arrow" href="#" translate="">Bons plans</a>
+            </div>
+            
+        </nav>
+        <div class="bottom">
+            <a href="#" class="icon-arrow" translate>A propos</a>
+          </div>
+    </div>
+</div>

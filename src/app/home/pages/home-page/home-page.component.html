@@ -1,0 +1,12 @@
+
+home works
+<swiper *ngIf="slider"
+    [config]="slider.config"
+    (swiper)="onSwiper($event)"
+    (slideChange)="onSlideChange()" class="mySwiper"
+>
+    <ng-template *ngFor="let slide of slider.slides" swiperSlide>
+        <img [src]="slide.src">
+        <label>{{ slide.title }}</label>
+    </ng-template>
+</swiper>

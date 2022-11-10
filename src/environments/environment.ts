@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  environment: 'development',
+  production: false,
+  apiRoot: 'https://localhost:7032/',
+  apiUrl: 'https://localhost:7032/api/',
+  cookieName: 'EasyFichiersNG',
+  cookiePath: '/',
+  cookieDomain: 'localhost',
+  isSecure: true
 };
 
 /*

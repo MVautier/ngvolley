@@ -1,0 +1,19 @@
+<div class="header__menu">
+    <div class="desktop">
+      <div (clickOutside)="onClickedOutside($event)" class="product-menu">
+        <!-- <div class="nav-item" *ngFor="let section of sections" [ngClass]="{ 'submenu--visible': idSection === section.IdSection }">
+          <button class="nav__btn" (click)="showSubMenu(section.IdSection)">{{ section.Name }}</button>
+          <div class="submenu">
+            <app-menu-card *ngIf="!withChildren && menu && menu.Sections" [menu]="menu" [showPrice]="showPrice" (navigate)="onMenuClick($event)"></app-menu-card>
+            <app-menu-list *ngIf="withChildren && menuPiece && menuPiece.Sections" [menu]="menuPiece" (navigate)="onPieceClick($event)"></app-menu-list>
+          </div>
+      </div> -->
+        <!-- Bons plans
+        <a class="link" href="" translate>main.menuGoodPlan</a> -->
+      </div>
+    </div>
+    <div class="mobile">
+        <!-- <app-search-bar [ref]="'mobile-select-searchbar'" [showPrice]="showPrice"></app-search-bar> -->
+    </div>
+</div>
+<app-menu-mobile [showMobileMenu]="showMobileMenu" (close)="onClose()"></app-menu-mobile>

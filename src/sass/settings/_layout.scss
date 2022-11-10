@@ -1,0 +1,50 @@
+body {
+    position: relative;
+    font-family: var(--font);
+    font-size: var(--font_size);
+    color: var(--black);
+    overflow-x: hidden;
+  
+    &.no-scroll {
+      overflow: hidden;
+    }
+  }
+  
+  .container {
+    position: relative;
+    width: var(--container);
+    margin: 0 auto;
+    @media screen and (max-width: 1200px) {
+      width: 100%;
+      padding: 0 30px;
+    }
+    @media screen and (max-width: 600px) {
+      padding: 0 15px;
+    }
+    &--big {
+      width: 100%;
+      padding: 0 90px;
+      margin: 0;
+      @media screen and (max-width: 1800px) {
+        padding: 0 50px;
+      }
+      @media screen and (max-width: 1300px) {
+        padding: 0 30px;
+      }
+      @media screen and (max-width: 600px) {
+        padding: 0 15px;
+      }
+    }
+  }
+  
+  a,
+  a:before {
+    font-weight: 400;
+    color: inherit;
+    transition: all ease 0.4s;
+    text-decoration: none;
+  }
+  button {
+    cursor: pointer;
+  }
+  

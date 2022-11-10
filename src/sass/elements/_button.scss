@@ -1,0 +1,74 @@
+.btn {
+  background: var(--blue);
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: all 0.3s ease;
+  letter-spacing: -0.5px;
+  &:not(:disabled):hover {
+    background: var(--blue_dark);
+    color: var(--white);
+  }
+  &--transparent {
+    background: none;
+    border: 1px solid var(--white);
+    &:not(:disabled):hover {
+      background: var(--white);
+      color: var(--blue);
+    }
+  }
+  &--white {
+    background: var(--white);
+    color: var(--blue);
+  }
+  &--border {
+    background: var(--white);
+    border: 1px solid var(--blue);
+    color: var(--black);
+    text-transform: none;
+    font-weight: 300;
+
+    &:not(:disabled):hover {
+      background: var(--white);
+      color: var(--black);
+    }
+  }
+  &--expend-right {
+    padding-right: 100px;
+  }
+  &--expend-left {
+    padding-left: 100px;
+  }
+  &--large {
+    width: 300px;
+    max-width: 100%;
+  }
+  &--icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 44px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:before {
+      font-size: 22px;
+    }
+    &.icon-cart:before {
+      position: relative;
+      left: -1px;
+    }
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  &.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}

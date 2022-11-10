@@ -1,0 +1,58 @@
+/*--------------- INPUT ---------------*/
+input,
+textarea {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--black);
+  height: 48px;
+  line-height: 48px;
+  border: 1px solid #c4c7ca;
+  border-radius: 3px;
+  padding: 0 25px;
+  transition: all 0.3s ease;
+  &::placeholder {
+    color: var(--grey);
+    opacity: 1;
+  }
+  &.error {
+    border: 1px solid #e52525;
+    color: #e52525;
+  }
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+textarea {
+  resize: vertical;
+}
+
+//Input password
+.input-pswd {
+  position: relative;
+  button {
+    position: absolute;
+    right: 10px;
+    top: 46%;
+    transform: translateY(-50%);
+    &:before {
+      color: var(--grey);
+    }
+  }
+}
+
+/*--------------- ERROR ---------------*/
+.error-msg {
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: 300;
+  text-align: left;
+  margin-bottom: 15px;
+  &:before {
+    font-size: 14px;
+    color: var(--red);
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+  }
+}

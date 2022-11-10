@@ -1,0 +1,87 @@
+<!-- <div class="container-subheader--builder">
+    <div class="title">
+        CLLL COLOMIERS
+    </div>
+    <div class="links">
+        <button class="btn" (click)="goTo('home')">
+            <span>DERNIERES NEWS</span>
+        </button>
+        <button class="btn" (click)="goTo('club')">
+            <span>LE CLUB</span>
+        </button>
+        <button class="btn" (click)="goTo('tarif')">
+            <span>TARIFS & HORAIRES</span>
+        </button>
+        <button class="btn" (click)="goTo('tournoi')">
+            <span>TOURNOIS</span>
+        </button>
+        <button class="btn" (click)="goTo('inscription')">
+            <span>INSCRIPTION</span>
+        </button>
+        <button class="btn" (click)="goTo('contact')">
+            <span>CONTACT</span>
+        </button>
+        <button class="btn" (click)="goTo('admin')">
+            <span>CONNEXION</span>
+        </button>
+    </div>
+</div> -->
+<header class="header">
+    <div class="header__top">
+        <div class="container container--big">
+            <div class="left">
+                <button class="menu-burger icon-burger" (click)="openMobileMenu()" [attr.aria-label]="'Ouvrir'"></button>
+                <a routerLink="/">
+                    <span class="title">CLLL COLOMIERS</span>
+                </a>
+                
+            </div>
+
+            <div class="center">
+                <div class="links">
+                    <button class="btn" (click)="goTo('home')">
+                        <span>DERNIERES NEWS</span>
+                    </button>
+                    <button class="btn" (click)="goTo('club')">
+                        <span>LE CLUB</span>
+                    </button>
+                    <button class="btn" (click)="goTo('tarif')">
+                        <span>TARIFS & HORAIRES</span>
+                    </button>
+                    <button class="btn" (click)="goTo('tournoi')">
+                        <span>TOURNOIS</span>
+                    </button>
+                    <button class="btn" (click)="goTo('inscription')">
+                        <span>INSCRIPTION</span>
+                    </button>
+                    <button class="btn" (click)="goTo('contact')">
+                        <span>CONTACT</span>
+                    </button>
+                    <button class="btn" (click)="goTo('admin')">
+                        <span>CONNEXION</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- <div class="right">
+                <div class="mobile">
+                    <a routerLink="/" class="icon-account" title="Mon compte" [attr.aria-label]="'sous-menu'"></a>
+                    <a [routerLink]="['/', 'cart']" class="icon-cart" title="Panier" [attr.aria-label]="'header.ToCart' | translate">
+                      <div class="number-cart"><span>{{numberOfArticles}}</span></div>
+                    </a>
+                </div>
+
+                <div class="right">
+                    <div class="desktop">
+                        <div class="desktop" btn-left>
+                            <div class="services-menu dropdown" [ngClass]="{'dropdown--visible': showDropdownService }" (click)="onShowMenu('service')">
+                                <app-service-menu></app-service-menu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <app-main-menu [showMobileMenu]="showMobileMenu" (close)="onClose()"></app-main-menu>
+</header>

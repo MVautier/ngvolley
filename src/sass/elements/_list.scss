@@ -1,0 +1,145 @@
+
+:host.line:not(.last){
+    .row--import{
+        position: relative;
+        &:after{
+            content: "";
+            height: 2px;
+            background: #F4F4F4;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 30px;
+        }
+    }
+}
+
+.row {
+    &--filter {
+        .col-filter {
+            margin-top: 22px;
+            height: 60px;
+            border-radius: 4px;
+            background-color: var(--dark);
+            color: #fff;
+            padding-left: 15px;
+            padding-right: 12px;
+            font-size: 15px;
+            // @include media-breakpoint-up(lg) {
+            //     padding-left: 40px;
+            // }
+            p.pointer {
+                cursor: pointer;
+            }
+        }
+    }
+    &--pagination {
+        margin-top: 20px !important;
+        margin-right: 10px !important;
+        .nav {
+            &--left {
+                margin-right: 10px;
+            }
+        }
+    }
+    .container--campains {
+        margin-top: 22px;
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.13);
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 15px;
+        // @include media-breakpoint-up(lg) {
+        //     padding-left: 40px;
+        // }
+    }
+    &--campain {
+        padding: 20px 0;
+        font-size: 14px;
+        .col-campain {
+            &--statut {
+                padding-left: 40px;
+            }
+            &--actions {
+                // margin-top: -30px !important;
+                .actions-statut {
+                    //cursor: default;
+                    font-size: 15px;
+                    font-weight: 600;
+                    width: 100%;
+                    height: 40px;
+                    border-radius: 4px;
+                    line-height: 40px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    transition: .2s ease-in-out;
+                    margin-bottom: 15px;
+                    // @include media-breakpoint-up(lg) {
+                    //     width: 160px;
+                    //     margin-bottom: 0;
+                    // }
+                    // @include media-breakpoint-down(lg) {
+                    //     margin-top: 15px;
+                    // }
+                    &.desactive {
+                        background: red;
+                        color: #fff;
+                    }
+                    &.active {
+                        background: green;
+                        color: #fff;
+                    }
+                }
+                svg {
+                    width: 24px;
+                    height: 24px;
+                    display: block;
+                    cursor: pointer;
+                    transition: .2s ease-in-out;
+                    // @include media-breakpoint-down(lg) {
+                    //     margin: 0 10px;
+                    // }
+                    use {
+                        fill: #221351;
+                    }
+                    &:hover {
+                        opacity: .7;
+                    }
+                    & + svg{
+                        margin-left: 10px;
+                        // @include media-breakpoint-up(xl) {
+                        //     margin-left: 15px;
+                        // }
+                    }
+                    &.disabled {
+                        opacity: 0.5;
+                        cursor: default;
+                    }
+                }
+            }
+        }
+        &+.row--campain {
+            border-top: 2px solid #f4f4f4;
+        }
+    }
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    &--campain {
+        padding: 20px 0;
+    }
+}
+
+.col-campain--name{
+    color: var(--dark);
+    font-size: 18px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.pointer {
+    cursor: pointer;
+    position: relative;
+}

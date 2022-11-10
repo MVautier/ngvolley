@@ -1,0 +1,21 @@
+// *----------------------------------*\
+//  Elements > Scrollbars
+// *----------------------------------*/
+
+@mixin scrollbar($size: 7px) {
+    &::-webkit-scrollbar {
+          width: $size;
+          background: transparent;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+      &::-webkit-scrollbar-thumb {
+          background: rgba(var(--violet), .5); 
+          border-radius: 3.5px;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+          background: rgba(var(--violet), .5); 
+      }
+  }
+  

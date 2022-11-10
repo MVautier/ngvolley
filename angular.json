@@ -28,9 +28,15 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/sass"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -72,7 +78,8 @@
               "browserTarget": "colomiers-volley:build:production"
             },
             "development": {
-              "browserTarget": "colomiers-volley:build:development"
+              "browserTarget": "colomiers-volley:build:development",
+              "port": 4224
             }
           },
           "defaultConfiguration": "development"
