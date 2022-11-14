@@ -36,6 +36,11 @@
                 color: var(--white);
                 font-size: 32px;
                 font-weight: 700;
+                transition: var(--global-transition);
+                @media screen and (max-width: 400px) {
+                  font-size: 25px;
+                  
+                } 
             }
             .menu-burger {
               display: none;

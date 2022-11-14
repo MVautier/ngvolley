@@ -2,7 +2,7 @@
     &__menu {
       position: relative;
       top: 0;
-      height: var(--header_height_bottom);
+      //height: var(--header_height_bottom);
       background: var(--white);
       border-bottom: 1px solid var(--light_grey);
       transition: all 0.3s ease;
@@ -15,7 +15,7 @@
         height: 100%;
       }
       .desktop {
-        display: block;
+        display: none;
         text-align: center;
         @media screen and (max-width: 1025px) {
           display: none;

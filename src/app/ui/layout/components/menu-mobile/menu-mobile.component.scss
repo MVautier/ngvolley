@@ -73,8 +73,10 @@
           width: 100%;
           text-align: left;
           font-size: 14px;
-          font-weight: 300;
+          font-weight: 500;
           margin-bottom: 20px;
+          color: var(--blue);
+          cursor: pointer;
           &:before {
             display: block;
             position: absolute;
@@ -87,6 +89,9 @@
           &.product {
             text-transform: uppercase;
             color: var(--blue);
+          }
+          &:hover {
+            color: var(--blue_dark);
           }
         }
       }
@@ -169,10 +174,12 @@
       a {
         display: block;
         position: relative;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 300;
         text-transform: uppercase;
         color: var(--white);
+        cursor: pointer;
+        margin-bottom: 20px;
         &:before {
           position: absolute;
           right: 10px;

@@ -7,19 +7,20 @@ import { Refresh } from '../models/refresh.model';
 import { CookieService } from './cookie.service';
 import { User } from '../models/user.model';
 import { ConnectionInfoService } from './connexion-info.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthorizeApiService {
     constructor(
         private httpClient: HttpClient, 
         private connexionInfo: ConnectionInfoService,
-        private cookieService: CookieService) { }
+        private cookieService: CookieService) {
+          
+         }
 
     // créé le token + token_refresh (stocké en base)
     Authorize(login: Login): Promise<UserToken> {
-      return this.httpClient
-        .post<UserToken>(environment.apiUrl + '/login', login)
-        .toPromise();
+      return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/login', login));
     }
 
     public IsLogged(): Promise<boolean> {
@@ -35,16 +36,14 @@ export class AuthorizeApiService {
   
     // suppr le refresh_token en base
     LogOut(): Promise<void> {
-      return this.httpClient
-        .delete<void>(environment.apiUrl + '/logout')
-        .toPromise();
+      return firstValueFrom(this.httpClient.delete<void>(environment.apiUrl + 'authentication/logout'));
     }
 
     CheckToken(): Promise<boolean> {
         const user = this.GetTokenByCookie();
         if (!user || !user.id_token) {
           this.connexionInfo.SetNewConnexionState(new UserToken());
-          this.FinalyseConnexionInfo(null);
+          this.FinaliseConnexionInfo(null);
           return Promise.resolve(false);
         }
     
@@ -61,7 +60,7 @@ export class AuthorizeApiService {
         }
     
         this.connexionInfo.SetNewConnexionState(new UserToken());
-        this.FinalyseConnexionInfo(null);
+        this.FinaliseConnexionInfo(null);
         return Promise.resolve(false);
     }
 
@@ -89,12 +88,9 @@ export class AuthorizeApiService {
     // détruit le refresh donné en entrée et en créé un nouveau + token (comme login)
     GetTokenByRefresh(refreshToken: string): Promise<UserToken> {
       const refresh: Refresh = {
-        ClientID: null,
         RefreshToken: refreshToken,
       };
-      return this.httpClient
-        .post<UserToken>(environment.apiUrl + '/token', refresh, {})
-        .toPromise();
+      return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/token', refresh, {}));
     }
 
     RefreshToken(refresh_token: string): Promise<boolean | null> {
@@ -116,7 +112,7 @@ export class AuthorizeApiService {
         if (user.id_token) {
             this.SetUserInfo(user.id_token);
         } else {
-            this.FinalyseConnexionInfo(null);
+            this.FinaliseConnexionInfo(null);
         }
         this.AssignCookie(user);
     }
@@ -131,15 +127,10 @@ export class AuthorizeApiService {
               FirstName: jwt.value.FirstName,
               LastName: jwt.value.LastName
             };
-            if (!jwt.value.HasActiveAccount) {
-              this.connexionInfo.SetNewConnexionState(null);
-              this.FinalyseConnexionInfo(null);
-            } else {
-              this.FinalyseConnexionInfo(user);
-            }
+            this.FinaliseConnexionInfo(user);
           } catch (ex) {
             this.connexionInfo.SetNewConnexionState(null);
-            this.FinalyseConnexionInfo(null);
+            this.FinaliseConnexionInfo(null);
           }
     }
     
@@ -154,7 +145,7 @@ export class AuthorizeApiService {
         );
     }
 
-    private FinalyseConnexionInfo(user: User | null): void {
+    private FinaliseConnexionInfo(user: User | null): void {
         this.connexionInfo.SetClientInfo(user as User);
         this.connexionInfo.TriggerConnexionChange();
       }

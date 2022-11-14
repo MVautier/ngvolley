@@ -6,7 +6,7 @@
   --grey: #8A8F96;
 
   // Project colors
-  --blue: #333;
+  --blue: #181515;
   --blue-light: #9cc3c9;
   --blue_dark: #e53748;
   --blue-light-transparent: hwb(187 39% 41% / 0.144);
@@ -20,15 +20,16 @@
   --font: 'Montserrat', sans-serif;
 
   // Buttons
-  --primary-color: red;
+  --primary-color: #e53748;
 
   // Project variables
   --font_size: 16px;
   --container: 1140px;
   --container_big: 1750px;
   --aside: 360px;
-  --global-transition: 0.3s;
+  --global-transition: all 0.3s ease;
 
+  --pre_header_height_top: 40px;
   --header_height_top: 75px;
   --header_height_bottom: 75px;
   --header_height: calc(var(--header_height_top) + var(--header_height_bottom));

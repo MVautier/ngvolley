@@ -1,0 +1,28 @@
+<div class="connection-form" (clickOutside)="onClickOutsideForm($event)">
+    <div class="top">
+        <p class="title">Connexion</p>
+    </div>
+
+    <div class="form" name="login_form">
+        <div class="input" [ngClass]="{error: authError}">
+            <input type="email" name="email" placeholder="email" [(ngModel)]="email" required>
+        </div>
+    
+        <div class="input input--pswd" [ngClass]="{error: authError}">
+    
+        <input id="password" [(ngModel)]="password" type="{{ !displayPassword ? 'password' : 'text' }}"
+            placeholder="Mot de passe" name="password" required />
+    
+        <button *ngIf="!displayPassword" type="button" class="icon-eye" tabindex="-1" (click)="displayPassword = !displayPassword"
+            title="Afficher"></button>
+    
+        <button *ngIf="displayPassword" type="button" class="icon-eye-off" tabindex="-1" (click)="displayPassword = !displayPassword"
+            title="Cacher"></button>
+        </div>
+        <p *ngIf="authError" class="error-msg">Votre e-mail ou votre mot de passe n’est pas correct.</p>
+
+        <button type="submit" class="btn" (click)="onClickOnConnection()">Connexion</button>
+        <button class="link" (click)="onClickOnPasswordForgotten()">Mot de passe oublié</button>
+    </div>
+
+</div>

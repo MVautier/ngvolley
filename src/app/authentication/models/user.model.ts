@@ -4,5 +4,4 @@ export class User {
     LastName: string;
     Mail: string;
     ExpireDate: string;
-    ClientID!: string;
 }

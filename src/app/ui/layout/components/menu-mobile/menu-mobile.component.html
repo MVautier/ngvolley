@@ -2,19 +2,24 @@
     <div class="menu">
         <div class="top">
             <button class="close icon-cross"[attr.aria-label]="'Fermer'" (click)="onClose()"></button>
-            <a routerLink="/">
-                <img src="/assets/images/logo-arcade.svg?tmp=1"/>
-            </a>
         </div>
 
         <nav class="nav">
             <div class="nav__group">
-                <a class="link product icon-arrow" href="#" translate="">Bons plans</a>
+                <a class="link" (click)="goTo('home')">DERNIERES NEWS</a>
+                <a class="link" (click)="goTo('club')">LE CLUB</a> 
+                <a class="link" (click)="goTo('tarif')">TARIFS & HORAIRES</a>
+                <a class="link" (click)="goTo('tournoi')">TOURNOIS</a>
+                <a class="link" (click)="goTo('inscription')">INSCRIPTION</a>
+                <a class="link" (click)="goTo('contact')">CONTACT</a>
             </div>
+
             
         </nav>
         <div class="bottom">
-            <a href="#" class="icon-arrow" translate>A propos</a>
-          </div>
+            <a *ngIf="logged" class="icon-arrow" (click)="goTo('admin')">ADMIN</a>
+            <a *ngIf="!logged" class="icon-arrow" (click)="goTo('login')">CONNEXION</a>
+            <a *ngIf="logged" class="icon-arrow" (click)="goTo('logout')">DECONNEXION</a>
+        </div>
     </div>
 </div>

@@ -2,7 +2,7 @@
   background: var(--blue);
   padding: 12px 20px;
   border-radius: 50px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 18px;
   font-weight: 600;
   text-transform: uppercase;
@@ -10,8 +10,10 @@
   transition: all 0.3s ease;
   letter-spacing: -0.5px;
   &:not(:disabled):hover {
-    background: var(--blue_dark);
-    color: var(--white);
+    color: var(--blue_dark);
+  }
+  &.active {
+    color: var(--blue_dark);
   }
   &--transparent {
     background: none;

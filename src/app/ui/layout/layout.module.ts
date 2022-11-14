@@ -9,6 +9,9 @@ import { SliderService } from "../services/slider.service";
 import { RouterModule } from "@angular/router";
 import { CenterComponent } from './components/center/center.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
+import { PreHeaderComponent } from './components/pre-header/pre-header.component';
+import { AuthenticationModule } from "@app/authentication/authentication.module";
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 
 @NgModule({
 
@@ -18,16 +21,20 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
     HeaderComponent,
     MenuMobileComponent,
     CenterComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    PreHeaderComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
+    ModalModule.forRoot(),
+    AuthenticationModule.forRoot(),
     CoreModule.forRoot()
   ],
   providers: [
-    SliderService
+    SliderService,
+    BsModalService
   ]
 })
 export class LayoutModule {

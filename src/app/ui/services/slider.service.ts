@@ -8,10 +8,10 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
 @Injectable()
 export class SliderService {
   config: SwiperOptions = {
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false
-    },
+    // autoplay: {
+    //   delay: 2500,
+    //   disableOnInteraction: false
+    // },
     centeredSlides: true,
     slidesPerView: 1,
     spaceBetween: 50,

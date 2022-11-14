@@ -6,9 +6,14 @@ import { AuthorizeApiService } from './services/authorize-api.service';
 import { ConnectionInfoService } from './services/connexion-info.service';
 import { CookieService } from './services/cookie.service';
 import { LoginService } from './services/login.service';
+import { ModalLoginComponent } from './components/modal-login/modal-login.component';
+import { FormsModule } from '@angular/forms';
+import { CoreModule } from '@app/core/core.module';
 
 @NgModule({
   declarations: [
+  
+    ModalLoginComponent
   ],
   providers: [
     AuthorizeApiService,
@@ -18,16 +23,18 @@ import { LoginService } from './services/login.service';
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    FormsModule,
+    HttpClientModule,
+    CoreModule
   ],
   exports: [
 
   ]
 })
-export class SharedAuthenticationModule {
-  static forRoot(): ModuleWithProviders<SharedAuthenticationModule> {
+export class AuthenticationModule {
+  static forRoot(): ModuleWithProviders<AuthenticationModule> {
     return {
-      ngModule: SharedAuthenticationModule,
+      ngModule: AuthenticationModule,
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},
         AuthorizeApiService,

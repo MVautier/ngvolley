@@ -22,9 +22,9 @@ export class Interceptor implements HttpInterceptor {
   ) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    // if (!this.connexionInfo.Token) {
-    //   this.connexionInfo.Token = this.authService.GetTokenByCookie();
-    // }
+    if (!this.connexionInfo.Token) {
+      this.connexionInfo.Token = this.authService.GetTokenByCookie();
+    }
 
     return next.handle(this.applyCredentials(request)).pipe(
       catchError((err) => {
@@ -68,9 +68,6 @@ export class Interceptor implements HttpInterceptor {
         }
 
         this.authService.LogOut();
-        if (!request.url.endsWith('/EmailRemainderQuote') && !request.url.endsWith('/AssoQuotesEmail') && (this.router.url !== '/checkout/cart' && !request.url.endsWith('/MyCart'))) {
-          this.login.showAuthenticationForm(0, '');
-        }
         throw err;
       }) as any);
 
