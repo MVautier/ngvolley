@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TarifPageComponent } from './tarif-page.component';
+import { PageComponent } from './page.component';
 
-describe('TarifPageComponent', () => {
-  let component: TarifPageComponent;
-  let fixture: ComponentFixture<TarifPageComponent>;
+describe('PageComponent', () => {
+  let component: PageComponent;
+  let fixture: ComponentFixture<PageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TarifPageComponent ]
+      declarations: [ PageComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TarifPageComponent);
+    fixture = TestBed.createComponent(PageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

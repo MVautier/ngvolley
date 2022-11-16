@@ -5,30 +5,25 @@
             <div class="left">
                 <button class="menu-burger icon-burger" (click)="openMobileMenu()" [attr.aria-label]="'Ouvrir'"></button>
                 <a routerLink="/">
-                    <span class="title">CLLL COLOMIERS {{ page }}</span>
+                    <span class="title">CLLL COLOMIERS</span>
                 </a>
                 
             </div>
 
             <div class="center">
                 <div class="links">
-                    <button class="btn" [ngClass]="{'active': page === 'home' }" (click)="goTo('home')">
+                    <button class="btn" [ngClass]="{'active': ['', 'home'].includes(page) }" (click)="goTo('home')">
                         <span>DERNIERES NEWS</span>
                     </button>
-                    <button class="btn" [ngClass]="{'active': page === 'club' }" (click)="goTo('club')">
-                        <span>LE CLUB</span>
+
+                    <!-- Pages dynamiques -->
+                    <button *ngFor="let p of pages" class="btn" [ngClass]="{'active': page === p.Slug }" (click)="goToPage(p.Slug)">
+                        <span>{{p.Title}}</span>
                     </button>
-                    <button class="btn" [ngClass]="{'active': page === 'tarif' }" (click)="goTo('tarif')">
-                        <span>TARIFS & HORAIRES</span>
-                    </button>
-                    <button class="btn" [ngClass]="{'active': page === 'tournoi' }" (click)="goTo('tournoi')">
-                        <span>TOURNOIS</span>
-                    </button>
+                    <!-- Fin Pages dynamiques -->
+
                     <button class="btn" [ngClass]="{'active': page === 'inscription' }" (click)="goTo('inscription')">
                         <span>INSCRIPTION</span>
-                    </button>
-                    <button class="btn" [ngClass]="{'active': page === 'contact' }" (click)="goTo('contact')">
-                        <span>CONTACT</span>
                     </button>
                     <button *ngIf="logged" class="btn" [ngClass]="{'active': page === 'admin' }" (click)="goTo('admin')">
                         <span>ADMIN</span>

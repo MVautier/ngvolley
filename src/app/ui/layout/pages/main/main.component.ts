@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { RouteService } from '@app/core/services/route.services';
 
 @Component({
   selector: 'app-main',
@@ -9,11 +10,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class MainComponent implements OnInit {
 
   
-  constructor() { }
+  constructor(private routeService: RouteService) { }
 
   ngOnInit(): void {
-    
+    this.init();
   }
 
+  init() {
+    this.routeService.start();
+  }
   
 }

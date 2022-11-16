@@ -6,20 +6,22 @@
 
         <nav class="nav">
             <div class="nav__group">
-                <a class="link" (click)="goTo('home')">DERNIERES NEWS</a>
-                <a class="link" (click)="goTo('club')">LE CLUB</a> 
-                <a class="link" (click)="goTo('tarif')">TARIFS & HORAIRES</a>
-                <a class="link" (click)="goTo('tournoi')">TOURNOIS</a>
-                <a class="link" (click)="goTo('inscription')">INSCRIPTION</a>
-                <a class="link" (click)="goTo('contact')">CONTACT</a>
-            </div>
+                <a class="link" [ngClass]="{'active': ['', 'home'].includes(page) }" (click)="goTo('home')">DERNIERES NEWS</a>
 
-            
+                <!-- Pages dynamiques -->
+                <a *ngFor="let p of pages" class="link" [ngClass]="{'active': page === p.Slug }" (click)="goToPage(p.Slug)">{{p.Title}}</a> 
+                <!-- Fin Pages dynamiques -->
+
+            </div>
         </nav>
         <div class="bottom">
-            <a *ngIf="logged" class="icon-arrow" (click)="goTo('admin')">ADMIN</a>
+            <a class="link" [ngClass]="{'active': page === 'inscription' }" (click)="goTo('inscription')">INSCRIPTION</a>
+            <a *ngIf="logged" class="link" [ngClass]="{'active': page === 'admin' }" (click)="goTo('admin')">ADMIN</a>
+            <a *ngIf="!logged" class="link" (click)="goTo('login')">CONNEXION</a>
+            <a *ngIf="logged" class="link" (click)="goTo('logout')">DECONNEXION</a>
+            <!-- <a *ngIf="logged" class="icon-arrow" [ngClass]="{'active': page === 'admin' }" (click)="goTo('admin')">ADMIN</a>
             <a *ngIf="!logged" class="icon-arrow" (click)="goTo('login')">CONNEXION</a>
-            <a *ngIf="logged" class="icon-arrow" (click)="goTo('logout')">DECONNEXION</a>
+            <a *ngIf="logged" class="icon-arrow" (click)="goTo('logout')">DECONNEXION</a> -->
         </div>
     </div>
 </div>

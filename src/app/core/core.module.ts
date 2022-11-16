@@ -4,6 +4,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { ApiPingService } from './services/api-ping.service';
 import { HttpDataService } from './services/http-data.service';
 import { RegexShared } from './services/regex-shared';
+import { RouteService } from './services/route.services';
 import { WindowStateService } from './services/window-state.service';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { WindowStateService } from './services/window-state.service';
       RegexShared,
       WindowStateService,
       HttpDataService,
-      ApiPingService
+      ApiPingService,
+      RouteService
     ],
     exports: [
         SafeHtmlPipe
@@ -31,7 +33,8 @@ import { WindowStateService } from './services/window-state.service';
           RegexShared,
           WindowStateService,
           HttpDataService,
-          ApiPingService
+          ApiPingService,
+          RouteService
         ]
       };
     }

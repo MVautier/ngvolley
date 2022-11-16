@@ -9,4 +9,10 @@
   &--primary{
     color: var(--primary-color);
   }
+  &--mobile {
+    &.active{
+      color: var(--blue_dark);
+    }
+    
+  }
 }

@@ -1,0 +1,130 @@
+import { Injectable } from '@angular/core';
+import { NavigationEnd, Route, Router } from '@angular/router';
+import { PageComponent } from '@app/page/components/page/page.component';
+import { environment } from '@env/environment';
+import { BehaviorSubject } from 'rxjs';
+import { Tree } from '../models/tree.model';
+import { WebItem } from '../models/web-item.model';
+import { HttpDataService } from './http-data.service';
+
+@Injectable()
+export class RouteService {
+    tree: BehaviorSubject<Tree> = new BehaviorSubject<Tree>(null);
+    page: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
+
+    constructor(
+        private http: HttpDataService<any>, 
+        private router: Router) {
+
+    }
+
+    start() {
+        this.initTree().then(tree => {
+            this.configureRouter(tree);
+            console.log('ROUTER CONFIG = ', this.router.config) // A laisser
+            this.tree.next(tree);
+            this.setStartingRoute();
+        }).catch((err) => {
+            console.log('tree error: ', err);
+        });
+        this.router.events.subscribe(e => {
+            if (e instanceof NavigationEnd) {
+                this.setCurrentRoute(e.url);
+            }
+        });
+    }
+
+    setCurrentRoute(url: string) {
+        const page = this.tree.value.pages.find(p => url.endsWith(p.Slug));
+        if (page) {
+            this.page.next(page);
+        } else {
+            const found = this.findPageInConfig(url);
+            if (found) {
+                this.page.next(found);
+            }
+        }
+    }
+
+    setStartingRoute() {
+        let path = document.location.pathname;
+        if (path.startsWith('/page/')) {
+            path = path.substring(6);
+        }
+        if (path.startsWith('/')) {
+            path = path.substring(1);
+        }
+        this.setCurrentRoute(path);
+    }
+
+    findPageInConfig(url: string): WebItem {
+        if (url.startsWith('/')) {
+            url = url.substring(1);
+        }
+        const route = this.router.config[0].children.find(p => p.path === url);
+        if (route) {
+            return {
+                IdItem: 0,
+                Title: route.title.toString(),
+                Slug: route.path,
+                Type: 'page',
+                Public: true
+            };
+        }
+        return {
+            IdItem: 0,
+            Title: 'Accueil',
+            Slug: '',
+            Type: 'page',
+            Public: true
+        };
+    }
+
+    initTree(): Promise<Tree> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.http.get(environment.apiUrl + 'tree').then((tree: Tree) => {
+                    resolve(tree);
+                }).catch(err => {
+                    reject(err);
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    setCurrentPage(page: WebItem) {
+        this.page.next(page);
+    }
+
+    getCurrentPage() : WebItem {
+        return this.page.value;
+    }
+
+    private configureRouter(tree: Tree) {
+        if (tree.pages && tree.pages.length > 0) {
+            tree.pages.forEach(p => {
+                this.addPath(p.Slug);
+            });
+        }
+    }
+
+    private addPath(path: string) {
+
+        if (path) {
+            if (this.router.config.findIndex(r => r.path === path) < 0) {
+                const route: Route = {
+                    path: 'page/' + path,
+                    component: PageComponent
+                };
+                const index = this.router.config.findIndex(r => r.path === '**');
+                if (index >= 0) {
+                    this.router.config.splice(index, 0, route);
+                } else {
+                    this.router.config.push(route);
+                }
+            }
+        }
+      }
+}

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClubPageComponent } from './club-page.component';
+import { CommentComponent } from './comment.component';
 
-describe('ClubPageComponent', () => {
-  let component: ClubPageComponent;
-  let fixture: ComponentFixture<ClubPageComponent>;
+describe('CommentComponent', () => {
+  let component: CommentComponent;
+  let fixture: ComponentFixture<CommentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClubPageComponent ]
+      declarations: [ CommentComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClubPageComponent);
+    fixture = TestBed.createComponent(CommentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
