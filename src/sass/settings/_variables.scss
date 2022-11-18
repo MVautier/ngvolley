@@ -16,6 +16,11 @@
   // --white: ;
   // --black: ;
 
+  // Admin colors
+  --main: #2271b1;
+  --main-dark: #002257;
+  --main-light: #ecf2fe;
+
   // Fonts
   --font: 'Montserrat', sans-serif;
 
@@ -30,10 +35,12 @@
   --global-transition: all 0.3s ease;
 
   --pre_header_height_top: 40px;
-  --header_height_top: 75px;
+  --header_height_top: 50px;
   --header_height_bottom: 75px;
   --header_height: calc(var(--header_height_top) + var(--header_height_bottom));
   --header_mobile: 270px;
+  --admin_menu_height: 44px;
+  --admin_height: calc(100vh - var(--pre_header_height_top) - var(--header_height_top) - var(--admin_menu_height));
 
   --product_aside: 390px;
   --builderSidebarWidth: 390px;

@@ -14,17 +14,16 @@ export class PageComponent implements OnInit, OnDestroy {
   page: string;
   tree: Tree;
   current: WebItem;
-  subTree: Subscription;
 
   constructor(
     private routeService: RouteService,
     private router: Router,
     private route: ActivatedRoute
     ) { 
-      this.subTree = this.routeService.tree.subscribe(tree => {
+      this.routeService.subscribeConfig(tree => {
         this.tree = tree;
         this.initPage();
-      });
+      }, 'subTreePage');
     }
 
   ngOnInit(): void {
@@ -32,9 +31,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subTree) {
-      this.subTree.unsubscribe();
-    }
+
   }
 
   initPage() {

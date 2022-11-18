@@ -66,6 +66,12 @@
             display: flex;
             justify-content: center;
             padding: 0 10px;
+            .icon {
+              color: var(--white);
+            }
+            fa-icon {
+              color: var(--white);
+            }
             @media screen and (max-width: 1300px) {
                 display: none;
             }

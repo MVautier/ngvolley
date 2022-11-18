@@ -8,11 +8,13 @@ import { CookieService } from './cookie.service';
 import { User } from '../models/user.model';
 import { ConnectionInfoService } from './connexion-info.service';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthorizeApiService {
     constructor(
         private httpClient: HttpClient, 
+        private router: Router,
         private connexionInfo: ConnectionInfoService,
         private cookieService: CookieService) {
           
@@ -36,7 +38,17 @@ export class AuthorizeApiService {
   
     // suppr le refresh_token en base
     LogOut(): Promise<void> {
-      return firstValueFrom(this.httpClient.delete<void>(environment.apiUrl + 'authentication/logout'));
+      this.cookieService.Delete(
+        environment.cookieName,
+        environment.cookieDomain,
+        environment.cookiePath
+      );
+      this.httpClient.delete<void>(environment.apiUrl + 'authentication/logout');
+      this.connexionInfo.SetNewConnexionState(new UserToken());
+      this.connexionInfo.TriggerConnexionChange();
+      this.router.navigate(['']);
+      return Promise.resolve();
+      //return firstValueFrom(this.httpClient.delete<void>(environment.apiUrl + 'authentication/logout'));
     }
 
     CheckToken(): Promise<boolean> {
@@ -74,7 +86,9 @@ export class AuthorizeApiService {
             IdUser: result.IdUser,
             id_token: result.id_token,
             refresh_token: result.refresh_token,
-            expire_in: result.expire_in
+            expire_in: result.expire_in,
+            firstname: result.firstname,
+            lastname: result.lastname
           };
         }
     

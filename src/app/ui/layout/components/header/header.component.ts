@@ -23,8 +23,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   page: string;
   tree: Tree;
   pages: WebItem[];
-  subTree: Subscription;
-  subRoute: Subscription;
 
   constructor(
     private modalService: BsModalService, 
@@ -40,13 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
           console.log('is logged: ', this.logged);
         });
       });
-      this.subTree = this.routeService.tree.subscribe(tree => {
+      this.routeService.subscribeConfig(tree => {
         this.tree = tree;
         this.initPages();
-      });
-      this.subRoute = this.routeService.page.subscribe(page => {
+      }, 'subTreeHeader');
+      this.routeService.subscribePage(page => {
         this.page = page?.Slug;
-      });
+      }, 'subPageHeader');
     }
 
   ngOnInit(): void {
@@ -54,12 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subTree) {
-      this.subTree.unsubscribe();
-    }
-    if (this.subRoute) {
-      this.subRoute.unsubscribe();
-    }
+
   }
 
   initPages() {
@@ -74,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else if (page === 'logout') {
       this.authService.LogOut().then(() => {
         this.logged = false;
-        this.router.navigate([this.page]);
+        //this.router.navigate([this.page]);
       });
     } else {
       this.router.navigate([page]);

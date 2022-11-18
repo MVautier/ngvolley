@@ -4,13 +4,14 @@ import { HeaderComponent } from './components/header/header.component';
 import { MenuMobileComponent } from './components/menu-mobile/menu-mobile.component';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { CoreModule } from "@app/core/core.module";
-import { SliderService } from "../services/slider.service";
+import { SliderService } from "./services/slider.service";
 import { RouterModule } from "@angular/router";
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { PreHeaderComponent } from './components/pre-header/pre-header.component';
 import { AuthenticationModule } from "@app/authentication/authentication.module";
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
 
@@ -26,9 +27,9 @@ import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
     CommonModule,
     FormsModule,
     RouterModule,
+    FontAwesomeModule,
     ModalModule.forRoot(),
-    AuthenticationModule.forRoot(),
-    CoreModule.forRoot()
+    AuthenticationModule.forRoot()
   ],
   providers: [
     SliderService,

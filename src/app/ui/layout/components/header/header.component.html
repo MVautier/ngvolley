@@ -12,31 +12,33 @@
 
             <div class="center">
                 <div class="links">
-                    <button class="btn" [ngClass]="{'active': ['', 'home'].includes(page) }" (click)="goTo('home')">
+                    <button class="button" [ngClass]="{'active': ['', 'home'].includes(page) }" (click)="goTo('home')">
                         <span>DERNIERES NEWS</span>
                     </button>
 
                     <!-- Pages dynamiques -->
-                    <button *ngFor="let p of pages" class="btn" [ngClass]="{'active': page === p.Slug }" (click)="goToPage(p.Slug)">
+                    <button *ngFor="let p of pages" class="button" [ngClass]="{'active': page === p.Slug }" (click)="goToPage(p.Slug)">
                         <span>{{p.Title}}</span>
                     </button>
                     <!-- Fin Pages dynamiques -->
 
-                    <button class="btn" [ngClass]="{'active': page === 'inscription' }" (click)="goTo('inscription')">
+                    <button class="button" [ngClass]="{'active': page === 'inscription' }" (click)="goTo('inscription')">
                         <span>INSCRIPTION</span>
                     </button>
-                    <button *ngIf="logged" class="btn" [ngClass]="{'active': page === 'admin' }" (click)="goTo('admin')">
+                    <button *ngIf="logged" class="button" [ngClass]="{'active': page === 'admin' }" (click)="goTo('admin')">
                         <span>ADMIN</span>
                     </button>
-                    <button *ngIf="!logged" class="btn" (click)="goTo('login')">
+                    <!-- <button class="btn" (click)="goTo('login')">
                         <span>CONNEXION</span>
                     </button>
-                    <button *ngIf="logged" class="btn" (click)="goTo('logout')">
+                    <button class="btn" (click)="goTo('logout')">
                         <span>DECONNEXION</span>
-                    </button>
+                    </button> -->
+                    <fa-icon *ngIf="!logged" (click)="goTo('login')" [icon]="['fas', 'sign-in-alt']"></fa-icon>
+                    <fa-icon *ngIf="logged" (click)="goTo('logout')" [icon]="['fas', 'sign-out-alt']"></fa-icon>
                 </div>
             </div>
         </div>
     </div>
-    <app-main-menu [showMobileMenu]="showMobileMenu" (close)="onClose()"></app-main-menu>
+    <!-- <app-main-menu [showMobileMenu]="showMobileMenu" (close)="onClose()"></app-main-menu> -->
 </header>

@@ -41,6 +41,13 @@
       }
 
       &--pswd {
+        display: flex;
+        flex-direction: row;
+        button {
+          position: absolute;
+          right: 60px;
+          margin-top: 15px;
+        }
         &.error {
           &:before {
             right: 40px;

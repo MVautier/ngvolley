@@ -1,0 +1,47 @@
+.menu-container{
+    font-size: 14px;
+    height: var(--admin_menu_height);
+    .overflow-line {
+        height: 1px;
+        background: var(--primary-color);
+        opacity: 0.3;
+    }
+    .menu{
+        display: flex;
+        flex-direction: row;
+        background: var(--blue);
+        color: var(--white);
+        line-height: 30px;
+        padding: 7px 20px;
+        margin-top: -1px;
+        .main-menu{
+            cursor: pointer;
+            margin-right: 30px;
+            &:hover{
+                color: var(--primary-color);
+            }
+        }
+        .user-info{
+            position: absolute;
+            right: 15px;
+        }
+    }
+    .sub-menu {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        background: var(--blue);
+        color: var(--white);
+        line-height: 20px;
+        margin-top: 7px;
+        :not(.overflow-line) {
+            padding: 7px 20px;
+        }
+        a{
+            cursor: pointer;
+            &:hover{
+                color: var(--primary-color);
+            }
+        }
+    }
+}

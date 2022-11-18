@@ -8,7 +8,6 @@ import { CookieService } from './services/cookie.service';
 import { LoginService } from './services/login.service';
 import { ModalLoginComponent } from './components/modal-login/modal-login.component';
 import { FormsModule } from '@angular/forms';
-import { CoreModule } from '@app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { CoreModule } from '@app/core/core.module';
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
-    CoreModule
+    HttpClientModule
   ],
   exports: [
 

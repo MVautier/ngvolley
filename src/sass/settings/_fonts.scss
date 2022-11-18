@@ -1,19 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
-
-//Icons
 @font-face {
-  font-family: "arcade";
-  src: url("../../assets/fonts/arcade.eot");
-  src: url("../../assets/fonts/arcade.eot?#iefix") format("embedded-opentype"),
-    url("../../assets/fonts/arcade.woff") format("woff"),
-    url("../../assets/fonts/arcade.ttf") format("truetype"),
-    url("../../assets/fonts/arcade.svg#arcade") format("svg");
+  font-family: "custom";
+  src: url("../../assets/fonts/custom.eot");
+  src: url("../../assets/fonts/custom.eot?#iefix") format("embedded-opentype"),
+    url("../../assets/fonts/custom.woff") format("woff"),
+    url("../../assets/fonts/custom.ttf") format("truetype"),
+    url("../../assets/fonts/custom.svg#custom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
 [data-icon]:before {
-  font-family: "arcade" !important;
+  font-family: "custom" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -27,7 +24,7 @@
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family: "arcade" !important;
+  font-family: "custom" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
@@ -41,141 +38,225 @@
 .icon-account:before {
   content: "\61";
 }
-.icon-add:before {
+.icon-arrow-down:before {
   content: "\62";
 }
-.icon-arrow-button:before {
+.icon-arrow-left:before {
   content: "\63";
 }
-.icon-arrow:before {
+.icon-arrow-right:before {
   content: "\64";
 }
-.icon-big-arrow:before {
+.icon-big-arrow-down:before {
   content: "\65";
 }
-.icon-cart:before {
+.icon-big-arrow-up:before {
   content: "\66";
 }
-.icon-eye-off:before {
+.icon-calculator:before {
   content: "\67";
 }
-.icon-eye-on:before {
+.icon-cart:before {
   content: "\68";
 }
-.icon-gears:before {
-  content: "\6a";
-}
-.icon-loop:before {
-  content: "\6d";
-}
-.icon-tool:before {
-  content: "\6e";
-}
-.icon-twitter:before {
-  content: "\6f";
-}
-.icon-valid:before {
-  content: "\70";
-}
-.icon-delete:before {
-  content: "\71";
-}
-.icon-burger:before {
-  content: "\72";
-}
-.icon-cross:before {
-  content: "\73";
-}
-.icon-file:before {
+.icon-cart-plus:before {
   content: "\69";
 }
-.icon-wait:before {
-  content: "\74";
-}
-.icon-error:before {
-  content: "\76";
-}
 .icon-check:before {
-  content: "\77";
+  content: "\6a";
 }
-.icon-warning:before {
-  content: "\75";
-}
-.icon-address:before {
-  content: "\78";
-}
-.icon-free-delivery:before {
-  content: "\79";
-}
-.icon-payement:before {
-  content: "\7a";
-}
-.icon-update:before {
-  content: "\41";
-}
-.icon-delivery:before {
-  content: "\42";
+.icon-delete:before {
+  content: "\6f";
 }
 .icon-download:before {
-  content: "\43";
-}
-.icon-info:before {
-  content: "\6b";
-}
-.icon-clock:before {
-  content: "\44";
+  content: "\70";
 }
 .icon-edit:before {
-  content: "\45";
+  content: "\71";
 }
-.icon-orders:before {
-  content: "\46";
+.icon-export:before {
+  content: "\72";
 }
-.icon-bike:before {
-  content: "\47";
+.icon-filter:before {
+  content: "\73";
 }
-.icon-bills:before {
-  content: "\48";
+.icon-glitter:before {
+  content: "\74";
 }
-.icon-contact:before {
-  content: "\49";
-}
-.icon-cb:before {
-  content: "\4a";
-}
-.icon-money:before {
-  content: "\4b";
-}
-.icon-doc:before {
-  content: "\52";
-}
-.icon-dots2:before {
-  content: "\4c";
-}
-.icon-dots:before {
-  content: "\4e";
+.icon-info:before {
+  content: "\75";
 }
 .icon-mail:before {
-  content: "\4f";
+  content: "\76";
 }
-.icon-linkedin:before {
-  content: "\6c";
+.icon-menu-circle:before {
+  content: "\77";
 }
-.icon-link-ext:before {
-  content: "\4d";
+.icon-menu-dots:before {
+  content: "\78";
 }
-.icon-quote:before {
+.icon-phone:before {
+  content: "\79";
+}
+.icon-search:before {
+  content: "\7a";
+}
+.icon-select:before {
+  content: "\41";
+}
+.icon-star:before {
+  content: "\42";
+}
+.icon-star-filled:before {
+  content: "\43";
+}
+.icon-clock:before {
+  content: "\6e";
+}
+.icon-text:before {
+  content: "\44";
+}
+.icon-warning:before {
+  content: "\45";
+}
+.icon-cross-circle:before {
+  content: "\46";
+}
+.icon-send:before {
+  content: "\47";
+}
+.icon-sms:before {
+  content: "\48";
+}
+.icon-file:before {
+  content: "\49";
+}
+.icon-valid:before {
+  content: "\4a";
+}
+.icon-params:before {
+  content: "\4b";
+}
+.icon-mme:before {
+  content: "\4c";
+}
+.icon-email-phone:before {
   content: "\50";
 }
-.icon-quote:before {
-  content: "\50";
-}
-.icon-big-arrow-thin:before {
-  content: "\51";
-}
-.icon-doc:before {
+.icon-print:before {
   content: "\52";
 }
-.icon-tool-border:before {
+.icon-touch:before {
   content: "\53";
+}
+.icon-payement:before {
+  content: "\54";
+}
+.icon-check-circle:before {
+  content: "\6b";
+}
+.icon-arrow-thin:before {
+  content: "\55";
+}
+.icon-question:before {
+  content: "\56";
+}
+.icon-refresh:before {
+  content: "\57";
+}
+.icon-eye:before {
+  content: "\58";
+}
+.icon-eye-off:before {
+  content: "\59";
+}
+.icon-circles:before {
+  content: "\5a";
+}
+.icon-mobile:before {
+  content: "\6c";
+}
+.icon-email-open:before {
+  content: "\4e";
+}
+.icon-email-desktop:before {
+  content: "\4f";
+}
+.icon-phone-call:before {
+  content: "\51";
+}
+.icon-mr:before {
+  content: "\4d";
+}
+.icon-big-arrow-up-thin:before {
+  content: "\30";
+}
+.icon-hyphen:before {
+  content: "\31";
+}
+.icon-calendar:before {
+  content: "\32";
+}
+.icon-save:before {
+  content: "\33";
+}
+.icon-exclude:before {
+  content: "\34";
+}
+.icon-logout:before {
+  content: "\35";
+}
+.icon-cross:before {
+  content: "\36";
+}
+.icon-clock-fill:before {
+  content: "\6d";
+}
+.icon-pending:before {
+  content: "\37";
+}
+.icon-pending-fill:before {
+  content: "\38";
+}
+.icon-planning:before {
+  content: "\39";
+}
+.icon-view-desktop:before {
+  content: "\21";
+}
+.icon-view-mobile:before {
+  content: "\22";
+}
+.icon-view-tablet:before {
+  content: "\23";
+}
+.icon-stat-clicked:before {
+  content: "\24";
+}
+.icon-stat-failed:before {
+  content: "\25";
+}
+.icon-stat-opened:before {
+  content: "\26";
+}
+.icon-stat-sent:before {
+  content: "\27";
+}
+.icon-stat-successful:before {
+  content: "\28";
+}
+.icon-stat-unsubscribed:before {
+  content: "\29";
+}
+.icon-help:before {
+  content: "\2a";
+}
+.icon-undo:before {
+  content: "\2c";
+}
+.icon-save2:before {
+  content: "\2d";
+}
+.icon-redo:before {
+  content: "\2e";
 }

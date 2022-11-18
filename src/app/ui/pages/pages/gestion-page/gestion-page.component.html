@@ -1,0 +1,13 @@
+<!-- <a [routerLink]="['/admin']">Retour</a> -->
+<div class="admin-container">
+    <div class="title">
+        <h1>
+            Pages
+        </h1>
+        <fa-icon (click)="addPage()" [icon]="['fas', 'plus-square']" data-title="Ajouter une page"></fa-icon>
+    </div>
+
+    <div class="list-container">
+        <app-page-card *ngFor="let page of tree.pages" [page]="page"></app-page-card>
+    </div>
+</div>

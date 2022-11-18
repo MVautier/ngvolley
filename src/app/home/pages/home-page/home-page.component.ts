@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Slider } from '@app/ui/layout/models/slider.model';
-import { SliderService } from '@app/ui/services/slider.service';
+import { SliderService } from '@app/ui/layout/services/slider.service';
 
 @Component({
   selector: 'app-home-page',

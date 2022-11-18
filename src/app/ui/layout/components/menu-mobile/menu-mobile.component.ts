@@ -28,8 +28,6 @@ export class MenuMobileComponent implements OnInit, OnDestroy {
   logged: boolean;
   tree: Tree;
   pages: WebItem[];
-  subTree: Subscription;
-  subRoute: Subscription;
 
   constructor(
     private modalService: BsModalService, 
@@ -44,13 +42,13 @@ export class MenuMobileComponent implements OnInit, OnDestroy {
           console.log('is logged: ', this.logged);
         });
       });
-      this.subTree = this.routeService.tree.subscribe(tree => {
+      this.routeService.subscribeConfig(tree => {
         this.tree = tree;
         this.initPages();
-      });
-      this.subRoute = this.routeService.page.subscribe(page => {
+      }, 'subTreeMenuMobile');
+      this.routeService.subscribePage(page => {
         this.page = page?.Slug;
-      });
+      }, 'subPageMenuMobile');
   }
 
   ngOnInit() {
@@ -58,12 +56,7 @@ export class MenuMobileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subTree) {
-      this.subTree.unsubscribe();
-    }
-    if (this.subRoute) {
-      this.subRoute.unsubscribe();
-    }
+
   }
 
   initPages() {

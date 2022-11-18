@@ -2,27 +2,68 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Route, Router } from '@angular/router';
 import { PageComponent } from '@app/page/components/page/page.component';
 import { environment } from '@env/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Tree } from '../models/tree.model';
 import { WebItem } from '../models/web-item.model';
 import { HttpDataService } from './http-data.service';
 
 @Injectable()
 export class RouteService {
-    tree: BehaviorSubject<Tree> = new BehaviorSubject<Tree>(null);
-    page: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
+    private obsTree: BehaviorSubject<Tree> = new BehaviorSubject<Tree>(null);
+    private obsPage: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
+    private dicoSubscriptions: Subscription[] = [];
 
     constructor(
         private http: HttpDataService<any>, 
         private router: Router) {
+            console.log('================ route constructor');
+    }
 
+    public subscribeConfig(next?: (value: Tree) => void, keySubscription?: string) {
+        const subscriber = this.obsTree.subscribe(next);
+        this.addSubscription(subscriber, keySubscription);
+    }
+
+    public subscribePage(next?: (value: WebItem) => void, keySubscription?: string) {
+        const subscriber = this.obsPage.subscribe(next);
+        this.addSubscription(subscriber, keySubscription);
+    }
+
+    public setCurrentConfig(tree: Tree) {
+        this.obsTree.next(tree);
+    }
+
+    public getCurrentConfig() : Tree {
+        return this.obsTree.value;
+    }
+
+    public setCurrentPage(page: WebItem) {
+        this.obsPage.next(page);
+    }
+
+    public getCurrentPage() : WebItem {
+        return this.obsPage.value;
+    }
+
+    private addSubscription(subscriber: Subscription, keySubscription: string) {
+        if (keySubscription) {
+          this.unsubscribe(keySubscription);
+          this.dicoSubscriptions[keySubscription] = subscriber;
+        }
+    }
+    
+    private unsubscribe(keySubscription: string): void {
+        if (this.dicoSubscriptions[keySubscription]) {
+          this.dicoSubscriptions[keySubscription].unsubscribe();
+        }
     }
 
     start() {
         this.initTree().then(tree => {
             this.configureRouter(tree);
             console.log('ROUTER CONFIG = ', this.router.config) // A laisser
-            this.tree.next(tree);
+            this.setCurrentConfig(tree);
+            //this.obsTree.next(tree);
             this.setStartingRoute();
         }).catch((err) => {
             console.log('tree error: ', err);
@@ -34,14 +75,28 @@ export class RouteService {
         });
     }
 
+    initTree(): Promise<Tree> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.http.get(environment.apiUrl + 'tree').then((tree: Tree) => {
+                    resolve(tree);
+                }).catch(err => {
+                    reject(err);
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     setCurrentRoute(url: string) {
-        const page = this.tree.value.pages.find(p => url.endsWith(p.Slug));
+        const page = this.obsTree.value.pages.find(p => url.endsWith(p.Slug));
         if (page) {
-            this.page.next(page);
+            this.obsPage.next(page);
         } else {
             const found = this.findPageInConfig(url);
             if (found) {
-                this.page.next(found);
+                this.obsPage.next(found);
             }
         }
     }
@@ -70,6 +125,14 @@ export class RouteService {
                 Type: 'page',
                 Public: true
             };
+        } else if (url.includes('admin')) {
+            return {
+                IdItem: 0,
+                Title: 'Administration',
+                Slug: 'admin',
+                Type: 'page',
+                Public: true
+            };
         }
         return {
             IdItem: 0,
@@ -78,28 +141,6 @@ export class RouteService {
             Type: 'page',
             Public: true
         };
-    }
-
-    initTree(): Promise<Tree> {
-        return new Promise((resolve, reject) => {
-            try {
-                this.http.get(environment.apiUrl + 'tree').then((tree: Tree) => {
-                    resolve(tree);
-                }).catch(err => {
-                    reject(err);
-                });
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    setCurrentPage(page: WebItem) {
-        this.page.next(page);
-    }
-
-    getCurrentPage() : WebItem {
-        return this.page.value;
     }
 
     private configureRouter(tree: Tree) {
@@ -111,7 +152,6 @@ export class RouteService {
     }
 
     private addPath(path: string) {
-
         if (path) {
             if (this.router.config.findIndex(r => r.path === path) < 0) {
                 const route: Route = {

@@ -1,0 +1,44 @@
+<div class="page-card">
+    <div class="row">
+        
+        <div class="col">
+            <p class="label">
+                <span class="name">{{page.Title}}</span><br>
+                {{page.Resume}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="file-name">
+                Auteur<br>
+                {{page.Author}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="label">
+                Date de création<br>
+                {{page.Date | date:'dd/MM/yyyy à HH:mm'}}
+            </p>
+        </div>
+        <div class="col fa-icon">
+            <fa-layers>
+                <fa-icon [icon]="['fas', 'comment-alt']"></fa-icon>
+                <fa-layers-text data-title="Commentaires"
+                    content="10"
+                    style="color: white;font-weight: bold"
+                    transform="shrink-7 up-1.7"
+                ></fa-layers-text>
+            </fa-layers>
+        </div>
+        <div class="col fa-icon">
+            <fa-icon *ngIf="page.Public" (click)="setPrivate()" [icon]="['fas', 'toggle-on']" transform="grow-5" data-title="Cette page est publique"></fa-icon>
+            <fa-icon *ngIf="!page.Public" (click)="setPublic()" [icon]="['fas', 'toggle-off']" transform="grow-5" data-title="Cette page est privée"></fa-icon>
+        </div>
+        <div class="col fa-icon">
+            <fa-icon (click)="edit()" [icon]="['far', 'edit']" data-title="Modifier"></fa-icon>
+            <fa-icon (click)="edit()" [icon]="['far', 'clone']" data-title="Dupliquer"></fa-icon>
+        </div>
+        <div class="col fa-icon">
+            <fa-icon (click)="remove()" [icon]="['fas', 'trash-alt']" data-title="Mettre à la corbeille"></fa-icon>
+        </div>
+    </div>
+</div>

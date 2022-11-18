@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiPingService } from '@app/core/services/api-ping.service';
 import { environment } from '@env/environment';
 import SwiperCore, { SwiperOptions, Autoplay, Pagination, Navigation } from 'swiper';
-import { Slider } from '../layout/models/slider.model';
+import { Slider } from '../models/slider.model';
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 @Injectable()
