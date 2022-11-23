@@ -1,0 +1,27 @@
+
+<div class="admin-container">
+    <div class="title">
+        <h1>
+            Pages
+            <button mat-icon-button (click)="add()" title="Ajouter une page" color="accent">
+                <mat-icon>note_add</mat-icon>
+            </button>
+        </h1>
+        <!-- <fa-icon (click)="add()" [icon]="['fas', 'plus-square']" title="Ajouter une page"></fa-icon> -->
+    </div>
+
+    <div class="list-container" *ngIf="tree?.pages?.length" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let item of tree.pages; let index = index" cdkDrag>
+            <div  class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <app-page-card
+                [tree]="tree" 
+                [idpage]="item.IdItem" 
+                (edit)="edit($event)"
+                (remove)="remove($event)"
+                (duplicate)="duplicate($event)">
+            </app-page-card>
+        </div>
+    </div>
+</div>
+
+

@@ -1,5 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
-@import "settings/global";
+
+//@use '@angular/material' as mat;
+//@import "settings/global";
+
+@import '~@angular/material/theming';
+@import 'styles/main';
+@import 'styles/material-theme';
+@import 'styles/layout';
+
 // @import 'swiper/scss';
 // @import 'swiper/scss/navigation';
 // @import 'swiper/scss/pagination';

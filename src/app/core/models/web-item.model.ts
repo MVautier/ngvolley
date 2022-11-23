@@ -11,8 +11,10 @@ export class WebItem {
     Ip?: string;
     Order?: number;
     Public: boolean;
-    Author?: number;
+    Author?: string;
+    IdAuthor?: number;
     IdParent?: number;
     IdCategory?: number;
     IdPost?: number;
+    IdPages?: number[];
 }

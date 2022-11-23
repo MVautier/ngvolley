@@ -16,6 +16,10 @@ export class HttpDataService<T> {
         return firstValueFrom(this.http.get<D>(action, { withCredentials: true }));
     }
 
+    getPublic<D>(action: string): Promise<D> {
+        return firstValueFrom(this.http.get<D>(action, { withCredentials: false }));
+    }
+
     post<D>(action: string, item: D, options?: {}): Promise<T> {
         return firstValueFrom(this.http.post<T>(action, item, options));
     }

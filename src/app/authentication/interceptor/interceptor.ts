@@ -44,7 +44,12 @@ export class Interceptor implements HttpInterceptor {
           throw err;
         }
 
-        if (this.connexionInfo.Token && new Date((this.connexionInfo.Token as UserToken).expire_in) > new Date() && !request.url.endsWith('/token') && !request.url.endsWith('/login')) {
+        if (
+          this.connexionInfo.Token 
+          && new Date((this.connexionInfo.Token as UserToken).expire_in) > new Date() 
+          && !request.url.includes('/geolocation-db.com') 
+          && !request.url.endsWith('/token') 
+          && !request.url.endsWith('/login')) {
           return from(this.authService.RefreshToken((this.connexionInfo.Token as UserToken).refresh_token)).pipe(switchMap(t => {
             if (t) {
               return next.handle(this.applyCredentials(request));
@@ -89,7 +94,7 @@ export class Interceptor implements HttpInterceptor {
           Authorization: `Bearer ${this.connexionInfo.Token.id_token}`
         },
       });
-    } else {
+    } else if (!request.url.includes('/geolocation-db.com')) {
       request = request.clone({
         setHeaders: {
           'Content-Type': 'application/json',

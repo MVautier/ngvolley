@@ -63,3 +63,12 @@
         }
     }
 }
+.draggable {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.draggable:active {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}

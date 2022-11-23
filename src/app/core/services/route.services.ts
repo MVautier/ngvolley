@@ -31,6 +31,8 @@ export class RouteService {
 
     public setCurrentConfig(tree: Tree) {
         this.obsTree.next(tree);
+        this.configureRouter(tree);
+        console.log('router changed: ', this.router.config);
     }
 
     public getCurrentConfig() : Tree {
@@ -43,6 +45,35 @@ export class RouteService {
 
     public getCurrentPage() : WebItem {
         return this.obsPage.value;
+    }
+
+    public addPage(page: WebItem) {
+        const tree = this.obsTree.value;
+        if (tree?.pages?.length && page.Order >= 0) {
+            let pages = tree.pages.filter(p => p.Order < page.Order);
+            const after = tree.pages.filter(p => p.Order >= page.Order);
+            pages.push(page);
+            if (after.length) {
+                after.forEach(p => {
+                    p.Order++;
+                });
+            }
+            pages = pages.concat(after);
+            tree.pages = pages;
+        } else {
+            tree.pages = [page];
+        }
+        this.setCurrentConfig(tree);
+    }
+
+    removePage(page: WebItem) {
+        const tree = this.obsTree.value;
+        if (page.IdItem > 0) {
+            tree.pages = tree.pages.filter(p => p.IdItem !== page.IdItem);
+        } else {
+            tree.pages = tree.pages.filter(p => p.Slug !== page.Slug);
+        }
+        this.setCurrentConfig(tree);
     }
 
     private addSubscription(subscriber: Subscription, keySubscription: string) {
@@ -63,7 +94,6 @@ export class RouteService {
             this.configureRouter(tree);
             console.log('ROUTER CONFIG = ', this.router.config) // A laisser
             this.setCurrentConfig(tree);
-            //this.obsTree.next(tree);
             this.setStartingRoute();
         }).catch((err) => {
             console.log('tree error: ', err);
@@ -144,7 +174,8 @@ export class RouteService {
     }
 
     private configureRouter(tree: Tree) {
-        if (tree.pages && tree.pages.length > 0) {
+        if (tree.pages && tree.pages.length) {
+            this.router.config = this.router.config.filter(r => !r.path.startsWith('page/'));
             tree.pages.forEach(p => {
                 this.addPath(p.Slug);
             });
@@ -153,7 +184,7 @@ export class RouteService {
 
     private addPath(path: string) {
         if (path) {
-            if (this.router.config.findIndex(r => r.path === path) < 0) {
+            if (this.router.config.findIndex(r => r.path === 'page/' + path) < 0) {
                 const route: Route = {
                     path: 'page/' + path,
                     component: PageComponent

@@ -1,0 +1,39 @@
+
+  // Perso
+  .main-content {
+    height: calc(100vh - 64px);
+    .flex-content {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+  
+      app-tile {
+          flex: 30%;
+          margin: 0 10px 10px 0;
+          min-height: 200px;
+          border: 1px solid #fff;
+          border-radius: 8px;
+          padding: 10px;
+      }
+    }
+  }
+  mat-toolbar {
+    .nav-tool-items {
+      display: inline-flex;
+      mat-slide-toggle {
+        font-size: 12px;
+      }
+      mat-icon {
+        margin: 0 0 0 10px;
+      }
+    }
+  }
+  mat-grid-list{
+    width: 100%;
+    mat-grid-tile{
+      .mat-grid-tile-content {
+        margin: 0;
+      }
+    }
+  }
+  

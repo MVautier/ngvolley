@@ -1,0 +1,106 @@
+/*-------------------- INPUT GENERAL STYLE --------------------*/
+input {
+    height: 60px;
+    line-height: 60px;
+    background: #f6fbff;
+    padding: 0 20px;
+    border-radius: 10px;
+    border: 1px solid var(--grey-light);
+    font-family: var(--font);
+    font-size: 16px;
+    color: var(--text);
+    caret-color: var(--main);
+    transition: all 0.3s ease;
+  
+    @media screen and (max-width: 600px) {
+      height: 45px;
+      line-height: 45px;
+    }
+  
+    &:hover {
+      background: #f6fbff;
+    }
+  
+    &:focus {
+      background: var(--white);
+      border-color: var(--main);
+    }
+  }
+  
+  .input {
+    position: relative;
+    height: 60px;
+    // label {
+
+    // }
+  }
+  
+  /*--------------- SEARCH ---------------*/
+  /* clears the ‘X’ from Chrome */
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+  }
+  
+  /*--------------- PASSWORD ---------------*/
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+  
+  .input--pswd {
+    button {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+  
+      &:before {
+        font-size: 20px;
+        color: #c2c2c2;
+        position: relative;
+        top: 2px;
+      }
+    }
+  }
+  
+  .contenteditable {
+    .fusion-tag {
+      color: var(--main);
+      margin-right: 2px;
+    }
+    .title {
+        font-size: 32px;
+        font-weight: 700;
+    }
+  }
+  
+  /*--------------- ERROR ---------------*/
+  .input.error,
+  .select.error,
+  .autocomplete__input.error {
+    input {
+      border: 1px solid var(--pink);
+    }
+  
+    &:before {
+      @include icons("\45");
+      color: var(--pink);
+      font-size: 21px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  
+  .error-msg {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--pink);
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  

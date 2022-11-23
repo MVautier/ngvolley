@@ -2,14 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsLoggedGuard } from './guard/is-logged.guard';
 import { AdminComponent } from './pages/admin/admin.component';
+import { CommentsPageComponent } from './pages/comments-page/comments-page.component';
+import { GestionPageComponent } from './pages/gestion-page/gestion-page.component';
+import { MediaPageComponent } from './pages/media-page/media-page.component';
+import { PostsPageComponent } from './pages/posts-page/posts-page.component';
+import { ThemePageComponent } from './pages/theme-page/theme-page.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent, children: [
-    { path: 'media', canActivate: [IsLoggedGuard],  loadChildren: () => import('@app/ui/media/media.module').then(m => m.MediaModule) },
-    { path: 'pages', canActivate: [IsLoggedGuard],  loadChildren: () => import('@app/ui/pages/pages.module').then(m => m.PagesModule) },
-    { path: 'comments', canActivate: [IsLoggedGuard],  loadChildren: () => import('@app/ui/comments/comments.module').then(m => m.CommentsModule) },
-    { path: 'posts', canActivate: [IsLoggedGuard],  loadChildren: () => import('@app/ui/posts/posts.module').then(m => m.PostsModule) },
-    { path: 'theme', canActivate: [IsLoggedGuard],  loadChildren: () => import('@app/ui/theme/theme.module').then(m => m.ThemeModule) }
+    { path: 'pages', canActivate: [IsLoggedGuard], component: GestionPageComponent },
+    { path: 'comments', canActivate: [IsLoggedGuard], component: CommentsPageComponent },
+    { path: 'posts', canActivate: [IsLoggedGuard], component: PostsPageComponent },
+    { path: 'media', canActivate: [IsLoggedGuard], component: MediaPageComponent },
+    { path: 'theme', canActivate: [IsLoggedGuard],  component: ThemePageComponent }
   ] },
   
 ];

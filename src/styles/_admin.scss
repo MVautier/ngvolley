@@ -1,0 +1,74 @@
+.admin-container{
+    padding: 25px;
+    font-size: 14px;
+    //height: var(--admin_height);
+    .title{
+        display: flex;
+        font-size: 20px;
+        h1{
+            margin-right: 10px;
+        }
+    }
+    .action{
+        margin-left: 4px;
+        padding: 4px 8px;
+        position: relative;
+        top: -3px;
+        text-decoration: none;
+        border: 1px solid #2271b1;
+        border-radius: 2px;
+        text-shadow: none;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: normal;
+        color: #2271b1;
+        background: #f6f7f7;
+        cursor: pointer;
+        &:hover{
+            background: #f0f0f1;
+            border-color: #0a4b78;
+            color: #0a4b78;
+        }
+    }
+    .list-container{
+        margin-top: 50px;
+    }
+    fa-icon {
+        cursor: pointer;
+        margin-right: 10px;
+        stroke: var(--main);
+        color: var(--main);
+        &:hover::after{
+            content: attr(data-title);
+            font-weight: 500;
+            padding-left: .25em;
+            position: absolute;
+            margin-top: -1.7em;
+            transform: translateX(-50%);
+            font-size: .6em;
+            color: var(--main);
+        }
+    }
+    fa-layers-text{
+        cursor: pointer;
+        &:hover::after{
+            content: attr(data-title);
+            font-weight: 500;
+            padding-left: .25em;
+            position: absolute;
+            margin-top: -1.7em;
+            transform: translateX(-50%);
+            font-size: .6em;
+            color: var(--main);
+        }
+    }
+}
+.draggable {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.draggable:active {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}

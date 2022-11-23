@@ -1,5 +1,4 @@
-
-
+@import '~@angular/material/theming';
 @import "~swiper/css";
 @import "~swiper/css/pagination";
 @import "~swiper/css/navigation";
@@ -41,4 +40,24 @@
     color: #fff;
     font-size: 16px;
     font-weight: 700;
+}
+
+app-toolbar {
+    @include mat-elevation(2);
+    display: block;
+}
+.content {
+  padding: 4rem 6px;
+  display: flex;
+}
+aside {
+  flex: 1;
+}
+app-home-page {
+  flex: 5;
+}
+@media only screen and (max-width: 600px)  {
+  aside {
+    flex: 0;
   }
+}

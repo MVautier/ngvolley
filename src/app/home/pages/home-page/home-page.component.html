@@ -1,5 +1,52 @@
+<header>
+    <h1 class="mat-display-1">Accueil</h1>
+    <button mat-fab>
+      <mat-icon>menu</mat-icon>
+    </button>
+</header>
 
-<swiper *ngIf="slider"
+
+<div class="flex-content">
+    <!-- <app-tile *ngFor="let tile of tiles">{{ tile }}</app-tile> -->
+    <mat-grid-list #grid  [cols]="cols" rowHeight="200px" [gutterSize]="'10px'">
+        <mat-grid-tile *ngFor="let tile of tiles">
+            <mat-grid-tile-header>
+                {{ tile }}
+            </mat-grid-tile-header>
+    
+            <mat-grid-tile-footer>
+                footer
+            </mat-grid-tile-footer>
+            <mat-card class="my-card">
+                <mat-card-title>{{tile}}</mat-card-title>
+                <mat-card-content>
+                   {{tile}}
+                </mat-card-content>
+              </mat-card> 
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<!-- <mat-grid-list #grid  [cols]="cols" rowHeight="200px" [gutterSize]="'10px'">
+    <mat-grid-tile *ngFor="let tile of tiles">
+        <mat-grid-tile-header>
+            {{ tile }}
+        </mat-grid-tile-header>
+
+        <mat-grid-tile-footer>
+            footer
+        </mat-grid-tile-footer>
+        <mat-card class="my-card">
+            <mat-card-title>{{tile}}</mat-card-title>
+            <mat-card-content>
+               {{tile}}
+            </mat-card-content>
+          </mat-card> 
+    </mat-grid-tile>
+    
+</mat-grid-list> -->
+
+<!-- <swiper *ngIf="slider"
     [config]="slider.config"
     (swiper)="onSwiper($event)"
     (slideChange)="onSlideChange()" class="mySwiper"
@@ -8,4 +55,4 @@
         <img [src]="slide.src">
         <label>{{ slide.title }}</label>
     </ng-template>
-</swiper>
+</swiper> -->

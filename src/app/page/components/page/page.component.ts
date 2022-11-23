@@ -43,7 +43,7 @@ export class PageComponent implements OnInit, OnDestroy {
         this.current = p;
         document.title = p.Title;
         console.log('configured page for ', this.page, ': ', p);
-        const posts = this.tree.posts.filter(post => post.IdParent === p.IdItem);
+        const posts = this.tree.posts.filter(post => post.IdPages && post.IdPages.includes(p.IdItem));
         if (posts && posts.length) {
           console.log('configured posts for ', this.page, ': ', posts);
         } else {

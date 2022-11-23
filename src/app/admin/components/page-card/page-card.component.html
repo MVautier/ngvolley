@@ -1,0 +1,62 @@
+<div class="page-card" *ngIf="page">
+    <div class="row">
+        
+        <div class="col">
+            <p class="label">
+                <span class="name">{{page.Title}} ({{page.Slug}})</span><br>
+                {{page.Resume}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="file-name">
+                Auteur<br>
+                {{page.Author}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="label">
+                Date de création<br>
+                {{page.Date | date:'dd/MM/yyyy à HH:mm'}}
+            </p>
+        </div>
+        <div class="col fa-icon">
+            <button mat-icon-button title="{{postsTitle}}" color="accent">
+                <mat-icon>chat_bubble</mat-icon>
+                <span>{{posts.length}}</span>
+            </button>
+            
+            <!-- <fa-layers>
+                
+                <fa-icon [icon]="['fas', 'comment-alt']" title="{{postsTitle}}"></fa-icon>
+                <fa-layers-text title="{{postsTitle}}"
+                    content="{{posts.length}}"
+                    style="color: white;font-weight: bold"
+                    transform="shrink-7 up-1.7"
+                ></fa-layers-text>
+            </fa-layers> -->
+        </div>
+        <div class="col fa-icon">
+            <mat-slide-toggle [checked]="page.Public" (change)="toggleStatus()" color="accent"></mat-slide-toggle>
+            <!-- <fa-icon *ngIf="page.Public" (click)="setPrivate()" [icon]="['fas', 'toggle-on']" transform="grow-5" title="Cette page est publique"></fa-icon>
+            <fa-icon *ngIf="!page.Public" (click)="setPublic()" [icon]="['fas', 'toggle-off']" transform="grow-5" title="Cette page est privée"></fa-icon> -->
+        </div>
+        <div class="col fa-icon">
+            <button mat-icon-button (click)="onEdit()" title="Modifier" color="accent">
+                <mat-icon>edit_square</mat-icon>
+            </button>
+            <!-- <fa-icon (click)="onEdit()" [icon]="['far', 'edit']" title="Modifier"></fa-icon> -->
+        </div>
+        <div class="col fa-icon">
+            <button mat-icon-button (click)="onDuplicate()" title="Dupliquer" color="accent">
+                <mat-icon>content_copy</mat-icon>
+            </button>
+            <!-- <fa-icon (click)="onDuplicate()" [icon]="['far', 'clone']" title="Dupliquer"></fa-icon> -->
+        </div>
+        <div class="col fa-icon">
+            <button mat-icon-button (click)="onRemove()" title="Mettre à la corbeille" color="accent">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <!-- <fa-icon (click)="onRemove()" [icon]="['fas', 'trash-alt']" title="Mettre à la corbeille"></fa-icon> -->
+        </div>
+    </div>
+</div>
