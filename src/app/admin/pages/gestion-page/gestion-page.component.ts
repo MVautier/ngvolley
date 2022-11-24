@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class GestionPageComponent implements OnInit {
   tree: Tree;
+  inTrash: WebItem[] = [];
 
   constructor(
     private router: Router,
@@ -41,7 +42,15 @@ export class GestionPageComponent implements OnInit {
 
   remove(page: WebItem) {
     console.log('remove: ', page);
-    this.routeService.removePage(page);
+    const item = this.inTrash.find(p => p.id === page.id);
+    if (!item) {
+      this.inTrash.push(page);
+    }
+  }
+
+  empty() {
+    this.routeService.removePages(this.inTrash);
+    this.inTrash = [];
   }
 
   add() {
@@ -49,10 +58,14 @@ export class GestionPageComponent implements OnInit {
   }
 
   edit(page: WebItem) {
-    this.router.navigate(['admin/pages/' + page.Slug + '/edit']);
+    this.router.navigate(['admin/pages/' + page.id + '/edit']);
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.tree.pages, event.previousIndex, event.currentIndex);
+  }
+
+  goBack() {
+    this.router.navigate(['/admin']);
   }
 }

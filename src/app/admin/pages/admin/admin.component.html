@@ -1,34 +1,32 @@
-<div class="menu-container">
+<div class="menu-container admin-menu">
     <div class="overflow-line"></div>
     <div class="menu">
-        <div class="main-menu" (clickOutside)="closeDisplayMenu()">
-            <span (click)="showDisplayMenu = !showDisplayMenu;">Contenu</span>
-            <div *ngIf="showDisplayMenu" class="sub-menu">
-                <div class="overflow-line"></div>
-                <a (click)="goMenu('pages')">Pages</a>
-                <a (click)="goMenu('posts')">Articles</a>
-                <a (click)="goMenu('comments')">Commentaires</a>
-                <a (click)="goMenu('media')">Médias</a>
-                <a (click)="goMenu('theme')">Thème</a>
-            </div>
+        <div class="main-menu">
+            <button mat-button [matMenuTriggerFor]="displayMenu">Contenu</button>
+            <mat-menu class="sub-menu" #displayMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="goMenu('pages')">Pages</button>
+                <button mat-menu-item (click)="goMenu('posts')">Articles</button>
+                <button mat-menu-item (click)="goMenu('comments')">Commentaires</button>
+                <button mat-menu-item (click)="goMenu('media')">Médias</button>
+                <button mat-menu-item (click)="goMenu('theme')">Thème</button>
+            </mat-menu>
         </div>
-        <div class="main-menu" (clickOutside)="closeAdherentMenu()">
-            <span (click)="showAdherentMenu = !showAdherentMenu;">Adhérents</span>
-            <div *ngIf="showAdherentMenu" class="sub-menu">
-                <div class="overflow-line"></div>
-                <a (click)="goMenu('pages')">Adhérents</a>
-                <a (click)="goMenu('posts')">Export</a>
-                <a (click)="goMenu('comments')">Inscriptions</a>
-            </div>
+
+        <div class="main-menu">
+            <button mat-button [matMenuTriggerFor]="dataMenu">Adhérents</button>
+            <mat-menu class="sub-menu" #dataMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="goMenu('pages')">Adhérents</button>
+                <button mat-menu-item (click)="goMenu('posts')">Export</button>
+                <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button>
+            </mat-menu>
         </div>
 
         <div *ngIf="user" class="user-info">
             {{user.FirstName}} {{user.LastName}}
         </div>
     </div>
-    
-    
 </div>
+
 <router-outlet></router-outlet>
 
 

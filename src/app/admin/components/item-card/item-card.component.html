@@ -1,0 +1,44 @@
+<div class="page-card" *ngIf="item">
+    <div class="row">
+        <div class="col">
+            <p class="label">
+                <span class="name">{{item.Title}} ({{item.Slug}})</span><br>
+                {{item.Resume}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="file-name">
+                {{item.Author}}
+            </p>
+        </div>
+        <div class="col">
+            <p class="label">
+                {{item.Date | date:'dd/MM/yyyy à HH:mm'}}
+            </p>
+        </div>
+        <div class="col icon">
+            <button mat-icon-button title="{{postsTitle}}">
+                <mat-icon>chat_bubble</mat-icon>
+                <span class="icon-text">{{posts.length}}</span>
+            </button>
+        </div>
+        <div class="col icon">
+            <mat-slide-toggle [checked]="item.Public" (change)="toggleStatus()"></mat-slide-toggle>
+        </div>
+        <div class="col icon">
+            <button mat-icon-button (click)="onEdit()" title="Modifier">
+                <mat-icon>edit_square</mat-icon>
+            </button>
+        </div>
+        <div class="col icon">
+            <button mat-icon-button (click)="onDuplicate()" title="Dupliquer">
+                <mat-icon>content_copy</mat-icon>
+            </button>
+        </div>
+        <div class="col icon">
+            <button mat-icon-button (click)="onRemove()" title="Mettre à la corbeille">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

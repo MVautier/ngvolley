@@ -1,0 +1,37 @@
+<div class="top-container" (click)="goBack()">
+    <button mat-icon-button>
+        <mat-icon>chevron_left</mat-icon>
+        {{ backTitle }}
+    </button>
+</div>
+<div class="center-container" *ngIf="item && formGroup" novalidate>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form">
+
+        <mat-form-field class="form-element">
+            <input matInput placeholder="Titre de la page" formControlName="title">
+            <mat-error *ngIf="!formGroup.controls['title'].valid && formGroup.controls['title'].touched">
+              <!-- {{ getErrorTitle() }} -->
+              {{ getErrorTitle() }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+            <input matInput placeholder="Url de la page" formControlName="slug">
+            <mat-error *ngIf="!formGroup.controls['slug'].valid && formGroup.controls['slug'].touched">
+              {{ getErrorSlug() }}
+            </mat-error>
+        </mat-form-field>
+
+    </form>
+    <!-- <div class="title" contenteditable="true" (keyup)="onKeyUp($event)">{{title}}</div>
+    <div>
+        
+        <div class="form" name="login_form">
+
+            <div class="input">
+                <input type="text" name="slug" placeholder="page.Slug" [(ngModel)]="page.Slug" required>
+            </div>
+        </div>
+        
+    </div> -->
+</div>

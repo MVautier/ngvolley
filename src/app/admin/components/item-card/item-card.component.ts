@@ -3,26 +3,26 @@ import { User } from '@app/authentication/models/user.model';
 import { ConnectionInfoService } from '@app/authentication/services/connexion-info.service';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
-import { PagesService } from '../../services/pages.service';
+import { RouteService } from '@app/core/services/route.services';
 
 @Component({
-  selector: 'app-page-card',
-  templateUrl: './page-card.component.html',
-  styleUrls: ['./page-card.component.scss']
+  selector: 'app-item-card',
+  templateUrl: './item-card.component.html',
+  styleUrls: ['./item-card.component.scss']
 })
-export class PageCardComponent implements OnInit {
+export class ItemCardComponent implements OnInit {
   @Input() tree: Tree;
-  @Input() idpage: number;
+  @Input() id: number;
   @Output() edit: EventEmitter<WebItem> = new EventEmitter<WebItem>(null);
   @Output() duplicate: EventEmitter<WebItem> = new EventEmitter<WebItem>(null);
   @Output() remove: EventEmitter<WebItem> = new EventEmitter<WebItem>(null);
-  page: WebItem;
+  item: WebItem;
   posts: WebItem[] = [];
   postsTitle: string;
   user: User;
 
   constructor(
-    private pagesService: PagesService,
+    private routeService: RouteService,
     private connexionInfo: ConnectionInfoService
     ) { }
 
@@ -35,45 +35,36 @@ export class PageCardComponent implements OnInit {
 
   initPage() {
     if (this.tree?.pages?.length) {
-      this.page = this.tree.pages.find(p => p.IdItem === this.idpage);
-      if (this.page) {
+      this.item = this.tree.pages.find(p => p.id === this.id);
+      if (this.item) {
         this.postsTitle = 'Articles';
-        this.posts = this.tree.posts.filter(post => post.IdPages && post.IdPages.includes(this.page.IdItem));
+        this.posts = this.tree.posts.filter(post => post.IdPages && post.IdPages.includes(this.item.IdItem));
         if (this.posts && this.posts.length) {
           this.postsTitle = this.posts.length + ' article' + (this.posts.length > 1 ? 's' : '');
-          console.log('configured posts for ', this.page, ': ', this.posts);
+          console.log('configured posts for ', this.item, ': ', this.posts);
         } else {
-          console.log('no configured posts for ' + this.page);
+          console.log('no configured posts for ' + this.item);
         }
       } else {
-        console.log('no configured page for ' + this.page);
+        console.log('no configured page for ' + this.item);
       }
     }
   }
 
   onEdit() {
-    this.edit.emit(this.page);
+    this.edit.emit(this.item);
   }
 
   onDuplicate() {
-    const copy: WebItem = this.pagesService.duplicate(this.page, this.user, 'page');
+    const copy: WebItem = this.routeService.duplicate(this.item, this.user, 'page');
     this.duplicate.emit(copy);
   }
 
   onRemove() {
-    this.remove.emit(this.page);
+    this.remove.emit(this.item);
   }
 
   toggleStatus() {
-    this.page.Public = !this.page.Public;
+    this.item.Public = !this.item.Public;
   }
-
-  // setPublic() {
-  //   this.page.Public = true;
-  // }
-
-  // setPrivate() {
-  //   this.page.Public = false;
-  // }
-  
 }

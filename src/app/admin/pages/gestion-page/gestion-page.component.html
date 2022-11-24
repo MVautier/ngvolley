@@ -1,27 +1,46 @@
+<div class="top-container" (click)="goBack()">
+    <button mat-icon-button>
+        <mat-icon>chevron_left</mat-icon>
+        Tableau de bord
+    </button>
+</div>
 
-<div class="admin-container">
+<div class="center-container">
     <div class="title">
         <h1>
             Pages
-            <button mat-icon-button (click)="add()" title="Ajouter une page" color="accent">
+            <button mat-icon-button (click)="add()" title="Ajouter une page">
                 <mat-icon>note_add</mat-icon>
             </button>
         </h1>
-        <!-- <fa-icon (click)="add()" [icon]="['fas', 'plus-square']" title="Ajouter une page"></fa-icon> -->
     </div>
 
-    <div class="list-container" *ngIf="tree?.pages?.length" cdkDropList (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let item of tree.pages; let index = index" cdkDrag>
+    <div class="header">
+        <div class="col">Titre</div>
+        <div class="col">Auteur</div>
+        <div class="col">Date de création</div>
+        <div class="col">Commentaires</div>
+        <div class="col">
+            <button mat-icon-button [disabled]="!inTrash.length" (click)="empty()" title="Mettre à la corbeille">
+                <mat-icon class="big-trash">delete</mat-icon>
+                <span class="icon-text down">{{ inTrash.length > 0 ? inTrash.length : '' }}</span>
+            </button>
+        </div>
+    </div>
+
+    <mat-grid-list #grid  [cols]="1" rowHeight="120px" [gutterSize]="'10px'" cdkDropList (cdkDropListDropped)="drop($event)">
+        <mat-grid-tile class="tile-color" *ngFor="let item of tree?.pages; let index = index" cdkDrag>
             <div  class="example-custom-placeholder" *cdkDragPlaceholder></div>
-            <app-page-card
+            <app-item-card
                 [tree]="tree" 
-                [idpage]="item.IdItem" 
+                [id]="item.id" 
                 (edit)="edit($event)"
                 (remove)="remove($event)"
                 (duplicate)="duplicate($event)">
-            </app-page-card>
-        </div>
-    </div>
+            </app-item-card>
+        </mat-grid-tile>
+    </mat-grid-list>
 </div>
+
 
 

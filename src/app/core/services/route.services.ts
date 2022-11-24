@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Route, Router } from '@angular/router';
+import { User } from '@app/authentication/models/user.model';
 import { PageComponent } from '@app/page/components/page/page.component';
 import { environment } from '@env/environment';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Tree } from '../models/tree.model';
 import { WebItem } from '../models/web-item.model';
+import { ApiPingService } from './api-ping.service';
 import { HttpDataService } from './http-data.service';
 
 @Injectable()
@@ -12,11 +14,16 @@ export class RouteService {
     private obsTree: BehaviorSubject<Tree> = new BehaviorSubject<Tree>(null);
     private obsPage: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
     private dicoSubscriptions: Subscription[] = [];
+    currentIp: string;
 
     constructor(
         private http: HttpDataService<any>, 
+        private pingService: ApiPingService,
         private router: Router) {
             console.log('================ route constructor');
+            this.pingService.getIPAddress().then(ip => {
+                this.currentIp = ip;
+            });
     }
 
     public subscribeConfig(next?: (value: Tree) => void, keySubscription?: string) {
@@ -47,6 +54,49 @@ export class RouteService {
         return this.obsPage.value;
     }
 
+    duplicate(item: WebItem, user: User, type: string): WebItem {
+        return {
+            id: this.getNewId(item.Type),
+            IdItem: 0,
+            Author: user.FirstName + ' ' + user.LastName,
+            Content: item.Content,
+            Date: new Date(),
+            Description: item.Description,
+            IdAuthor: user.IdUser,
+            IdCategory: item.IdCategory,
+            IdPages: item.IdPages,
+            IdParent: item.IdParent,
+            IdPost: item.IdPost,
+            Ip: this.currentIp,
+            Modified: null,
+            Order: item.Order !== null ? item.Order + 1 : 0,
+            Public: item.Public,
+            Resume: item.Resume,
+            Slug: type === 'page' ? this.getNewSlug(item.Slug) : null,
+            Title: item.Title,
+            Type: type
+        };
+    }
+
+    getNewId(type: string): number {
+        const items = type === 'page' ? this.obsTree.value.pages : this.obsTree.value.posts;
+        if (items && items.length) {
+            return Math.max(...items.map(o => o.id)) + 1;
+        }
+        return 1;
+    }
+
+    getNewSlug(slug: string): string {
+        const s = slug.includes('_') ? slug.replace(/_[0-9]{1,}/gis, '') : slug;
+        const pages = this.obsTree.value.pages.filter(p => p.Slug.startsWith(s));
+        const result =  s + '_' + pages.length;
+        if (!pages.find(p => p.Slug === result)) {
+            return result;
+        } else {
+            return result + '_';
+        }
+    }
+
     public addPage(page: WebItem) {
         const tree = this.obsTree.value;
         if (tree?.pages?.length && page.Order >= 0) {
@@ -66,13 +116,15 @@ export class RouteService {
         this.setCurrentConfig(tree);
     }
 
-    removePage(page: WebItem) {
+    removePages(pages: WebItem[]) {
         const tree = this.obsTree.value;
-        if (page.IdItem > 0) {
-            tree.pages = tree.pages.filter(p => p.IdItem !== page.IdItem);
-        } else {
-            tree.pages = tree.pages.filter(p => p.Slug !== page.Slug);
-        }
+        pages.forEach(page => {
+            if (page.IdItem > 0) {
+                tree.pages = tree.pages.filter(p => p.IdItem !== page.IdItem);
+            } else {
+                tree.pages = tree.pages.filter(p => p.Slug !== page.Slug);
+            }
+        });
         this.setCurrentConfig(tree);
     }
 
@@ -176,8 +228,11 @@ export class RouteService {
     private configureRouter(tree: Tree) {
         if (tree.pages && tree.pages.length) {
             this.router.config = this.router.config.filter(r => !r.path.startsWith('page/'));
+            let i = 1;
             tree.pages.forEach(p => {
+                p.id = i;
                 this.addPath(p.Slug);
+                i++;
             });
         }
     }
@@ -197,5 +252,5 @@ export class RouteService {
                 }
             }
         }
-      }
+    }
 }

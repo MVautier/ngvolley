@@ -1,2 +1,17 @@
-<p>posts-page works!</p>
-<a [routerLink]="['/admin']">Retour</a>
+<div class="top-container" (click)="goBack()">
+    <button mat-icon-button>
+        <mat-icon>chevron_left</mat-icon>
+        Tableau de bord
+    </button>
+</div>
+
+<div class="center-container">
+    <div class="title">
+        <h1>
+            Articles
+            <button mat-icon-button (click)="add()" title="Ajouter un article">
+                <mat-icon>note_add</mat-icon>
+            </button>
+        </h1>
+    </div>
+</div>

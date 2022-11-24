@@ -27,6 +27,12 @@
         margin: 0 0 0 10px;
       }
     }
+    &.mat-toolbar-single-row {
+      @media screen and (max-width: 600px) {
+        height: 64px;
+      }
+    }
+    
   }
   mat-grid-list{
     width: 100%;
@@ -36,4 +42,7 @@
       }
     }
   }
+  .big-trash {
+    transform: scale(1.5);
+}
   

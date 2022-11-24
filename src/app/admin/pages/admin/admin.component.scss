@@ -9,11 +9,10 @@
     .menu{
         display: flex;
         flex-direction: row;
-        background: var(--blue);
-        color: var(--white);
         line-height: 30px;
         padding: 7px 20px;
         margin-top: -1px;
+        margin-bottom: 20px;
         .main-menu{
             cursor: pointer;
             margin-right: 30px;
@@ -23,15 +22,13 @@
         }
         .user-info{
             position: absolute;
-            right: 15px;
+            right: 60px;
         }
     }
     .sub-menu {
         position: absolute;
         display: flex;
         flex-direction: column;
-        background: var(--blue);
-        color: var(--white);
         line-height: 20px;
         margin-top: 7px;
         :not(.overflow-line) {

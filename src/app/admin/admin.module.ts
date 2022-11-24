@@ -7,16 +7,16 @@ import { IsLoggedGuard } from './guard/is-logged.guard';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { GestionPageComponent } from './pages/gestion-page/gestion-page.component';
-import { PageCardComponent } from './components/page-card/page-card.component';
+import { ItemCardComponent } from './components/item-card/item-card.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MediaPageComponent } from './pages/media-page/media-page.component';
 import { PostsPageComponent } from './pages/posts-page/posts-page.component';
 import { CommentsPageComponent } from './pages/comments-page/comments-page.component';
 import { ThemePageComponent } from './pages/theme-page/theme-page.component';
-import { PageEditComponent } from './components/page-edit/page-edit.component';
-import { FormsModule } from '@angular/forms';
-
-
+import { ItemEditComponent } from './components/item-edit/item-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormService } from './services/form.service';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -26,12 +26,14 @@ import { FormsModule } from '@angular/forms';
     PostsPageComponent,
     CommentsPageComponent,
     ThemePageComponent,
-    PageCardComponent,
-    PageEditComponent
+    ItemCardComponent,
+    ItemEditComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialThemeModule,
     DragDropModule,
     ClickOutsideModule,
@@ -39,7 +41,8 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     IsLoggedGuard,
-    LayoutService
+    LayoutService,
+    FormService
   ]
 })
 export class AdminModule { }

@@ -1,3 +1,59 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+
+  // Get the primary color palette from the color-config.
+  $primary-palette: map.get($color-config, 'primary');
+
+  // Get the secondary color palette from the color-config.
+  $secondary-palette: map.get($color-config, 'accent');
+
+  $background: map.get($color-config, background);
+
+  .admin-menu {
+    background: mat.get-color-from-palette($background, dialog);
+  }
+  .tile-color {
+    background: mat.get-color-from-palette($primary-palette, 800);
+    border: 1px solid mat.get-color-from-palette($secondary-palette, 700);
+  }
+  .icon-text {
+    position: absolute;
+    right: 17px;
+    color: mat.get-color-from-palette($primary-palette, 800);
+    font-size: 10px;
+    bottom: 2px;
+    font-weight: 700;
+    &.down {
+      bottom: 0;
+    }
+    &.large {
+      font-size: 12px;
+    }
+  }
+  .mat-slide-toggle {
+    .mat-slide-toggle-thumb {
+      background: #ccc;
+    }
+    &.mat-checked {
+      .mat-slide-toggle-thumb {
+        background: #fafafa;
+      }
+    }
+    
+  }
+}
+
+@mixin theme($theme) {
+  $config: mat.get-color-config($theme);
+  @if $config != null {
+    @include color($theme);
+  }
+}
+
 html,
 body {
   height: 100%;
@@ -29,7 +85,7 @@ body {
 
 .mat-sidenav,
 .mat-sidenav-content {
-  padding: 15px;
+  //padding: 15px;
 }
 
 .mat-list-item.active {
@@ -37,7 +93,16 @@ body {
 }
 
 .mat-sidenav-content {
+  //padding: 25px 40px 0;
+}
+.center-container {
   padding: 25px 40px 0;
+}
+.top-container {
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer;
+  padding: 0 40px;
 }
 
 .mat-sidenav {
@@ -167,9 +232,7 @@ body .push-right {
 }
 
 mat-grid-tile {
-  background: lightblue;
-  border: 1px solid lightblue;
-    border-radius: 5px;
+  border-radius: 5px;
   .mat-grid-tile-content {
     margin: 5px;
   }
