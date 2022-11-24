@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-page',
@@ -11,19 +10,19 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./page.component.scss']
 })
 export class PageComponent implements OnInit, OnDestroy {
-  page: string;
-  tree: Tree;
-  current: WebItem;
+  page: WebItem;
+  init = false;
 
   constructor(
     private routeService: RouteService,
-    private router: Router,
     private route: ActivatedRoute
     ) { 
-      this.routeService.subscribeConfig(tree => {
-        this.tree = tree;
-        this.initPage();
-      }, 'subTreePage');
+      console.log('constructor on page');
+      this.routeService.subscribePage(page => {
+        console.log('getting page from router service');
+        this.page = page;
+        this.initData();
+      }, 'subPageInPageComponent');
     }
 
   ngOnInit(): void {
@@ -31,27 +30,23 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
   }
 
-  initPage() {
-    this.current = null;
-    this.page = this.route.snapshot.paramMap.get('page');
-    if (this.tree) {
-      const p = this.tree.pages.find(page => page.Slug === this.page);
-      if (p) {
-        this.current = p;
-        document.title = p.Title;
-        console.log('configured page for ', this.page, ': ', p);
-        const posts = this.tree.posts.filter(post => post.IdPages && post.IdPages.includes(p.IdItem));
-        if (posts && posts.length) {
-          console.log('configured posts for ', this.page, ': ', posts);
-        } else {
-          console.log('no configured posts for ' + this.page);
-        }
+  initData() {
+    const tree = this.routeService.getCurrentConfig();
+    if (this.page) {
+      document.title = this.page.Title;
+      const slug = this.page.Slug;
+      console.log('configured page for ', slug, ': ', this.page);
+      const posts = tree.posts.filter(post => post.IdPages && post.IdPages.includes(this.page.IdItem));
+      if (posts && posts.length) {
+        console.log('configured posts for ', slug, ': ', posts);
       } else {
-        console.log('no configured page for ' + this.page);
+        console.log('no configured posts for ' + slug);
       }
+    } else {
+      const page = this.route.snapshot.paramMap.get('page');
+      console.log('no configured page for ' + page);
     }
   }
 

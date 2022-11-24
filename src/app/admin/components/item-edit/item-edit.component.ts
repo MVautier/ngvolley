@@ -114,10 +114,23 @@ export class ItemEditComponent implements OnInit {
 
   onSubmit(post) {
     this.post = post;
+    console.log('form submitted: ', post);
+    this.item.oldpath = this.item.Slug !== post.slug ? this.item.Slug : null;
+    this.item.Title = post.title;
+    this.item.Slug = post.slug;
+    this.item.Description = post.description;
+    this.item.Content = post.content;
+    this.item.Modified = new Date();
+    this.routeService.addOrUpdateInTree(this.item);
+  }
+
+  updateItem(post: any) {
+
   }
 
   goBack() {
     this.router.navigate(['admin/' + this.item.Type + 's']);
+    
   }
 
   // onKeyUp(event: any) {

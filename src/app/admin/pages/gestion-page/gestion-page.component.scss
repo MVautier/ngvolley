@@ -36,3 +36,20 @@ app-page-card {
     height: 90px;
     width: 100%;
 }
+
+.big-trash {
+    transform: scale(1.3);
+}
+
+@media (max-width:767px) {
+    .header-list{
+        display: none;
+    }
+    mat-grid-tile {
+        height: 280px !important;
+        min-width: 255px !important;
+        position: relative !important;
+        margin-top: 5px !important;
+        top: 5px !important;
+    }
+}

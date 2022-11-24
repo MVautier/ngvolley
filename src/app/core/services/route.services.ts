@@ -78,6 +78,41 @@ export class RouteService {
         };
     }
 
+    addOrUpdateInTree(item: WebItem) {
+        if (item) {
+            let items = this.getItemsByType(item.Type);
+            const index = items.findIndex(p => p.id === item.id);
+            if (index >= 0) {
+                if (item.Type === 'page' && item.oldpath) {
+                    this.addPath(item.Slug, item.oldpath);
+                }
+                items = items.splice(index, 1, item);
+            } else {
+                items.push(item);
+                if (item.Type === 'page') {
+                    this.addPath(item.Slug);
+                }
+            }
+        }
+    }
+
+    getItemsByType(type: string): WebItem[] {
+        const tree = this.obsTree.value;
+        let items: WebItem[] = [];
+        switch(type) {
+            case 'page':
+                items = tree.pages;
+                break;
+            case 'post':
+                items = tree.posts;
+                break;
+            case 'comment':
+                items = tree.comments;
+                break;
+        }
+        return items;
+    }
+
     getNewId(type: string): number {
         const items = type === 'page' ? this.obsTree.value.pages : this.obsTree.value.posts;
         if (items && items.length) {
@@ -150,11 +185,6 @@ export class RouteService {
         }).catch((err) => {
             console.log('tree error: ', err);
         });
-        this.router.events.subscribe(e => {
-            if (e instanceof NavigationEnd) {
-                this.setCurrentRoute(e.url);
-            }
-        });
     }
 
     initTree(): Promise<Tree> {
@@ -171,17 +201,6 @@ export class RouteService {
         });
     }
 
-    setCurrentRoute(url: string) {
-        const page = this.obsTree.value.pages.find(p => url.endsWith(p.Slug));
-        if (page) {
-            this.obsPage.next(page);
-        } else {
-            const found = this.findPageInConfig(url);
-            if (found) {
-                this.obsPage.next(found);
-            }
-        }
-    }
 
     setStartingRoute() {
         let path = document.location.pathname;
@@ -191,7 +210,6 @@ export class RouteService {
         if (path.startsWith('/')) {
             path = path.substring(1);
         }
-        this.setCurrentRoute(path);
     }
 
     findPageInConfig(url: string): WebItem {
@@ -237,18 +255,29 @@ export class RouteService {
         }
     }
 
-    private addPath(path: string) {
+    private addPath(path: string, oldpath?: string) {
         if (path) {
-            if (this.router.config.findIndex(r => r.path === 'page/' + path) < 0) {
-                const route: Route = {
-                    path: 'page/' + path,
-                    component: PageComponent
-                };
-                const index = this.router.config.findIndex(r => r.path === '**');
+            if (oldpath) {
+                const index = this.router.config.findIndex(r => r.path === 'page/' + oldpath);
                 if (index >= 0) {
-                    this.router.config.splice(index, 0, route);
-                } else {
-                    this.router.config.push(route);
+                    const route: Route = {
+                        path: 'page/' + path,
+                        component: PageComponent
+                    };
+                    this.router.config.splice(index, 1, route);
+                }
+            } else {
+                if (this.router.config.findIndex(r => r.path === 'page/' + path) < 0) {
+                    const route: Route = {
+                        path: 'page/' + path,
+                        component: PageComponent
+                    };
+                    const index = this.router.config.findIndex(r => r.path === '**');
+                    if (index >= 0) {
+                        this.router.config.splice(index, 0, route);
+                    } else {
+                        this.router.config.push(route);
+                    }
                 }
             }
         }

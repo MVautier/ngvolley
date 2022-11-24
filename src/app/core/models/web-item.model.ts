@@ -1,5 +1,6 @@
 export class WebItem {
     id?: number;
+    oldpath?: string;
     IdItem: number;
     Title: string;
     Content?: string;

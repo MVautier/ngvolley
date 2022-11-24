@@ -20,7 +20,6 @@ export class MainMenuComponent implements OnInit {
   logged: boolean;
   showMobileMenu = false;
   modalRef: BsModalRef;
-  page: string;
   tree: Tree;
   pages: WebItem[];
   isDarkTheme: Observable<boolean>;
@@ -45,9 +44,6 @@ export class MainMenuComponent implements OnInit {
         this.tree = tree;
         this.initPages();
       }, 'subTreeHeader');
-      this.routeService.subscribePage(page => {
-        this.page = page?.Slug;
-      }, 'subPageHeader');
   }
 
   toggleDarkTheme(checked: boolean) {
@@ -83,6 +79,10 @@ export class MainMenuComponent implements OnInit {
 
   goToPage(page: string) {
     this.router.navigate(['page/' + page]);
+    const item = this.pages.find(p => p.Slug === page) 
+    if (item) {
+      this.routeService.setCurrentPage(item);
+    }
   }
 
   showModalLogin() {

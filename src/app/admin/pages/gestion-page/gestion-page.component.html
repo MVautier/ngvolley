@@ -12,20 +12,19 @@
             <button mat-icon-button (click)="add()" title="Ajouter une page">
                 <mat-icon>note_add</mat-icon>
             </button>
+            <button mat-icon-button [disabled]="!inTrash.length" (click)="empty()" title="Mettre à la corbeille">
+                <mat-icon class="big-trash">delete</mat-icon>
+                <span class="big-trash icon-text down">{{ inTrash.length > 0 ? inTrash.length : '' }}</span>
+            </button>
         </h1>
     </div>
 
-    <div class="header">
+    <div class="header header-list">
         <div class="col">Titre</div>
         <div class="col">Auteur</div>
         <div class="col">Date de création</div>
         <div class="col">Commentaires</div>
-        <div class="col">
-            <button mat-icon-button [disabled]="!inTrash.length" (click)="empty()" title="Mettre à la corbeille">
-                <mat-icon class="big-trash">delete</mat-icon>
-                <span class="icon-text down">{{ inTrash.length > 0 ? inTrash.length : '' }}</span>
-            </button>
-        </div>
+        <div class="col">Actions</div>
     </div>
 
     <mat-grid-list #grid  [cols]="1" rowHeight="120px" [gutterSize]="'10px'" cdkDropList (cdkDropListDropped)="drop($event)">
