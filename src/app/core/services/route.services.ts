@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Route, Router } from '@angular/router';
 import { User } from '@app/authentication/models/user.model';
-import { PageComponent } from '@app/page/components/page/page.component';
+import { PageComponent } from '@app/ui/layout/components/page/page.component';
 import { environment } from '@env/environment';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Tree } from '../models/tree.model';
 import { WebItem } from '../models/web-item.model';
+import { AdminService } from './admin.service';
 import { ApiPingService } from './api-ping.service';
 import { HttpDataService } from './http-data.service';
 
 @Injectable()
 export class RouteService {
     private obsTree: BehaviorSubject<Tree> = new BehaviorSubject<Tree>(null);
-    private obsPage: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
+    public obsPage: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
     private dicoSubscriptions: Subscription[] = [];
     currentIp: string;
+    staticRoutes = ['home', 'inscription', 'admin'];
 
     constructor(
-        private http: HttpDataService<any>, 
+        private adminService: AdminService, 
         private pingService: ApiPingService,
         private router: Router) {
             console.log('================ route constructor');
@@ -177,7 +179,7 @@ export class RouteService {
     }
 
     start() {
-        this.initTree().then(tree => {
+        this.adminService.getTree().then(tree => {
             this.configureRouter(tree);
             console.log('ROUTER CONFIG = ', this.router.config) // A laisser
             this.setCurrentConfig(tree);
@@ -187,49 +189,46 @@ export class RouteService {
         });
     }
 
-    initTree(): Promise<Tree> {
-        return new Promise((resolve, reject) => {
-            try {
-                this.http.get(environment.apiUrl + 'tree').then((tree: Tree) => {
-                    resolve(tree);
-                }).catch(err => {
-                    reject(err);
-                });
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-
     setStartingRoute() {
         let path = document.location.pathname;
-        if (path.startsWith('/page/')) {
-            path = path.substring(6);
-        }
         if (path.startsWith('/')) {
             path = path.substring(1);
+        }
+        const item = this.findPageInConfig(path);
+        if (item) {
+            this.setCurrentPage(item);
         }
     }
 
     findPageInConfig(url: string): WebItem {
-        if (url.startsWith('/')) {
-            url = url.substring(1);
-        }
-        const route = this.router.config[0].children.find(p => p.path === url);
+        // if (url.startsWith('/')) {
+        //     url = url.substring(1);
+        // }
+        //
+        const routes = this.router.config[0].children.filter(r => !this.staticRoutes.includes(r.path));
+        const route = routes.find(p => p.path === url);
         if (route) {
-            return {
-                IdItem: 0,
-                Title: route.title.toString(),
-                Slug: route.path,
-                Type: 'page',
-                Public: true
-            };
+            return this.obsTree.value.pages.find(p => p.Slug === url);
+            // return {
+            //     IdItem: 0,
+            //     Title: route.title.toString(),
+            //     Slug: route.path,
+            //     Type: 'page',
+            //     Public: true
+            // };
         } else if (url.includes('admin')) {
             return {
                 IdItem: 0,
                 Title: 'Administration',
                 Slug: 'admin',
+                Type: 'page',
+                Public: true
+            };
+        } else if (url.includes('inscription')) {
+            return {
+                IdItem: 0,
+                Title: 'Inscription',
+                Slug: 'inscription',
                 Type: 'page',
                 Public: true
             };
@@ -245,7 +244,8 @@ export class RouteService {
 
     private configureRouter(tree: Tree) {
         if (tree.pages && tree.pages.length) {
-            this.router.config = this.router.config.filter(r => !r.path.startsWith('page/'));
+            let routes = this.router.config[0].children;
+            routes = routes.filter(r => !this.staticRoutes.includes(r.path));
             let i = 1;
             tree.pages.forEach(p => {
                 p.id = i;
@@ -256,27 +256,28 @@ export class RouteService {
     }
 
     private addPath(path: string, oldpath?: string) {
-        if (path) {
+        const routes = this.router.config[0].children;
+        if (path && routes && routes.length) {
             if (oldpath) {
-                const index = this.router.config.findIndex(r => r.path === 'page/' + oldpath);
+                const index = routes.findIndex(r => r.path === oldpath);
                 if (index >= 0) {
                     const route: Route = {
-                        path: 'page/' + path,
+                        path: path,
                         component: PageComponent
                     };
-                    this.router.config.splice(index, 1, route);
+                    routes.splice(index, 1, route);
                 }
             } else {
-                if (this.router.config.findIndex(r => r.path === 'page/' + path) < 0) {
+                if (routes.findIndex(r => r.path === path) < 0) {
                     const route: Route = {
-                        path: 'page/' + path,
+                        path: path,
                         component: PageComponent
                     };
-                    const index = this.router.config.findIndex(r => r.path === '**');
+                    const index = routes.findIndex(r => r.path === '**');
                     if (index >= 0) {
-                        this.router.config.splice(index, 0, route);
+                        routes.splice(index, 0, route);
                     } else {
-                        this.router.config.push(route);
+                        routes.push(route);
                     }
                 }
             }

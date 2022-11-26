@@ -17,6 +17,9 @@ import { ItemEditComponent } from './components/item-edit/item-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormService } from './services/form.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { WysiswygService } from './services/wysiswyg.service';
+import { BuilderEditorModule } from 'projects/editor/src/lib/builder-editor.module';
+import { UtilService } from './services/util.service';
 
 @NgModule({
   declarations: [
@@ -36,13 +39,16 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     ReactiveFormsModule,
     MaterialThemeModule,
     DragDropModule,
+    BuilderEditorModule,
     ClickOutsideModule,
     AdminRoutingModule
   ],
   providers: [
     IsLoggedGuard,
     LayoutService,
-    FormService
+    FormService,
+    WysiswygService,
+    UtilService
   ]
 })
 export class AdminModule { }

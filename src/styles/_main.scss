@@ -56,7 +56,27 @@
         border: 1px solid mat.get-color-from-palette($primary-palette, 500);
       }
     }
-    
+  }
+  .angular-editor-wrapper{
+    background: #fff;
+    min-height: 400px;
+    border: 1px solid mat.get-color-from-palette($primary-palette, 500) !important;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 5px;
+    iframe {
+      #ngEditor {
+        font-family: 'Roboto', sans-serif;
+      }
+    }
+  }
+  .angular-editor-toolbar {
+    background: mat.get-color-from-palette($primary-palette, A100) !important;
+    border-color: mat.get-color-from-palette($primary-palette, 500) !important;
+    padding: 11px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: none !important;
   }
 }
 
@@ -87,10 +107,6 @@ body {
   flex: 1 1 auto;
 }
 
-.mat-nav-list .mat-list-item {
-  font-size: 15px;
-}
-
 .nav-tool-items {
   display: inline-block;
   margin-right: 13px;
@@ -114,15 +130,39 @@ body {
 .top-container {
   height: 50px;
   line-height: 50px;
-  cursor: pointer;
   padding: 0 40px;
 }
-
+section {
+  display: table;
+  &.top {
+      width: 100%;
+      .back {
+        display: table-cell;
+        cursor: pointer;
+        width: 150px;
+      }
+      .buttons {
+        display: table-cell;
+        text-align: right;
+        width: 100%;
+        button {
+            margin: 8px 8px 8px 0;
+        }
+      }
+  }
+}
 .mat-sidenav {
   background-color: #F2F2F2;
   width: 250px;
 }
-
+.drag-in-list{
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+}
+.card-description {
+    position: absolute;
+}
 .header {
   position: sticky;
   position: -webkit-sticky;
@@ -272,10 +312,6 @@ mat-grid-tile {
 
   .mat-sidenav {
     width: 230px;
-  }
-
-  .mat-nav-list .mat-list-item {
-    font-size: 14px;
   }
 }
 

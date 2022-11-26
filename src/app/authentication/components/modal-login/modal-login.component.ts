@@ -20,10 +20,6 @@ export class ModalLoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClickOutsideForm($event: any) {
-
-  }
-
   public onClickOnConnection(): void {
     this.authError = !this.checkEmail();
     this.authService.Login({
@@ -39,6 +35,10 @@ export class ModalLoginComponent implements OnInit {
 
   public onClickOnPasswordForgotten() {
 
+  }
+
+  onCancel() {
+    this.cancelEvent.emit();
   }
 
   public checkEmail(): boolean {

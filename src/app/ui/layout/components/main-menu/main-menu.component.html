@@ -17,13 +17,15 @@
   <a mat-list-item (click)="goTo('inscription')">
     <mat-icon>app_registration</mat-icon> Inscription
   </a>
-  <a mat-list-item *ngIf="logged" (click)="goTo('admin')">
-    <mat-icon>settings</mat-icon> Admin
-  </a>
-  <a mat-list-item *ngIf="!logged" (click)="goTo('login')">
-    <mat-icon>login</mat-icon> Connexion
-  </a>
-  <a mat-list-item *ngIf="logged" (click)="goTo('logout')">
-    <mat-icon>logout</mat-icon> Déconnexion
-  </a>
+  <div class="tools">
+    <a mat-list-item *ngIf="logged" (click)="goTo('admin')">
+      <mat-icon>settings</mat-icon> Admin
+    </a>
+    <a mat-list-item *ngIf="!logged" (click)="goTo('login')">
+      <mat-icon>login</mat-icon> Connexion
+    </a>
+    <a mat-list-item *ngIf="logged" (click)="goTo('logout')">
+      <mat-icon>logout</mat-icon> Déconnexion
+    </a>
+  </div>
 </mat-nav-list>

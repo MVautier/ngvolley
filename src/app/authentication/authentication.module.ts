@@ -8,6 +8,7 @@ import { CookieService } from './services/cookie.service';
 import { LoginService } from './services/login.service';
 import { ModalLoginComponent } from './components/modal-login/modal-login.component';
 import { FormsModule } from '@angular/forms';
+import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
+    MaterialThemeModule,
     HttpClientModule
   ],
   exports: [

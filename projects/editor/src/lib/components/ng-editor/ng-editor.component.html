@@ -1,0 +1,99 @@
+<div class="angular-editor" #angularEditor [style.width]="config.width" [style.minWidth]="config.minWidth">
+     <ng-editor-toolbar #toolbar *ngIf="config.toolbarPosition === 'top'"
+          [id]="id"
+          [document]="doc"
+          [uploadUrl]="config.uploadUrl"
+          [showToolbar]="config.showToolbar !== undefined ? config.showToolbar : true"
+          [showHistory]="config.enableHistory"
+          [showColorInputText]="config.showColorInputText"
+          [fonts]="fonts"
+          [customClasses]="config.customClasses"
+          [defaultFontName]="config.defaultFontName"
+          [defaultFontSize]="config.defaultFontSize"
+          [hiddenButtons]="config.toolbarHiddenButtons"
+          [customButtons]="config.customButtons"
+          [customSelects]="config.customSelects"
+          (execute)="executeCommand($event)"
+     >
+       <ng-container
+         [ngTemplateOutlet]="customButtonsTemplateRef"
+         [ngTemplateOutletContext]="{ executeCommandFn: this.executeCommandFn}"
+       >
+       </ng-container>
+     </ng-editor-toolbar>
+
+     <!-- <div *ngIf="tablePosition" class="angular-editor-table-utility" [style.top]="tablePosition.top + 'px'" [style.left]="tablePosition.left + 'px'">
+          <div class="angular-editor-toolbar-set">
+               <button type="button" title="Supprimer le tableau" class="angular-editor-button" (click)="triggerTableCommand('remove-table')">
+                    <i class="fa fa-remove"></i>
+               </button>
+          </div>
+          <div class="angular-editor-toolbar-set">
+               <button type="button" title="Insérer une ligne avant" class="angular-editor-button" (click)="triggerTableCommand('insert-row-before')">
+                    <i class="fa fa-caret-square-o-up"></i>
+               </button>
+               <button type="button" title="Insérer une ligne après" class="angular-editor-button" (click)="triggerTableCommand('insert-row-after')">
+                    <i class="fa fa-caret-square-o-down"></i>
+               </button>
+               <button type="button" title="Supprimer la ligne" class="angular-editor-button" (click)="triggerTableCommand('remove-row')">
+                    <i class="fa fa-remove"></i>
+               </button>
+          </div>
+          <div class="angular-editor-toolbar-set">
+               <button type="button" title="Insérer une colonne avant" class="angular-editor-button" (click)="triggerTableCommand('insert-col-before')">
+                    <i class="fa fa-caret-square-o-left"></i>
+               </button>
+               <button type="button" title="Insérer colonne après" class="angular-editor-button" (click)="triggerTableCommand('insert-col-after')">
+                    <i class="fa fa-caret-square-o-right"></i>
+               </button>
+               <button type="button" title="Supprimer la colonne" class="angular-editor-button" (click)="triggerTableCommand('remove-col')">
+                    <i class="fa fa-remove"></i>
+               </button>
+          </div>
+         
+     </div> -->
+
+     <div class="angular-editor-wrapper"  #editorWrapper>
+          <iframe #ifrm id="ifrm" frameborder="0" width="100%"></iframe>
+          <!-- <div
+               #editor
+               id="ngEditor2"
+               class="angular-editor-textarea"
+               [attr.contenteditable]="config.editable"
+               [attr.tabindex]="disabled ? -1 : tabIndex"
+               [attr.translate]="config.translate"
+               [attr.spellcheck]="config.spellcheck"
+               [style.height]="config.height"
+               [style.minHeight]="config.minHeight"
+               [style.maxHeight]="config.maxHeight"
+               [style.outline]="config.outline === false ? 'none': undefined"
+               (input)="onContentChanged($event)"
+               (focus)="onTextAreaFocus($event)"
+               (blur)="onTextAreaBlur($event)"
+               (click)="onClick($event)"
+               (dblclick)="onDblClick($event)"
+               (keyup)="onKeyUp($event)"
+               (mouseleave)="onTextAreaMouseOut($event)"
+               (paste)="onPaste($event)"
+          ></div> 
+          <span class="angular-editor-placeholder">{{ placeholder || config['placeholder'] }}</span> -->
+    
+     </div>
+
+     <ng-editor-toolbar #toolbar *ngIf="config.toolbarPosition === 'bottom'"
+          [id]="id"
+          [document]="doc"
+          [uploadUrl]="config.uploadUrl"
+          [showToolbar]="config.showToolbar !== undefined ? config.showToolbar : true"
+          [showHistory]="config.enableHistory"
+          [showColorInputText]="config.showColorInputText"
+          [fonts]="fonts"
+          [customClasses]="config.customClasses"
+          [defaultFontName]="config.defaultFontName"
+          [defaultFontSize]="config.defaultFontSize"
+          [hiddenButtons]="config.toolbarHiddenButtons"
+          [customButtons]="config.customButtons"
+          [customSelects]="config.customSelects"
+          (execute)="executeCommand($event)"
+     ></ng-editor-toolbar>
+</div>

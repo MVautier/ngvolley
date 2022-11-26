@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImageRequest } from '@app/admin/models/image-request.model';
 import { FormService } from '@app/admin/services/form.service';
+import { WysiswygService } from '@app/admin/services/wysiswyg.service';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
+import { AdminService } from '@app/core/services/admin.service';
 import { RouteService } from '@app/core/services/route.services';
+import { AngularEditorConfig, FocusedItem } from 'projects/editor/src/public-api';
 
 @Component({
   selector: 'app-item-edit',
@@ -16,7 +20,9 @@ export class ItemEditComponent implements OnInit {
   slug: string;
   id: number;
   title: string;
+  content: string;
   item: WebItem;
+  saved: WebItem;
   items: WebItem[];
   formGroup: FormGroup;
   backTitle: string;
@@ -27,12 +33,16 @@ export class ItemEditComponent implements OnInit {
     slug: '',
     description: ''
   };
+  initialValues: any;
+  wysiswygConfig: AngularEditorConfig;
 
   constructor(
     private formBuilder: FormBuilder,
     private routeService: RouteService,
     private router: Router,
+    private adminService: AdminService,
     private formService: FormService,
+    private editor: WysiswygService,
     private route: ActivatedRoute
     ) { 
       console.log('edit constructor');
@@ -59,13 +69,21 @@ export class ItemEditComponent implements OnInit {
       this.item = this.items.find(p => p.id === this.id);
       console.log('editing page: ', this.item);
       if (this.item) {
-        this.title = this.item.Title;
-        this.slug = this.item.Slug;
+        this.saved = WebItem.copyItem(this.item);
+        this.bindValues();
         this.createForm();
+        this.initWysiswyg();
+        this.initialValues = this.formGroup.value;
         this.formService.markFormGroupTouched(this.formGroup);
         this.formErrors = this.formService.validateForm(this.formGroup, this.formErrors);
       }
     }
+  }
+
+  bindValues() {
+    this.title = this.item.Title;
+    this.slug = this.item.Slug;
+    this.content = this.item.Content;
   }
 
   createForm() {
@@ -73,11 +91,8 @@ export class ItemEditComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       'title': [this.item.Title, [Validators.required, this.formService.checkExists.bind(this, this.items, this.item, 'Title', true)]],
       'slug': [this.item.Slug, [Validators.required, this.formService.checkExists.bind(this, this.items, this.item, 'Slug', true)]],
-      'description': [this.item.Description, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
-      'content': [this.item.Content, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]]
-      // 'email': [null, [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
-      // 'password': [null, [Validators.required, this.checkPassword]],
-      // 'validate': ''
+      'description': [this.item.Description, [Validators.minLength(0), Validators.maxLength(100)]],
+      //'content': [this.item.Content]
     });
   }
 
@@ -112,20 +127,34 @@ export class ItemEditComponent implements OnInit {
         this.formGroup.get('description').hasError('alreadyInUse') ? 'This emailaddress is already in use' : '';
   }
 
-  onSubmit(post) {
+  onContentChange() {
+    console.log(this.formGroup.get('content').value);
+  }
+
+  onSubmit(post: any) {
     this.post = post;
     console.log('form submitted: ', post);
+    console.log('content: ', this.content);
     this.item.oldpath = this.item.Slug !== post.slug ? this.item.Slug : null;
     this.item.Title = post.title;
     this.item.Slug = post.slug;
     this.item.Description = post.description;
-    this.item.Content = post.content;
+    this.item.Content = this.content;
     this.item.Modified = new Date();
     this.routeService.addOrUpdateInTree(this.item);
+    this.adminService.addOrUpdateItem(this.item).then(item => {
+      console.log('success during saving item', item);
+      this.goBack();
+
+    }).catch(err => {
+      console.log('error during saving item', err);
+    });
   }
 
-  updateItem(post: any) {
-
+  cancel() {
+    if (this.formGroup && this.initialValues) {
+      this.formGroup.reset(this.initialValues);
+    }
   }
 
   goBack() {
@@ -133,15 +162,59 @@ export class ItemEditComponent implements OnInit {
     
   }
 
-  // onKeyUp(event: any) {
-  //   console.log('keyup on editable: ', event);
-  //   const item = event.target;
-  //   if (item) {
-  //     event.stopImmediatePropagation();
-  //     this.page.Title = item.innerText;
-      
-  //   }
-    
-  // }
+  initWysiswyg() {
+    this.wysiswygConfig = this.editor.init(() => {
+        this.openGallery({
+          index: null,
+          origin: null,
+          src: null,
+          mode: 'add'
+        });
+      });
+  }
+
+  openGallery(request: ImageRequest) {
+    //this.editor.openGallery(trequest);
+  }
+
+  onWysiswygFocus(item: FocusedItem) {
+    // this.currentFocusElement = 'wysiswyg';
+    // if (item.range && this.currentRange !== item.range) {
+    //   this.focusItem = item;
+    //   this.currentHtmlItem = item.element;
+    //   this.currentRange = item.range;
+    //   this.builderExpert.revealInEditor(this.currentHtmlItem);
+    //   const iframe = (document.querySelector('#ifrm') as HTMLIFrameElement);
+    //   if (iframe) {
+    //     (iframe.contentDocument.querySelector('#ngEditor') as HTMLDivElement).focus();
+    //   }
+    //   // if (iframe && this.currentRange) {
+    //   //   const sel = iframe.contentDocument.getSelection(); // window.getSelection();
+    //   //   sel.removeAllRanges();
+    //   //   sel.addRange(this.currentRange);
+    //   // }
+    // }
+  }
+
+  onWysiswygBlur(el: FocusEvent) {
+    console.log("Blurred", el);
+    //this.currentFocusElement = null;
+  }
+
+  onWysiswygChange(html: string) {
+    // if (this.oldHtml !== html) {
+    //   this.builderExpert.updateByWysiswyg(this.oldHtml, html);
+    //   this.oldHtml = html;
+    //   this.html = html;
+    //   this.htmlChanged.emit(this.html);
+    // }
+  }
+
+  onImageRemoved(value: string) {
+    // if (value === 'removed') {
+    //   this.domService.removeResizeFrame();
+    //   this.builderExpert.removeImage();
+    // }
+  }
 
 }

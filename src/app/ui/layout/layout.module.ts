@@ -14,6 +14,8 @@ import { TileComponent } from './components/tile/tile.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialThemeModule } from "@app/material-theme/material-theme.module";
 import { CenterComponent } from './components/center/center.component';
+import { PageComponent } from "@app/ui/layout/components/page/page.component";
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
 
@@ -23,7 +25,9 @@ import { CenterComponent } from './components/center/center.component';
     MainMenuComponent,
     TileComponent,
     ToolbarComponent,
-    CenterComponent
+    CenterComponent,
+    PageComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +43,8 @@ import { CenterComponent } from './components/center/center.component';
   ],
   exports: [
     TileComponent,
-    MaterialThemeModule
+    MaterialThemeModule,
+    ModalComponent
   ]
 })
 export class LayoutModule {

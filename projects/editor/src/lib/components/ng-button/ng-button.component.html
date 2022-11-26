@@ -1,0 +1,4 @@
+<button type="button" [title]="title" class="angular-editor-button" (click)="buttonClick.emit()" tabindex="-1">
+    <i *ngIf="iconClass" [class]="iconClass"></i>
+    <span *ngIf="text">{{ text }}</span>
+</button>

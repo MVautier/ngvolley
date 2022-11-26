@@ -1,19 +1,26 @@
 <div class="page-card" *ngIf="item">
     <div class="row">
         <div class="col">
-            <p class="label">
-                <span class="name">{{item.Title}} ({{item.Slug}})</span><br>
-                {{item.Resume}}
-            </p>
+            <div class="label">
+                <p class="name">{{item.Title}} ({{item.Slug}})</p>
+                <p class="card-description">{{item.Description}}</p>
+            </div>
         </div>
         <div class="col">
             <p class="file-name">
                 {{item.Author}}
             </p>
         </div>
-        <div class="col">
+        <div class="col date">
             <p class="label">
-                {{item.Date | date:'dd/MM/yyyy à HH:mm'}}
+                {{item.Date | date:'dd/MM/yyyy'}}<br>
+                {{item.Date | date:'HH:mm'}}
+            </p>
+        </div>
+        <div class="col date">
+            <p class="label">
+                {{item.Modified | date:'dd/MM/yyyy'}}<br>
+                {{item.Modified | date:'HH:mm'}}
             </p>
         </div>
         <div class="item-card-buttons">
