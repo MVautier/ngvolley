@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 
 @mixin tile-theme($theme) {
     $accent: map-get($theme, accent);

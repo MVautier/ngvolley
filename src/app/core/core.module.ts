@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { HrefToRouterLinkDirective } from './directives/href-to-routerlink.directive';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { AdminService } from './services/admin.service';
 import { ApiPingService } from './services/api-ping.service';
@@ -10,14 +11,16 @@ import { WindowStateService } from './services/window-state.service';
 
 @NgModule({
     declarations: [
-      SafeHtmlPipe
+      SafeHtmlPipe,
+      HrefToRouterLinkDirective
     ],
     imports: [
       CommonModule
     ],
     providers: [],
     exports: [
-        SafeHtmlPipe
+        SafeHtmlPipe,
+        HrefToRouterLinkDirective
     ]
   })
   export class CoreModule { 
@@ -30,7 +33,9 @@ import { WindowStateService } from './services/window-state.service';
           HttpDataService,
           ApiPingService,
           RouteService,
-          AdminService
+          AdminService,
+          SafeHtmlPipe,
+          HrefToRouterLinkDirective
         ]
       };
     }

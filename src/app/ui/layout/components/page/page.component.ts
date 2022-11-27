@@ -19,7 +19,7 @@ export class PageComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    console.log('===================== init page');
+    //console.log('===================== init page');
     this.subPage = this.routeService.obsPage.subscribe(page => {
       this.page = page;
       this.initData();
@@ -27,7 +27,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('===================== destroy page');
+    //console.log('===================== destroy page');
     if (this.subPage) {
       this.subPage.unsubscribe();
     }
@@ -38,12 +38,12 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this.page) {
       document.title = this.page.Title;
       const slug = this.page.Slug;
-      console.log('configured page for ', slug, ': ', this.page);
+      //console.log('configured page for ', slug, ': ', this.page);
       const posts = tree.posts.filter(post => post.IdPages && post.IdPages.includes(this.page.IdItem));
       if (posts && posts.length) {
-        console.log('configured posts for ', slug, ': ', posts);
+        //console.log('configured posts for ', slug, ': ', posts);
       } else {
-        console.log('no configured posts for ' + slug);
+        //console.log('no configured posts for ' + slug);
       }
     } else {
       const page = this.route.snapshot.paramMap.get('page');

@@ -16,6 +16,8 @@ import { MaterialThemeModule } from "@app/material-theme/material-theme.module";
 import { CenterComponent } from './components/center/center.component';
 import { PageComponent } from "@app/ui/layout/components/page/page.component";
 import { ModalComponent } from './components/modal/modal.component';
+import { SafeHtmlPipe } from "@app/core/pipes/safe-html.pipe";
+import { CoreModule } from "@app/core/core.module";
 
 @NgModule({
 
@@ -33,6 +35,7 @@ import { ModalComponent } from './components/modal/modal.component';
     CommonModule,
     FormsModule,
     MaterialThemeModule,
+    CoreModule,
     RouterModule,
     FontAwesomeModule,
     ModalModule.forRoot(),

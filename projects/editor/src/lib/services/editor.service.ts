@@ -482,7 +482,7 @@ export class EditorService {
   public saveSelection = (): void => {
     if (this.document.getSelection) {
       const sel = this.document.getSelection();
-      if (sel.getRangeAt && sel.rangeCount) {
+      if (sel && sel.getRangeAt && sel.rangeCount) {
         const range = sel.getRangeAt(0) as Range;
         if (this.isRangeValid(range)) {
           this.savedSelection = range;

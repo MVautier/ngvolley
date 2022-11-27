@@ -1,5 +1,5 @@
 @use './main' as main;
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 @include mat-core();
 
 

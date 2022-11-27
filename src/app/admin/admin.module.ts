@@ -20,6 +20,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WysiswygService } from './services/wysiswyg.service';
 import { BuilderEditorModule } from 'projects/editor/src/lib/builder-editor.module';
 import { UtilService } from './services/util.service';
+import { CoreModule } from '@app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { UtilService } from './services/util.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CoreModule,
     MaterialThemeModule,
     DragDropModule,
     BuilderEditorModule,

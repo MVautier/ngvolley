@@ -1,61 +1,117 @@
-<section class="top">
-    <div class="top-container">
-        <div class="back" (click)="goBack()">
-            <button mat-icon-button>
-                <mat-icon>chevron_left</mat-icon>
-                {{ backTitle }}
-            </button>
-        </div>
-        
-        <div class="buttons">
-            <button type="button" mat-raised-button color="primary" (click)="onSubmit(formGroup.value)">Valider</button>
-            <button type="button" mat-raised-button (click)="cancel()">Annuler</button>
-        </div>
-    </div>
-</section>
 
-<div class="center-container" *ngIf="item && formGroup" novalidate>
-    <form [formGroup]="formGroup" class="form">
-        <section>
-            <mat-form-field class="form-element">
-                <input matInput placeholder="Titre" formControlName="title">
-                <mat-error *ngIf="!formGroup.controls['title'].valid && formGroup.controls['title'].touched">
-                  <!-- {{ getErrorTitle() }} -->
-                  {{ getErrorTitle() }}
-                </mat-error>
-            </mat-form-field>
-    
-            <mat-form-field class="form-element">
-                <input matInput placeholder="Url" formControlName="slug">
-                <mat-error *ngIf="!formGroup.controls['slug'].valid && formGroup.controls['slug'].touched">
-                  {{ getErrorSlug() }}
-                </mat-error>
-            </mat-form-field>
-    
-            <mat-form-field class="form-element">
-                <input matInput placeholder="Description" formControlName="description">
-                <mat-error *ngIf="!formGroup.controls['description'].valid && formGroup.controls['description'].touched">
-                  {{ getErrorSlug() }}
-                </mat-error>
-            </mat-form-field>
-        </section>
-
-        <ng-editor *ngIf="wysiswygConfig"
-          [config]="wysiswygConfig"
-          [(ngModel)]="content"
-          [ngModelOptions]="{standalone: true}"
-          (focus)="onWysiswygFocus($event)"
-          (blur)="onWysiswygBlur($event)"
-          (imageRemoved)="onImageRemoved($event)"
-          (ngModelChange)="onWysiswygChange($event)">
-        </ng-editor>
-
-        <!-- <section>
-            <div class="button-row">
-                <button type="submit" mat-raised-button color="primary">Valider</button>
+<div class="split-vertical">
+    <div class="left" [ngClass]="{'right-opened': rightOpened}">
+        <section class="top">
+            <div class="back" (click)="goBack()">
+                <button mat-icon-button>
+                    <mat-icon>chevron_left</mat-icon>
+                    {{ backTitle }}
+                </button>
+            </div>
+                
+            <div class="buttons">
+                <button type="button" mat-raised-button color="primary" (click)="onSubmit(formGroup.value)">Valider</button>
                 <button type="button" mat-raised-button (click)="cancel()">Annuler</button>
             </div>
-        </section> -->
+        </section>
+        <section class="form" *ngIf="formGroup">
+            <form [formGroup]="formGroup" class="form">
+                <section class="fields">
+                    <mat-form-field class="form-element">
+                        <input matInput placeholder="Titre" formControlName="title">
+                        <mat-error *ngIf="!formGroup.controls['title'].valid && formGroup.controls['title'].touched">
+                          {{ getErrorTitle() }}
+                        </mat-error>
+                    </mat-form-field>
+            
+                    <mat-form-field class="form-element">
+                        <input matInput placeholder="Url" formControlName="slug">
+                        <mat-error *ngIf="!formGroup.controls['slug'].valid && formGroup.controls['slug'].touched">
+                          {{ getErrorSlug() }}
+                        </mat-error>
+                    </mat-form-field>
+            
+                    <mat-form-field class="form-element">
+                        <input matInput placeholder="Description" formControlName="description">
+                        <mat-error *ngIf="!formGroup.controls['description'].valid && formGroup.controls['description'].touched">
+                          {{ getErrorSlug() }}
+                        </mat-error>
+                    </mat-form-field>
+                </section>
         
-    </form>
+                <ng-editor *ngIf="wysiswygConfig"
+                  [config]="wysiswygConfig"
+                  [(ngModel)]="content"
+                  [ngModelOptions]="{standalone: true}"
+                  (focus)="onWysiswygFocus($event)"
+                  (blur)="onWysiswygBlur($event)"
+                  (imageRemoved)="onImageRemoved($event)"
+                  (ngModelChange)="onWysiswygChange($event)">
+                </ng-editor>
+            </form>
+        </section>
+    </div>
+    <div class="right" [ngClass]="{'opened': rightOpened}">
+        <mat-icon *ngIf="rightOpened" class="toggle-right" (click)="toggleRight()">chevron_right</mat-icon>
+        <mat-icon *ngIf="!rightOpened" class="toggle-right" (click)="toggleRight()">chevron_left</mat-icon>
+        <div *ngIf="rightOpened" class="actions">
+            <mat-label>Outils</mat-label>
+        </div>
+    </div>
 </div>
+<!-- 
+<section class="center-container">
+    <div class="back" (click)="goBack()">
+        <button mat-icon-button>
+            <mat-icon>chevron_left</mat-icon>
+            {{ backTitle }}
+        </button>
+    </div>
+        
+    <div class="buttons">
+        <button type="button" mat-raised-button color="primary" (click)="onSubmit(formGroup.value)">Valider</button>
+        <button type="button" mat-raised-button (click)="cancel()">Annuler</button>
+    </div>
+
+        <div class="center-container" *ngIf="item && formGroup" novalidate>
+            <div class="form">
+                <form [formGroup]="formGroup" class="form">
+                    <section>
+                        <mat-form-field class="form-element">
+                            <input matInput placeholder="Titre" formControlName="title">
+                            <mat-error *ngIf="!formGroup.controls['title'].valid && formGroup.controls['title'].touched">
+                              {{ getErrorTitle() }}
+                            </mat-error>
+                        </mat-form-field>
+                
+                        <mat-form-field class="form-element">
+                            <input matInput placeholder="Url" formControlName="slug">
+                            <mat-error *ngIf="!formGroup.controls['slug'].valid && formGroup.controls['slug'].touched">
+                              {{ getErrorSlug() }}
+                            </mat-error>
+                        </mat-form-field>
+                
+                        <mat-form-field class="form-element">
+                            <input matInput placeholder="Description" formControlName="description">
+                            <mat-error *ngIf="!formGroup.controls['description'].valid && formGroup.controls['description'].touched">
+                              {{ getErrorSlug() }}
+                            </mat-error>
+                        </mat-form-field>
+                    </section>
+            
+                    <ng-editor *ngIf="wysiswygConfig"
+                      [config]="wysiswygConfig"
+                      [(ngModel)]="content"
+                      [ngModelOptions]="{standalone: true}"
+                      (focus)="onWysiswygFocus($event)"
+                      (blur)="onWysiswygBlur($event)"
+                      (imageRemoved)="onImageRemoved($event)"
+                      (ngModelChange)="onWysiswygChange($event)">
+                    </ng-editor>
+                </form>
+                <mat-nav-list class="side-right">
+                    <mat-label>Outils</mat-label>
+                </mat-nav-list>
+            </div>
+        </div>
+</section> -->

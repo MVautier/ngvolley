@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Route, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Route, Router } from '@angular/router';
 import { User } from '@app/authentication/models/user.model';
 import { PageComponent } from '@app/ui/layout/components/page/page.component';
 import { environment } from '@env/environment';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, Subscription } from 'rxjs';
+import { HrefToRouterLinkDirective } from '../directives/href-to-routerlink.directive';
 import { Tree } from '../models/tree.model';
 import { WebItem } from '../models/web-item.model';
 import { AdminService } from './admin.service';
@@ -21,10 +22,30 @@ export class RouteService {
     constructor(
         private adminService: AdminService, 
         private pingService: ApiPingService,
+        private routerLink: HrefToRouterLinkDirective,
         private router: Router) {
             console.log('================ route constructor');
             this.pingService.getIPAddress().then(ip => {
                 this.currentIp = ip;
+            });
+            this.start().then(() => {
+                this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
+                    console.log('navigated to route: ', event.url);
+                    const item = this.findPageInConfig(event.url); 
+                    if (item) {
+                        this.routerLink.ngOnDestroy();
+                        this.routerLink.ngOnInit();
+                        this.setCurrentPage(item);
+                    }
+                });
+                // this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+                //     console.log('navigated to route: ', event.url);
+                //     const item = this.findPageInConfig(event.url); 
+                //     if (item) {
+                //         this.routerLink.ngOnDestroy();
+                //         this.setCurrentPage(item);
+                //     }
+                // });
             });
     }
 
@@ -178,8 +199,8 @@ export class RouteService {
         }
     }
 
-    start() {
-        this.adminService.getTree().then(tree => {
+    start(): Promise<void> {
+        return this.adminService.getTree().then(tree => {
             this.configureRouter(tree);
             console.log('ROUTER CONFIG = ', this.router.config) // A laisser
             this.setCurrentConfig(tree);
@@ -201,21 +222,13 @@ export class RouteService {
     }
 
     findPageInConfig(url: string): WebItem {
-        // if (url.startsWith('/')) {
-        //     url = url.substring(1);
-        // }
-        //
+        if (url.startsWith('/')) {
+            url = url.substring(1);
+        }
         const routes = this.router.config[0].children.filter(r => !this.staticRoutes.includes(r.path));
         const route = routes.find(p => p.path === url);
         if (route) {
             return this.obsTree.value.pages.find(p => p.Slug === url);
-            // return {
-            //     IdItem: 0,
-            //     Title: route.title.toString(),
-            //     Slug: route.path,
-            //     Type: 'page',
-            //     Public: true
-            // };
         } else if (url.includes('admin')) {
             return {
                 IdItem: 0,

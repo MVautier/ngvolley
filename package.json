@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl --ssl-key src/ssl/localhost.key  --ssl-cert src/ssl/localhost.crt",
     "build": "ng build",
+    "build-dev": "ng build --watch --deploy-url /colomiers-volley/ --base-href /colomiers-volley/",
+    "build-prod": "npm run ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

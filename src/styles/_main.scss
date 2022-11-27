@@ -12,9 +12,18 @@
   $secondary-palette: map.get($color-config, 'accent');
 
   $background: map.get($color-config, background);
+  $foreground: map.get($color-config, foreground);
 
   .admin-menu {
     background: mat.get-color-from-palette($background, dialog);
+    border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+  }
+  .right {
+    background: mat.get-color-from-palette($background, dialog);
+    border: none;
+    &.opened {
+      border-left: 1px solid mat.get-color-from-palette($foreground, divider);
+    }
   }
   .tile-color {
     background: mat.get-color-from-palette($secondary-palette, 100);
@@ -123,33 +132,6 @@ body {
 
 .mat-sidenav-content {
   //padding: 25px 40px 0;
-}
-.center-container {
-  padding: 25px 40px 0;
-}
-.top-container {
-  height: 50px;
-  line-height: 50px;
-  padding: 0 40px;
-}
-section {
-  display: table;
-  &.top {
-      width: 100%;
-      .back {
-        display: table-cell;
-        cursor: pointer;
-        width: 150px;
-      }
-      .buttons {
-        display: table-cell;
-        text-align: right;
-        width: 100%;
-        button {
-            margin: 8px 8px 8px 0;
-        }
-      }
-  }
 }
 .mat-sidenav {
   background-color: #F2F2F2;

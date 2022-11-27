@@ -121,5 +121,86 @@
       width: 100%;
     }
   }
+  .center-container {
+    padding: 25px 40px 0;
+  }
+  .top-container {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 0 0 40px;
+  }
+  .split-vertical {
+    display: flex;
+    height: calc(100vh - 115px);
+    .left {
+      width: calc(100% - 28px);
+      padding: 20px;
+      transition: 0.3s ease;
+      @media (max-width:767px) {
+        width: calc(100% - 20px);
+      }
+      &.right-opened {
+        width: calc(100% - 250px);
+      }
+      section {
+        &.top {
+          display: table;
+          width: 100%;
+          .back {
+            display: table-cell;
+            cursor: pointer;
+            min-width: 150px;
+          }
+          .buttons {
+            display: table-cell;
+            text-align: right;
+            width: 100%;
+            button {
+                margin: 8px 8px 8px 0;
+            }
+          }
+        }
+        &.form {
+          .fields {
+            max-width: 600px;;
+          }
+        }
+      }
+    }
+    .right {
+      right: 6px;
+      position: absolute;
+      width: 28px;
+      padding: 2px;
+      height: 32px;
+      background: transparent;
+      transition: 0.3s ease;
+      .toggle-right {
+        cursor: pointer;
+      }
+      &.opened {
+        padding: 20px;
+        width: 250px;
+        height: calc(100vh - 115px);
+        .toggle-right {
+          position: absolute;
+          right: 6px;
+          top: 6px;
+        }
+      }
+      @media (max-width:767px) {
+        width: 28px;
+        padding: 2px;
+        height: 32px;
+        background: transparent;
+        .actions {
+          display: none;
+          &.opened {
+            display: block;
+          }
+        }
+      }
+    }
+  }
 
   

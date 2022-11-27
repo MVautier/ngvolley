@@ -79,10 +79,6 @@ export class MainMenuComponent implements OnInit {
 
   goToPage(page: string) {
     this.router.navigate([page]);
-    const item = this.pages.find(p => p.Slug === page) 
-    if (item) {
-      this.routeService.setCurrentPage(item);
-    }
   }
 
   showModalLogin() {

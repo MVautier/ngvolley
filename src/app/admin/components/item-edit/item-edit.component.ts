@@ -35,6 +35,7 @@ export class ItemEditComponent implements OnInit {
   };
   initialValues: any;
   wysiswygConfig: AngularEditorConfig;
+  rightOpened = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -215,6 +216,10 @@ export class ItemEditComponent implements OnInit {
     //   this.domService.removeResizeFrame();
     //   this.builderExpert.removeImage();
     // }
+  }
+
+  toggleRight() {
+    this.rightOpened = !this.rightOpened;
   }
 
 }

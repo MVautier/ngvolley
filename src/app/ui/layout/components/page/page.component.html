@@ -3,5 +3,7 @@
     <div *ngIf="!page">Aucun contenu pour cette page</div>
     <div *ngIf="page">
         <h1>{{page.Title}}</h1>
+        <!-- <div *ngIf="page.Description" hrefToRouterLink class="description" [innerHTML]="page.Description | safe: 'html'"></div> -->
+        <div *ngIf="page.Content" hrefToRouterLink class="description" [innerHTML]="page.Content | safe: 'html'"></div>
     </div>
 </div>

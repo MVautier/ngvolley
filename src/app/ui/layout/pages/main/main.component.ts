@@ -31,7 +31,6 @@ export class MainComponent implements OnInit {
   constructor(private routeService: RouteService, private themeService: ThemeService) { }
 
   ngOnInit(): void {
-    console.log(window.innerWidth)
     if (window.innerWidth < 768) {
       this.sidenav.fixedTopGap = 64;
       this.opened = false;
@@ -44,8 +43,6 @@ export class MainComponent implements OnInit {
 
   init() {
     this.isDarkTheme = this.themeService.isDarkTheme;
-    this.routeService.start();
-    
   }
 
   isBiggerScreen() {
@@ -60,5 +57,6 @@ export class MainComponent implements OnInit {
   toggleTheme(isDarkTheme: boolean) {
     //this.themeService.setDarkTheme(isDarkTheme);
     this.theme = this.theme === 'dark' ? 'custom' : 'dark';
+    this.isDarkTheme = this.themeService.isDarkTheme;
   }
 }
