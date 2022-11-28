@@ -31,8 +31,8 @@
       "@core/*": [
         "src/app/core/*"
       ],
-      "editor": [
-        "dist/editor"
+      "@editor": [
+        "projects/editor"
       ]
     }
   },

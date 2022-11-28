@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ImageRequest } from '@app/admin/models/image-request.model';
 import { FormService } from '@app/admin/services/form.service';
 import { WysiswygService } from '@app/admin/services/wysiswyg.service';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { AdminService } from '@app/core/services/admin.service';
 import { RouteService } from '@app/core/services/route.services';
+import { ImageRequest } from 'projects/editor/src/lib/models/image-request.model';
 import { AngularEditorConfig, FocusedItem } from 'projects/editor/src/public-api';
 
 @Component({

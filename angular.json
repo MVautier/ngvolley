@@ -28,8 +28,8 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "./projects/editor/src/lib/assets/fonts",
-                "output": "./assets/fonts/"
+                "input": "./projects/editor/src/lib/assets",
+                "output": "./assets"
                 
               }
             ],

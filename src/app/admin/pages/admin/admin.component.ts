@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { GalleryService } from '@app/admin/services/gallery.service';
 import { LayoutService } from '@app/admin/services/layout.service';
 import { User } from '@app/authentication/models/user.model';
 import { ConnectionInfoService } from '@app/authentication/services/connexion-info.service';
@@ -21,6 +22,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   constructor(
     private routeService: RouteService,
     private router: Router,
+    private gallery: GalleryService,
     private connexionInfo: ConnectionInfoService,
     private layoutService: LayoutService
     ) { 
