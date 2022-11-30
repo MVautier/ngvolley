@@ -128,15 +128,16 @@ export class NgEditorComponent implements OnInit, ControlValueAccessor, AfterVie
   initIframe(content: string): Promise<void> {
     return new Promise((resolve, reject) => {
       var iframe = document.getElementById( 'ifrm' ) as HTMLIFrameElement;
-      iframe.style.height = this.config.height;
-      iframe.style.minHeight = this.config.minHeight;
-      iframe.style.maxHeight = this.config.maxHeight;
+      // iframe.style.height = this.config.height;
+      // iframe.style.minHeight = this.config.minHeight;
+      // iframe.style.maxHeight = this.config.maxHeight;
+      //iframe.attributes['scrollbar'] = 'no';
       iframe.style.marginBottom = '-4px';
       //var content = html; //document.getElementById("iframeContent").innerHTML;
       const div = document.createElement('div');
       div.id = 'ngEditor';
       div.contentEditable = 'true';
-      div.style.fontFamily = "'Roboto', sans-serif";
+      //div.style.fontFamily = "'Roboto', sans-serif";
       div.className = 'angular-editor-textarea';
       div.translate = this.config.translate ? true : false;
       div.spellcheck = this.config.spellcheck ? true : false;
@@ -146,7 +147,8 @@ export class NgEditorComponent implements OnInit, ControlValueAccessor, AfterVie
       iframe.onload = () => {
         //iframe.style['outline'] = '0';
         this.textArea = iframe.contentWindow.document.querySelector('#ngEditor');
-        
+        //this.iframe.nativeElement.attribute['scrollbar'] = 'no';
+        //this.iframe.nativeElement.style.height = getComputedStyle(this.textArea).height;
         this.doc = this.iframe.nativeElement.contentDocument;
         this.bindEvents();
         this.initDomServices();

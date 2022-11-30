@@ -1,22 +1,20 @@
-<section class="top">
-    <div class="top-container">
-        <div class="back" (click)="goBack()">
-            <button mat-icon-button>
-                <mat-icon>chevron_left</mat-icon>
-                Tableau de bord
-            </button>
-        </div>
-        <div class="buttons">
-            <button mat-icon-button (click)="add()" title="Ajouter une page">
-                <mat-icon>note_add</mat-icon>
-            </button>
-            <button mat-icon-button [disabled]="!inTrash.length" (click)="empty()" title="Mettre à la corbeille">
-                <mat-icon class="big-trash">delete</mat-icon>
-                <span class="big-trash icon-text down">{{ inTrash.length > 0 ? inTrash.length : '' }}</span>
-            </button>
-        </div>
+<div class="top">
+    <div class="back" (click)="goBack()">
+        <button mat-icon-button>
+            <mat-icon>chevron_left</mat-icon>
+            Tableau de bord
+        </button>
     </div>
-</section>
+    <div class="buttons">
+        <button mat-icon-button (click)="add()" title="Ajouter une page">
+            <mat-icon>note_add</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="!inTrash.length" (click)="empty()" title="Mettre à la corbeille">
+            <mat-icon class="big-trash">delete</mat-icon>
+            <span class="big-trash icon-text down">{{ inTrash.length > 0 ? inTrash.length : '' }}</span>
+        </button>
+    </div>
+</div>
 
 
 <div class="center-container">

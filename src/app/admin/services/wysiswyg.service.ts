@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { WebItem } from '@app/core/models/web-item.model';
 import { environment } from '@env/environment';
+import { EditorService } from 'projects/editor/src/public-api';
+import { GalleryService } from './gallery.service';
 
 
 @Injectable()
@@ -22,7 +22,7 @@ export class WysiswygService {
         //enableTable: true,
         placeholder: 'Commencez votre composition...',
         defaultParagraphSeparator: '',
-        defaultFontName: 'roboto',
+        //defaultFontName: 'roboto',
         defaultFontSize: '',
         rawPaste: true,
         fonts: [
@@ -52,7 +52,10 @@ export class WysiswygService {
         ]
     };
 
-    constructor() {
+    constructor(
+      private gallery: GalleryService,
+      private editor: EditorService
+      ) {
         console.log('================= WysiswygService constructor');
     }
 
@@ -71,5 +74,9 @@ export class WysiswygService {
           }
         }
         return this.wyConfig;
+    }
+
+    insertImage(src: string) {
+      this.editor.insertImage(src);
     }
 }

@@ -69,8 +69,8 @@ export class GestionPageComponent implements OnInit {
     this.modalRef.content.title = 'Suppression de page' + s;
     this.modalRef.content.text = 'Etes-vous sûr(e) de vouloir supprimer ' + a + ' page' + s + ' ?';
     this.modalRef.content.validate.pipe(first()).subscribe(() => {
-    // this.routeService.removePages(this.inTrash);
-    // this.inTrash = [];
+      this.routeService.removePages(this.inTrash);
+      this.inTrash = [];
       this.modalRef.hide();
     });
     this.modalRef.content.cancel.pipe(first()).subscribe(() => {

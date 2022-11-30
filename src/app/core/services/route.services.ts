@@ -183,6 +183,7 @@ export class RouteService {
                 tree.pages = tree.pages.filter(p => p.Slug !== page.Slug);
             }
         });
+        // TODO : call api
         this.setCurrentConfig(tree);
     }
 

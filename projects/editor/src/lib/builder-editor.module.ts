@@ -17,6 +17,8 @@ import { TableService } from './services/table.service';
 import { UndoManagerService } from './services/undo-manager.service';
 import { UtilService } from './services/util.service';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { NgBlocksComponent } from './components/ng-blocks/ng-blocks.component';
+import { BlocksService } from './services/blocks.service';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     NgSelectComponent,
     NgEditorToolbarComponent,
     NgToolbarSetComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    NgBlocksComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     NgEditorComponent,
     NgSelectComponent,
     NgEditorToolbarComponent,
-    NgToolbarSetComponent
+    NgToolbarSetComponent,
+    NgBlocksComponent
   ],
   providers: [
     BrowserService,
@@ -49,7 +53,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     TableService,
     UndoManagerService,
     UtilService,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    BlocksService
   ]
 })
 export class BuilderEditorModule { }

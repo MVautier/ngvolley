@@ -22,6 +22,7 @@ import { BuilderEditorModule } from 'projects/editor/src/lib/builder-editor.modu
 import { UtilService } from './services/util.service';
 import { CoreModule } from '@app/core/core.module';
 import { GalleryService } from './services/gallery.service';
+import { ItemEditButtonsComponent } from './components/item-edit-buttons/item-edit-buttons.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { GalleryService } from './services/gallery.service';
     ThemePageComponent,
     ItemCardComponent,
     ItemEditComponent,
-    DashboardComponent
+    DashboardComponent,
+    ItemEditButtonsComponent
   ],
   imports: [
     CommonModule,

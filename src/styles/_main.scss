@@ -66,6 +66,7 @@
       }
     }
   }
+
   .angular-editor-wrapper{
     background: #fff;
     min-height: 400px;
@@ -73,10 +74,13 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     padding: 5px;
+    overflow: hidden;
     iframe {
-      #ngEditor {
-        font-family: 'Roboto', sans-serif;
-      }
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
   .angular-editor-toolbar {

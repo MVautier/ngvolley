@@ -14,7 +14,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Run SSL
+## Running in SSL mode
 
 ### Génération d'un certificat :
 
@@ -41,6 +41,7 @@ Nécessite le SDK .NET 5.0 - Exécuter : `dotnet dev-certs https --trust`
 	`.\openssl pkcs12 -in localhost.pfx -nocerts -out localhost.key -nodes`
     
 	`.\openssl pkcs12 -in localhost.pfx -clcerts -nokeys -out localhost.crt`
+	
 - Copier les fichiers générés dans l'application
 - Dans package.json, modifier le script :
 

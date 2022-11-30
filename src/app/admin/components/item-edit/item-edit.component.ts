@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from '@app/admin/services/form.service';
+import { GalleryService } from '@app/admin/services/gallery.service';
 import { WysiswygService } from '@app/admin/services/wysiswyg.service';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
@@ -36,6 +37,7 @@ export class ItemEditComponent implements OnInit {
   initialValues: any;
   wysiswygConfig: AngularEditorConfig;
   rightOpened = true;
+  isExpert = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +45,8 @@ export class ItemEditComponent implements OnInit {
     private router: Router,
     private adminService: AdminService,
     private formService: FormService,
-    private editor: WysiswygService,
+    private wysiswyg: WysiswygService,
+    private gallery: GalleryService,
     private route: ActivatedRoute
     ) { 
       console.log('edit constructor');
@@ -164,18 +167,29 @@ export class ItemEditComponent implements OnInit {
   }
 
   initWysiswyg() {
-    this.wysiswygConfig = this.editor.init(() => {
-        this.openGallery({
-          index: null,
-          origin: null,
-          src: null,
-          mode: 'add'
-        });
+    this.wysiswygConfig = this.wysiswyg.init(() => {
+      this.openGallery({
+        index: null,
+        origin: null,
+        src: null,
+        mode: 'add'
       });
+    });
+    this.subscribeToCkfinder();
+  }
+
+  subscribeToCkfinder() {
+    this.gallery.selectedSrc.subscribe(selected => {
+      console.log('image selected: ', selected);
+      //this.updateImages(selected);
+      if (selected) {
+        this.wysiswyg.insertImage(selected.src);
+      }
+    });
   }
 
   openGallery(request: ImageRequest) {
-    //this.editor.openGallery(trequest);
+    this.gallery.openGallery(request);
   }
 
   onWysiswygFocus(item: FocusedItem) {
@@ -220,6 +234,10 @@ export class ItemEditComponent implements OnInit {
 
   toggleRight() {
     this.rightOpened = !this.rightOpened;
+  }
+
+  onModeChange(isExpert: boolean) {
+    this.isExpert = isExpert;
   }
 
 }
