@@ -1,0 +1,24 @@
+
+.builder-blocks-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: normal;
+    align-content: normal;
+    .list {
+        display: block;
+        flex: 0 1 30%;
+        align-self: auto;
+        order: 0;
+    }
+    .composition {
+        display: block;
+        flex: 0 1 70%;
+        align-self: auto;
+        order: 1;
+    }
+}
+  
+
+  

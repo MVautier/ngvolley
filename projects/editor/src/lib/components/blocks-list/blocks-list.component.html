@@ -1,0 +1,11 @@
+<div class="list"
+      cdkDropList
+      [cdkDropListData]="blocks"
+      
+      cdkDropListSortingDisabled>
+      <div  cdkDrag 
+      class="box" 
+      (cdkDragStarted)="dragStart(block)" 
+      *ngFor="let block of blocks"
+      [innerHTML]="block.content | safe"></div>
+    </div>

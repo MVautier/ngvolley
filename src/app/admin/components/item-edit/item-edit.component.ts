@@ -8,6 +8,7 @@ import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { AdminService } from '@app/core/services/admin.service';
 import { RouteService } from '@app/core/services/route.services';
+import { Block } from 'projects/editor/src/lib/models/block.model';
 import { ImageRequest } from 'projects/editor/src/lib/models/image-request.model';
 import { AngularEditorConfig, FocusedItem } from 'projects/editor/src/public-api';
 
@@ -240,4 +241,5 @@ export class ItemEditComponent implements OnInit {
     this.isExpert = isExpert;
   }
 
+  
 }

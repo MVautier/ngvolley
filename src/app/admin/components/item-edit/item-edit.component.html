@@ -39,9 +39,11 @@
                 
                 <section class="composition">
                     <p>Contenu</p>
-                    <ng-blocks *ngIf="!isExpert">
 
-                    </ng-blocks>
+                    <div *ngIf="!isExpert" cdkDropListGroup>
+                        <lib-builder-blocks></lib-builder-blocks>
+                    </div>
+
                     <ng-editor *ngIf="wysiswygConfig && isExpert"
                         [config]="wysiswygConfig"
                         [(ngModel)]="content"

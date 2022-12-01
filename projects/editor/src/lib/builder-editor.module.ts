@@ -17,8 +17,12 @@ import { TableService } from './services/table.service';
 import { UndoManagerService } from './services/undo-manager.service';
 import { UtilService } from './services/util.service';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
-import { NgBlocksComponent } from './components/ng-blocks/ng-blocks.component';
 import { BlocksService } from './services/blocks.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { BlockContainerComponent } from './components/block-container/block-container.component';
+import { BlockComponent } from './components/block/block.component';
+import { BlocksListComponent } from './components/blocks-list/blocks-list.component';
+import { BuilderBlocksComponent } from './components/builder-blocks/builder-blocks.component';
 
 
 @NgModule({
@@ -29,12 +33,16 @@ import { BlocksService } from './services/blocks.service';
     NgEditorToolbarComponent,
     NgToolbarSetComponent,
     SafeHtmlPipe,
-    NgBlocksComponent
+    BlockContainerComponent,
+    BlockComponent,
+    BlocksListComponent,
+    BuilderBlocksComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DragDropModule,
     NgxColorsModule
   ],
   exports: [
@@ -43,7 +51,10 @@ import { BlocksService } from './services/blocks.service';
     NgSelectComponent,
     NgEditorToolbarComponent,
     NgToolbarSetComponent,
-    NgBlocksComponent
+    BlockContainerComponent,
+    BlocksListComponent,
+    BlockComponent,
+    BuilderBlocksComponent
   ],
   providers: [
     BrowserService,
