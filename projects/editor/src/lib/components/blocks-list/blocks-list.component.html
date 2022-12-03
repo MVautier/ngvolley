@@ -1,11 +1,16 @@
-<div class="list"
-      cdkDropList
-      [cdkDropListData]="blocks"
-      
-      cdkDropListSortingDisabled>
-      <div  cdkDrag 
-      class="box" 
-      (cdkDragStarted)="dragStart(block)" 
-      *ngFor="let block of blocks"
-      [innerHTML]="block.content | safe"></div>
+<div class="container">
+  <div class="list"
+    cdkDropList
+    [cdkDropListData]="blocks"
+    cdkDropListSortingDisabled>
+    <div class="block" *ngFor="let block of blocks">
+      <div cdkDrag 
+        class="box template preview" 
+        (cdkDragStarted)="dragStart(block)" 
+        [innerHTML]="block.content | safe">
+      </div>
+      <div class="border"></div>
     </div>
+    
+  </div>
+</div>

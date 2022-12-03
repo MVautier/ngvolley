@@ -9,31 +9,17 @@ import { BlocksService } from '../../services/blocks.service';
   styleUrls: ['./block-container.component.scss']
 })
 export class BlockContainerComponent implements OnInit {
-  blocks: Block[] = [{
-    initial: true,
-    content: 'Déposez un élément ici'
-  }];
+  blocks: Block[] = [];
   
   constructor(private blockService: BlocksService) { }
 
   ngOnInit(): void {
+    this.blockService.blocks.subscribe(blocks => {
+      this.blocks = blocks;
+    })
   }
 
   dropped(event: CdkDragDrop<Block[]>) {
-    
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-      this.blockService.dragBlock.next(event.container.data[event.currentIndex]);
-    }
-    if (this.blocks.length > 1) {
-      this.blocks = this.blocks.filter(b => !b.initial);
-    }
+    this.blockService.dropped(event);
   }
 }

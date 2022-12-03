@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Block } from '../../models/block.model';
 
 @Component({
   selector: 'lib-block',
@@ -6,7 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements OnInit {
-  @Input() content: string;
+  @Input() block: Block;
+  @Input() handle: boolean;
   constructor() { }
 
   ngOnInit(): void {

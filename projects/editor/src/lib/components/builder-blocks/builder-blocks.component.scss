@@ -2,7 +2,7 @@
 .builder-blocks-container{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    //flex-wrap: wrap;
     justify-content: center;
     align-items: normal;
     align-content: normal;
@@ -15,10 +15,135 @@
     .composition {
         display: block;
         flex: 0 1 70%;
+        border-radius: 4px;
         align-self: auto;
         order: 1;
+        max-width: 70%;
     }
 }
+
+:host ::ng-deep .container {
+    max-width: 100%;
+    margin: 0 25px 25px 0;
+    display: inline-block;
+    vertical-align: top;
+    .list {
+        border: solid 1px #ccc;
+        min-height: 60px;
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+        display: block;
+        .block {
+          padding: 10px 0;
+        }
+    }
+}
+
+:host ::ng-deep .box {
+    position: relative;
+    padding: 20px 10px;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    cursor: move;
+    background: white;
+    font-size: 14px;
+    [contenteditable="true"] {
+      overflow-wrap: anywhere;
+      outline: 0px solid transparent;
+      border-radius: 4px;
+      width: 100%;
+      &:focus {
+        outline: 1px solid #ccc;
+      }
+    }
+    &.template {
+      div {
+        display: flex;
+      }
+      img {
+        width: 100%;
+      }
+      &.preview{
+        transform: scale(0.5);
+        transform-origin: 10px 50%;
+        width: 200%;
+        max-height: 80px;
+        height: 80px;
+      }
+      .column{
+        padding: 10px;
+        flex-direction: column;       
+        &.w-10 {
+          flex: 1 0 10%;
+        }
+        &.w-20 {
+          flex: 1 0 20%;
+        }
+        &.w-30 {
+          flex: 1 0 30%;
+        }
+        &.w-40 {
+          flex: 1 0 40%;
+        }
+        &.w-50 {
+          flex: 1 0 50%;
+        }
+        &.w-60 {
+          flex: 1 0 60%;
+        }
+        &.w-70 {
+          flex: 1 0 70%;
+        }
+        &.w-80 {
+          flex: 1 0 80%;
+        }
+        &.w-90 {
+          flex: 1 0 90%;
+        }
+        &.w-100 {
+          flex: 1 0 100%;
+        }
+      }
+    }
+    &--no-handle {
+        cursor: text;
+        img {
+          cursor: pointer;
+        }
+    }
+    .handle {
+      position: absolute;
+      top: 24px;
+      right: 16px;
+      color: #ccc;
+      cursor: move;
+      width: 24px;
+      height: 24px;
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+  
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+  
+.box:last-child {
+    border: none;
+}
+  
+.list.cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
   
 
   
