@@ -7,9 +7,9 @@
       <div cdkDrag 
         class="box template preview" 
         (cdkDragStarted)="dragStart(block)" 
-        [innerHTML]="block.content | safe">
+        [style.backgroundImage]="block.preview" 
+        [style.paddingTop]="(block.height / block.width * 100) + '%'">
       </div>
-      <div class="border"></div>
     </div>
     
   </div>

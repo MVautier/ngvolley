@@ -67,14 +67,14 @@
         display: flex;
       }
       img {
-        width: 100%;
+        max-height: 150px;
+        margin: 10px;
       }
       &.preview{
-        transform: scale(0.5);
-        transform-origin: 10px 50%;
-        width: 200%;
-        max-height: 80px;
-        height: 80px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 0;
+        width: 100%;
       }
       .column{
         padding: 10px;

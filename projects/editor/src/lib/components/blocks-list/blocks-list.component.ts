@@ -11,11 +11,12 @@ import { BlocksService } from '../../services/blocks.service';
 export class BlocksListComponent implements OnInit, OnDestroy {
   ipsum: string = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras metus diam, lacinia at aliquam sed, 
   pulvinar et turpis. Morbi facilisis ex lorem, id imperdiet arcu dignissim sed.`;
-  ipsum_short: string = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras metus diam, lacinia at aliquam sed.`;
+  ipsum_short: string = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`;
   defaultSrc: string = 'assets/images/img-placeholder.png';
   blocks: Block[] = [];
   dragIndex = -1;
   subDrag: Subscription;
+  path = 'assets/images/';
 
   constructor(private blockService: BlocksService) { }
 
@@ -30,11 +31,26 @@ export class BlocksListComponent implements OnInit, OnDestroy {
 
   initBlocks() {
     this.blocks = [
-      // { content: `<div class="column w-30"><img src="${this.defaultSrc}"></div>
-      //             <div class="column w-70"><h1>Mon titre</h1><p>${this.ipsum}</p></div>` },
-      { content: `<div class="column w-40"><img src="${this.defaultSrc}"><h1>Mon titre</h1><p>${this.ipsum_short}</p></div>
-                  <div class="column w-40"><img src="${this.defaultSrc}"><h1>Mon titre</h1><p>${this.ipsum_short}</p></div>` },
-      // { content: '<div class="column w-100">Mon texte</div>' }
+      { 
+        content: `<div class="column w-30"><img src="${this.defaultSrc}"></div>
+                  <div class="column w-70"><h1>Mon titre</h1><p>${this.ipsum}</p></div>` ,
+        preview: `url("${this.path}img-text-bg.png")`,
+        width: 340,
+        height: 125
+      },
+      { 
+        content: `<div class="column w-50"><img src="${this.defaultSrc}"><h1>Mon titre</h1><p>${this.ipsum_short}</p></div>
+                  <div class="column w-50"><img src="${this.defaultSrc}"><h1>Mon titre</h1><p>${this.ipsum_short}</p></div>`,
+        preview: `url("${this.path}img-text-2-bg.png")`,
+        width: 340,
+        height: 246
+      },
+      { 
+        content: `<div class="column w-100"><h1>Mon titre</h1><p>${this.ipsum}</p></div>`,
+        preview: `url("${this.path}simple-text-bg.png")`,
+        width: 340,
+        height: 84
+       }
     ];
   }
 

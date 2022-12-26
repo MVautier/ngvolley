@@ -10,7 +10,10 @@ export class BlocksService {
     blocks: BehaviorSubject<Block[]> = new BehaviorSubject<Block[]>([
         {
             initial: true,
-            content: 'Déposez un élément ici'
+            content: 'Déposez un élément ici',
+            preview: null,
+            width: 0,
+            height: 0
           }
     ]);
     constructor() {
