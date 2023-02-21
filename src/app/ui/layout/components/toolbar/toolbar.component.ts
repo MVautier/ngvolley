@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '@app/core/services/theme.service';
 
 @Component({
   selector: 'app-toolbar',

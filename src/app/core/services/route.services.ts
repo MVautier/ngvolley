@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, NavigationStart, Route, Router } from '@angular/router';
 import { User } from '@app/authentication/models/user.model';
 import { PageComponent } from '@app/ui/layout/components/page/page.component';
+import { SsrService } from '@app/ui/layout/services/ssr.service';
 import { environment } from '@env/environment';
 import { BehaviorSubject, filter, Subscription } from 'rxjs';
 import { HrefToRouterLinkDirective } from '../directives/href-to-routerlink.directive';
@@ -22,31 +23,36 @@ export class RouteService {
     constructor(
         private adminService: AdminService, 
         private pingService: ApiPingService,
+        private ssrService: SsrService,
         private routerLink: HrefToRouterLinkDirective,
         private router: Router) {
             console.log('================ route constructor');
             this.pingService.getIPAddress().then(ip => {
                 this.currentIp = ip;
             });
-            this.start().then(() => {
-                this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
-                    console.log('navigated to route: ', event.url);
-                    const item = this.findPageInConfig(event.url); 
-                    if (item) {
-                        this.routerLink.ngOnDestroy();
-                        this.routerLink.ngOnInit();
-                        this.setCurrentPage(item);
-                    }
+            if (!this.ssrService.isServer()) {
+                console.log('init tree');
+                this.start().then(() => {
+                    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
+                        console.log('navigated to route: ', event.url);
+                        const item = this.findPageInConfig(event.url); 
+                        if (item) {
+                            this.routerLink.ngOnDestroy();
+                            this.routerLink.ngOnInit();
+                            this.setCurrentPage(item);
+                        }
+                    });
+                    // this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+                    //     console.log('navigated to route: ', event.url);
+                    //     const item = this.findPageInConfig(event.url); 
+                    //     if (item) {
+                    //         this.routerLink.ngOnDestroy();
+                    //         this.setCurrentPage(item);
+                    //     }
+                    // });
                 });
-                // this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-                //     console.log('navigated to route: ', event.url);
-                //     const item = this.findPageInConfig(event.url); 
-                //     if (item) {
-                //         this.routerLink.ngOnDestroy();
-                //         this.setCurrentPage(item);
-                //     }
-                // });
-            });
+            }
+            
     }
 
     public subscribeConfig(next?: (value: Tree) => void, keySubscription?: string) {
@@ -229,7 +235,7 @@ export class RouteService {
         const routes = this.router.config[0].children.filter(r => !this.staticRoutes.includes(r.path));
         const route = routes.find(p => p.path === url);
         if (route) {
-            return this.obsTree.value.pages.find(p => p.Slug === url);
+            return this.obsTree.value.pages.find(p => 'page/' + p.Slug === url);
         } else if (url.includes('admin')) {
             return {
                 IdItem: 0,
@@ -273,18 +279,18 @@ export class RouteService {
         const routes = this.router.config[0].children;
         if (path && routes && routes.length) {
             if (oldpath) {
-                const index = routes.findIndex(r => r.path === oldpath);
+                const index = routes.findIndex(r => r.path === 'page/' + oldpath);
                 if (index >= 0) {
                     const route: Route = {
-                        path: path,
+                        path: 'page/' + path,
                         component: PageComponent
                     };
                     routes.splice(index, 1, route);
                 }
             } else {
-                if (routes.findIndex(r => r.path === path) < 0) {
+                if (routes.findIndex(r => r.path === 'page/' + path) < 0) {
                     const route: Route = {
-                        path: path,
+                        path: 'page/' + path,
                         component: PageComponent
                     };
                     const index = routes.findIndex(r => r.path === '**');

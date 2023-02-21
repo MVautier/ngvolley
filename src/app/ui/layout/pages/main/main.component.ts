@@ -1,8 +1,11 @@
 import { Component, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { makeStateKey } from '@angular/platform-browser';
 import { RouteService } from '@app/core/services/route.services';
+import { TransferStateService } from '@app/core/services/transfert-state.service';
 import { Observable } from 'rxjs';
-import { ThemeService } from '../../services/theme.service';
+import { SsrService } from '../../services/ssr.service';
+import { ThemeService } from '@app/core/services/theme.service';
 
 
 @Component({
@@ -28,16 +31,26 @@ export class MainComponent implements OnInit {
     }
   }
 
-  constructor(private routeService: RouteService, private themeService: ThemeService) { }
+  constructor(
+    private routeService: RouteService, 
+    private ssrService: SsrService,
+    private transferState: TransferStateService,
+    private themeService: ThemeService) { }
 
   ngOnInit(): void {
-    if (window.innerWidth < 768) {
-      this.sidenav.fixedTopGap = 64;
-      this.opened = false;
-    } else {
-      this.sidenav.fixedTopGap = 64;
-      this.opened = true;
+    if (!this.ssrService.isServer()) {
+      const errorKey = makeStateKey<any>('CUSTOM_ERRORS');
+      const errors = this.transferState.get(errorKey, []);
+      console.log('errors in main : ', errors);
+      if (window.innerWidth < 768) {
+        this.sidenav.fixedTopGap = 64;
+        this.opened = false;
+      } else {
+        this.sidenav.fixedTopGap = 64;
+        this.opened = true;
+      }
     }
+    
     this.init();
   }
 
@@ -45,13 +58,16 @@ export class MainComponent implements OnInit {
     this.isDarkTheme = this.themeService.isDarkTheme;
   }
 
-  isBiggerScreen() {
-    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (width < 768) {
-      return true;
-    } else {
-      return false;
+  isBiggerScreen(): boolean {
+    if (!this.ssrService.isServer()) {
+      const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      if (width < 768) {
+        return true;
+      } else {
+        return false;
+      }
     }
+    return false;
   }
 
   toggleTheme(isDarkTheme: boolean) {

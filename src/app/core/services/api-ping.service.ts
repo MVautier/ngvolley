@@ -16,9 +16,10 @@ export class ApiPingService {
 
     getIPAddress(): Promise<string>  {  
         return new Promise((resolve, reject) => {
-            this.http.getPublic("https://geolocation-db.com/json/").then((res: any) => {
-                resolve(res.IPv4);
-            })
+            // this.http.getPublic("https://geolocation-db.com/json/").then((res: any) => {
+            //     resolve(res.IPv4);
+            // })
+            resolve('127.0.0.1');
         });  
     }
 }

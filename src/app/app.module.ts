@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LayoutModule } from './ui/layout/layout.module';
+import { SsrService } from './ui/layout/services/ssr.service';
+import { InterceptorClientSide } from './core/interceptors/interceptor-client-side';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { LayoutModule } from './ui/layout/layout.module';
     
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'colomiers-volley' }),
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -27,7 +29,10 @@ import { LayoutModule } from './ui/layout/layout.module';
     LayoutModule.forRoot(),
     SwiperModule
   ],
-  providers: [],
+  providers: [
+    SsrService,
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true},
+  ],
   exports: [LayoutModule],
   bootstrap: [AppComponent]
 })

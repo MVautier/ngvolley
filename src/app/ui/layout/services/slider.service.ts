@@ -3,6 +3,7 @@ import { ApiPingService } from '@app/core/services/api-ping.service';
 import { environment } from '@env/environment';
 import SwiperCore, { SwiperOptions, Autoplay, Pagination, Navigation } from 'swiper';
 import { Slider } from '../models/slider.model';
+import { SsrService } from './ssr.service';
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 @Injectable()
@@ -20,30 +21,37 @@ export class SliderService {
     scrollbar: { draggable: true },
   };
 
-  constructor(private pingService: ApiPingService) {
+  constructor(
+    private ssrService: SsrService,
+    private pingService: ApiPingService) {
 
   }
 
   init(): Promise<Slider> {
     return new Promise((resolve) => {
+      if (!this.ssrService.isServer()) {
+        console.log('=========== ping api');
         this.pingService.getApiStatus().then(() => {
-            const path = environment.apiRoot;
-            const slides = [
-              {src: path + 'medias/slides/IMG20211204173221-2048x1152.jpg', title: 'photo 1'},
-              {src: path + 'medias/slides/Bloc-Volley.jpg', title: 'photo 2'},
-              {src: path + 'medias/slides/Volley-1-1-1536x789.jpg', title: 'photo 3'},
-              {src: path + 'medias/slides/IMG-20190927-WA0002.jpg', title: 'photo 4'},
-              {src: path + 'medias/slides/SAM_4586.jpg', title: 'photo 5'},
-              {src: path + 'medias/slides/SAM_3363.jpg', title: 'photo 6'},
-              {src: path + 'medias/slides/Criterium-2018-5.jpg', title: 'photo 7'}
-            ];
-            resolve ({
-                config: this.config,
-                slides: slides
-            });
+          const path = environment.apiRoot;
+          const slides = [
+            {src: path + 'medias/slides/IMG20211204173221-2048x1152.jpg', title: 'photo 1'},
+            {src: path + 'medias/slides/Bloc-Volley.jpg', title: 'photo 2'},
+            {src: path + 'medias/slides/Volley-1-1-1536x789.jpg', title: 'photo 3'},
+            {src: path + 'medias/slides/IMG-20190927-WA0002.jpg', title: 'photo 4'},
+            {src: path + 'medias/slides/SAM_4586.jpg', title: 'photo 5'},
+            {src: path + 'medias/slides/SAM_3363.jpg', title: 'photo 6'},
+            {src: path + 'medias/slides/Criterium-2018-5.jpg', title: 'photo 7'}
+          ];
+          resolve ({
+              config: this.config,
+              slides: slides
+          });
         }).catch(err => {
             resolve(null);
         });
+      } else {
+        resolve(null);
+      }
     });
   }
 

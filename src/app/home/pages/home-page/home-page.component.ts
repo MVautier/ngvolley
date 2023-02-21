@@ -1,10 +1,11 @@
 import { AfterContentInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Slider } from '@app/ui/layout/models/slider.model';
 import { SliderService } from '@app/ui/layout/services/slider.service';
-import { ThemeService } from '@app/ui/layout/services/theme.service';
+import { ThemeService } from '@app/core/services/theme.service';
 import { distinctUntilChanged, Observable, Subject, tap } from 'rxjs';
 import { MatGridList } from '@angular/material/grid-list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { SsrService } from '@app/ui/layout/services/ssr.service';
 
 
 @Component({
@@ -34,25 +35,27 @@ export class HomePageComponent implements OnInit {
   readonly breakpoint$ = this.breakpointObserver
     .observe([Breakpoints.Large, Breakpoints.Medium, Breakpoints.Small, '(min-width: 500px)'])
     .pipe(
-      tap(value => console.log(value)),
+      tap(value => console.log('breakpoints')),
       distinctUntilChanged()
     );
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private slideService: SliderService, 
+    private ssrService: SsrService,
     private themeService: ThemeService) {
 
      }
 
   ngOnInit(): void {
     this.breakpoint$.subscribe((value) => {
-      console.log('value: ', value);
       this.breakpointChanged();
     }
     );
     this.isDarkTheme = this.themeService.isDarkTheme;
-    this.initSlides();
+    if (!this.ssrService.isServer()) {
+      this.initSlides();
+    }
   }
 
   private breakpointChanged() {
@@ -73,8 +76,6 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  
-
   initSlides() {
     this.slideService.init().then(slider => {
       if (slider) {
@@ -83,7 +84,6 @@ export class HomePageComponent implements OnInit {
       } else {
         console.log('api unavailable');
       }
-      
     });
   }
   onSwiper(swiper) {

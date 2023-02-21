@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CustomErrorComponent } from './ui/layout/components/custom-error/custom-error.component';
 import { PageComponent } from './ui/layout/components/page/page.component';
 import { MainComponent } from './ui/layout/pages/main/main.component';
 
@@ -8,14 +9,17 @@ const routes: Routes = [
     { path: 'home', title: 'Accueil', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
     { path: 'inscription', title: 'Inscription', loadChildren: () => import('./inscription/inscription.module').then(m => m.InscriptionModule) },
     { path: 'admin', title: 'Administration', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
-    { path: ':page', component: PageComponent },
+    { path: 'page/:page', component: PageComponent },
+    { path: 'error', component: CustomErrorComponent },
     { path: '**', redirectTo: 'home'}
   ] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    initialNavigation: 'enabledBlocking'
+})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

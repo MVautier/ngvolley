@@ -9,12 +9,14 @@ import { User } from '../models/user.model';
 import { ConnectionInfoService } from './connexion-info.service';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { SsrService } from '@app/ui/layout/services/ssr.service';
 
 @Injectable()
 export class AuthorizeApiService {
     constructor(
         private httpClient: HttpClient, 
         private router: Router,
+        private ssrService: SsrService,
         private connexionInfo: ConnectionInfoService,
         private cookieService: CookieService) {
           
@@ -26,7 +28,7 @@ export class AuthorizeApiService {
     }
 
     public IsLogged(): Promise<boolean> {
-        return this.CheckToken();
+      return this.CheckToken();
       }
     
     Login(login: Login): Promise<void> {
@@ -52,6 +54,7 @@ export class AuthorizeApiService {
     }
 
     CheckToken(): Promise<boolean> {
+      if (!this.ssrService.isServer()) {
         const user = this.GetTokenByCookie();
         if (!user || !user.id_token) {
           this.connexionInfo.SetNewConnexionState(new UserToken());
@@ -70,10 +73,11 @@ export class AuthorizeApiService {
         if (user && user.refresh_token !== '' && new Date(user.expire_in) > new Date()) {
           return this.RefreshToken(user.refresh_token) as any;
         }
-    
-        this.connexionInfo.SetNewConnexionState(new UserToken());
-        this.FinaliseConnexionInfo(null);
-        return Promise.resolve(false);
+      }
+
+      this.connexionInfo.SetNewConnexionState(new UserToken());
+      this.FinaliseConnexionInfo(null);
+      return Promise.resolve(false);
     }
 
     public GetTokenByCookie(): UserToken | null {

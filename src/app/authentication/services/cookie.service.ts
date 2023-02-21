@@ -1,13 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { environment } from '@env/environment';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Request, Response } from 'express';
+
 
 @Injectable()
 export class CookieService {
   private document!: any;
   private documentIsAccessible!: any;
-  constructor() {
-    this.document = window.document;
+  cookies: any = {};
+  constructor(
+    @Optional() @Inject(REQUEST) private req: Request<any>,
+    @Optional() @Inject(RESPONSE) private res: Response<any>
+  ) {
+    if (this.req !== null) {
+      this.cookies = this.req.cookies;
+    } else {
+      this.document = document;
       this.documentIsAccessible = window.document !== undefined;
+    }
+    // this.document = window.document;
+    //   this.documentIsAccessible = window.document !== undefined;
   }
 
   Check(name: string): boolean {
@@ -20,6 +33,7 @@ export class CookieService {
   }
 
   Get(name: string): string {
+    const cookies: { [key: string]: string | null } = this.getPairs();
     if (this.documentIsAccessible && this.Check(name)) {
       const regExp = this.GetCookieRegExp(encodeURIComponent(name));
       const result = regExp.exec(this.document.cookie);
@@ -28,7 +42,7 @@ export class CookieService {
       }
     }
 
-    return '';
+    return null;
   }
 
   GetAll(): any {
@@ -107,5 +121,21 @@ export class CookieService {
   private GetCookieRegExp(name: string): RegExp {
     const escapedName = name.replace(/([\[\]\{\}\(\)\|\=\;\+\?\,\.\*\^\$])/ig, '\\$1');
     return new RegExp(`(?:^${escapedName}|;\\s*${escapedName})=(.*?)(?:;|$)`, 'g');
+  }
+
+  private getPairs(): { [key: string]: string | null } {
+    if (this.req === null) {
+      const parsed = this.document.cookie.split('; ');
+      const cookies: { [key: string]: string | null } = {};
+      parsed.forEach((element: string) => {
+        if (element) {
+          const pair = element.split('=');
+          cookies[pair[0]] = typeof pair[1] !== 'undefined' ? pair[1] : null;
+        }
+      });
+      return cookies;
+    } else {
+      return this.cookies;
+    }
   }
 }

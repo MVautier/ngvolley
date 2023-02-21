@@ -81,7 +81,7 @@ export class GalleryService {
         if (loaded) {
             this.ckfinder = window['CKFinder'];
             this.ckfinder.basePath = '/assets/ckfinder/';
-            this.ckfinder.baseUrl = environment.basePath + 'assets/ckfinder/';
+            this.ckfinder.baseUrl = (environment.ssrMode ? environment.basePathSsr : environment.basePath) + 'assets/ckfinder/';
             this.ckfinder.uploadUrl = environment.apiUrl + 'gallery/';
             this.ckfinder.config.connectorPath = environment.apiUrl + 'gallery/';
             this.ckfinder._connectors['net'] = environment.apiUrl + 'gallery';

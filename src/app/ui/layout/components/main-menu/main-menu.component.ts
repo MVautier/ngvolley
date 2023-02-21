@@ -8,7 +8,8 @@ import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { first, Observable } from 'rxjs';
-import { ThemeService } from '../../services/theme.service';
+import { SsrService } from '../../services/ssr.service';
+import { ThemeService } from '@app/core/services/theme.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -26,13 +27,15 @@ export class MainMenuComponent implements OnInit {
 
   constructor(private themeService: ThemeService,
     private modalService: BsModalService, 
+    private ssrService: SsrService,
     private authService: AuthorizeApiService,
     private routeService: RouteService,
     private connexionInfo: ConnectionInfoService,
     private router: Router) { }
 
   ngOnInit(): void {
-    console.log('checking login status...');
+    if (!this.ssrService.isServer()) {
+      console.log('checking login status...');
       this.authService.CheckToken().then(logged => {
         this.logged = logged;
         this.connexionInfo.GetOnChangeConnexion().subscribe(token => {
@@ -44,6 +47,7 @@ export class MainMenuComponent implements OnInit {
         this.tree = tree;
         this.initPages();
       }, 'subTreeHeader');
+    }
   }
 
   toggleDarkTheme(checked: boolean) {
@@ -78,7 +82,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   goToPage(page: string) {
-    this.router.navigate([page]);
+    this.router.navigate(['page/' + page]);
   }
 
   showModalLogin() {

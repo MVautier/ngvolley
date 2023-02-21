@@ -9,7 +9,6 @@ import { AuthenticationModule } from "@app/authentication/authentication.module"
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ThemeService } from "./services/theme.service";
 import { TileComponent } from './components/tile/tile.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialThemeModule } from "@app/material-theme/material-theme.module";
@@ -18,6 +17,7 @@ import { PageComponent } from "@app/ui/layout/components/page/page.component";
 import { ModalComponent } from './components/modal/modal.component';
 import { SafeHtmlPipe } from "@app/core/pipes/safe-html.pipe";
 import { CoreModule } from "@app/core/core.module";
+import { CustomErrorComponent } from './components/custom-error/custom-error.component';
 
 @NgModule({
 
@@ -29,7 +29,8 @@ import { CoreModule } from "@app/core/core.module";
     ToolbarComponent,
     CenterComponent,
     PageComponent,
-    ModalComponent
+    ModalComponent,
+    CustomErrorComponent
   ],
   imports: [
     CommonModule,
@@ -41,13 +42,11 @@ import { CoreModule } from "@app/core/core.module";
     ModalModule.forRoot(),
     AuthenticationModule.forRoot()
   ],
-  providers: [
-    
-  ],
   exports: [
     TileComponent,
     MaterialThemeModule,
-    ModalComponent
+    ModalComponent,
+    CustomErrorComponent
   ]
 })
 export class LayoutModule {
@@ -56,8 +55,7 @@ export class LayoutModule {
         ngModule: LayoutModule,
         providers: [
           SliderService,
-          BsModalService,
-          ThemeService
+          BsModalService
         ]
       };
     }
