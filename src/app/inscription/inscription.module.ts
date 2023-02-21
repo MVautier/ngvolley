@@ -6,8 +6,8 @@ import { InscriptionPageComponent } from './pages/inscription-page/inscription-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
-
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgxMaskModule } from 'ngx-mask';
 @NgModule({
   declarations: [
     InscriptionPageComponent
@@ -18,6 +18,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReactiveFormsModule,
     MaterialThemeModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
+    NgxMaskModule,
     InscriptionRoutingModule
   ]
 })

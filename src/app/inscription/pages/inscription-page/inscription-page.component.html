@@ -4,7 +4,7 @@
 
             <mat-form-field class="form-element row-item">
                 <mat-label>Nom</mat-label>
-                <input matInput placeholder="Nom" formControlName="lastname">
+                <input matInput placeholder="Nom" formControlName="lastname" [(ngModel)]="adherent.lastname">
                 <mat-error *ngIf="!formGroup.controls['lastname'].valid && formGroup.controls['lastname'].touched">
                   {{ getInputError('lastname') }}
                 </mat-error>
@@ -12,49 +12,40 @@
 
             <mat-form-field class="form-element row-item">
                 <mat-label>Prénom</mat-label>
-                <input matInput placeholder="Prénom" formControlName="firstname">
+                <input matInput placeholder="Prénom" formControlName="firstname" [(ngModel)]="adherent.firstname">
                 <mat-error *ngIf="!formGroup.controls['firstname'].valid && formGroup.controls['firstname'].touched">
                   {{ getInputError('firstname') }}
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-element row-item">
-                <mat-label>Genre</mat-label>
-                <mat-select formControlName="genre">
-                    <mat-option value="M">Masculin</mat-option>
-                    <mat-option value="F">Féminin</mat-option>
-                    <mat-option value="A">Autre</mat-option>
-                  </mat-select>
-                <!-- <select matNativeControl formControlName="genre">
-                    <option value="M">Masculin</option>
-                    <option value="F">Féminin</option>
-                    <option value="A">Autre</option>
-                  </select> -->
-                <mat-error *ngIf="!formGroup.controls['genre'].valid && formGroup.controls['genre'].touched">
-                  {{ getInputError('genre') }}
-                </mat-error>
-            </mat-form-field>
+            <div class="form-element row-item flex">
+                <mat-form-field class="first first-25">
+                    <!-- <mat-label class=""genre>Genre</mat-label> -->
+                    <label>Genre *</label>
+                    <mat-select formControlName="sex" [(ngModel)]="adherent.sex" class="genre">
+                        <mat-option value="M">Masculin</mat-option>
+                        <mat-option value="F">Féminin</mat-option>
+                        <mat-option value="A">Autre</mat-option>
+                      </mat-select>
+                    <mat-error *ngIf="!formGroup.controls['sex'].valid && formGroup.controls['sex'].touched">
+                      {{ getInputError('sex') }}
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field class="form-element row-item">
-                <mat-label>Date de naissance</mat-label>
-
-                <input matInput [matDatepicker]="picker" formControlName="birthdate" (dateChange)="addInfo('change', $event)" readonly>
-                <mat-hint>JJ/MM/AAAA</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="!formGroup.controls['birthdate'].valid && formGroup.controls['birthdate'].touched">
-                    {{ getDateError('birthdate') }}
-                  </mat-error>
-                
-                <!-- <input matInput placeholder="Date de naissance" formControlName="birthdate">
-                <mat-error *ngIf="!formGroup.controls['birthdate'].valid && formGroup.controls['birthdate'].touched">
-                  {{ getInputError('birthdate') }}
-                </mat-error> -->
-            </mat-form-field>
+                <mat-form-field class="last">
+                    <mat-label>Date de naissance</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="birthdate" (dateChange)="addInfo('change', $event)" readonly [(ngModel)]="adherent.birthdate">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="!formGroup.controls['birthdate'].valid && formGroup.controls['birthdate'].touched">
+                        {{ getDateError('birthdate') }}
+                      </mat-error>
+                </mat-form-field>
+            </div>
 
             <mat-form-field class="form-element row-item">
                 <mat-label>Adresse</mat-label>
-                <input matInput placeholder="Adresse" formControlName="address">
+                <input matInput placeholder="Adresse" formControlName="address" [(ngModel)]="adherent.address">
                 <mat-error *ngIf="!formGroup.controls['address'].valid && formGroup.controls['address'].touched">
                   {{ getInputError('address') }}
                 </mat-error>
@@ -63,7 +54,7 @@
             <div class="form-element row-item flex">
                 <mat-form-field class="first first-25">
                     <mat-label>Code postal</mat-label>
-                    <input matInput placeholder="Code postal" formControlName="postalcode">
+                    <input matInput placeholder="Code postal" formControlName="postalcode" [(ngModel)]="adherent.postalcode">
                     <mat-error *ngIf="!formGroup.controls['postalcode'].valid && formGroup.controls['postalcode'].touched">
                       {{ getInputError('postalcode') }}
                     </mat-error>
@@ -71,33 +62,35 @@
     
                 <mat-form-field class="last">
                     <mat-label>Ville</mat-label>
-                    <input matInput placeholder="Ville" formControlName="city">
+                    <input matInput placeholder="Ville" formControlName="city" [(ngModel)]="adherent.city">
                     <mat-error *ngIf="!formGroup.controls['city'].valid && formGroup.controls['city'].touched">
                       {{ getInputError('city') }}
                     </mat-error>
                 </mat-form-field>
     
             </div>
-            
-            <mat-form-field class="form-element row-item">
-                <mat-label>Téléphone fixe</mat-label>
-                <input matInput placeholder="Téléphone fixe" formControlName="phone">
-                <mat-error *ngIf="!formGroup.controls['phone'].valid && formGroup.controls['phone'].touched">
-                  {{ getInputError('phone') }}
-                </mat-error>
-            </mat-form-field>
 
-            <mat-form-field class="form-element row-item">
-                <mat-label>Téléphone portable</mat-label>
-                <input matInput placeholder="Téléphone portable" formControlName="mobile">
-                <mat-error *ngIf="!formGroup.controls['mobile'].valid && formGroup.controls['mobile'].touched">
-                  {{ getInputError('mobile') }}
-                </mat-error>
-            </mat-form-field>
+            <div class="form-element row-item flex">
+                <mat-form-field class="first first-50">
+                    <mat-label>Téléphone fixe</mat-label>
+                    <input matInput [mask]="phoneInputMask" placeholder="Téléphone fixe" formControlName="phone" [(ngModel)]="adherent.phone">
+                    <mat-error *ngIf="!formGroup.controls['phone'].valid && formGroup.controls['phone'].touched">
+                      {{ getInputError('phone') }}
+                    </mat-error>
+                </mat-form-field>
+    
+                <mat-form-field class="last">
+                    <mat-label>Téléphone portable</mat-label>
+                    <input matInput [mask]="phoneInputMask" placeholder="Téléphone portable" formControlName="mobile" [(ngModel)]="adherent.mobile">
+                    <mat-error *ngIf="!formGroup.controls['mobile'].valid && formGroup.controls['mobile'].touched">
+                      {{ getInputError('mobile') }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
             <mat-form-field class="form-element row-item">
                 <mat-label>Adresse de messagerie</mat-label>
-                <input matInput placeholder="Adresse de messagerie" formControlName="email">
+                <input matInput placeholder="Adresse de messagerie" formControlName="email" [(ngModel)]="adherent.email">
                 <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
                   {{ getInputError('email') }}
                 </mat-error>
@@ -105,4 +98,7 @@
 
         </section>
     </form>
+    <div>
+      <button (click)="onSubmit()">Valider</button>
+    </div>
 </section>

@@ -39,6 +39,7 @@
     "ng-click-outside": "^9.0.0",
     "ngx-bootstrap": "^9.0.0",
     "ngx-colors": "^3.1.4",
+    "ngx-mask": "^14.2.4",
     "ngx-toastr": "^15.2.1",
     "rxjs": "~7.5.0",
     "swiper": "^8.4.4",

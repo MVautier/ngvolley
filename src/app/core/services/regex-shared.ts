@@ -3,6 +3,7 @@ export class RegexShared {
     regexPhone: RegExp = /[0-9]{10}/g;
     regexDate: RegExp = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
     regexMobile: RegExp = /^0(6|7)[0-9]{8}/g;
+    regexCp: RegExp = /[0-9]{5}/g;
     //regexSmsExpediteur: RegExp = /^(?!0).*[a-zA-Z]+[0-9]*/;
     regexSmsExpediteur: RegExp = /^(?!0)(?:[0-9]+[a-z]|[a-z]+[0-9]|[a-z])[a-z0-9]*$/i;
     regexSmsCharBlackListe: RegExp = /([^a-zA-Z0-9 ,\-é\.:\(\)!\"#\$\%\&\'\*\+\/;<=>\?\@\_à\\¡£¤¥ñòöøùü\[\]€\{\}\|ìèæåä¿ßÜØÖÑÉÆÅÄ§\n]){1}/g;
