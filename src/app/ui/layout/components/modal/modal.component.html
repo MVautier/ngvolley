@@ -1,15 +1,11 @@
-<div class="ng-modal" [ngClass]="size">
+<div class="ng-modal" [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'" [ngStyle]="{'width': config?.size.width, 'height': config?.size.height}">
     <div class="ng-modal-content">
         <div class="ng-modal-header">
-            <h1>{{ title }}</h1>
-            <mat-icon class="close" (click)="onCancel()">close</mat-icon>
+            <h1>{{ config?.title }}</h1>
+            <mat-icon class="close" (click)="onClose()">close</mat-icon>
         </div>
-        <div class="ng-modal-body">
-            {{ text }}
-        </div>
-        <div class="ng-modal-footer">
-            <button type="button" mat-raised-button color="primary" (click)="onValidate()">Valider</button>
-            <button type="button" mat-raised-button (click)="onCancel()">Annuler</button>
-        </div>
+        
+        <ng-template appDynamic></ng-template>
+        
     </div>
 </div>

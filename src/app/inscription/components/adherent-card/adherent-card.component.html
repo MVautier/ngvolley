@@ -1,0 +1,46 @@
+<div class="section-title">
+  <span class="title">Documents</span>
+</div>
+
+<form *ngIf="form && adherent" [formGroup]="form" novalidate>
+  <section class="inscription">
+    <img src="{{imgSrc}}" height="200" alt="Image preview..." *ngIf="imgSrc">
+    {{adherent.FirstName}} {{adherent.LastName}}
+
+    <div *ngIf="checked.parentAuthNeeded" class="border-div" (click)="showModalAuthParent()">
+      Autorisation parentale
+    </div>
+
+    <div class="check">
+      <div class="info">
+        <span class="accent">Certificat médical</span> de non contre-indication à la pratique du sport ou de la
+        discipline
+        concernée pour toute nouvelle adhésion
+        ou tous les 3 ans, conformément aux disposition du code du sport et à la volonté fédérale de l'UNSLL en matire
+        de
+        prévention de la santé du sportif.
+      </div>
+      <div *ngIf="!checked.certifNeeded" class="info">
+        <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal, conformément au décret
+        n°2016-1387 du 12/10/2016.
+      </div>
+    </div>
+
+    <mat-form-field>
+      <ngx-mat-file-input formControlName="file" placeholder="Basic Input" (change)="onFileChange(form.value)">
+      </ngx-mat-file-input>
+      <mat-error *ngIf="form.get('file').hasError('maxContentSize')">
+        File size {{form.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
+        ({{form.get('file').value.files[0].name | json}} g {{form.get('file')?.getError('maxContentSize').actualSize |
+        json
+        }} - {{form.get('file')?.getError('maxContentSize').actualSize
+        | byteFormat}}).
+      </mat-error>
+    </mat-form-field>
+
+    <div>
+      
+    </div>
+  </section>
+
+</form>

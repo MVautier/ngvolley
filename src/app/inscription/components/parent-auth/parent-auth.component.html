@@ -1,0 +1,50 @@
+
+<div id="content-auth" class="main-form">
+    <app-form-header></app-form-header>
+    <div class="auth-form">
+        Je soussigné(e), 
+        <input class="form-control" type="text" name="lastname" placeholder="Nom*" [(ngModel)]="lastname" required [ngClass]="{error: lastnameError}">
+        <input class="form-control" type="text" name="firstname" placeholder="Prénom*" [(ngModel)]="firstname" required [ngClass]="{error: firstnameError}">
+    </div>
+    <div class="auth-form statut">
+        <input type="radio" class="radio" name="statut" [(ngModel)]="statut" [value]="'Père'" [ngClass]="{error: statutError}"> Père
+        <input type="radio" class="radio" name="statut" [(ngModel)]="statut" [value]="'Mère'" [ngClass]="{error: statutError}"> Mère
+        <input type="radio" class="radio" name="statut" [(ngModel)]="statut" [value]="'Tuteur légal'" [ngClass]="{error: statutError}"> Tuteur légal
+    </div>
+    <div class="auth-form tel">
+        <input class="form-control" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Téléphone domicile" [(ngModel)]="telfixe" required [ngClass]="{error: telError}">
+        <input class="form-control" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Téléphone portable" [(ngModel)]="mobile" required [ngClass]="{error: telError}">
+    </div>
+    <div class="auth-form">
+        autorise mon enfant 
+        <input class="form-control" type="text" name="childlastname" placeholder="Nom" [(ngModel)]="childlastname" required [ngClass]="{error: childlastnameError}">
+        <input class="form-control" type="text" name="childfirstname" placeholder="Prénom" [(ngModel)]="childfirstname" required [ngClass]="{error: childfirstnameError}">
+    </div>
+    <div class="auth-form">
+        né(e) le  
+        <input class="form-control" type="date" name="datenaissance" [(ngModel)]="datenaissance" required [ngClass]="{error: datenaissanceError}">
+    </div>
+    <div class="auth-form">
+        à adhérer à la section Volley-ball (y compris toutes les activités proposées par cette section) et les responsables à faire procéder à toute 
+        intervention médicale d'urgence. 
+    </div>
+    <div class="auth-form">
+        Les responsables dégagent leur responsabilité dès la sortie des enfants du gymnase.
+    </div>
+    <div class="auth-form end">
+        A  
+        <input class="form-control" type="text" name="city" placeholder="Commune" [(ngModel)]="city" required [ngClass]="{error: cityError}"> 
+        , le 
+        <input class="form-control" type="date" name="date"[(ngModel)]="date" required [ngClass]="{error: dateError}">
+         
+    </div>
+    <div class="auth-form end sig">
+        Signature <canvas #canvas width="292" height="100" [ngClass]="{error: sigError}"></canvas>
+    </div>
+    <app-form-footer></app-form-footer>
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+    <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+</div>

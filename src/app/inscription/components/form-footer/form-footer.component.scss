@@ -1,0 +1,19 @@
+.footer {
+    background: #fff;
+    color: #000;
+    width: 100%;
+    display: flex;
+    font-size: 12px;
+    line-height: 12px;
+    align-items: flex-end;
+    .left{
+        width: 20%;
+    }
+    .right{
+        width: 80%;
+        text-align: right;
+        text-transform: uppercase;
+        font-style: italic;
+        font-size: 10px;
+    }
+}

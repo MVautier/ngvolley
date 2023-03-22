@@ -9,12 +9,12 @@
     </div>
 </div> -->
 <!-- Toolbar -->
-<div class="main-content" [ngClass]="{'my-alternate-theme': theme === 'custom'}">
+<div class="main-content" [ngClass]="{'dark-theme': theme === 'dark', 'light-theme': theme == 'light'}">
   <mat-toolbar color="primary" class="header">
+    <mat-icon (click)="toggleMenu()" class="hamburger">{{ opened ? 'menu_open' : 'menu' }}</mat-icon>
     <div>CLLL COLOMIERS</div>
     <span class="nav-tool-items">
-      <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleTheme($event.checked)">Light mode</mat-slide-toggle>
-      <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
+      <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme($event.checked)">Dark mode</mat-slide-toggle>
     </span>
   </mat-toolbar>
   
@@ -25,7 +25,7 @@
     </mat-sidenav>
       
     <!-- Main content -->
-    <mat-sidenav-content>
+    <mat-sidenav-content class="scroll1">
       <router-outlet></router-outlet>
       <!-- Applying the mat-tyography class adds styles for native elements. -->
       <!-- <section class="mat-typography title-group">

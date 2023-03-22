@@ -1,87 +1,222 @@
-.modal-dialog{
-  max-width: 640px;
-  &-xl{
-    max-width: 1140px;
-    overflow: hidden;
-  }
-  max-height: calc(100% - 1rem);
-  overflow: auto;
-  @media screen and (max-width: 400px){
-    display: block;
-  }
-  .modal-header{
-    padding: 30px 80px 30px 45px;
-    font-family: var(--font);
-    font-size: 27px;
-    line-height: 33px;
-    font-weight: 700;
-    border: none;
-    // @include media-breakpoint-down(md){
-    //   font-size: 25px;
-    // }
-    // @include media-breakpoint-down(sm){
-    //   font-size: 22px;
-    //   padding: 20px 60px 20px 20px;
-    // }
-    @media screen and (max-width: 400px){
-      padding: 40px 20px 20px;
-    }
-    .close{
-      position: absolute;
-      right: 30px;
-      top: 30px;
-      opacity: 1;
-      // @include media-breakpoint-down(sm){
-      //   right: 20px;
-      //   top: 25px;
-      // }
-      // @media screen and (max-width: 400px){
-      //   top: 10px;
-      // }
-      svg{
-        fill: var(--blue);
-        // @include media-breakpoint-down(sm){
-        //   width: 20px;
-        //   height: 20px;
-        // }
-      }
-    }
-  }
-  .modal-body{
-    padding: 0 80px 0 45px;
-    // @include media-breakpoint-down(sm){
-    //   padding: 0 60px 0 20px;
-    // }
-    @media screen and (max-width: 400px){
-      padding: 0 20px;
-    }
-  }
-  .modal-footer{
-    padding: 30px 80px 30px 45px;
-    border: none;
+@import "variables";
+
+.ng-modal {
+  display: flex;
+  .ng-modal-content {
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    // @include media-breakpoint-down(sm){
-    //   padding: 20px 60px 20px 20px;
-    // }
-    @media screen and (max-width: 400px){
+    flex-direction: column;
+    background: var(--background-dialog);
+    color: var(--primary);
+    border-radius: 5px;
+    .main-form {
+      background: #fff;
+      color: #000;
+      display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 20px;
+      justify-content: baseline;
+      padding: 10px;
+      .auth-form {
+        display: flex;
+        flex-direction: row;
+        line-height: 24px;
+        margin: 10px;
+        &.statut {
+          margin-left: 140px;
+        }
+        &.tel {
+          margin-left: 75px;
+        }
+        input[type="date"]{
+          width: 110px;
+        }
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          display: none;
+          -webkit-appearance: none;
+        }
+        input {
+          width: 200px;
+          height: 24px;
+          margin-left: 20px;
+          &.error {
+            border-color: red !important;
+          }
+          &.radio {
+            appearance: inherit;
+            width: 15px;
+            height: 15px;
+            margin-right: 10px;
+            background: #fff;
+            border-radius: 50%;
+            border: 1px solid #000;
+            margin-top: 5px;
+            &:checked {
+              background: #000;
+            }
+          }
+        }
+        canvas {
+          outline: #ccc 1px solid;
+          margin-left: 20px;
+          border-radius: 5px;
+          &.error {
+            outline: red 1px solid;
+          }
+        }
+      }
     }
-    .link{
-      margin-right: 20px;
-      @media screen and (max-width: 400px){
-        margin-right: 0;
-        margin-bottom: 15px;
+    .ng-modal-header {
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-shrink: 0;
+      justify-content: space-between;
+      padding: 1rem 1rem;
+      h1 {
+        font-size: 1.25rem !important;
+        margin: 0;
+      }
+      .close {
+        cursor: pointer;
+        opacity: 0.5;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+    .ng-modal-body {
+      position: relative;
+      flex: 1 1 auto;
+      padding: 1rem;
+      .input {
+        width: 100%;
+        margin-bottom: 10px;
+        input {
+          width: 100%;
+        }
+        &--pswd {
+          display: flex;
+          flex-direction: row;
+          &.error {
+            &:before {
+              right: 40px;
+            }
+          }
+        }
+      }
+      .error-msg {
+        margin-right: auto;
+        &.blocked {
+          text-align: center;
+        }
+      }
+      .eye-pwd {
+        position: absolute;
+        right: 20px;
+        margin-top: 8px;
+        cursor: pointer;
+        opacity: 0.7;
+        font-size: 1.3rem;
+      }
+    }
+    .ng-modal-footer {
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0.75rem;
+      button {
+        margin-left: 15px;
       }
     }
   }
 }
-.modal-backdrop{
-  background: var(--blue);
-  &.show {
-    opacity: 0.65;
-  }
-}
+// .modal-dialog{
+//   max-width: 640px;
+//   &-xl{
+//     max-width: 1140px;
+//     overflow: hidden;
+//   }
+//   max-height: calc(100% - 1rem);
+//   overflow: auto;
+//   @media screen and (max-width: 400px){
+//     display: block;
+//   }
+//   .modal-header{
+//     padding: 30px 80px 30px 45px;
+//     font-family: var(--font);
+//     font-size: 27px;
+//     line-height: 33px;
+//     font-weight: 700;
+//     border: none;
+//     // @include media-breakpoint-down(md){
+//     //   font-size: 25px;
+//     // }
+//     // @include media-breakpoint-down(sm){
+//     //   font-size: 22px;
+//     //   padding: 20px 60px 20px 20px;
+//     // }
+//     @media screen and (max-width: 400px){
+//       padding: 40px 20px 20px;
+//     }
+//     .close{
+//       position: absolute;
+//       right: 30px;
+//       top: 30px;
+//       opacity: 1;
+//       // @include media-breakpoint-down(sm){
+//       //   right: 20px;
+//       //   top: 25px;
+//       // }
+//       // @media screen and (max-width: 400px){
+//       //   top: 10px;
+//       // }
+//       svg{
+//         fill: var(--blue);
+//         // @include media-breakpoint-down(sm){
+//         //   width: 20px;
+//         //   height: 20px;
+//         // }
+//       }
+//     }
+//   }
+//   .modal-body{
+//     padding: 0 80px 0 45px;
+//     // @include media-breakpoint-down(sm){
+//     //   padding: 0 60px 0 20px;
+//     // }
+//     @media screen and (max-width: 400px){
+//       padding: 0 20px;
+//     }
+//   }
+//   .modal-footer{
+//     padding: 30px 80px 30px 45px;
+//     border: none;
+//     display: flex;
+//     justify-content: flex-end;
+//     align-items: center;
+//     // @include media-breakpoint-down(sm){
+//     //   padding: 20px 60px 20px 20px;
+//     // }
+//     @media screen and (max-width: 400px){
+//       flex-direction: column;
+//       align-items: center;
+//       padding: 20px;
+//     }
+//     .link{
+//       margin-right: 20px;
+//       @media screen and (max-width: 400px){
+//         margin-right: 0;
+//         margin-bottom: 15px;
+//       }
+//     }
+//   }
+// }
+// .modal-backdrop{
+//   background: var(--blue);
+//   &.show {
+//     opacity: 0.65;
+//   }
+// }

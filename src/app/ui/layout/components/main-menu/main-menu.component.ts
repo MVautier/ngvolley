@@ -1,15 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalLoginComponent } from '@app/authentication/components/modal-login/modal-login.component';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 import { ConnectionInfoService } from '@app/authentication/services/connexion-info.service';
 import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { first, Observable } from 'rxjs';
+import { Observable, Subject, takeUntil, Subscription } from 'rxjs';
 import { SsrService } from '../../services/ssr.service';
 import { ThemeService } from '@app/core/services/theme.service';
+import { ModalService } from '../../services/modal.service';
+import { ModalConfig } from '../../models/modal-config.model';
 
 @Component({
   selector: 'app-main-menu',
@@ -20,13 +20,16 @@ export class MainMenuComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
   logged: boolean;
   showMobileMenu = false;
-  modalRef: BsModalRef;
+
   tree: Tree;
   pages: WebItem[];
   isDarkTheme: Observable<boolean>;
 
+  subModal: Subscription;
+  notifier = new Subject<void>();
+
   constructor(private themeService: ThemeService,
-    private modalService: BsModalService, 
+    private modalService: ModalService,
     private ssrService: SsrService,
     private authService: AuthorizeApiService,
     private routeService: RouteService,
@@ -48,10 +51,6 @@ export class MainMenuComponent implements OnInit {
         this.initPages();
       }, 'subTreeHeader');
     }
-  }
-
-  toggleDarkTheme(checked: boolean) {
-    this.themeService.setDarkTheme(checked);
   }
 
   initPages() {
@@ -86,14 +85,22 @@ export class MainMenuComponent implements OnInit {
   }
 
   showModalLogin() {
-    this.modalRef = this.modalService.show(
-      ModalLoginComponent,
-      Object.assign({}, { class: 'gray modal-xlg' })
-    );
-    this.modalRef.content.onSuccessLogin.pipe(first()).subscribe(() => {
-      this.modalRef.hide();
+    this.modalService.open({
+      title: 'Connexion',
+      validateLabel: 'Connexion',
+      cancelLabel: 'Mot de passe oublié',
+      size: {
+        width: '',
+        height: ''
+      },
+      component: 'login'
     });
-
-    this.modalRef.content.cancelEvent.pipe(first()).subscribe(() => this.modalRef.hide());
+    this.modalService.returnData
+    .pipe(takeUntil(this.notifier))
+    .subscribe(result => {
+      console.log('data received from modal: ', result);
+      this.notifier.next();
+      this.notifier.complete();
+    });
   }
 }

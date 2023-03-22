@@ -4,6 +4,7 @@ import { User } from '@app/authentication/models/user.model';
 import { PageComponent } from '@app/ui/layout/components/page/page.component';
 import { environment } from '@env/environment';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { Adherent } from '../models/adherent.model';
 import { Tree } from '../models/tree.model';
 import { WebItem } from '../models/web-item.model';
 import { ApiPingService } from './api-ping.service';

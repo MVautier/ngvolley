@@ -9,9 +9,14 @@ import { Block } from '../../models/block.model';
 export class BlockComponent implements OnInit {
   @Input() block: Block;
   @Input() handle: boolean;
+  showMove = false;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  toggleMove() {
+    this.showMove = !this.showMove;
+  }
 }

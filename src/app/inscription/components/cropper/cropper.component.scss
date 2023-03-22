@@ -1,0 +1,49 @@
+
+
+.content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0;
+    .photo-cropper{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 250px;
+        width: 333px;
+        margin: 10px;
+    }
+    .buttons{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 70px;
+        align-items: center;
+        padding: 0 0 0 10px;
+        .icon-button {
+            .mat-icon{
+                transform: scale(1);
+              }
+            .mat-slider-thumb-label-text {
+                transform: rotate(0) !important;
+              }
+        }
+    }
+    .cropped{
+        padding: 36px;
+        height: 193px;
+        width: 150px;
+        .gabarit{
+            height: 193px;
+            width: 150px;
+            background-image: url('./../../../../assets/images/gabarit_ci.png');
+            img{
+                object-fit: contain;
+                height: 193px;
+                width: 150px;
+                opacity: 0.5;
+            }
+        }
+        
+    }
+}

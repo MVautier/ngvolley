@@ -31,10 +31,10 @@ export class AuthorizeApiService {
       return this.CheckToken();
       }
     
-    Login(login: Login): Promise<void> {
+    Login(login: Login): Promise<UserToken> {
         return this.Authorize(login).then((us) => {
             this.AssignToken(us);
-            return;
+            return us;
         });
     }
   

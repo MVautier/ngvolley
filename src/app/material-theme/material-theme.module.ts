@@ -33,6 +33,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 const materialModules = [
   CdkTreeModule,
@@ -47,12 +48,13 @@ const materialModules = [
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatSlideToggleModule,
   MatProgressSpinnerModule,
   MatPaginatorModule,
   MatRippleModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
   MatSnackBarModule,
   MatSortModule,
   MatTableModule,

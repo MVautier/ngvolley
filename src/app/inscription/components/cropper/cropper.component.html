@@ -1,0 +1,53 @@
+<div class="content">
+    <div class="photo-cropper">
+            <image-cropper *ngIf="config?.data"
+                [imageBase64]="config.data"
+                [maintainAspectRatio]="false"
+                [aspectRatio]="3 / 4"
+                [canvasRotation]="canvasRotation"
+                [transform]="transform"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded($event)"
+                (cropperReady)="cropperReady()"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+    </div>
+
+    <div *ngIf="config?.data" class="buttons">
+		<button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onRotate()">
+			<mat-icon>crop_rotate</mat-icon>
+		</button>
+
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onSwap('h')">
+			<mat-icon>swap_horiz</mat-icon>
+		</button>
+
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onSwap('v')">
+			<mat-icon>swap_vert</mat-icon>
+		</button>
+		
+		<mat-slider
+			thumbLabel
+			(input)="onOpacity($event)"
+			tickInterval="1"
+			min="0"
+			max="100"
+			step="1"
+			[value]="opacity"
+			[vertical]="true"
+			>
+		</mat-slider>
+	</div>
+
+    <div *ngIf="croppedImage" class="cropped">
+        <div id="gabarit" class="gabarit">
+            <img id="cropped" [src]="croppedImage" />
+        </div>
+    </div>
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+    <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+</div>

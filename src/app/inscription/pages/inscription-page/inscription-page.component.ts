@@ -1,9 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Component, OnInit } from '@angular/core';
 import { Adherent } from '@app/core/models/adherent.model';
 import { RegexShared } from '@app/core/services/regex-shared';
+import { ThemeService } from '@app/core/services/theme.service';
+import { CartItem } from '@app/inscription/models/cart-item.model';
+import { Cart } from '@app/inscription/models/cart.model';
+import { MemberRemove } from '@app/inscription/models/member-remove.model';
+import { StartInscription } from '@app/inscription/models/start-inscription.model';
+import { InscriptionService } from '@app/inscription/services/inscription.service';
+import { LayoutService } from '@app/ui/layout/services/layout.service';
+import { environment } from '@env/environment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-inscription-page',
@@ -11,65 +17,139 @@ import { RegexShared } from '@app/core/services/regex-shared';
   styleUrls: ['./inscription-page.component.scss']
 })
 export class InscriptionPageComponent implements OnInit {
-  adherent: Adherent = new Adherent();
-  formGroup: FormGroup;
-  requiredAlert: string = 'Ce champ est requis';
-  phoneInputMask = '00 00 00 00 00';
-  // telfixePattern: RegExp = /^0(1|2|3|4|5|9)() [0-9]{2}){4}/;
-  // mobilePattern: RegExp = /^0(6|7)( [0-9]{2}){4}/;
-  patterns = { 
-    'postalcode': { pattern: /[0-9]{5}/ },
-    'onlystring': { pattern: /[a-zA-Z- '"]/ },
-    'telfixe': { pattern: /^0(1|2|3|4|5|9)([0-9]{2}){4}/ },
-    'mobile': { pattern: /^0(6|7)([0-9]{2}){4}/ },
-    'email': { pattern: /^(?:[A-z0-9!#$%&'*\/=?^_{|}~]+(?:\.[A-z0-9!#$%&'*+\/=?^_{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")[\.\_\-\+]?(?:[A-z0-9!#$%&'*+\/=?^_{|}~-]+(?:\.[A-z0-9!#$%&'*+\/=?^_{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[A-z0-9](?:[A-z0-9-]*[A-z0-9])?\.)+[A-z0-9](?:[A-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[A-z0-9-]*[A-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/ } 
-  };
+  title: string;
+  otherSections: string[] = [];
+  title2: string = environment.assoTitle;
+  step = 1;
+  adherent: Adherent;
+  modalRef: BsModalRef;
+  isDarkTheme: boolean;
+  isMenuOpened: boolean;
+  cart: Cart;
+  startIns: StartInscription;
+  asso = environment.asso;
+  docurl = environment.urlassodocs;
 
   constructor(
-    private _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) private _locale: string,
-    private formBuilder: FormBuilder,
-    private regex: RegexShared) { }
+    private inscriptionService: InscriptionService,
+    private themeService: ThemeService,
+    private layoutService: LayoutService,
+    private modalService: BsModalService,
+    private regex: RegexShared) { 
+      this.themeService.isDarkTheme.subscribe(isDark => {
+        this.isDarkTheme = isDark;
+      })
+      this.layoutService.obsMenuOpened.subscribe(isOpened => {
+        this.isMenuOpened = isOpened;
+      });
+    }
 
   ngOnInit(): void {
-    this.initForm();
+    const y = new Date().getFullYear();
+    this.title = `Bulletin d\'adhésion ${y}-${y + 1}`; 
+    this.startIns = {
+      local: true
+    };
   }
 
-  initForm() {
-    this._locale = 'fr';
-    this._adapter.setLocale(this._locale);
-    this.formGroup = this.formBuilder.group({
-      'lastname': [this.adherent.lastname, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(this.patterns.onlystring.pattern)]],
-      'firstname': [this.adherent.firstname, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(this.patterns.onlystring.pattern)]],
-      'sex': [this.adherent.sex, [Validators.required]],
-      'birthdate': [this.adherent.birthdate, [Validators.required]],
-      'address': [this.adherent.address, [Validators.required]],
-      'postalcode': [this.adherent.postalcode, [Validators.required, Validators.pattern(this.patterns.postalcode.pattern)]],
-      'city': [this.adherent.city, [Validators.required, Validators.pattern(this.patterns.onlystring.pattern)]],
-      'phone': [this.adherent.phone, [Validators.required, Validators.pattern(this.patterns.telfixe.pattern)]],
-      'mobile': [this.adherent.mobile, [Validators.required, Validators.pattern(this.patterns.mobile.pattern)]],
-      'email': [this.adherent.email, [Validators.required, Validators.pattern(this.patterns.email.pattern)]]
+  onStep1Validate(info: StartInscription) {
+    this.cart = new Cart();
+    this.adherent = new Adherent(info.local ? environment.postalcode : null);
+    if (info) {
+      this.startIns = info;
+      const already = info.nom !== null && info.prenom !== null && info.section !== null;
+      if (already) {
+        this.adherent.MainSectionInfo = info.prenom + ' ' + info.nom + ': ' + info.section;
+      }
+      this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
+      const montant = already ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior);
+      this.cart.addItem({
+        type: 'adhesion',
+        libelle: 'Adhésion ' + environment.asso, 
+        montant: montant,
+        user: [this.adherent.Uid]
+      });
+      this.step++;
+    } else {
+      console.log('no info provided by step 1');
+    }
+    console.log('adherent: ', this.adherent);
+  }
+
+  onAdherentChange(adherent: Adherent) {
+    if (adherent && adherent.Uid) {
+      let item: CartItem;
+      if (adherent.Category) {
+        item = this.getCartItemByCategory(adherent.Category, 'categorie', adherent.Uid);
+        this.cart.addItem(item);
+      }
+      adherent.Membres.forEach(member => {
+        if (member.Category) {
+          item = this.getCartItemByCategory(member.Category, 'categorie', member.Uid);
+          this.cart.addItem(item);
+        }
+      });
+    }
+  }
+
+  getCartItemByCategory(categ: string, type: string, user: string): CartItem {
+    return {
+      type: type,
+      libelle: categ === 'C' ? 'Adultes avec Licence FSGT' : (categ === 'L' ? 'Adultes en loisirs détente' : 'Ados 13/17 ans avec licence FSGT'),
+      montant: categ === 'C' ? environment.tarifs.license : (categ === 'L' ? environment.tarifs.loisir : environment.tarifs.ado),
+      user: [user]
+    }
+  }
+
+  onAddMemberFromCart() {
+    this.inscriptionService.obsAddMember.next(true);
+  }
+
+  onAddMember(adherent: Adherent) {
+    console.log('add member in inscription: ', adherent);
+    this.adherent = adherent;
+    this.cart.addItem({
+      type: 'membre', 
+      libelle: 'Membre',
+      montant: environment.tarifs.member,
+      user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
     });
+    this.inscriptionService.obsAddMember.next(false);
+  } 
+
+  onRemoveMember(removed: MemberRemove) {
+    console.log('remove member in inscription: ', removed);
+    this.adherent = removed.adherent;
+    this.cart.removeItem(removed.user);
   }
 
-  getInputError(field: string) {
-    return this.formGroup.get(field).hasError('required') ? this.requiredAlert :
-        this.formGroup.get(field).hasError('pattern') ? 'Le format est invalide' : '';
+  onStep2Validate(adherent: Adherent) {
+    if (this.step === 2) {
+      this.adherent = adherent;
+    }
+    if (this.step === 3) {
+      this.adherent.Membres.push(adherent);
+    }
+    this.inscriptionService.setAdherent(this.adherent);
+    this.step++;
+    console.log('adherent: ', adherent);
   }
 
-  getDateError(field: string): string | boolean {
-    return this.formGroup.get(field).hasError('required') ? this.requiredAlert : '';
+  onCancel() {
+    if (this.step === 2) {
+      this.adherent = null;
+      this.startIns = {
+        local: true
+      };
+    }
+    this.step--;
   }
 
-  addInfo(type: string, event: MatDatepickerInputEvent<Date>) {
-    // const d = event.value;
-    // if (d) {
-
-    // }
-    // console.log(`${type}: ${event.value}`);
+  setStep(step: number) {
+    this.step = step;
   }
 
   onSubmit() {
-    console.log('adherent: ', this.adherent);
+
   }
 }

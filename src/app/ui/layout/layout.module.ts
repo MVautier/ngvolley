@@ -18,6 +18,10 @@ import { ModalComponent } from './components/modal/modal.component';
 import { SafeHtmlPipe } from "@app/core/pipes/safe-html.pipe";
 import { CoreModule } from "@app/core/core.module";
 import { CustomErrorComponent } from './components/custom-error/custom-error.component';
+import { LayoutService } from "./services/layout.service";
+import { ModalService } from "./services/modal.service";
+import { DynamicDirective } from "./directives/dynamic.directive";
+import { InscriptionService } from "@app/inscription/services/inscription.service";
 
 @NgModule({
 
@@ -30,7 +34,8 @@ import { CustomErrorComponent } from './components/custom-error/custom-error.com
     CenterComponent,
     PageComponent,
     ModalComponent,
-    CustomErrorComponent
+    CustomErrorComponent,
+    DynamicDirective
   ],
   imports: [
     CommonModule,
@@ -55,7 +60,10 @@ export class LayoutModule {
         ngModule: LayoutModule,
         providers: [
           SliderService,
-          BsModalService
+          BsModalService,
+          LayoutService,
+          ModalService,
+          InscriptionService
         ]
       };
     }

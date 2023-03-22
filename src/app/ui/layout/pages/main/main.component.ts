@@ -6,6 +6,7 @@ import { TransferStateService } from '@app/core/services/transfert-state.service
 import { Observable } from 'rxjs';
 import { SsrService } from '../../services/ssr.service';
 import { ThemeService } from '@app/core/services/theme.service';
+import { LayoutService } from '../../services/layout.service';
 
 
 @Component({
@@ -16,23 +17,18 @@ import { ThemeService } from '@app/core/services/theme.service';
 })
 export class MainComponent implements OnInit {
   opened = true;
-  isDarkTheme: Observable<boolean>;
+  isDarkTheme: boolean;
   theme = 'dark';
 
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    if (event.target.innerWidth < 768) {
-      this.sidenav.fixedTopGap = 64;
-      this.opened = false;
-    } else {
-      this.sidenav.fixedTopGap = 64
-      this.opened = true;
-    }
+    this.checkWindowSize();
   }
 
   constructor(
     private routeService: RouteService, 
+    private layoutService: LayoutService,
     private ssrService: SsrService,
     private transferState: TransferStateService,
     private themeService: ThemeService) { }
@@ -42,20 +38,31 @@ export class MainComponent implements OnInit {
       const errorKey = makeStateKey<any>('CUSTOM_ERRORS');
       const errors = this.transferState.get(errorKey, []);
       console.log('errors in main : ', errors);
-      if (window.innerWidth < 768) {
-        this.sidenav.fixedTopGap = 64;
-        this.opened = false;
-      } else {
-        this.sidenav.fixedTopGap = 64;
-        this.opened = true;
-      }
+      this.checkWindowSize();
     }
     
     this.init();
   }
 
+  checkWindowSize() {
+    setTimeout(() => {
+      if (window.innerWidth < 768) {
+        this.sidenav.fixedTopGap = 64;
+        this.opened = false;
+      } else {
+        this.sidenav.fixedTopGap = 64
+        this.opened = true;
+      }
+    }, 0);
+  }
+
   init() {
-    this.isDarkTheme = this.themeService.isDarkTheme;
+    this.isDarkTheme = this.themeService.isDarkTheme.value;
+  }
+
+  toggleMenu() {
+    this.sidenav.toggle();
+    this.layoutService.setMenuOpened(this.sidenav.opened);
   }
 
   isBiggerScreen(): boolean {
@@ -71,8 +78,8 @@ export class MainComponent implements OnInit {
   }
 
   toggleTheme(isDarkTheme: boolean) {
-    //this.themeService.setDarkTheme(isDarkTheme);
-    this.theme = this.theme === 'dark' ? 'custom' : 'dark';
-    this.isDarkTheme = this.themeService.isDarkTheme;
+    this.themeService.setTheme(isDarkTheme);
+    this.theme = isDarkTheme ? 'dark' : 'light';
+    this.isDarkTheme = isDarkTheme;
   }
 }

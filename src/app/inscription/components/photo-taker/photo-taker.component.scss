@@ -1,0 +1,43 @@
+@import "form";
+
+.photo-taker{
+    display: flex;
+    flex-direction: row;
+    div{
+        padding: 10px;
+    }
+    .info{
+        width: 50%;
+        mat-form-field{
+            padding-bottom: 5px;
+        }
+        .sub-info{
+            font-size: 12px;
+            font-style: italic;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+        .import-buttons{
+            display: flex;
+            justify-content: space-around;
+        }
+        .mat-icon {
+            transform: scale(1);
+        }
+    }
+    .preview {
+        width: 35%;
+        text-align: center;
+        img{
+            height: 193px;
+            width: 150px;
+            object-fit: cover;
+        }
+    }
+    .edit-buttons{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+

@@ -23,6 +23,7 @@ import { UtilService } from './services/util.service';
 import { CoreModule } from '@app/core/core.module';
 import { GalleryService } from './services/gallery.service';
 import { ItemEditButtonsComponent } from './components/item-edit-buttons/item-edit-buttons.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ItemEditButtonsComponent } from './components/item-edit-buttons/item-ed
     DragDropModule,
     BuilderEditorModule,
     ClickOutsideModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    NgxChartsModule
   ],
   providers: [
     IsLoggedGuard,

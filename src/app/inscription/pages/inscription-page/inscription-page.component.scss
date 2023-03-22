@@ -1,45 +1,53 @@
+@import "breadcrumb";
+@import 'variables';
 
-section.form {
-    min-width: 150px;
-    width: 100%;
-    padding: 0 40px;
-    .inscription {
-        max-width: 600px;
-        flex-wrap: wrap;
-        label {
-            opacity: 0.7;
-        }
-        .form-element {
-            width: 100%;
-            padding: 5px 0px 20px 2px;
-            &.flex {
-                display: flex;
-                &.row-item {
-                    flex: 1 0 50%;
-                    .first {
-                        padding-right: 5px;
-                        &-25 {
-                            flex: 1 0 25%;
-                        }
-                        &-50 {
-                            flex: 1 0 50%;
-                        }
-                        &-75 {
-                            flex: 1 0 75%;
-                        }
-                    }
-                    .last{
-                        flex: inherit;
-                    }
-                }
-                mat-label.genre {
-                    padding-top: 16px;
-                    font-size: 0px;
-                }
-                mat-select.genre {
-                    padding-top: 24px;
-                }
-            }
-        }
+.main {
+    max-width: var(--form_width);
+    transition: var(--global-transition);
+    &.no-menu{
+        max-width: calc(var(--form_width) + var(--sidenav_width));
     }
-  }
+}
+.title{
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.ins_info{
+    background: #eee;
+    max-width: 100%;
+    color: #000;
+    text-align: center;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border);
+    transition: var(--global-transition);
+    &.no-menu{
+        max-width: calc(var(--form_width) + var(--sidenav_width));
+    }
+    a{
+        color: var(--accent);
+    }
+}
+aside{
+    position: fixed;
+    top: 145px;
+    left: calc(var(--sidenav_width) + var(--form_width) + 60px);
+}
+.form{
+    border-radius: 10px;
+    background: var(--background-dialog);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+    // &.light{
+    //     background-color: #fff;
+    //     border: 1px solid rgba(255,255,255,.12);
+    // }
+    .inscription{
+        padding: 30px;
+        
+    }
+}
+

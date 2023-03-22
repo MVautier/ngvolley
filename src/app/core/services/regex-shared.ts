@@ -14,4 +14,8 @@ export class RegexShared {
     /* At least one alphabetic character */
     oneAlphaChar: RegExp = /[a-zA-Z]/;
     regexOnlyAlphaNumeric: RegExp = /^[A-Za-z0-9]+$/;
+
+    public normalize(str: string): string {
+        return str.normalize("NFD").replace(/\p{Diacritic}/gu, '');
+    }
 }

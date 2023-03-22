@@ -1,0 +1,53 @@
+
+
+<mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.local">
+    <label>Résidez-vous à {{city}} ?</label>  
+    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+</mat-radio-group>
+
+<mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="alreadySigned">
+    <label>Avez-vous un membre de la famille déjà inscrit à {{asso}} pour cette saison ?</label>  
+    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+</mat-radio-group>
+
+<div *ngIf="alreadySigned">
+    <div class="input">
+        <!-- <input class="form-control" type="text" name="section" placeholder="Nom des sections séparées par des vigules" [(ngModel)]="section" required> -->
+        <form *ngIf="formGroup" [formGroup]="formGroup" class="form">
+            <section class="inscription">
+                <div class="form-element row-item flex">
+                    <mat-form-field class="first first-50">
+                        <mat-label>Nom</mat-label>
+                        <input matInput placeholder="Nom"  formControlName="nom" required>
+                        <mat-error *ngIf="!formGroup.controls['nom'].valid && formGroup.controls['nom'].touched">
+                            {{ getInputError('nom') }}
+                          </mat-error>
+                    </mat-form-field>
+        
+                    <mat-form-field class="last">
+                        <mat-label>Prénom</mat-label>
+                        <input matInput placeholder="Prénom"  formControlName="prenom" required>
+                        <mat-error *ngIf="!formGroup.controls['prenom'].valid && formGroup.controls['prenom'].touched">
+                            {{ getInputError('prenom') }}
+                          </mat-error>
+                    </mat-form-field>
+                </div>
+                <mat-form-field class="form-element row-item">
+                    <mat-label>Section principale</mat-label>
+                    <mat-select formControlName="section">
+                        <mat-option *ngFor="let section of sections" [value]="section">{{section}}</mat-option>
+                      </mat-select>
+                    <mat-error *ngIf="!formGroup.controls['section'].valid && formGroup.controls['section'].touched">
+                        {{ getInputError('section') }}
+                      </mat-error>
+                </mat-form-field>
+            </section>
+        </form>
+    </div>
+</div>
+
+<div class="footer">
+    <button mat-raised-button color="primary" (click)="onValidate()" [disabled]="alreadySigned && formGroup.invalid">Suivant</button>
+</div>

@@ -42,6 +42,7 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/sass",
+                "src/sass/elements",
                 "src/sass/settings",
                 "src/styles"
               ]

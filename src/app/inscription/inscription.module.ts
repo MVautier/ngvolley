@@ -8,19 +8,61 @@ import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxMaskModule } from 'ngx-mask';
+import { MainFormComponent } from './components/main-form/main-form.component';
+import { MemberFormComponent } from './components/member-form/member-form.component';
+import { InscriptionService } from './services/inscription.service';
+import { StartFormComponent } from './components/start-form/start-form.component';
+import { CartInfoComponent } from './components/cart-info/cart-info.component';
+import { LayoutModule } from '@app/ui/layout/layout.module';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { SignatureFormComponent } from './components/signature-form/signature-form.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { PhotoTakerComponent } from './components/photo-taker/photo-taker.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { WebcamModule } from 'ngx-webcam';
+import { CropperComponent } from './components/cropper/cropper.component';
+import { ImageComponent } from './components/image/image.component';
+import { CameraComponent } from './components/camera/camera.component';
+import { ParentAuthComponent } from './components/parent-auth/parent-auth.component';
+import { FormHeaderComponent } from './components/form-header/form-header.component';
+import { FormFooterComponent } from './components/form-footer/form-footer.component';
+import { DocumentFormComponent } from './components/document-form/document-form.component';
+import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
 @NgModule({
   declarations: [
-    InscriptionPageComponent
+    InscriptionPageComponent,
+    MainFormComponent,
+    MemberFormComponent,
+    StartFormComponent,
+    CartInfoComponent,
+    SignatureFormComponent,
+    PhotoTakerComponent,
+    CropperComponent,
+    ImageComponent,
+    CameraComponent,
+    ParentAuthComponent,
+    FormHeaderComponent,
+    FormFooterComponent,
+    DocumentFormComponent,
+    AdherentCardComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    LayoutModule,
     ReactiveFormsModule,
     MaterialThemeModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     NgxMaskModule,
-    InscriptionRoutingModule
+    InscriptionRoutingModule,
+    MaterialFileInputModule,
+    NgxDropzoneModule,
+    ImageCropperModule,
+    WebcamModule
+  ],
+  providers: [
+    InscriptionService
   ]
 })
 export class InscriptionModule { }

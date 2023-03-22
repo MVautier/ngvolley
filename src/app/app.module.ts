@@ -14,7 +14,10 @@ import { LayoutModule } from './ui/layout/layout.module';
 import { SsrService } from './ui/layout/services/ssr.service';
 import { InterceptorClientSide } from './core/interceptors/interceptor-client-side';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import localeFr from '@angular/common/locales/fr';
+import { registerLocaleData } from '@angular/common';
 
+registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent

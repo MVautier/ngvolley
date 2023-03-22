@@ -1,3 +1,10 @@
 .editable {
     word-wrap: break-word;
 }
+.handle {
+    transition: 0.3s ease;
+    opacity: 0;
+    &.visible {
+        opacity: 1;
+    }
+}

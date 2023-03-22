@@ -1,0 +1,190 @@
+<form *ngIf="formGroup" [formGroup]="formGroup" class="form">
+  <section class="inscription">
+    
+    <div class="section-title">
+      <span class="title main">Adhérent</span>
+    </div>
+
+    <mat-form-field class="form-element row-item">
+      <mat-label>Section</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let c of categories" [value]="c.Code">{{c.Libelle}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="!formGroup.controls['category'].valid && formGroup.controls['category'].touched">
+        {{ getInputError('category') }}
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="choosenSection" class="border-div">
+
+        <app-photo-taker *ngIf="licenceRequired" [checked]="checked" (photo)="onPhoto($event)"></app-photo-taker>
+
+        <div *ngIf="noLicenceRequired" class="training">
+            <div class="info">
+                Entrainements auxquels vous souhaitez participer
+            </div>
+
+            <div class="choice">
+                <mat-checkbox [(ngModel)]="adherent.TrainingTE" [ngModelOptions]="{standalone: true}">Mardi soir</mat-checkbox>
+                <mat-checkbox [(ngModel)]="adherent.TrainingFM" [ngModelOptions]="{standalone: true}">Vendredi midi</mat-checkbox>
+                <mat-checkbox [(ngModel)]="adherent.TrainingFE" [ngModelOptions]="{standalone: true}">Vendredi soir</mat-checkbox>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="form-element row-item flex">
+      <mat-form-field class="first first-50">
+        <input matInput placeholder="Nom" formControlName="lastname">
+        <mat-error *ngIf="!formGroup.controls['lastname'].valid && formGroup.controls['lastname'].touched">
+          {{ getInputError('lastname') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="last">
+        <input matInput placeholder="Prénom" formControlName="firstname">
+        <mat-error *ngIf="!formGroup.controls['firstname'].valid && formGroup.controls['firstname'].touched">
+          {{ getInputError('firstname') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-element row-item flex">
+      <mat-form-field class="first first-25">
+          <mat-label>Genre</mat-label>
+          <mat-select formControlName="genre">
+            <mat-option value="M">Masculin</mat-option>
+            <mat-option value="F">Féminin</mat-option>
+            <mat-option value="A">Autre</mat-option>
+          </mat-select>
+          <mat-error *ngIf="!formGroup.controls['genre'].valid && formGroup.controls['genre'].touched">
+            {{ getInputError('genre') }}
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="last">
+          <mat-label>Date de naissance</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="!formGroup.controls['birthdate'].valid && formGroup.controls['birthdate'].touched">
+              {{ getDateError('birthdate') }}
+            </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="form-element row-item">
+        <mat-label>Adresse</mat-label>
+        <input matInput placeholder="Adresse" formControlName="address">
+        <mat-error *ngIf="!formGroup.controls['address'].valid && formGroup.controls['address'].touched">
+          {{ getInputError('address') }}
+        </mat-error>
+    </mat-form-field>
+
+    <div class="form-element row-item flex">
+      <mat-form-field class="first first-25">
+          <mat-label>Code postal</mat-label>
+          <input matInput [mask]="cpInputMask" placeholder="Code postal" formControlName="postalcode">
+          <mat-error *ngIf="!formGroup.controls['postalcode'].valid && formGroup.controls['postalcode'].touched">
+            {{ getCpError('postalcode') }}
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="last">
+          <mat-label>Ville</mat-label>
+          <input matInput placeholder="Ville" formControlName="city">
+          <mat-error *ngIf="!formGroup.controls['city'].valid && formGroup.controls['city'].touched">
+            {{ getInputError('city') }}
+          </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-element row-item flex">
+      <mat-form-field class="first first-25">
+        <mat-label>Téléphone</mat-label>
+        <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="phone">
+        <mat-error *ngIf="!formGroup.controls['phone'].valid && formGroup.controls['phone'].touched">
+          {{ getInputError('phone') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="last">
+        <mat-label>Adresse de messagerie</mat-label>
+        <input matInput placeholder="Adresse de messagerie" formControlName="email">
+        <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
+          {{ getInputError('email') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">
+      <span class="title">Personne à prévenir en cas d'urgence</span>
+    </div>
+
+    <div class="form-element row-item flex">
+      <mat-form-field class="first first-33">
+        <input matInput placeholder="Nom" formControlName="alertlastname">
+        <mat-error *ngIf="!formGroup.controls['alertlastname'].valid && formGroup.controls['alertlastname'].touched">
+          {{ getInputError('alertlastname') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="first first-33">
+        <input matInput placeholder="Prénom" formControlName="alertfirstname">
+        <mat-error *ngIf="!formGroup.controls['alertfirstname'].valid && formGroup.controls['alertfirstname'].touched">
+          {{ getInputError('alertfirstname') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="first first-33">
+        <mat-label>Téléphone</mat-label>
+        <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="alertphone">
+        <mat-error *ngIf="!formGroup.controls['alertphone'].valid && formGroup.controls['alertphone'].touched">
+          {{ getInputError('alertphone') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">
+      <span class="title">Consentement des personnes</span>
+    </div>
+
+    <div class="check">
+      <div class="info">
+        Je reconnais avoir lu et j'accepte le Règlement Général européen sur la Protection des Données personnelles (R.G.P.D.) 
+        disponible en suivant le lien <a href="https://leolagrangecolomiers.org/adherer/RGPD" target="_blank">https://leolagrangecolomiers.org/adherer/RGPD</a>
+      </div>
+      <mat-checkbox formControlName="rgpd">J'accepte</mat-checkbox>
+      <mat-error *ngIf="!formGroup.controls['rgpd'].valid && formGroup.controls['rgpd'].touched">
+        {{ getCheckError('rgpd') }}
+      </mat-error>
+    </div>
+
+    <div class="section-title">
+      <span class="title">Utilisation de l'image personnelle</span>
+    </div>
+
+    <div class="check">
+      <div class="info">
+        J'accepte l’affichage, la diffusion de photos, vidéos, prises lors de manifestations ou activités de l'association, 
+        auxquelles je participe ou un des membres de ma famille,  ceci afin de figurer éventuellement sur nos moyens de communication ?
+      </div>
+
+      <mat-radio-group aria-labelledby="image-radio-group-label" class="image-radio-group" [(ngModel)]="adherent.ImageRight" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button class="image-radio-button" [value]="true">Oui</mat-radio-button>
+        <mat-radio-button class="image-radio-button" [value]="false">Non</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    
+  </section>
+
+  <section *ngFor="let member of members" class="inscription">
+    <app-member-form [adherent]="member" (change)="onMemberChange($event)" (remove)="onRemoveMember($event)"></app-member-form>
+  </section>
+
+  <div class="ins-buttons">
+    <button type="button" mat-raised-button color="primary" (click)="onCancel()">Annuler</button>
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()" [disabled]="!isFormValid()">Valider</button>
+  </div>
+</form>
+

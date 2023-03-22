@@ -1,0 +1,16 @@
+
+.webcam{
+    width: 100%;
+    cursor: pointer;
+}
+.btn-photo{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    .actionBtn {
+        font-size: 2em;
+        cursor: pointer;
+    }
+}

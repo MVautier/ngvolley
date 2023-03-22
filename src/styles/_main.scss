@@ -1,5 +1,14 @@
 @use 'sass:map';
-@use '@angular/material' as mat;
+@import 'variables';
+
+@mixin typography($theme) {
+  // Get the typography config from the theme.
+  $typography-config: mat.get-typography-config($theme);
+
+  .my-carousel {
+    font-family: mat.font-family($typography-config);
+  }
+}
 
 @mixin color($theme) {
   // Get the color config from the theme.
@@ -14,6 +23,10 @@
   $background: map.get($color-config, background);
   $foreground: map.get($color-config, foreground);
 
+  .mat-radio-outer-circle {
+    border-color: mat.get-color-from-palette($secondary-palette, 400);
+  }
+  
   .admin-menu {
     background: mat.get-color-from-palette($background, dialog);
     border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
@@ -98,6 +111,10 @@
   @if $config != null {
     @include color($theme);
   }
+  $typography-config: mat.get-typography-config($theme);
+  @if $typography-config != null {
+    @include typography($theme);
+  }
 }
 
 html,
@@ -139,7 +156,7 @@ body {
 }
 .mat-sidenav {
   background-color: #F2F2F2;
-  width: 250px;
+  width: var(--sidenav_width);
 }
 .drag-in-list{
   position: absolute;
@@ -270,8 +287,16 @@ body .push-right {
   padding: 3px 3px 3px 3px;
 }
 
+mat-error{
+  color: #f44336 !important;
+}
+
 mat-grid-tile {
   border-radius: 5px;
+  background: var(--background-dialog);
+  border: 1px solid var(--border);
+  //box-shadow: -15px 13px 43px 0px rgb(19 34 57 / 27%);
+  //box-shadow: 5px -5px 5px 0px var(--background-shadow);
   .mat-grid-tile-content {
     margin-top: 10px;
     display: flow-root;

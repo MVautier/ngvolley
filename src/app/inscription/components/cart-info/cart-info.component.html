@@ -1,0 +1,37 @@
+<div class="cart-info">
+    <div class="title">Montant de l'adhésion</div>
+
+    <div class="body">
+        <div class="item" *ngFor="let item of cart.items">
+            <div>
+                <span>{{item.libelle}}</span>
+            </div>
+            <div>
+                <span class="number">{{item.montant | currency: "EUR":"symbol":"1.2-2":"fr"}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="total">
+        <div class="item">
+            <div class="lib-total">
+                <span>Total</span>
+            </div>
+            <div>
+                <span class="number">{{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <img class="picto" src="assets/images/logos/logo-helloasso.svg">
+    </div>
+
+    <div class="add-member">
+        <div class="buttons right">
+            <button mat-icon-button matSuffix class="icon-button add enabled" (click)="onAddMember()">
+                <mat-icon>person_add</mat-icon>
+            </button>
+          </div>
+    </div>
+</div>

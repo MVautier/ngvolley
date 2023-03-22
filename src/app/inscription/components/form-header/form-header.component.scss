@@ -1,0 +1,24 @@
+.logo {
+    background: #fff;
+    color: #000;
+    width: 100%;
+    display: flex;
+    .left{
+        width: 20%;
+        img{
+            width: 114px;
+            height: 126px;
+        }
+    }
+    .right{
+        width: 80%;
+        h1{
+            margin: 40px;
+        }
+    }
+    
+}
+.header-adr {
+    width: 100%;
+    margin: 20px 0 20px 10px;
+}

@@ -1,0 +1,86 @@
+<div class="photo-taker">
+  <div class="info" *ngIf="formGroup" [formGroup]="formGroup">
+    <mat-form-field class="form-element row-item">
+      <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier" formControlName="licence">
+      <mat-error *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
+        {{ getLicenceError('licence') }}
+      </mat-error>
+    </mat-form-field>
+    <div class="sub-info">(si renouvellement ou mutation)</div>
+    Veuillez ajouter une photo d'identité pour l'établissement de la licence.<br>
+
+    <div class="import-buttons">
+      <button  mat-raised-button color="primary" matPrefix title="Prendre une photo" (click)="showModal('camera')">
+        <mat-icon>add_a_photo</mat-icon>
+      </button>
+
+      <button  mat-raised-button color="primary" matPrefix title="Importer une photo" (click)="f_input.click()">
+        <mat-icon>download</mat-icon>
+      </button>
+      <input type="file" hidden #f_input (change)="onSelect(f_input.files)" />
+
+    </div>
+
+  </div>
+  <div class="preview">
+    <img *ngIf="imageBase64" [src]="imageBase64" />
+  </div>
+
+  <div *ngIf="imageBase64" class="edit-buttons">
+    <button  mat-raised-button color="primary" matPrefix title="Recadrer une photo" (click)="showModal('cropper')">
+      <mat-icon>crop</mat-icon>
+    </button>
+
+
+
+  </div>
+
+  <!-- <div *ngIf="!imageBase64" class="photo-drop">
+		<div class="custom-dropzone scroll1" ngx-dropzone [accept]="'image/*'" [multiple]="false" (change)="onSelect($event)">
+			<ngx-dropzone-label>
+				<div>
+					<h2 *ngIf="!imageBase64">Déposez votre photo</h2>
+					
+				</div>
+			</ngx-dropzone-label>
+			<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+				<ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+			</ngx-dropzone-image-preview>
+		</div>
+	</div>
+
+	<div class="photo-cropper">
+		<image-cropper *ngIf="imageBase64"
+			[imageBase64]="imageBase64"
+			[maintainAspectRatio]="false"
+			[aspectRatio]="3 / 4"
+			format="png"
+			(imageCropped)="imageCropped($event)"
+			(imageLoaded)="imageLoaded($event)"
+			(cropperReady)="cropperReady()"
+			(loadImageFailed)="loadImageFailed()"
+		></image-cropper>
+	</div>
+
+	<div *ngIf="croppedImage" class="cropped">
+		<img id="cropped" [src]="croppedImage" />
+	</div>
+
+	<div *ngIf="imageBase64" class="buttons">
+		<button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onReset()">
+			<mat-icon>cancel</mat-icon>
+		</button>
+		
+		<mat-slider
+			thumbLabel
+			(input)="onOpacity($event)"
+			tickInterval="0.1"
+			min="0.1"
+			max="1"
+			step="0.1"
+			[value]="opacity"
+			[vertical]="true"
+			>
+		</mat-slider>
+	</div> -->
+</div>

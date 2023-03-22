@@ -1,0 +1,28 @@
+
+<div class="webcam">
+    <webcam 
+        [width]="640" 
+        [height]="480" 
+        [trigger]="triggerObservable" 
+        [allowCameraSwitch]="allowCameraSwitch" 
+        [switchCamera]="nextWebcamObservable" 
+        [mirrorImage]="'never'"
+        [videoOptions]="videoOptions"
+        (imageCapture)="imageCapture($event)" 
+        (initError)="handleInitError($event)"
+        (cameraSwitched)="cameraWasSwitched($event)"
+        (click)="triggerSnapshot();"
+    ></webcam>
+</div>
+
+<div class="btn-photo">
+    <button type="button" mat-raised-button color="primary" (click)="triggerSnapshot()" title="Prendre la photo">📸</button>
+    <button type="button" mat-raised-button (click)="showNextWebcam(true)" title="Changer de caméra">🔁</button>
+    <!-- <div class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">📸</div>
+    <div class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">🔁</div> -->
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+    <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+</div>

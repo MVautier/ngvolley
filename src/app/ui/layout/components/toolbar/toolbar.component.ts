@@ -17,7 +17,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   toggleDarkTheme(checked: boolean) {
-    this.themeService.setDarkTheme(checked);
+    //this.themeService.setDarkTheme(checked);
   }
 
 }

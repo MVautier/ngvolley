@@ -1,176 +1,164 @@
-@use './main' as main;
-@import '@angular/material/theming';
+@use "sass:map";
+@use '@angular/material' as mat;
+@import "@angular/material/theming";
 @include mat-core();
+:root {
+  // $typography: mat-typography-config(
+  //   $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+  //   $headline: mat-typography-level(32px, 48px, 700),
+  //   $body-1: mat-typography-level(16px, 24px, 400),
+  // );
+  $label: mat-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
 
+  $typography-config: map.merge(
+    mat.define-typography-config(
+      $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+      $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+      $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+      $display-2: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+      $display-1: mat.define-typography-level(34px, 40px, 400),
+      $headline: mat.define-typography-level(20px, 27px, 500),
+      $title: mat.define-typography-level(20px, 27px, 400),
+      $subheading-1: mat.define-typography-level(15px, 17px, 400),
+      $subheading-2: mat.define-typography-level(16px, 21px, 500),
+      $body-1: mat.define-typography-level(16px, 21px, 400),
+      $body-2: mat.define-typography-level(16px, 25px, 500),
+      $caption: mat.define-typography-level(14px, 21px, 400),
+      $button: mat.define-typography-level(16px, 21px, 400),
+      $input: mat.define-typography-level(inherit, 1.125, 400),
+    ),
+    (
+      "label": $label,
+    )
+  );
 
-/* ======== angular material custom theme ======== */
-$my-custom-primary: mat-palette($mat-blue);
-$my-custom-accent: mat-palette($mat-grey, 800);
-$my-custom-warn: mat-palette($mat-lime);
+  $light-app-theme: mat-light-theme(
+    (
+      color: (
+        primary: mat-palette($mat-indigo),
+        accent: mat-palette($mat-indigo, A200, A100, A400),
+        warn: mat-palette($mat-red),
+      ),
+      typography: $typography-config,
+    )
+  );
 
-// Light theme
-$my-custom-theme: mat-light-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
+  $dark-app-theme: mat-dark-theme(
+    (
+      color: (
+        primary: mat-palette($mat-yellow, 700),
+        accent: mat-palette($mat-amber, 800),
+        warn: mat-palette($mat-amber),
+      ),
+      typography: $typography-config,
+    )
+  );
 
-// Dark theme
-$my-custom-theme: mat-dark-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
+  @include mat.all-component-typographies($typography-config);
 
-// Main theme defination
-@include angular-material-theme($my-custom-theme);
-@include main.theme($my-custom-theme);
+  @include angular-material-theme($dark-app-theme);
 
-// Alternate Angular Material Theme
-.my-alternate-theme {
-  $my-alternate-primary: mat-palette($mat-red, 900);
-  $my-alternate-accent: mat-palette($mat-amber, 400);
-  $my-alternate-warn: mat-palette($mat-grey);
+  @mixin typography($theme) {
+    $typography-config: mat.get-typography-config($theme);
+    
+    .mat-form-field-appearance-legacy .mat-form-field-label {
+        @include mat.typography-level($typography-config, 'label');
+    }
+  }
 
-  $my-alternate-theme: mat-light-theme($my-alternate-primary, $my-alternate-accent, $my-alternate-warn);
+  @mixin theme-colors($theme) {
+    $_background: map-get($theme, background);
+    $_foreground: map-get($theme, foreground);
+    $_primary: map-get($theme, primary);
+    $_accent: map-get($theme, accent);
+    $background-color: mat-color($_background, background);
+    $background-color-dialog: mat-color($_background, dialog);
+    $foreground-color: mat-color($_foreground, text);
+    $border-color: mat-color($_foreground, divider, 0.3);
+    $primary-color: mat-color($_primary);
+    $accent-color: mat-color($_accent);
+    --background: #{$background-color};
+    --background-dialog: #{$background-color-dialog};
+    --background-shadow: #{darken($background-color-dialog, 2%)};
+    --background-dark: #{darken($background-color, 10%)};
+    --foreground: #{$foreground-color};
+    --primary: #{$primary-color};
+    --accent: #{$accent-color};
+    --border: #{$border-color};
+  }
 
-  @include angular-material-theme($my-alternate-theme);
-  @include main.theme($my-alternate-theme);
+  .dark-theme {
+    @include theme-colors($dark-app-theme);
+    @include typography($dark-app-theme);
+  }
+
+  .light-theme {
+    @include angular-material-color($light-app-theme);
+    @include theme-colors($light-app-theme);
+    @include typography($light-app-theme);
+  }
 }
 
+// @use '@angular/material' as mat;
+// @use './main' as main;
+// @import '@angular/material/theming';
+// @include mat-core();
 
-//@import '~@angular/material/theming';
-// @import './component-theme';
-// @import "../../node_modules/@angular/material/core/theming/_palette.scss";
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
-//@use '@angular/material' as mat;
-// Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-// @include mat.core();
-
-// custom text palette
-
-// $light-primary-text: black;
-// $light-secondary-text: rgba(white, 0.7);
-// $light-disabled-text: rgba(white, 0.5);
-// $light-dividers: rgba(white, 0.12);
-// $light-focused: rgba(white, 0.12);
-
-// $dark-primary-text: rgba(white, 0.87);
-// $dark-secondary-text: rgba(black, 0.54);
-// $dark-disabled-text: rgba(black, 0.38);
-// $dark-dividers: rgba(black, 0.12);
-// $dark-focused: rgba(black, 0.12);
-
-// // Foreground palette for light themes.
-// $light-theme-foreground-palette: (
-//   base:              black,
-//   divider:           $dark-dividers,
-//   dividers:          $dark-dividers,
-//   disabled:          $dark-disabled-text,
-//   disabled-button:   rgba(black, 0.26),
-//   disabled-text:     $dark-disabled-text,
-//   elevation:         black,
-//   hint-text:         $dark-disabled-text,
-//   secondary-text:    $dark-secondary-text,
-//   icon:              rgba(black, 0.54),
-//   icons:             rgba(black, 0.54),
-//   text:              rgba(black, 0.87),
-//   slider-min:        rgba(black, 0.87),
-//   slider-off:        rgba(black, 0.26),
-//   slider-off-active: rgba(black, 0.38),
+// $typography: mat-typography-config(
+//   $font-family: 'Roboto, monospace',
+//   $headline: mat-typography-level(32px, 48px, 700),
+//   $body-1: mat-typography-level(16px, 24px, 400)
 // );
 
-// // Foreground palette for dark themes.
-// $dark-theme-foreground-palette: (
-//   base:              white,
-//   divider:           $light-dividers,
-//   dividers:          $light-dividers,
-//   disabled:          $light-disabled-text,
-//   disabled-button:   rgba(white, 0.3),
-//   disabled-text:     $light-disabled-text,
-//   elevation:         black,
-//   hint-text:         $light-disabled-text,
-//   secondary-text:    $light-secondary-text,
-//   icon:              white,
-//   icons:             white,
-//   text:              white,
-//   slider-min:        white,
-//   slider-off:        rgba(white, 0.3),
-//   slider-off-active: rgba(white, 0.3),
-// );
-
-// // light-palette
-
-// $light-palette: (
-//   50: #fafafa,
-//   100: #f5f5f5,
-//   200: #eeeeee,
-//   300: #e0e0e0,
-//   400: #bdbdbd,
-//   500: #303030,
-//   600: #757575,
-//   700: #616161,
-//   800: #424242,
-//   900: #212121,
-//   A100: #ffffff,
-//   A200: #eeeeee,
-//   A400: #bdbdbd,
-//   A700: #616161,
-//   contrast: (
-//     50: $dark-primary-text,
-//     100: $dark-primary-text,
-//     200: $dark-primary-text,
-//     300: $dark-primary-text,
-//     400: $dark-primary-text,
-//     500: $dark-primary-text,
-//     600: $light-primary-text,
-//     700: $light-primary-text,
-//     800: $light-primary-text,
-//     900: $light-primary-text,
-//     A100: $dark-primary-text,
-//     A200: $dark-primary-text,
-//     A400: $dark-primary-text,
-//     A700: $light-primary-text,
-//   )
-// );
-
-
-
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-// The warn palette is optional (defaults to red).
-// $primary: mat.define-palette($light-palette);
-// $accent: mat.define-palette(mat.$amber-palette, A400, A100, A700);
-// $warn: mat.define-palette(mat.$red-palette);
-// $theme: mat.define-light-theme($primary, $accent, $warn);
-
-// @include angular-material-theme($theme);
-// @include component-theme($theme);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-// $colomiers-volley-theme: mat.define-light-theme((
-//   color: (
-//     primary: $colomiers-volley-primary,
-//     accent: $colomiers-volley-accent,
-//     warn: $colomiers-volley-warn,
-//   )
-// ));
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-// @include mat.all-component-themes($theme);
-
-// // Our dark theme
 // .dark-theme {
-//   $dark-primary: mat.define-palette($light-palette);
-//   $dark-accent:  mat.define-palette(mat.$amber-palette, A400, A100, A700);
-//   $dark-warn:    mat.define-palette(mat.$red-palette);
-//   $dark-theme: mat.define-dark-theme($dark-primary, $dark-accent, $dark-warn);
-  
-//   //@include angular-material-theme($dark-theme);
-//   @include mat.all-component-themes($dark-theme);
-//   @include component-theme($dark-theme);
+//   /* ======== angular material dark theme ======== */
+//   $dark-primary: mat-palette($mat-yellow, 700);
+//   $dark-accent: mat-palette($mat-amber, 800);
+//   $dark-warn: mat-palette($mat-yellow);
+//   // Dark theme
+//   $dark-theme: mat-dark-theme((
+//     color: (
+//       primary: $dark-primary,
+//       accent: $dark-accent,
+//       warn: $dark-warn
+//     ),
+//     typography: $typography
+//   ));
+//   @include angular-material-theme($dark-theme);
+//   //@include mat.all-component-themes($dark-theme);
+//   $primary: mat-color($dark-primary);
+//   $accent: mat-color($dark-accent);
+//   $warn: mat-color($dark-warn);
+//   --primary: #{$primary};
+//   --accent: #{$accent};
+//   --warn: #{$warn};
+//   --background: #303030;
+//   --color: white;
+// }
+// .light-theme {
+//   // Light theme
+//   $light-primary: mat-palette($mat-blue, 900);
+//   $light-accent: mat-palette($mat-blue, 400);
+//   $light-warn: mat-palette($mat-grey);
+
+//   $light-theme: mat-light-theme((
+//       color: (
+//           primary: $light-primary,
+//           accent: $light-accent,
+//           warn: $light-warn
+//       ),
+//       typography: $typography
+//   ));
+//   //@include mat.all-component-colors($light-theme);
+//   @include mat.all-component-colors($light-theme);
+//   $primary: mat-color($light-primary);
+//   $accent: mat-color($light-accent);
+//   $warn: mat-color($light-warn);
+//   --primary: #{$primary};
+//   --accent: #{$accent};
+//   --warn: #{$warn};
+//   --background: #fafafa;
+//   --color: rgba(0, 0, 0, 0.87);
 // }
 
 /* You can add global styles to this file, and also import other style files */

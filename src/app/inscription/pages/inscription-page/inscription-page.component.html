@@ -1,104 +1,55 @@
-<section class="form" *ngIf="formGroup">
-    <form [formGroup]="formGroup" class="form">
-        <section class="inscription">
+<div class="title">
+  <h1>{{title}} au {{title2}}</h1>
+</div>
 
-            <mat-form-field class="form-element row-item">
-                <mat-label>Nom</mat-label>
-                <input matInput placeholder="Nom" formControlName="lastname" [(ngModel)]="adherent.lastname">
-                <mat-error *ngIf="!formGroup.controls['lastname'].valid && formGroup.controls['lastname'].touched">
-                  {{ getInputError('lastname') }}
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="form-element row-item">
-                <mat-label>Prénom</mat-label>
-                <input matInput placeholder="Prénom" formControlName="firstname" [(ngModel)]="adherent.firstname">
-                <mat-error *ngIf="!formGroup.controls['firstname'].valid && formGroup.controls['firstname'].touched">
-                  {{ getInputError('firstname') }}
-                </mat-error>
-            </mat-form-field>
-
-            <div class="form-element row-item flex">
-                <mat-form-field class="first first-25">
-                    <!-- <mat-label class=""genre>Genre</mat-label> -->
-                    <label>Genre *</label>
-                    <mat-select formControlName="sex" [(ngModel)]="adherent.sex" class="genre">
-                        <mat-option value="M">Masculin</mat-option>
-                        <mat-option value="F">Féminin</mat-option>
-                        <mat-option value="A">Autre</mat-option>
-                      </mat-select>
-                    <mat-error *ngIf="!formGroup.controls['sex'].valid && formGroup.controls['sex'].touched">
-                      {{ getInputError('sex') }}
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field class="last">
-                    <mat-label>Date de naissance</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="birthdate" (dateChange)="addInfo('change', $event)" readonly [(ngModel)]="adherent.birthdate">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-error *ngIf="!formGroup.controls['birthdate'].valid && formGroup.controls['birthdate'].touched">
-                        {{ getDateError('birthdate') }}
-                      </mat-error>
-                </mat-form-field>
-            </div>
-
-            <mat-form-field class="form-element row-item">
-                <mat-label>Adresse</mat-label>
-                <input matInput placeholder="Adresse" formControlName="address" [(ngModel)]="adherent.address">
-                <mat-error *ngIf="!formGroup.controls['address'].valid && formGroup.controls['address'].touched">
-                  {{ getInputError('address') }}
-                </mat-error>
-            </mat-form-field>
-
-            <div class="form-element row-item flex">
-                <mat-form-field class="first first-25">
-                    <mat-label>Code postal</mat-label>
-                    <input matInput placeholder="Code postal" formControlName="postalcode" [(ngModel)]="adherent.postalcode">
-                    <mat-error *ngIf="!formGroup.controls['postalcode'].valid && formGroup.controls['postalcode'].touched">
-                      {{ getInputError('postalcode') }}
-                    </mat-error>
-                </mat-form-field>
+<div class="center-container main mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
+  <div class="ins_info">
+    Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer l'adhésion en ligne.
+    Cela peut être une adhésion familiale ou individuelle.
     
-                <mat-form-field class="last">
-                    <mat-label>Ville</mat-label>
-                    <input matInput placeholder="Ville" formControlName="city" [(ngModel)]="adherent.city">
-                    <mat-error *ngIf="!formGroup.controls['city'].valid && formGroup.controls['city'].touched">
-                      {{ getInputError('city') }}
-                    </mat-error>
-                </mat-form-field>
-    
-            </div>
+    Un tarif préférentiel de la 1ère inscription est accordé aux Columérins (19€ au lieu de 27€). Pour les autres adhérents de la même famille (conjoint et descendants mineurs), le montant est identique pour tous (6€).
+    <br><br>
+    <b>il est nécessaire de télécharger au préalable 
+      <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b>
+  </div>
 
-            <div class="form-element row-item flex">
-                <mat-form-field class="first first-50">
-                    <mat-label>Téléphone fixe</mat-label>
-                    <input matInput [mask]="phoneInputMask" placeholder="Téléphone fixe" formControlName="phone" [(ngModel)]="adherent.phone">
-                    <mat-error *ngIf="!formGroup.controls['phone'].valid && formGroup.controls['phone'].touched">
-                      {{ getInputError('phone') }}
-                    </mat-error>
-                </mat-form-field>
-    
-                <mat-form-field class="last">
-                    <mat-label>Téléphone portable</mat-label>
-                    <input matInput [mask]="phoneInputMask" placeholder="Téléphone portable" formControlName="mobile" [(ngModel)]="adherent.mobile">
-                    <mat-error *ngIf="!formGroup.controls['mobile'].valid && formGroup.controls['mobile'].touched">
-                      {{ getInputError('mobile') }}
-                    </mat-error>
-                </mat-form-field>
-            </div>
+  <aside>
+    <app-cart-info *ngIf="cart" [cart]="cart" (addMember)="onAddMemberFromCart()"></app-cart-info>
+  </aside>
 
-            <mat-form-field class="form-element row-item">
-                <mat-label>Adresse de messagerie</mat-label>
-                <input matInput placeholder="Adresse de messagerie" formControlName="email" [(ngModel)]="adherent.email">
-                <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
-                  {{ getInputError('email') }}
-                </mat-error>
-            </mat-form-field>
+  <div class="form">
 
-        </section>
-    </form>
-    <div>
-      <button (click)="onSubmit()">Valider</button>
+    <div class="breadcrumbs">
+      <div class="breadcrumb-item" [ngClass]="{'current': step === 1, 'enabled': step > 1, 'disabled': step <= 1}" (click)="setStep(1)">
+        <span class="label">Adhésion à {{asso}}</span>
+      </div>
+      <div class="breadcrumb-item" [ngClass]="{'current': step === 2, 'enabled': step > 2, 'disabled': step <= 2}" (click)="setStep(2)">
+        <span class="label">Informations</span>
+      </div>
+      <div class="breadcrumb-item" [ngClass]="{'current': step === 3, 'enabled': step > 3, 'disabled': step <= 3}" (click)="setStep(3)">
+        <span class="label">Documents</span>
+      </div>
+      <div class="breadcrumb-item" [ngClass]="{'current': step === 4, 'enabled': step > 4, 'disabled': step <= 4}" (click)="setStep(4)">
+        <span class="label">Récapitulatif</span>
+      </div>
     </div>
-</section>
+
+    <div class="inscription">
+      <app-start-form *ngIf="step === 1" [start]="startIns" (validate)="onStep1Validate($event)"></app-start-form>
+      
+      <app-main-form *ngIf="step  === 2" 
+        [adherent]="adherent"
+        [local]="startIns.local" 
+        (addMember)="onAddMember($event)"
+        (change)="onAdherentChange($event)"
+        (removeMember)="onRemoveMember($event)"
+        (validate)="onStep2Validate($event)" 
+        (cancel)="onCancel()">
+      </app-main-form>
+
+      <app-document-form *ngIf="step  === 3" 
+      [adherent]="adherent"></app-document-form>
+    </div>
+  </div>
+</div>
+

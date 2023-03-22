@@ -4,4 +4,27 @@
             Tableau de bord
         </h1>
     </div>
+    <div>
+        <ngx-charts-pie-chart 
+            [results]="geoData"
+            [legend]="true"
+            [maxLabelLength]="20"
+            [legendTitle]="'Répartition géographique'" 
+            [view]="[600,200]"
+            [gradient]="true"
+            [ngStyle]="chartColor"
+            [labels]="true" >
+        </ngx-charts-pie-chart>
+
+        <ngx-charts-pie-chart 
+            [results]="typeData"
+            [legend]="true"
+            [maxLabelLength]="20"
+            [legendTitle]="'Catégories'" 
+            [view]="[600,200]"
+            [gradient]="true"
+            [ngStyle]="chartColor"
+            [labels]="true" >
+        </ngx-charts-pie-chart>
+    </div>
 </div>

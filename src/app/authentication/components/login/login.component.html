@@ -1,0 +1,21 @@
+<div class="ng-modal-body">
+    <div class="input" [ngClass]="{error: authError}">
+        <input class="form-control" type="email" name="email" placeholder="email" [(ngModel)]="email" required>
+    </div>
+    
+    <div class="input input--pswd" [ngClass]="{error: authError}">
+    
+    <input class="form-control" id="password" [(ngModel)]="password" type="{{ !displayPassword ? 'password' : 'text' }}"
+        placeholder="Mot de passe" name="password" required />
+    
+    <mat-icon *ngIf="!displayPassword" class="eye-pwd" (click)="displayPassword = !displayPassword" tabindex="-1"title="Afficher">visibility</mat-icon>
+    <mat-icon *ngIf="displayPassword" class="eye-pwd" (click)="displayPassword = !displayPassword" tabindex="-1"title="Cacher">visibility_off</mat-icon>
+    
+    </div>
+    <p *ngIf="authError" class="error-msg">Votre e-mail ou votre mot de passe n’est pas correct.</p>
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+    <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+</div>

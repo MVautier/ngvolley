@@ -1,0 +1,40 @@
+@import "form";
+
+.type-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  .input{
+    margin-bottom: 25px;
+    .form-element {
+      width: 100%;
+      padding: 5px 0px 20px 2px;
+    }
+  }
+  
+  .type-radio-button {
+    margin: 5px;
+  }
+  .results{
+    .result {
+        cursor: pointer;
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+  }
+  .footer{
+    margin-top: 25px;
+    text-align: right;
+  }
+  .btn-valid {
+    opacity: 0.12;
+    pointer-events: none;
+    &.enabled{
+        opacity: 1;
+        pointer-events:all;
+    }
+  }
+
