@@ -6,14 +6,14 @@
   a {
     color: var(--accent);
   }
-  .ins-buttons {
+}
+.ins-buttons {
     width: 100%;
     text-align: right;
     button {
       margin-right: 10px;
     }
   }
-}
 :host ::ng-deep .inscription {
   max-width: var(--form_width);
   flex-wrap: wrap;
@@ -23,7 +23,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: rgba(255, 255, 255, 0.12);
-
+  
   .section-title {
     width: 100%;
     text-align: center;
@@ -37,7 +37,48 @@
         font-size: 24px;
       }
     }
-
+    &.adherent{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        div{
+            &.name {
+                display: flex;
+                width: 100%;
+                flex-direction: row;
+                .left {
+                    text-align: left;
+                    width: 80%;
+                }
+                .right {
+                    width: 20%;
+                    img {
+                        border-radius: 5px;
+                        cursor: pointer;
+                        &:hover{
+                            border: 1px solid var(--border-accent);
+                        }
+                    }
+                }
+            }
+            &.licence{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: baseline;
+                mat-form-field{
+                    padding-bottom: 5px;
+                    width: 200px;
+                }
+            }
+            .sub-info{
+                font-size: 12px;
+                font-style: italic;
+                margin-top: -10px;
+                margin-bottom: 15px;
+            }
+        }
+    }
     .buttons {
       &.right {
         position: absolute;
@@ -50,6 +91,13 @@
       }
     }
   }
+  .parent-auth{
+    text-align: center;
+    cursor: pointer;
+    &:hover{
+        border: 1px solid var(--border-accent);
+    }
+}
   label {
     opacity: 0.7;
   }

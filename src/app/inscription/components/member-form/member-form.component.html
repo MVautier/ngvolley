@@ -19,11 +19,9 @@
     </mat-error>
   </mat-form-field>
 
-  <div *ngIf="choosenSection" class="border-div">
+  <div *ngIf="choosenSection && noLicenceRequired" class="border-div">
 
-    <app-photo-taker *ngIf="licenceRequired" [checked]="checked"></app-photo-taker>
-
-    <div *ngIf="noLicenceRequired" class="training">
+    <div class="training">
       <div class="info">
         Entrainements auxquels vous souhaitez participer
       </div>
@@ -116,32 +114,6 @@
     </mat-select>
     <mat-error *ngIf="!formGroup.controls['sections'].valid && formGroup.controls['sections'].touched">
       {{ getInputError('sections') }}
-    </mat-error>
-  </mat-form-field>
-
-  <div class="section-title">
-    <span class="title">Documents</span>
-  </div>
-
-  <div class="check">
-    <div class="info">
-      <span class="accent">Certificat médical</span> de non contre-indication à la pratique du sport ou de la disciplie
-      concernée pour toute nouvelle adhésion
-      ou tous les 3 ans, conformément aux disposition du code du sport et à la volonté fédérale de l'UNSLL en matire de
-      prévention de la santé du sportif.
-    </div>
-    <div class="info">
-      <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal, conformément au décret
-      n°2016-1387 du 12/10/2016.
-    </div>
-  </div>
-
-  <mat-form-field appearance="outline" class="file">
-    <ngx-mat-file-input formControlName="healthfile" [valuePlaceholder]="checked.certifPlaceHolder" required></ngx-mat-file-input>
-    <mat-label>{{checked.certifLabel}}</mat-label>
-    <mat-icon matSuffix>folder</mat-icon>
-    <mat-error *ngIf="!formGroup.controls['healthfile'].valid && formGroup.controls['healthfile'].touched">
-      {{ getFileError('healthfile') }}
     </mat-error>
   </mat-form-field>
 

@@ -12,8 +12,8 @@
         <input type="radio" class="radio" name="statut" [(ngModel)]="statut" [value]="'Tuteur légal'" [ngClass]="{error: statutError}"> Tuteur légal
     </div>
     <div class="auth-form tel">
-        <input class="form-control" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Téléphone domicile" [(ngModel)]="telfixe" required [ngClass]="{error: telError}">
-        <input class="form-control" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Téléphone portable" [(ngModel)]="mobile" required [ngClass]="{error: telError}">
+        Fixe : <input class="form-control" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Téléphone domicile" [(ngModel)]="telfixe" required [ngClass]="{error: telError}">
+        Mobile : <input class="form-control" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Téléphone portable" [(ngModel)]="mobile" required [ngClass]="{error: telError}">
     </div>
     <div class="auth-form">
         autorise mon enfant 
@@ -35,16 +35,20 @@
         A  
         <input class="form-control" type="text" name="city" placeholder="Commune" [(ngModel)]="city" required [ngClass]="{error: cityError}"> 
         , le 
-        <input class="form-control" type="date" name="date"[(ngModel)]="date" required [ngClass]="{error: dateError}">
+        <input class="form-control" type="date" name="date" [(ngModel)]="date" required [ngClass]="{error: dateError}">
          
     </div>
     <div class="auth-form end sig">
         Signature <canvas #canvas width="292" height="100" [ngClass]="{error: sigError}"></canvas>
     </div>
-    <app-form-footer></app-form-footer>
+    
+    <div class="footer">
+        Animation - Développement local - Vacances - Loisirs Enfance-Jeunes - Lieux culturels - Formation - Sports
+         - Association d'éducation populaire reconnue d'utilité publique
+    </div>
 </div>
 
 <div class="ng-modal-footer">
-    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
     <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
 </div>

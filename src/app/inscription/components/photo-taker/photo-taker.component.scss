@@ -3,20 +3,14 @@
 .photo-taker{
     display: flex;
     flex-direction: row;
+    font-size: 16px;
     div{
         padding: 10px;
     }
     .info{
-        width: 50%;
-        mat-form-field{
-            padding-bottom: 5px;
-        }
-        .sub-info{
-            font-size: 12px;
-            font-style: italic;
-            margin-top: -10px;
-            margin-bottom: 15px;
-        }
+        display: flex;
+        flex-direction: column;
+        width: 100%;
         .import-buttons{
             display: flex;
             justify-content: space-around;
@@ -25,15 +19,15 @@
             transform: scale(1);
         }
     }
-    .preview {
-        width: 35%;
-        text-align: center;
-        img{
-            height: 193px;
-            width: 150px;
-            object-fit: cover;
-        }
-    }
+    // .preview {
+    //     width: 35%;
+    //     text-align: center;
+    //     img{
+    //         height: 193px;
+    //         width: 150px;
+    //         object-fit: cover;
+    //     }
+    // }
     .edit-buttons{
         display: flex;
         flex-direction: column;

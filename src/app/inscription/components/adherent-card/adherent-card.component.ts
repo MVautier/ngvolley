@@ -8,6 +8,9 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileValidator, FileInput } from 'ngx-material-file-input';
 import { map } from 'rxjs/operators';
+import { AdherentService } from '@app/core/services/adherent.service';
+import { CustomValidators } from '@app/inscription/validators/custom-validators';
+import { PdfInfo } from '@app/core/models/pdf-info.model';
 
 @Component({
   selector: 'app-adherent-card',
@@ -16,32 +19,57 @@ import { map } from 'rxjs/operators';
 })
 export class AdherentCardComponent implements OnInit {
   @Input() adherent: Adherent;
-  @Output() savePdf: EventEmitter<HTMLElement> = new EventEmitter<HTMLElement>();
+  @Output() savePdf: EventEmitter<PdfInfo> = new EventEmitter<PdfInfo>();
 
-  form: FormGroup;
+  formGroup: FormGroup;
+  licenceNumber: string;
+  licenceInputMask: string;
   checked: CheckAdherent = new CheckAdherent();
   healthfile: File;
   subModal: Subscription;
-  imgSrc: string;
   notifier = new Subject<void>();
+  category: string;
+  licenceRequired: boolean;
+  editPhoto: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private inscriptionService: InscriptionService,
+    private adherentService: AdherentService,
     private modalService: ModalService,) { }
 
   ngOnInit(): void {
     if (this.adherent) {
-      this.form = this.fb.group({
-        'file' : [undefined, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]]
-      });
-      if (this.adherent.Photo) {
-        this.imgSrc = this.adherent.Photo;
-      }
-      
+        this.licenceInputMask = this.inscriptionService.licenceInputMask;
+        this.initForm();
+        this.adherentService.getCategories().then(result => {
+            this.category = result.find(c => c.Code === this.adherent.Category)?.Libelle;
+            this.licenceRequired = ['C', 'E'].includes(this.adherent.Category);
+        });
+      this.editPhoto = !this.adherent.Photo;
       this.checked = this.inscriptionService.checkAdherent(this.checked, this.adherent);
       console.log('checked in adherent-card: ', this.checked);
     }
+  }
+
+  initForm() {
+    this.formGroup = this.fb.group({
+      'licence': [this.licenceNumber, [CustomValidators.licenceCheck(this.checked)]],
+      'file' : [undefined, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]]
+    });
+  }
+
+  getLicenceError(field: string) {
+    return this.inscriptionService.getLicenceError(this.formGroup, field);
+  }
+
+  showEditPhoto() {
+    this.editPhoto = true;
+  }
+
+  onPhoto(photo: string) {
+    this.adherent.Photo = photo;
+    this.editPhoto = false;
   }
 
   showModalAuthParent() {
@@ -53,8 +81,8 @@ export class AdherentCardComponent implements OnInit {
       validateLabel: 'Valider',
       cancelLabel: 'Annuler',
       size: {
-        width: '640px',
-        height: '1020px'
+        width: '800px',
+        height: '1040px'
       },
       component: 'parent-auth',
       data: this.adherent
@@ -91,6 +119,5 @@ export class AdherentCardComponent implements OnInit {
       //   console.log(res);
       // });
     }
-    
   }
 }

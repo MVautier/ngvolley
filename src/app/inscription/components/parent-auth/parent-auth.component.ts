@@ -93,17 +93,11 @@ export class ParentAuthComponent implements OnInit {
       const div = document.querySelector('#content-auth') as HTMLDivElement;
       this.validate({
         action: 'sendpdf',
-        data: div
+        data: {
+            element: div,
+            name: 'autorisation-parentale.pdf'
+        }
       });
-      // div.querySelectorAll('.auth-form').forEach(div => {
-      //   (div as HTMLDivElement).style.color = '#000';
-      // });
-      // this.captureHTML(div).then(dataUrl => {
-      //   this.validate({
-      //     action: 'validate',
-      //     data: dataUrl
-      //   });
-      // });
     }
   }
 
@@ -117,6 +111,4 @@ export class ParentAuthComponent implements OnInit {
   clear() {
     this.sig.clear();
   }
-
-  
 }

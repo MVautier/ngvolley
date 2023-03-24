@@ -45,4 +45,20 @@ export class CustomValidators {
           });
         };
       }
+
+      static nullOrPatternCheck(regex: RegExp): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+          if (control.value == null || control.value === '') {
+            return null;
+          }
+
+          const match = new RegExp(regex, 'g').test(control.value);
+          return match ? null : {
+              'pattern': {
+                  'valid format': regex.source,
+                  'actual': control.value
+                }
+            };
+        };
+      }
   }

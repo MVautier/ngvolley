@@ -26,7 +26,6 @@ export class MemberFormComponent implements OnInit {
   all_sections: string[] = [];
   categories: Category[] = [];
   choosenSection = false;
-  licenceRequired = false;
   noLicenceRequired = false;
   checked: CheckAdherent = new CheckAdherent();
   subModal: Subscription;
@@ -47,12 +46,13 @@ export class MemberFormComponent implements OnInit {
     this.adherentService.getCategories().then(liste => {
       this.categories = liste;
       this.initForm();
+      this.checkAdherent(this.adherent);
       this.formGroup.valueChanges.subscribe(val => {
         const adh = this.getFormAdherent(val);
         this.choosenSection = adh.Category !== null;
-        this.licenceRequired = this.choosenSection && ['C', 'E'].includes(adh.Category);
         this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
         this.checkAdherent(adh);
+        this.inscriptionService.checkControl(this.formGroup, 'birthdate');
         this.change.emit(adh);
       });
     });
@@ -71,10 +71,9 @@ export class MemberFormComponent implements OnInit {
       'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
       'phone': [this.adherent.Phone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
       'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
-      'relationship': [this.adherent.RelationShip, [Validators.required]],
+      'relationship': [this.adherent.Relationship, [Validators.required]],
       'sections': [this.adherent.Sections, [Validators.required]],
       'category': [this.adherent.Category, [Validators.required]],
-      'healthfile': [null, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]],
       'rgpd': [this.adherent.Rgpd, [Validators.requiredTrue]]
     });
   }
@@ -130,7 +129,6 @@ export class MemberFormComponent implements OnInit {
       Sections: value.sections,
       valid: !this.formGroup.invalid && this.checked.valid,
       Uid: this.adherent.Uid,
-      HealthFile: this.formGroup.get('healthfile').value,
       Rgpd: this.formGroup.get('rgpd').value,
       ImageRight: this.adherent.ImageRight,
       TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,

@@ -1,41 +1,43 @@
 <div class="photo-taker">
-  <div class="info" *ngIf="formGroup" [formGroup]="formGroup">
-    <mat-form-field class="form-element row-item">
-      <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier" formControlName="licence">
-      <mat-error *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
-        {{ getLicenceError('licence') }}
-      </mat-error>
-    </mat-form-field>
-    <div class="sub-info">(si renouvellement ou mutation)</div>
-    Veuillez ajouter une photo d'identité pour l'établissement de la licence.<br>
+    <div class="info">
+       <div *ngIf="!imageBase64">
+            Veuillez ajouter une photo d'identité pour l'établissement de la licence.
+        </div>
 
-    <div class="import-buttons">
-      <button  mat-raised-button color="primary" matPrefix title="Prendre une photo" (click)="showModal('camera')">
-        <mat-icon>add_a_photo</mat-icon>
-      </button>
+        <div *ngIf="imageBase64">
+            Ajouter ou modifier la photo.
+        </div>
 
-      <button  mat-raised-button color="primary" matPrefix title="Importer une photo" (click)="f_input.click()">
-        <mat-icon>download</mat-icon>
-      </button>
-      <input type="file" hidden #f_input (change)="onSelect(f_input.files)" />
+        <div class="import-buttons">
+            <button mat-raised-button color="primary" matPrefix title="Prendre une photo" (click)="showModal('camera')">
+                <mat-icon>add_a_photo</mat-icon>
+            </button>
 
+            <button mat-raised-button color="primary" matPrefix title="Importer une photo" (click)="f_input.click()">
+                <mat-icon>download</mat-icon>
+            </button>
+            <input type="file" hidden #f_input (change)="onSelect(f_input.files)" />
+
+            <button *ngIf="imageBase64" mat-raised-button color="primary" matPrefix title="Recadrer une photo" (click)="showModal('cropper')">
+                <mat-icon>crop</mat-icon>
+            </button>
+
+            <button *ngIf="imageBase64" mat-raised-button color="primary" matPrefix title="Fermer" (click)="close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- <div class="preview">
+        <img *ngIf="imageBase64" [src]="imageBase64" />
     </div>
 
-  </div>
-  <div class="preview">
-    <img *ngIf="imageBase64" [src]="imageBase64" />
-  </div>
+    <div *ngIf="imageBase64" class="edit-buttons">
+        <button mat-raised-button color="primary" matPrefix title="Recadrer une photo" (click)="showModal('cropper')">
+            <mat-icon>crop</mat-icon>
+        </button>
+    </div> -->
 
-  <div *ngIf="imageBase64" class="edit-buttons">
-    <button  mat-raised-button color="primary" matPrefix title="Recadrer une photo" (click)="showModal('cropper')">
-      <mat-icon>crop</mat-icon>
-    </button>
-
-
-
-  </div>
-
-  <!-- <div *ngIf="!imageBase64" class="photo-drop">
+    <!-- <div *ngIf="!imageBase64" class="photo-drop">
 		<div class="custom-dropzone scroll1" ngx-dropzone [accept]="'image/*'" [multiple]="false" (change)="onSelect($event)">
 			<ngx-dropzone-label>
 				<div>

@@ -85,7 +85,7 @@ export class InscriptionService {
 
   getCpError(formGroup: FormGroup, field: string) {
     return formGroup.get(field).hasError('required') ? this.requiredAlert :
-        formGroup.get(field).hasError('pattern') ? 'Le format est invalide ou ne correspond pas ce qui a été déclaré précédemment' : '';
+        formGroup.get(field).hasError('pattern') ? 'Le format est invalide ou ce code postal ne correspond pas ce qui a été déclaré à l\'étape précédente' : '';
   }
 
   getDateError(formGroup: FormGroup, field: string): string | boolean {
@@ -103,8 +103,22 @@ export class InscriptionService {
     return formGroup.get(field).hasError('required') ? 'L\'acceptation est requise' : '';
   }
 
+  getPatternError(formGroup: FormGroup, field: string): string | boolean {
+    return formGroup.get(field).hasError('pattern') ? 'Le format est invalide' : '';
+  }
+
   compareDate(d1: Date, d2: Date): number {
     return d1.getTime() === d2.getTime() ? 0 : (d1.getTime() > d2.getTime() ? 1 : -1);
+  }
+
+  checkControl(formGroup: FormGroup, field: string) {
+    const control = formGroup.get(field);
+    //if (!control.hasError) {
+        control.updateValueAndValidity({ onlySelf: true});
+        if (control.hasError) {
+            control.markAsTouched();
+        }
+    //}
   }
 
   checkAdherent(check: CheckAdherent, adherent: Adherent): CheckAdherent {

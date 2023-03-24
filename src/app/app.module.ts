@@ -21,7 +21,6 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent
-    
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'colomiers-volley' }),

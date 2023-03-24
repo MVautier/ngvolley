@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Adherent } from '@app/core/models/adherent.model';
-import { RegexShared } from '@app/core/services/regex-shared';
 import { ThemeService } from '@app/core/services/theme.service';
 import { CartItem } from '@app/inscription/models/cart-item.model';
 import { Cart } from '@app/inscription/models/cart.model';
@@ -9,7 +9,7 @@ import { StartInscription } from '@app/inscription/models/start-inscription.mode
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { LayoutService } from '@app/ui/layout/services/layout.service';
 import { environment } from '@env/environment';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-inscription-page',
@@ -22,7 +22,6 @@ export class InscriptionPageComponent implements OnInit {
   title2: string = environment.assoTitle;
   step = 1;
   adherent: Adherent;
-  modalRef: BsModalRef;
   isDarkTheme: boolean;
   isMenuOpened: boolean;
   cart: Cart;
@@ -34,8 +33,7 @@ export class InscriptionPageComponent implements OnInit {
     private inscriptionService: InscriptionService,
     private themeService: ThemeService,
     private layoutService: LayoutService,
-    private modalService: BsModalService,
-    private regex: RegexShared) { 
+    private router: Router) { 
       this.themeService.isDarkTheme.subscribe(isDark => {
         this.isDarkTheme = isDark;
       })
@@ -45,6 +43,18 @@ export class InscriptionPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+          if (event.url.endsWith('step=1')) {
+            this.init();
+            this.router.navigate(['inscription']);
+          }
+      });
+      this.init();
+  }
+
+  init() {
+    this.step = 1;
     const y = new Date().getFullYear();
     this.title = `Bulletin d\'adhésion ${y}-${y + 1}`; 
     this.startIns = {
@@ -142,6 +152,11 @@ export class InscriptionPageComponent implements OnInit {
         local: true
       };
     }
+    this.step--;
+  }
+
+  onStep3Cancel(adherent: Adherent) {
+    this.adherent = adherent;
     this.step--;
   }
 

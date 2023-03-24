@@ -1,19 +1,13 @@
 <div *ngIf="adherent">
 
-  <app-adherent-card 
-    [adherent]="adherent" 
-    (savePdf)="onSavePdf($event, adherent.Uid)"
-  ></app-adherent-card>
+    <app-adherent-card [adherent]="adherent" (savePdf)="onSavePdf($event, adherent.Uid)"></app-adherent-card>
 
-  <app-adherent-card *ngFor="let member of adherent.Membres" 
-    [adherent]="member"
-    (savePdf)="onSavePdf($event, member.Uid)"
-  ></app-adherent-card>
+    <app-adherent-card *ngFor="let member of adherent.Membres" [adherent]="member"
+        (savePdf)="onSavePdf($event, member.Uid)"></app-adherent-card>
 
 </div>
 
 <div class="ins-buttons">
-  <button type="button" mat-raised-button color="primary" (click)="onCancel()">Annuler</button>
-  <button type="button" mat-raised-button color="primary" (click)="onValidate()"
-    [disabled]="!isFormValid">Valider</button>
+    <button type="button" mat-raised-button color="primary" (click)="onCancel()">Retour</button>
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()" [disabled]="!isFormValid">Valider</button>
 </div>

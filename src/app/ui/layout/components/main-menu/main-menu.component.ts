@@ -10,6 +10,7 @@ import { SsrService } from '../../services/ssr.service';
 import { ThemeService } from '@app/core/services/theme.service';
 import { ModalService } from '../../services/modal.service';
 import { ModalConfig } from '../../models/modal-config.model';
+import { InscriptionPageComponent } from '@app/inscription/pages/inscription-page/inscription-page.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -76,7 +77,11 @@ export class MainMenuComponent implements OnInit {
         //this.router.navigate([this.page]);
       });
     } else {
-      this.router.navigate([page]);
+        if (page === 'inscription') {
+            this.router.navigate([page], {queryParams: {step: 1}});
+        } else {
+            this.router.navigate([page]);
+        }
     }
   }
 

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Adherent } from '@app/core/models/adherent.model';
+import { PdfInfo } from '@app/core/models/pdf-info.model';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 
 @Component({
@@ -9,6 +10,8 @@ import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 })
 export class DocumentFormComponent implements OnInit {
   @Input() adherent: Adherent;
+  @Output() validate: EventEmitter<Adherent> = new EventEmitter<Adherent>();
+  @Output() cancel: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   isFormValid = false;
 
   constructor(private pdf: PdfMakerService) { }
@@ -16,11 +19,11 @@ export class DocumentFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSavePdf(div: HTMLElement, id: string) {
-    if (div && div.innerHTML) {
-      console.log('data received from modal: ', div.innerHTML);
+  onSavePdf(data: PdfInfo, id: string) {
+    if (data && data.element && data.name) {
+      console.log('data received from modal: ', data);
       const name = 'test.pdf';
-      this.pdf.buildAndSendPdf(id, name, div).then(result => {
+      this.pdf.buildAndSendPdf(id, data.name, data.element).then(result => {
           console.log('pdf was built and sent to server: ', result);
       })
       .catch(err => {
@@ -32,7 +35,7 @@ export class DocumentFormComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.cancel.emit(this.adherent);
   }
 
   onValidate() {

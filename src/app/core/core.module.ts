@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { HrefToRouterLinkDirective } from './directives/href-to-routerlink.directive';
@@ -41,6 +41,7 @@ import { WindowStateService } from './services/window-state.service';
           ThemeService,
           AdminService,
           SafeHtmlPipe,
+          DatePipe,
           HrefToRouterLinkDirective,
           ErrorHandlerService,
           TransferStateService,

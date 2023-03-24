@@ -15,11 +15,11 @@
       </mat-error>
     </mat-form-field>
 
-    <div *ngIf="choosenSection" class="border-div">
+    <div *ngIf="choosenSection && noLicenceRequired" class="border-div">
 
-        <app-photo-taker *ngIf="licenceRequired" [checked]="checked" (photo)="onPhoto($event)"></app-photo-taker>
+        <!-- <app-photo-taker *ngIf="licenceRequired" [checked]="checked" (photo)="onPhoto($event)"></app-photo-taker> -->
 
-        <div *ngIf="noLicenceRequired" class="training">
+        <div class="training">
             <div class="info">
                 Entrainements auxquels vous souhaitez participer
             </div>

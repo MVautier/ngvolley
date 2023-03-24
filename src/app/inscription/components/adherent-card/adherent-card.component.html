@@ -1,46 +1,72 @@
-<div class="section-title">
-  <span class="title">Documents</span>
-</div>
+<form *ngIf="formGroup && adherent" [formGroup]="formGroup" novalidate>
+    <section class="inscription">
 
-<form *ngIf="form && adherent" [formGroup]="form" novalidate>
-  <section class="inscription">
-    <img src="{{imgSrc}}" height="200" alt="Image preview..." *ngIf="imgSrc">
-    {{adherent.FirstName}} {{adherent.LastName}}
+        <div class="section-title adherent">
+            <div class="name">
+                <div class="left">
+                    <span class="title main">{{adherent.FirstName}} {{adherent.LastName}}</span>
+                    <br>
+                    <span class="title">{{category}}</span>
+                </div>
 
-    <div *ngIf="checked.parentAuthNeeded" class="border-div" (click)="showModalAuthParent()">
-      Autorisation parentale
-    </div>
+                <div *ngIf="licenceRequired && adherent.Photo" class="right">
+                    <img  [src]="adherent.Photo" height="80" (click)="showEditPhoto()" title="Changer/Retoucher">
+                </div>
+            </div>
 
-    <div class="check">
-      <div class="info">
-        <span class="accent">Certificat médical</span> de non contre-indication à la pratique du sport ou de la
-        discipline
-        concernée pour toute nouvelle adhésion
-        ou tous les 3 ans, conformément aux disposition du code du sport et à la volonté fédérale de l'UNSLL en matire
-        de
-        prévention de la santé du sportif.
-      </div>
-      <div *ngIf="!checked.certifNeeded" class="info">
-        <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal, conformément au décret
-        n°2016-1387 du 12/10/2016.
-      </div>
-    </div>
+            <div *ngIf="licenceRequired" class="licence">
+                <mat-form-field class="form-element row-item">
+                    <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier"
+                        formControlName="licence">
+                    <mat-error *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
+                        {{ getLicenceError('licence') }}
+                    </mat-error>
+                </mat-form-field>
+                <div class="sub-info">(si renouvellement ou mutation)</div>
+            </div>
 
-    <mat-form-field>
-      <ngx-mat-file-input formControlName="file" placeholder="Basic Input" (change)="onFileChange(form.value)">
-      </ngx-mat-file-input>
-      <mat-error *ngIf="form.get('file').hasError('maxContentSize')">
-        File size {{form.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
-        ({{form.get('file').value.files[0].name | json}} g {{form.get('file')?.getError('maxContentSize').actualSize |
-        json
-        }} - {{form.get('file')?.getError('maxContentSize').actualSize
-        | byteFormat}}).
-      </mat-error>
-    </mat-form-field>
+            <div *ngIf="licenceRequired && editPhoto" class="take-photo">
+                <app-photo-taker [checked]="checked" [imageBase64]="adherent.Photo" (photo)="onPhoto($event)"></app-photo-taker>
+            </div>
+        </div>
 
-    <div>
-      
-    </div>
-  </section>
+        <div *ngIf="checked.parentAuthNeeded" class="border-div parent-auth" (click)="showModalAuthParent()">
+            Autorisation parentale
+        </div>
+
+        <div class="check">
+            <div class="info">
+                <span class="accent">Certificat médical</span> de non contre-indication à la pratique du sport ou de la
+                discipline
+                concernée pour toute nouvelle adhésion
+                ou tous les 3 ans, conformément aux disposition du code du sport et à la volonté fédérale de l'UNSLL en
+                matire
+                de
+                prévention de la santé du sportif.
+            </div>
+            <div *ngIf="!checked.certifNeeded" class="info">
+                <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal, conformément
+                au décret
+                n°2016-1387 du 12/10/2016.
+            </div>
+        </div>
+
+        <mat-form-field>
+            <ngx-mat-file-input formControlName="file" placeholder="Basic Input" (change)="onFileChange(formGroup.value)">
+            </ngx-mat-file-input>
+            <mat-error *ngIf="formGroup.get('file').hasError('maxContentSize')">
+                File size {{formGroup.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
+                ({{formGroup.get('file').value.files[0].name | json}} g
+                {{formGroup.get('file')?.getError('maxContentSize').actualSize |
+                json
+                }} - {{formGroup.get('file')?.getError('maxContentSize').actualSize
+                | byteFormat}}).
+            </mat-error>
+        </mat-form-field>
+
+        <div class="signature">
+            <app-signature-form></app-signature-form>
+        </div>
+    </section>
 
 </form>

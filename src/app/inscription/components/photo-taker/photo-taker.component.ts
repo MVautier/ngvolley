@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Adherent } from '@app/core/models/adherent.model';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
-import { CustomValidators } from '@app/inscription/validators/custom-validators';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Subscription, takeUntil, Subject } from 'rxjs';
 
@@ -14,28 +12,22 @@ import { Subscription, takeUntil, Subject } from 'rxjs';
 })
 export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() checked: CheckAdherent;
+  @Input() imageBase64: string;
   @Output() photo: EventEmitter<string> = new EventEmitter<string>();
   files: File[] = [];
   imageChangedEvent: any = '';
-  imageBase64: string;
-
-  formGroup: FormGroup;
-  licenceNumber: string;
-  licenceInputMask: string;
-
+  
   subModal: Subscription;
   notifier = new Subject<void>();
   display: FormControl = new FormControl('', Validators.required);
 
   constructor(
     private modalService: ModalService,
-    private formBuilder: FormBuilder,
     private inscriptionService: InscriptionService) { }
 
 
   ngOnInit(): void {
-    this.licenceInputMask = this.inscriptionService.licenceInputMask;
-    this.initForm();
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,17 +40,6 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
     if (this.subModal) {
       this.subModal.unsubscribe();
     }
-  }
-
-  initForm() {
-    const patterns = this.inscriptionService.patterns;
-    this.formGroup = this.formBuilder.group({
-      'licence': [this.licenceNumber, [CustomValidators.licenceCheck(this.checked)]],
-    });
-  }
-
-  getLicenceError(field: string) {
-    return this.inscriptionService.getLicenceError(this.formGroup, field);
   }
 
   showModal(mode: string) {
@@ -89,9 +70,20 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  close() {
+    this.photo.emit(this.imageBase64);
+  }
+
   onSelect(fileList: FileList) {
     console.log(fileList);
-    this.getBase64(fileList[0]);
+    this.getBase64(fileList[0]).then(result => {
+        if (result) {
+            this.imageBase64 = result;
+            this.photo.emit(this.imageBase64);
+        }
+    }).catch(err => {
+        console.log('Error: ', err);
+    });
   }
 
   onReset() {
@@ -104,14 +96,16 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
-  private getBase64(file) {
-    var reader = new FileReader();
-    reader.onload = () => {
-      this.imageBase64 = reader.result.toString();
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-    reader.readAsDataURL(file);
+  private getBase64(file): Promise<string> {
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = () => {
+            resolve(reader.result.toString());
+        };
+        reader.onerror = function (error) {
+            reject(error);
+        };
+        reader.readAsDataURL(file);
+    });
   }
 }
