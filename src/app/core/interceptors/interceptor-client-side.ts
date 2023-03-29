@@ -68,6 +68,10 @@ export class InterceptorClientSide implements HttpInterceptor {
       }
     }
 
+    if (request.url.includes('helloasso')) {
+        next.handle(request);
+    }
+
     if (!this.connexionInfo.Token) {
       this.connexionInfo.Token = this.authService.GetTokenByCookie();
     }
@@ -127,7 +131,6 @@ export class InterceptorClientSide implements HttpInterceptor {
   private isAuthError(error: any): boolean {
     return error instanceof HttpErrorResponse && error.status === 401 || error instanceof HttpErrorResponse && error.status === 500 && error.error === "Le token n'est pas valide";
   }
-
 
   applyCredentials(request: HttpRequest<any>): HttpRequest<any> {
     if (!this.connexionInfo.Token || !this.connexionInfo.Token.id_token) {

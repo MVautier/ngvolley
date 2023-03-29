@@ -1,11 +1,11 @@
 <div class="photo-taker">
     <div class="info">
        <div *ngIf="!imageBase64">
-            Veuillez ajouter une photo d'identité pour l'établissement de la licence.
+            Veuillez ajouter une photo d'identité pour l'établissement de la licence
         </div>
 
         <div *ngIf="imageBase64">
-            Ajouter ou modifier la photo.
+            Modifier la photo
         </div>
 
         <div class="import-buttons">
@@ -22,7 +22,7 @@
                 <mat-icon>crop</mat-icon>
             </button>
 
-            <button *ngIf="imageBase64" mat-raised-button color="primary" matPrefix title="Fermer" (click)="close()">
+            <button *ngIf="imageBase64" mat-raised-button matPrefix title="Fermer" (click)="close()">
                 <mat-icon>close</mat-icon>
             </button>
         </div>

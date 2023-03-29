@@ -51,10 +51,14 @@ export class PdfMakerService {
         }
         if (d.type !== 'radio') {
             let v = (d as HTMLInputElement).value;
+            const label = d.className.includes('telephone') ? 'Fixe: ' : (d.className.includes('mobile') ? 'Mobile: ' : '');
             if (d.type === 'date') {
                 v = this.datePipe.transform(v, 'dd/MM/yyyy', 'fr-FR');
             }
-            d.insertAdjacentText('afterend', ' ' + v);
+            if (v) {
+                d.insertAdjacentText('afterend', ' ' + label + v);
+            }
+            
             d.remove();
         }
         

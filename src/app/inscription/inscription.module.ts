@@ -28,6 +28,8 @@ import { FormHeaderComponent } from './components/form-header/form-header.compon
 import { FormFooterComponent } from './components/form-footer/form-footer.component';
 import { DocumentFormComponent } from './components/document-form/document-form.component';
 import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
+import { CartPaymentComponent } from './components/cart-payment/cart-payment.component';
+import { HelloAssoService } from './services/helloasso.service';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -44,7 +46,8 @@ import { AdherentCardComponent } from './components/adherent-card/adherent-card.
     FormHeaderComponent,
     FormFooterComponent,
     DocumentFormComponent,
-    AdherentCardComponent
+    AdherentCardComponent,
+    CartPaymentComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +65,8 @@ import { AdherentCardComponent } from './components/adherent-card/adherent-card.
     WebcamModule
   ],
   providers: [
-    InscriptionService
+    InscriptionService,
+    HelloAssoService
   ]
 })
 export class InscriptionModule { }

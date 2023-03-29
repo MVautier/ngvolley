@@ -1,15 +1,17 @@
 <div class="content">
     <div class="photo-cropper">
-            <image-cropper *ngIf="config?.data"
-                [imageBase64]="config.data"
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [imageBase64]="imageBase64"
                 [maintainAspectRatio]="false"
                 [aspectRatio]="3 / 4"
                 [canvasRotation]="canvasRotation"
                 [transform]="transform"
                 format="png"
+                [style.display]="showCropper ? null : 'none'"
                 (imageCropped)="imageCropped($event)"
                 (imageLoaded)="imageLoaded($event)"
-                (cropperReady)="cropperReady()"
+                (cropperReady)="cropperReady($event)"
                 (loadImageFailed)="loadImageFailed()"
             ></image-cropper>
     </div>
@@ -19,12 +21,20 @@
 			<mat-icon>crop_rotate</mat-icon>
 		</button>
 
-        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onSwap('h')">
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onFlip('h')">
 			<mat-icon>swap_horiz</mat-icon>
 		</button>
 
-        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onSwap('v')">
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="onFlip('v')">
 			<mat-icon>swap_vert</mat-icon>
+		</button>
+
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="zoomOut()">
+			<mat-icon>zoom_out</mat-icon>
+		</button>
+
+        <button mat-icon-button matSuffix class="icon-button cancel enabled" (click)="zoomIn()">
+			<mat-icon>zoom_in</mat-icon>
 		</button>
 		
 		<mat-slider
@@ -48,6 +58,6 @@
 </div>
 
 <div class="ng-modal-footer">
-    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
     <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
 </div>

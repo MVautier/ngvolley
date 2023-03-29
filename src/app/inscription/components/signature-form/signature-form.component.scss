@@ -1,6 +1,16 @@
-canvas {
-    display: block;
-    box-shadow: 0 0 5px 1px #999;
-    margin: 2em auto;
-    border-radius: 5px;
+
+.sig{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 350px;
+    canvas {
+        display: block;
+        box-shadow: 0 0 5px 1px #999;
+        margin: 2em auto;
+        border-radius: 5px;
+    }
+    mat-icon {
+        font-size: 24px;
+    }
 }

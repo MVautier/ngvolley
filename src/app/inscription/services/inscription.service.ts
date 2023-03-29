@@ -121,7 +121,12 @@ export class InscriptionService {
     //}
   }
 
-  checkAdherent(check: CheckAdherent, adherent: Adherent): CheckAdherent {
+  checkAdherent(check: CheckAdherent, adherent: Adherent, step: number): CheckAdherent {
+    if (!check) {
+        check = new CheckAdherent();
+    }
+
+    // Recherche de l'adhérent dans les données
     if (!check.found) {
         check.found = this.getExistingAdherent(adherent);
         console.log('found: ', check.found);
@@ -131,27 +136,31 @@ export class InscriptionService {
     let dateValid = false;
     const d = new Date();
     const nextY = d.getFullYear() + (d.getMonth() > 5 ? 1 : 0);
-    if (check.found) {
-        // Traitement certificat
-        if (check.found.CertificateDate) {
+
+    // Traitement certificat
+    if (adherent.HealthFile) {
+        check.certifNeeded = false;
+    } else {
+        if (check.found && check.found.CertificateDate) {
             const certifDate = check.found.CertificateDate;
-            const currentY = Number(check.found.CertificateDate.toString().substring(0, 4)) + 3;
-            const current = new Date(currentY, certifDate.getMonth(), certifDate.getDay());
-            const end = new Date(nextY, 5, 30);
-            const valid = this.compareDate(current, end);
+            const currentY = check.found.CertificateDate.getFullYear() + 3;
+            const expire = new Date(currentY, certifDate.getMonth(), certifDate.getDay());
+            const endOfSeason = new Date(nextY, 5, 30);
+            const valid = this.compareDate(expire, endOfSeason);
             check.certifLabel = valid >= 0 ? 'Attestation ou certificat' : 'Certificat';
             check.certifPlaceHolder = valid >= 0 ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical';
             check.certifNeeded = valid < 0;
         } else {
             check.certifLabel = 'Certificat';
             check.certifPlaceHolder = 'Importer un certificat médical';
-            check.certifNeeded = true;
+            check.certifNeeded = this.isNull(adherent.HealthFile);
         }
-
-        // Traitement licence
-        if (['C', 'E'].includes(adherent.Category) && adherent.Licence && check.found.Licence) {
-            check.licenceError = adherent.Licence !== check.found.Licence;
-        }
+    }
+    
+    // Traitement licence
+    check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
+    if (check.found && adherent.Licence && check.found.Licence) {
+        check.licenceError = adherent.Licence !== check.found.Licence;
     }
 
     // Traitement date de naissance
@@ -163,15 +172,27 @@ export class InscriptionService {
             check.parentAuthNeeded = false;
         } else if (adherent.Category === 'E') {
             dateValid = this.compareDate(date18, adherent.BirthdayDate) <= 0 && this.compareDate(date13, adherent.BirthdayDate) >= 0;
-            check.parentAuthNeeded = true;
+            check.parentAuthNeeded = this.isNull(adherent.Authorization);
         }
+        check.age = Adherent.getAge(adherent.BirthdayDate);
     }
+
+    // Traitement signature
+    check.signatureNeeded = adherent.Age >= 18 && !adherent.Signature || this.isNull(adherent.Signature);
+
+    // Traitement accept
+    check.accept = adherent.Rgpd;
+
     check.birthdayDateValid = dateValid;
-    check.valid = dateValid;
+    check.valid = dateValid && (step === 3 ? !check.parentAuthNeeded && !check.certifNeeded && !check.licenceNeeded && !check.signatureNeeded && check.accept : true);
     return check;
   }
 
   private normalize(s: string): string {
     return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  public isNull(value): boolean {
+    return value === null || value === undefined;
   }
 }

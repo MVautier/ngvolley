@@ -1,3 +1,4 @@
+import { Adherent } from "@app/core/models/adherent.model";
 import { environment } from "@env/environment";
 import { CartItem } from "./cart-item.model";
 
@@ -6,6 +7,7 @@ export class Cart {
     items: CartItem[];
     date: Date;
     total: number;
+    client?: Adherent;
 
     constructor() {
         this.id = 0;
@@ -35,6 +37,10 @@ export class Cart {
 
     public updateTotal() {
         this.total = this.items.map(i => i.montant).reduce((a, b) => { return a + b; });
+    }
+
+    public setClient(client: Adherent) {
+        this.client = client;
     }
 
     private getFlatItems(items: CartItem[]): CartItem[] {

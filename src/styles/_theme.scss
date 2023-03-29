@@ -1,103 +1,108 @@
 @use "sass:map";
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 @import "@angular/material/theming";
 @include mat-core();
 :root {
-  // $typography: mat-typography-config(
-  //   $font-family: 'Roboto, "Helvetica Neue", sans-serif',
-  //   $headline: mat-typography-level(32px, 48px, 700),
-  //   $body-1: mat-typography-level(16px, 24px, 400),
-  // );
-  $label: mat-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
+    // $typography: mat-typography-config(
+    //   $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+    //   $headline: mat-typography-level(32px, 48px, 700),
+    //   $body-1: mat-typography-level(16px, 24px, 400),
+    // );
+    $label: mat-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
 
-  $typography-config: map.merge(
-    mat.define-typography-config(
-      $font-family: 'Roboto, "Helvetica Neue", sans-serif',
-      $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
-      $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-      $display-2: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-      $display-1: mat.define-typography-level(34px, 40px, 400),
-      $headline: mat.define-typography-level(20px, 27px, 500),
-      $title: mat.define-typography-level(20px, 27px, 400),
-      $subheading-1: mat.define-typography-level(15px, 17px, 400),
-      $subheading-2: mat.define-typography-level(16px, 21px, 500),
-      $body-1: mat.define-typography-level(16px, 21px, 400),
-      $body-2: mat.define-typography-level(16px, 25px, 500),
-      $caption: mat.define-typography-level(14px, 21px, 400),
-      $button: mat.define-typography-level(16px, 21px, 400),
-      $input: mat.define-typography-level(inherit, 1.125, 400),
-    ),
-    (
-      "label": $label,
-    )
-  );
+    $typography-config: map.merge(
+        mat.define-typography-config(
+            $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+            $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+            $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+            $display-2: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+            $display-1: mat.define-typography-level(34px, 40px, 400),
+            $headline: mat.define-typography-level(20px, 27px, 500),
+            $title: mat.define-typography-level(20px, 27px, 400),
+            $subheading-1: mat.define-typography-level(15px, 17px, 400),
+            $subheading-2: mat.define-typography-level(16px, 21px, 500),
+            $body-1: mat.define-typography-level(16px, 21px, 400),
+            $body-2: mat.define-typography-level(16px, 25px, 500),
+            $caption: mat.define-typography-level(14px, 21px, 400),
+            $button: mat.define-typography-level(16px, 21px, 400),
+            $input: mat.define-typography-level(inherit, 1.125, 400),
+        ),
+        (
+            "label": $label,
+        )
+    );
 
-  $light-app-theme: mat-light-theme(
-    (
-      color: (
-        primary: mat-palette($mat-indigo),
-        accent: mat-palette($mat-indigo, A200, A100, A400),
-        warn: mat-palette($mat-red),
-      ),
-      typography: $typography-config,
-    )
-  );
+    $light-app-theme: mat-light-theme(
+        (
+            color: (
+                primary: mat-palette($mat-indigo),
+                accent: mat-palette($mat-indigo, A200, A100, A400),
+                warn: mat-palette($mat-red),
+            ),
+            typography: $typography-config,
+        )
+    );
 
-  $dark-app-theme: mat-dark-theme(
-    (
-      color: (
-        primary: mat-palette($mat-yellow, 700),
-        accent: mat-palette($mat-amber, 800),
-        warn: mat-palette($mat-amber),
-      ),
-      typography: $typography-config,
-    )
-  );
+    $dark-app-theme: mat-dark-theme(
+        (
+            color: (
+                primary: mat-palette($mat-yellow, 700),
+                accent: mat-palette($mat-amber, 800),
+                warn: mat-palette($mat-amber),
+            ),
+            typography: $typography-config,
+        )
+    );
 
-  @include mat.all-component-typographies($typography-config);
+    @include mat.all-component-typographies($typography-config);
 
-  @include angular-material-theme($dark-app-theme);
+    @include angular-material-theme($dark-app-theme);
 
-  @mixin typography($theme) {
-    $typography-config: mat.get-typography-config($theme);
-    
-    .mat-form-field-appearance-legacy .mat-form-field-label {
-        @include mat.typography-level($typography-config, 'label');
+    @mixin typography($theme) {
+        $typography-config: mat.get-typography-config($theme);
+
+        .mat-form-field-appearance-legacy .mat-form-field-label {
+            @include mat.typography-level($typography-config, "label");
+        }
     }
-  }
 
-  @mixin theme-colors($theme) {
-    $_background: map-get($theme, background);
-    $_foreground: map-get($theme, foreground);
-    $_primary: map-get($theme, primary);
-    $_accent: map-get($theme, accent);
-    $background-color: mat-color($_background, background);
-    $background-color-dialog: mat-color($_background, dialog);
-    $foreground-color: mat-color($_foreground, text);
-    $border-color: mat-color($_foreground, divider, 0.3);
-    $primary-color: mat-color($_primary);
-    $accent-color: mat-color($_accent);
-    --background: #{$background-color};
-    --background-dialog: #{$background-color-dialog};
-    --background-shadow: #{darken($background-color-dialog, 2%)};
-    --background-dark: #{darken($background-color, 10%)};
-    --foreground: #{$foreground-color};
-    --primary: #{$primary-color};
-    --accent: #{$accent-color};
-    --border: #{$border-color};
-    --border-accent: #{$accent-color};
-  }
+    @mixin theme-colors($theme) {
+        $_background: map-get($theme, background);
+        $_foreground: map-get($theme, foreground);
+        $_primary: map-get($theme, primary);
+        $_accent: map-get($theme, accent);
+        $background-color: mat-color($_background, background);
+        $background-color-dialog: mat-color($_background, dialog);
+        $foreground-color: mat-color($_foreground, text);
+        $border-color: mat-color($_foreground, divider, 0.3);
+        $primary-color: mat-color($_primary);
+        $accent-color: mat-color($_accent);
+        @if $theme == $dark-app-theme {
+            $border-color: mat-color($_foreground, divider, 0.3);
+        } @else {
+            $border-color: mat-color($_foreground, divider);
+        }
+        --background: #{$background-color};
+        --background-dialog: #{$background-color-dialog};
+        --background-shadow: #{darken($background-color-dialog, 2%)};
+        --background-dark: #{darken($background-color, 10%)};
+        --foreground: #{$foreground-color};
+        --primary: #{$primary-color};
+        --accent: #{$accent-color};
+        --border: #{$border-color};
+        --border-accent: #{$accent-color};
+    }
 
-  .dark-theme {
-    @include theme-colors($dark-app-theme);
-    @include typography($dark-app-theme);
-  }
+    .dark-theme {
+        @include theme-colors($dark-app-theme);
+        @include typography($dark-app-theme);
+    }
 
-  .light-theme {
-    @include angular-material-color($light-app-theme);
-    @include theme-colors($light-app-theme);
-    @include typography($light-app-theme);
-  }
+    .light-theme {
+        @include angular-material-color($light-app-theme);
+        @include theme-colors($light-app-theme);
+        @include typography($light-app-theme);
+    }
 }
 
 // @use '@angular/material' as mat;

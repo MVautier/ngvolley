@@ -84,7 +84,6 @@ export class ParentAuthComponent implements OnInit {
         || this.cityError
         || this.dateError
         || this.sigError;
-    
   }
 
 

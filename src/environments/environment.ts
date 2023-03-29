@@ -34,6 +34,15 @@ export const environment = {
     serverTimeoutMs: 30000,
     distFolder: 'dist/colomiers-volley/browser',
     stateTransferAppId: 'colomiers-volley'
+  },
+  helloasso: {
+    authServer: 'https://api.helloasso-sandbox.com/oauth2',
+    apiServer: 'https://api.helloasso-sandbox.com/v5',
+    clienId: '3c01b037bb62492a9d12ffeed04ba0d3',
+    clientSecret: 'TrpPOIZ0TKp1oMjTSpOrb/xg8bGyEDSd',
+    iframeUrl: 'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/paiements/inscription-a-clll/widget',
+    itemName: 'Adhésion CLLL - Section Voley-Ball',
+    organizationSlug: 'clll-colomiers-volley-ball'
   }
 };
 

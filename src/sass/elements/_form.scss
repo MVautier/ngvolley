@@ -1,216 +1,246 @@
 @import "variables";
 
 :host ::ng-deep form {
-  min-width: 150px;
-  width: 100%;
-  a {
-    color: var(--accent);
-  }
+    min-width: 150px;
+    width: 100%;
+    a {
+        color: var(--accent);
+    }
+    mat-icon.check {
+        position: absolute;
+        left: 5px;
+        top: 13px;
+        font-size: 22px !important;
+        &.valid {
+            color: green;
+        }
+        &.error {
+            color: red;
+        }
+    }
+    mat-error{
+        color: #f44336 !important;
+        font-size: 16px;
+    }
+    mat-panel-title{
+        span{
+            margin-left: 20px;
+        }
+    }
 }
 .ins-buttons {
     width: 100%;
     text-align: right;
     button {
-      margin-right: 10px;
+        margin-right: 10px;
     }
-  }
+}
 :host ::ng-deep .inscription {
-  max-width: var(--form_width);
-  flex-wrap: wrap;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  padding: 30px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgba(255, 255, 255, 0.12);
-  
-  .section-title {
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 15px;
-    position: relative;
-    span.title {
-      color: var(--accent);
-      font-size: 16px;
-      &.main {
-        font-size: 24px;
-      }
-    }
-    &.adherent{
+    max-width: var(--form_width);
+    flex-wrap: wrap;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 30px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border);// rgba(255, 255, 255, 0.12);
+
+    .section-title {
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 15px;
+        position: relative;
         display: flex;
         justify-content: space-between;
-        flex-direction: column;
-        div{
-            &.name {
-                display: flex;
-                width: 100%;
-                flex-direction: row;
-                .left {
-                    text-align: left;
-                    width: 80%;
-                }
-                .right {
-                    width: 20%;
-                    img {
-                        border-radius: 5px;
-                        cursor: pointer;
-                        &:hover{
-                            border: 1px solid var(--border-accent);
+        img{
+            border-radius: 5px;
+        }
+        span.title {
+            color: var(--accent);
+            font-size: 16px;
+            &.main {
+                font-size: 24px;
+            }
+        }
+        &.adherent {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            div {
+                &.name {
+                    display: flex;
+                    width: 100%;
+                    flex-direction: row;
+                    .left {
+                        text-align: left;
+                        width: 80%;
+                    }
+                    .right {
+                        width: 20%;
+                        img {
+                            border-radius: 5px;
+                            cursor: pointer;
+                            &:hover {
+                                border: 1px solid var(--border-accent);
+                            }
                         }
                     }
                 }
-            }
-            &.licence{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                align-items: baseline;
-                mat-form-field{
-                    padding-bottom: 5px;
-                    width: 200px;
+                &.licence {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    align-items: baseline;
+                    mat-form-field {
+                        padding-bottom: 5px;
+                        width: 200px;
+                    }
+                }
+                .sub-info {
+                    font-size: 12px;
+                    font-style: italic;
+                    margin-top: -10px;
+                    margin-bottom: 15px;
                 }
             }
-            .sub-info{
-                font-size: 12px;
-                font-style: italic;
-                margin-top: -10px;
-                margin-bottom: 15px;
+        }
+        .buttons {
+            &.right {
+                position: absolute;
+                top: -20px;
+                right: -20px;
+            }
+            .add-remove {
+                max-width: 130px;
+                text-align: center;
             }
         }
     }
-    .buttons {
-      &.right {
-        position: absolute;
-        top: -25px;
-        right: -20px;
-      }
-      .add-remove {
-        max-width: 130px;
+    .parent-auth {
+        cursor: pointer;
         text-align: center;
-      }
-    }
-  }
-  .parent-auth{
-    text-align: center;
-    cursor: pointer;
-    &:hover{
-        border: 1px solid var(--border-accent);
-    }
-}
-  label {
-    opacity: 0.7;
-  }
-  .file {
-    width: 100%;
-  }
-  .check {
-    display: flex;
-    flex-direction: column;
-    .info {
-      width: 100%;
-      padding: 15px 0;
-      span.accent {
-        color: var(--accent);
-        font-weight: 450;
-        text-decoration: underline;
-      }
-      a {
-        color: var(--primary);
-      }
-    }
-  }
-  .border-div{
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 10px;
-  }
-  .training {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 10px;
-    .info{
-      text-align: center;
-    }
-    .choice{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-    }
-  }
-  .form-element {
-    width: 100%;
-    padding: 5px 0px 20px 2px;
-    &.flex {
-      display: flex;
-      &.row-item {
-        flex: 1 0 50%;
-        .first {
-          padding-right: 5px;
-          &-25 {
-            flex: 1 0 25%;
-          }
-          &-33 {
-            flex: 1 0 33%;
-          }
-          &-50 {
-            flex: 1 0 50%;
-          }
-          &-75 {
-            flex: 1 0 75%;
-          }
+        font-size: initial;
+        &:hover {
+            border: 1px solid var(--border-accent);
         }
-        .last {
-          flex: inherit;
-        }
-      }
-      mat-label.genre {
-        padding-top: 16px;
-        font-size: 0px;
-      }
     }
-  }
+    label {
+        opacity: 0.7;
+    }
+    .file {
+        width: 100%;
+    }
+    .check {
+        display: flex;
+        flex-direction: column;
+        font-size: initial;
+        text-align: left;
+        .info {
+            width: 100%;
+            padding: 15px 0;
+            span.accent {
+                color: var(--accent);
+                font-weight: 450;
+                text-decoration: underline;
+            }
+            a {
+                color: var(--primary);
+            }
+        }
+    }
+    .border-div {
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 25px;
+    }
+    .training {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 10px;
+        .info {
+            text-align: center;
+        }
+        .choice {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+    }
+    .form-element {
+        width: 100%;
+        padding: 5px 0px 20px 2px;
+        &.flex {
+            display: flex;
+            &.row-item {
+                flex: 1 0 50%;
+                .first {
+                    padding-right: 5px;
+                    &-25 {
+                        flex: 1 0 25%;
+                    }
+                    &-33 {
+                        flex: 1 0 33%;
+                    }
+                    &-50 {
+                        flex: 1 0 50%;
+                    }
+                    &-75 {
+                        flex: 1 0 75%;
+                    }
+                }
+                .last {
+                    flex: inherit;
+                }
+            }
+            mat-label.genre {
+                padding-top: 16px;
+                font-size: 0px;
+            }
+        }
+    }
 }
 .icon-button {
-  color: #fff;
-  width: 30px !important;
-  height: 30px !important;
-  pointer-events: none;
-  opacity: 0.7;
-  border-radius: 5px;
-  .mat-icon {
-    transform: scale(0.7);
-  }
-  &.enabled {
-    pointer-events: all;
-    opacity: 1;
-  }
-  &.remove {
-    background-color: orangered;
-  }
-  &.add {
-    background-color: yellowgreen;
-  }
+    color: #fff;
+    width: 30px !important;
+    height: 30px !important;
+    pointer-events: none;
+    opacity: 0.7;
+    border-radius: 5px;
+    .mat-icon {
+        transform: scale(0.7);
+    }
+    &.enabled {
+        pointer-events: all;
+        opacity: 1;
+    }
+    &.remove {
+        background-color: orangered;
+    }
+    &.add {
+        background-color: yellowgreen;
+    }
 }
 .type-radio-group {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
 }
 .type-radio-button {
-  margin: 5px;
+    margin: 5px;
 }
 .footer {
-  margin-top: 25px;
-  text-align: right;
+    margin-top: 25px;
+    text-align: right;
 }
 .btn-valid {
-  opacity: 0.12;
-  pointer-events: none;
-  &.enabled {
-    opacity: 1;
-    pointer-events: all;
-  }
+    opacity: 0.12;
+    pointer-events: none;
+    &.enabled {
+        opacity: 1;
+        pointer-events: all;
+    }
 }

@@ -16,7 +16,7 @@
   </div>
 
   <aside>
-    <app-cart-info *ngIf="cart" [cart]="cart" (addMember)="onAddMemberFromCart()"></app-cart-info>
+    <app-cart-info *ngIf="cart" [cart]="cart" [step]="step" (addMember)="onAddMemberFromCart()"></app-cart-info>
   </aside>
 
   <div class="form">

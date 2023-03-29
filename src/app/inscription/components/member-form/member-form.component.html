@@ -28,10 +28,8 @@
 
       <div class="choice">
         <mat-checkbox [(ngModel)]="adherent.TrainingTE" [ngModelOptions]="{standalone: true}">Mardi soir</mat-checkbox>
-        <mat-checkbox [(ngModel)]="adherent.TrainingFM" [ngModelOptions]="{standalone: true}">Vendredi
-          midi</mat-checkbox>
-        <mat-checkbox [(ngModel)]="adherent.TrainingFE" [ngModelOptions]="{standalone: true}">Vendredi
-          soir</mat-checkbox>
+        <mat-checkbox [(ngModel)]="adherent.TrainingFM" [ngModelOptions]="{standalone: true}">Vendredi midi</mat-checkbox>
+        <mat-checkbox [(ngModel)]="adherent.TrainingFE" [ngModelOptions]="{standalone: true}">Vendredi soir</mat-checkbox>
       </div>
 
     </div>
@@ -117,39 +115,4 @@
     </mat-error>
   </mat-form-field>
 
-  <div class="section-title">
-    <span class="title">Consentement des personnes</span>
-  </div>
-
-  <div class="check">
-    <div class="info">
-      Je reconnais avoir lu et j'accepte le Règlement Général européen sur la Protection des Données personnelles
-      (R.G.P.D.)
-      disponible en suivant le lien <a href="https://leolagrangecolomiers.org/adherer/RGPD"
-        target="_blank">https://leolagrangecolomiers.org/adherer/RGPD</a>
-    </div>
-    <mat-checkbox formControlName="rgpd">J'accepte</mat-checkbox>
-    <mat-error *ngIf="!formGroup.controls['rgpd'].valid && formGroup.controls['rgpd'].touched">
-      {{ getCheckError('rgpd') }}
-    </mat-error>
-  </div>
-
-  <div class="section-title">
-    <span class="title">Utilisation de l'image personnelle</span>
-  </div>
-
-  <div class="check">
-    <div class="info">
-      J'accepte l’affichage, la diffusion de photos, vidéos, prises lors de manifestations ou activités de
-      l'association,
-      auxquelles je participe ou un des membres de ma famille, ceci afin de figurer éventuellement sur nos moyens de
-      communication ?
-    </div>
-
-    <mat-radio-group aria-labelledby="image-radio-group-label" class="image-radio-group"
-      [(ngModel)]="adherent.ImageRight" [ngModelOptions]="{standalone: true}">
-      <mat-radio-button class="image-radio-button" [value]="true">Oui</mat-radio-button>
-      <mat-radio-button class="image-radio-button" [value]="false">Non</mat-radio-button>
-    </mat-radio-group>
-  </div>
 </div>

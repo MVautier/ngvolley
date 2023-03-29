@@ -11,113 +11,149 @@ import { map } from 'rxjs/operators';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
 import { PdfInfo } from '@app/core/models/pdf-info.model';
+import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 
 @Component({
-  selector: 'app-adherent-card',
-  templateUrl: './adherent-card.component.html',
-  styleUrls: ['./adherent-card.component.scss']
+    selector: 'app-adherent-card',
+    templateUrl: './adherent-card.component.html',
+    styleUrls: ['./adherent-card.component.scss']
 })
 export class AdherentCardComponent implements OnInit {
-  @Input() adherent: Adherent;
-  @Output() savePdf: EventEmitter<PdfInfo> = new EventEmitter<PdfInfo>();
+    @Input() adherent: Adherent;
+    @Output() savePdf: EventEmitter<PdfInfo> = new EventEmitter<PdfInfo>();
+    @Output() changed: EventEmitter<Adherent> = new EventEmitter<Adherent>();
+    formGroup: FormGroup;
+    licenceInputMask: string;
+    checked: CheckAdherent = new CheckAdherent();
+    healthfile: File;
+    subModal: Subscription;
+    notifier = new Subject<void>();
+    category: string;
+    licenceRequired: boolean;
+    editPhoto: boolean = true;
 
-  formGroup: FormGroup;
-  licenceNumber: string;
-  licenceInputMask: string;
-  checked: CheckAdherent = new CheckAdherent();
-  healthfile: File;
-  subModal: Subscription;
-  notifier = new Subject<void>();
-  category: string;
-  licenceRequired: boolean;
-  editPhoto: boolean = true;
+    constructor(
+        private fb: FormBuilder,
+        private inscriptionService: InscriptionService,
+        private adherentService: AdherentService,
+        private modalService: ModalService,) { }
 
-  constructor(
-    private fb: FormBuilder,
-    private inscriptionService: InscriptionService,
-    private adherentService: AdherentService,
-    private modalService: ModalService,) { }
+    ngOnInit(): void {
+        if (this.adherent) {
+            this.licenceInputMask = this.inscriptionService.licenceInputMask;
+            this.initForm();
+            this.formGroup.markAllAsTouched();
+            this.adherentService.getCategories().then(result => {
+                this.category = result.find(c => c.Code === this.adherent.Category)?.Libelle;
+                this.licenceRequired = ['C', 'E'].includes(this.adherent.Category);
+            });
+            this.formGroup.valueChanges.subscribe(val => {
+                this.setFormAdherent();
+                this.checkAdherent(this.adherent);
+                this.changed.emit(this.adherent);
+            });
+            this.editPhoto = !this.adherent.Photo;
+            this.checked = this.inscriptionService.checkAdherent(this.checked, this.adherent, 3);
+            console.log('checked in adherent-card: ', this.checked);
+        }
+    }
 
-  ngOnInit(): void {
-    if (this.adherent) {
-        this.licenceInputMask = this.inscriptionService.licenceInputMask;
-        this.initForm();
-        this.adherentService.getCategories().then(result => {
-            this.category = result.find(c => c.Code === this.adherent.Category)?.Libelle;
-            this.licenceRequired = ['C', 'E'].includes(this.adherent.Category);
+    initForm() {
+        this.formGroup = this.fb.group({
+            'licence': [this.adherent.Licence, [CustomValidators.licenceCheck(this.checked)]],
+            'file': [null, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]],
+            'rgpd': [this.adherent.Rgpd, [Validators.requiredTrue]]
         });
-      this.editPhoto = !this.adherent.Photo;
-      this.checked = this.inscriptionService.checkAdherent(this.checked, this.adherent);
-      console.log('checked in adherent-card: ', this.checked);
     }
-  }
 
-  initForm() {
-    this.formGroup = this.fb.group({
-      'licence': [this.licenceNumber, [CustomValidators.licenceCheck(this.checked)]],
-      'file' : [undefined, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]]
-    });
-  }
-
-  getLicenceError(field: string) {
-    return this.inscriptionService.getLicenceError(this.formGroup, field);
-  }
-
-  showEditPhoto() {
-    this.editPhoto = true;
-  }
-
-  onPhoto(photo: string) {
-    this.adherent.Photo = photo;
-    this.editPhoto = false;
-  }
-
-  showModalAuthParent() {
-    if (this.subModal) {
-        this.subModal.unsubscribe();
+    checkAdherent(adherent: Adherent) {
+        this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 3);
+        console.log('checked: ', this.checked);
     }
-    this.modalService.open({
-      title: 'Autorisation parentale',
-      validateLabel: 'Valider',
-      cancelLabel: 'Annuler',
-      size: {
-        width: '800px',
-        height: '1040px'
-      },
-      component: 'parent-auth',
-      data: this.adherent
-    });
-    this.subModal = this.modalService.returnData
-    .pipe(takeUntil(this.notifier))
-    .subscribe(result => {
-      if (result?.data) {
-        this.notifier.next();
-        this.notifier.complete();
-        this.savePdf.emit(result.data);
-      }
-    });
-  }
 
-  readFile(file: File | Blob): Observable<any> {
-    const reader = new FileReader();
-    let loadend = fromEvent(reader, 'loadend').pipe(
-      map((read: any) => {
-        return read.target.result;
-      })
-    );
-    reader.readAsDataURL(file);
-    return loadend;
-  }
-
-  onFileChange(event) {
-    const file = <File>event.file.files[0];
-    if (file) {
-      console.log('choosen file: ', file);
-      this.adherent.HealthFile = file.name;
-      console.log('adherent changed: ', this.adherent);
-      // this.readFile(file).subscribe(res => {
-      //   console.log(res);
-      // });
+    getLicenceError(field: string) {
+        if (this.licenceRequired) {
+            if (!this.formGroup.get('licence').value) return true;
+            return this.inscriptionService.getLicenceError(this.formGroup, field);
+        }
+        return false;
     }
-  }
+
+    getCheckError(field: string): string | boolean {
+        return this.inscriptionService.getCheckError(this.formGroup, field);
+    }
+
+    showEditPhoto() {
+        this.editPhoto = true;
+    }
+
+    onPhoto(photo: string) {
+        this.adherent.Photo = photo;
+        this.editPhoto = false;
+        this.changed.emit(this.adherent);
+    }
+
+    onSignature(s: string) {
+        this.adherent.Signature = s;
+        this.changed.emit(this.adherent);
+    }
+
+    showModalAuthParent() {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
+        }
+        this.modalService.open({
+            title: 'Autorisation parentale',
+            validateLabel: 'Valider',
+            cancelLabel: 'Annuler',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: '800px',
+                height: '1040px'
+            },
+            component: 'parent-auth',
+            data: this.adherent
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                if (result?.data) {
+                    this.adherent.Authorization = result.data.name;
+                    if (result.action)
+                        this.notifier.next();
+                    this.notifier.complete();
+                    this.savePdf.emit(result.data);
+                }
+            });
+    }
+
+    readFile(file: File | Blob): Observable<any> {
+        const reader = new FileReader();
+        let loadend = fromEvent(reader, 'loadend').pipe(
+            map((read: any) => {
+                return read.target.result;
+            })
+        );
+        reader.readAsDataURL(file);
+        return loadend;
+    }
+
+    onFileChange(event) {
+        const file = <File>event.file.files[0];
+        if (file) {
+            console.log('choosen file: ', file);
+            this.adherent.HealthFile = file.name;
+            console.log('adherent changed: ', this.adherent);
+            // this.readFile(file).subscribe(res => {
+            //   console.log(res);
+            // });
+        }
+    }
+
+    setFormAdherent() {
+        this.adherent.Licence = this.formGroup.get('licence').value;
+        this.adherent.Rgpd = this.formGroup.get('rgpd').value;
+        //this.adherent.HealthFile = this.formGroup.get('file').value;
+    }
 }

@@ -12,8 +12,10 @@
         <input type="radio" class="radio" name="statut" [(ngModel)]="statut" [value]="'Tuteur légal'" [ngClass]="{error: statutError}"> Tuteur légal
     </div>
     <div class="auth-form tel">
-        Fixe : <input class="form-control" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Téléphone domicile" [(ngModel)]="telfixe" required [ngClass]="{error: telError}">
-        Mobile : <input class="form-control" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Téléphone portable" [(ngModel)]="mobile" required [ngClass]="{error: telError}">
+        <input class="form-control telephone" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Téléphone domicile" [(ngModel)]="telfixe" required [ngClass]="{error: telError}">
+    </div>
+    <div class="auth-form tel">
+        <input class="form-control mobile" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Téléphone portable" [(ngModel)]="mobile" required [ngClass]="{error: telError}">
     </div>
     <div class="auth-form">
         autorise mon enfant 
@@ -39,7 +41,7 @@
          
     </div>
     <div class="auth-form end sig">
-        Signature <canvas #canvas width="292" height="100" [ngClass]="{error: sigError}"></canvas>
+        Signature : <canvas #canvas width="292" height="100" [ngClass]="{error: sigError}"></canvas>
     </div>
     
     <div class="footer">

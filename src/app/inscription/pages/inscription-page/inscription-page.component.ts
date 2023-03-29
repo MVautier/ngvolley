@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { HelloAssoService } from '@app/inscription/services/helloasso.service';
 import { Adherent } from '@app/core/models/adherent.model';
 import { ThemeService } from '@app/core/services/theme.service';
 import { CartItem } from '@app/inscription/models/cart-item.model';
@@ -10,6 +11,7 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { LayoutService } from '@app/ui/layout/services/layout.service';
 import { environment } from '@env/environment';
 import { filter } from 'rxjs';
+import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 
 @Component({
   selector: 'app-inscription-page',
@@ -31,6 +33,7 @@ export class InscriptionPageComponent implements OnInit {
 
   constructor(
     private inscriptionService: InscriptionService,
+    private helloasso: HelloAssoService,
     private themeService: ThemeService,
     private layoutService: LayoutService,
     private router: Router) { 
@@ -62,53 +65,8 @@ export class InscriptionPageComponent implements OnInit {
     };
   }
 
-  onStep1Validate(info: StartInscription) {
-    this.cart = new Cart();
-    this.adherent = new Adherent(info.local ? environment.postalcode : null);
-    if (info) {
-      this.startIns = info;
-      const already = info.nom !== null && info.prenom !== null && info.section !== null;
-      if (already) {
-        this.adherent.MainSectionInfo = info.prenom + ' ' + info.nom + ': ' + info.section;
-      }
-      this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-      const montant = already ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior);
-      this.cart.addItem({
-        type: 'adhesion',
-        libelle: 'Adhésion ' + environment.asso, 
-        montant: montant,
-        user: [this.adherent.Uid]
-      });
-      this.step++;
-    } else {
-      console.log('no info provided by step 1');
-    }
-    console.log('adherent: ', this.adherent);
-  }
-
   onAdherentChange(adherent: Adherent) {
-    if (adherent && adherent.Uid) {
-      let item: CartItem;
-      if (adherent.Category) {
-        item = this.getCartItemByCategory(adherent.Category, 'categorie', adherent.Uid);
-        this.cart.addItem(item);
-      }
-      adherent.Membres.forEach(member => {
-        if (member.Category) {
-          item = this.getCartItemByCategory(member.Category, 'categorie', member.Uid);
-          this.cart.addItem(item);
-        }
-      });
-    }
-  }
-
-  getCartItemByCategory(categ: string, type: string, user: string): CartItem {
-    return {
-      type: type,
-      libelle: categ === 'C' ? 'Adultes avec Licence FSGT' : (categ === 'L' ? 'Adultes en loisirs détente' : 'Ados 13/17 ans avec licence FSGT'),
-      montant: categ === 'C' ? environment.tarifs.license : (categ === 'L' ? environment.tarifs.loisir : environment.tarifs.ado),
-      user: [user]
-    }
+    this.setCategTarifs(adherent);
   }
 
   onAddMemberFromCart() {
@@ -124,6 +82,7 @@ export class InscriptionPageComponent implements OnInit {
       montant: environment.tarifs.member,
       user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
     });
+    this.setCategTarifs(adherent);
     this.inscriptionService.obsAddMember.next(false);
   } 
 
@@ -131,6 +90,35 @@ export class InscriptionPageComponent implements OnInit {
     console.log('remove member in inscription: ', removed);
     this.adherent = removed.adherent;
     this.cart.removeItem(removed.user);
+  }
+
+  onStep1Validate(info: StartInscription) {
+    this.cart = new Cart();
+    this.adherent = new Adherent(null, info.local ? environment.postalcode : null);
+    if (info) {
+      this.startIns = info;
+      const already = info.nom !== null && info.prenom !== null && info.section !== null;
+      if (already) {
+        this.adherent.MainSectionInfo = info.prenom + ' ' + info.nom + ': ' + info.section;
+      }
+      this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
+      const montant = already ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior);
+      this.cart.addItem({
+        type: 'adhesion',
+        libelle: 'Adhésion ' + environment.asso, 
+        montant: montant,
+        user: [this.adherent.Uid]
+      });
+      if (this.adherent.Category) {
+        const item = this.getCartItemByCategory(this.adherent.Category, 'categorie', this.adherent.Uid);
+        this.cart.addItem(item);
+      }
+      this.cart.setClient(this.adherent);
+      this.step++;
+    } else {
+      console.log('no info provided by step 1');
+    }
+    console.log('adherent: ', this.adherent);
   }
 
   onStep2Validate(adherent: Adherent) {
@@ -145,6 +133,15 @@ export class InscriptionPageComponent implements OnInit {
     console.log('adherent: ', adherent);
   }
 
+  onStep3Validate(adherent: Adherent) {
+
+  }
+
+  onStep3Cancel(adherent: Adherent) {
+    this.adherent = adherent;
+    this.step--;
+  }
+
   onCancel() {
     if (this.step === 2) {
       this.adherent = null;
@@ -155,16 +152,36 @@ export class InscriptionPageComponent implements OnInit {
     this.step--;
   }
 
-  onStep3Cancel(adherent: Adherent) {
-    this.adherent = adherent;
-    this.step--;
-  }
-
   setStep(step: number) {
     this.step = step;
   }
 
   onSubmit() {
 
+  }
+
+  private getCartItemByCategory(categ: string, type: string, user: string): CartItem {
+    return {
+      type: type,
+      libelle: categ === 'C' ? 'Adultes avec Licence FSGT' : (categ === 'L' ? 'Adultes en loisirs détente' : 'Ados 13/17 ans avec licence FSGT'),
+      montant: categ === 'C' ? environment.tarifs.license : (categ === 'L' ? environment.tarifs.loisir : environment.tarifs.ado),
+      user: [user]
+    }
+  }
+
+  private setCategTarifs(adherent: Adherent) {
+    if (adherent && adherent.Uid) {
+        let item: CartItem;
+        if (adherent.Category) {
+          item = this.getCartItemByCategory(adherent.Category, 'categorie', adherent.Uid);
+          this.cart.addItem(item);
+        }
+        adherent.Membres.forEach(member => {
+          if (member.Category) {
+            item = this.getCartItemByCategory(member.Category, 'categorie', member.Uid);
+            this.cart.addItem(item);
+          }
+        });
+      }
   }
 }

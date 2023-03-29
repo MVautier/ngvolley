@@ -6,7 +6,7 @@ export class Adherent {
 
   IdAdherent: number;
   Category?: string;
-  Authorization?: boolean;
+  Authorization?: string;
   FirstName: string;
   LastName: string;
   Genre: string;
@@ -43,35 +43,41 @@ export class Adherent {
   TrainingTE?: boolean;
   TrainingFM?: boolean;
   TrainingFE?: boolean;
+  Signature?: string;
 
-  constructor(postalcode: string) {
+  constructor(base: Adherent, cp: string = null) {
     this.IdAdherent = 0;
-    this.Category = null;
-    this.Authorization = null;
-    this.FirstName = Adherent.debug ? 'Stéphanie' : null;
-    this.LastName = Adherent.debug ? 'Lacroix' : null;
-    this.Genre = Adherent.debug ? 'F' : null;
-    this.BirthdayDate = Adherent.debug ? new Date(2006, 5, 4) : null;
     this.InscriptionDate = null;
     this.Age = Adherent.debug ? 49 : null;
     this.HealthStatementDate = null;
     this.CertificateDate = null;
-    this.Address = Adherent.debug ? '33 allée de la canche' : null;
-    this.PostalCode = Adherent.debug ? '31770' : postalcode;
-    this.City = Adherent.debug ? 'Colomiers' : null;
-    this.Phone = Adherent.debug ? '0603568888' : null;
     this.ParentPhone = null;
-    this.Email = Adherent.debug ? 'fanny.dominici@orange.fr' : null;
     this.Payment = null;
     this.Membres = [];
     this.Sections = [];
     this.MainSectionInfo = null;
     this.valid = false;
     this.Uid = uuidv4();
-    this.HealthFile = null;
     this.Rgpd = false;
     this.ImageRight = false;
     this.Photo = null;
+    this.Category = Adherent.debug ? 'C' : null;;
+    this.Authorization = Adherent.debug ? 'autorisation-parentale.pdf' : null;
+    this.FirstName = Adherent.debug ? 'Stéphanie' : null;
+    this.LastName = Adherent.debug ? 'Lacroix' : null;
+    this.Genre = Adherent.debug ? 'F' : null;
+    this.BirthdayDate = Adherent.debug ? new Date(1974, 5, 4) : null;
+    this.Address = Adherent.debug ? '33 allée de la canche' : base?.Address;
+    this.PostalCode = Adherent.debug ? '31770' : (base?.PostalCode || cp);
+    this.City = Adherent.debug ? 'Colomiers' : base?.City;
+    this.Phone = Adherent.debug ? '0603568888' : null;
+    this.Email = Adherent.debug ? 'fanny.dominici@orange.fr' : null;
+    this.HealthFile = Adherent.debug ? 'certificat.pdf' : null;
+    this.Licence = Adherent.debug ? '297368' : null;
+    this.AlertFirstName = Adherent.debug ? 'Martial' : null;
+    this.AlertLastName = Adherent.debug ? 'DOMINICI' : null;
+    this.AlertPhone = Adherent.debug ? '0620654010' : null;
+    this.Signature = null;
   }
 
   public static getAge(birthdate: Date): number {
@@ -110,7 +116,8 @@ export class Adherent {
       HealthFile: data.HealthFile,
       Rgpd: data.Rgpd,
       ImageRight: data.ImageRight,
-      Photo: data.Photo
+      Photo: data.Photo,
+      Signature: data.Signature
     }
   }
 }

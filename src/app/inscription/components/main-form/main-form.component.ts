@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Adherent } from '@app/core/models/adherent.model';
@@ -10,13 +10,14 @@ import { FileValidator } from 'ngx-material-file-input';
 import { environment } from '@env/environment';
 import { MemberRemove } from '@app/inscription/models/member-remove.model';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-main-form',
     templateUrl: './main-form.component.html',
     styleUrls: ['./main-form.component.scss']
 })
-export class MainFormComponent implements OnInit {
+export class MainFormComponent implements OnInit, OnDestroy {
     @Input() adherent: Adherent;
     @Input() members: Adherent[] = [];
     @Input() local: boolean;
@@ -31,9 +32,9 @@ export class MainFormComponent implements OnInit {
     cpInputMask: string;
     choosenSection = false;
     noLicenceRequired = false;
-    checked: CheckAdherent = new CheckAdherent();
+    checked: CheckAdherent;
     categories: Category[] = [];
-
+    subAddAdherent: Subscription;
 
     constructor(
         private inscriptionService: InscriptionService,
@@ -48,7 +49,9 @@ export class MainFormComponent implements OnInit {
         if (this.adherent) {
             this.checkAdherent(this.adherent);
             this.members = [].concat(this.adherent.Membres);
-            this.inscriptionService.obsAddMember.subscribe(add => {
+            this.choosenSection = this.adherent.Category !== null;
+            this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
+            this.subAddAdherent = this.inscriptionService.obsAddMember.subscribe(add => {
                 if (add) {
                     this.onAddMember();
                 }
@@ -56,6 +59,7 @@ export class MainFormComponent implements OnInit {
             this.adherentService.getCategories().then(liste => {
                 this.categories = liste;
                 this.initForm();
+                this.formGroup.markAllAsTouched();
                 console.log('categories: ', this.categories);
                 this.formGroup.valueChanges.subscribe(val => {
                     const adh = this.getFormAdherent();
@@ -66,6 +70,12 @@ export class MainFormComponent implements OnInit {
                     this.change.emit(adh);
                 });
             });
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subAddAdherent) {
+            this.subAddAdherent.unsubscribe();
         }
     }
 
@@ -86,14 +96,13 @@ export class MainFormComponent implements OnInit {
             'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
             'alertlastname': [this.adherent.AlertLastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'alertfirstname': [this.adherent.AlertFirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
-            'alertphone': [this.adherent.AlertPhone, [CustomValidators.nullOrPatternCheck(patterns.telfixe.pattern)]],
-            'category': [this.adherent.Category, [Validators.required]],
-            'rgpd': [this.adherent.Rgpd, [Validators.requiredTrue]]
+            'alertphone': [this.adherent.AlertPhone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
+            'category': [this.adherent.Category, [Validators.required]]
         });
     }
 
     checkAdherent(adherent: Adherent) {
-        this.checked = this.inscriptionService.checkAdherent(this.checked, adherent);
+        this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 2);
         console.log('checked: ', this.checked);
     }
 
@@ -113,16 +122,12 @@ export class MainFormComponent implements OnInit {
         return this.inscriptionService.getFileError(this.formGroup, field);
     }
 
-    getCheckError(field: string): string | boolean {
-        return this.inscriptionService.getCheckError(this.formGroup, field);
-    }
-
     getPatternError(field: string): string | boolean {
         return this.inscriptionService.getPatternError(this.formGroup, field);
     }
 
     onAddMember() {
-        const member = new Adherent(this.adherent.PostalCode);
+        const member = new Adherent(this.adherent);
         member.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
         this.adherent.Membres.push(member);
         this.members = [].concat(this.adherent.Membres);
@@ -156,10 +161,6 @@ export class MainFormComponent implements OnInit {
         }
     }
 
-    //   onPhoto(photo: string) {
-    //     this.adherent.Photo = photo;
-    //   }
-
     onCancel() {
         this.cancel.emit();
     }
@@ -186,7 +187,7 @@ export class MainFormComponent implements OnInit {
         const category = this.formGroup.get('category').value;
         return {
             IdAdherent: this.formGroup.get('id').value,
-            Category: category, //this.categories.find(c => c.Code === this.formGroup.get('category').value)?.Code,
+            Category: category,
             FirstName: this.formGroup.get('firstname').value,
             LastName: this.formGroup.get('lastname').value,
             Genre: this.formGroup.get('genre').value,
@@ -205,10 +206,13 @@ export class MainFormComponent implements OnInit {
             Sections: this.inscriptionService.sections.filter(s => s === environment.section),
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,
-            //HealthFile: this.formGroup.get('healthfile').value,
+            Licence: this.adherent.Licence,
+            HealthFile: this.adherent.HealthFile,
             Photo: this.adherent.Photo,
-            Rgpd: this.formGroup.get('rgpd').value,
+            Authorization: this.adherent.Authorization,
+            Rgpd: this.adherent.Rgpd,
             ImageRight: this.adherent.ImageRight,
+            Signature: this.adherent.Signature,
             TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,
             TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null
