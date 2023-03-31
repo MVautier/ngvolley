@@ -35,6 +35,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
     checked: CheckAdherent;
     categories: Category[] = [];
     subAddAdherent: Subscription;
+    titles: string[] = [];
+
 
     constructor(
         private inscriptionService: InscriptionService,
@@ -47,6 +49,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         this.phoneInputMask = this.inscriptionService.phoneInputMask;
         this.cpInputMask = this.inscriptionService.cpInputMask;
         if (this.adherent) {
+            this.titles.push(this.adherent.FirstName || this.adherent.LastName ? this.adherent.FirstName + ' '  + this.adherent.LastName : 'Adhérent');
             this.checkAdherent(this.adherent);
             this.members = [].concat(this.adherent.Membres);
             this.choosenSection = this.adherent.Category !== null;
@@ -67,6 +70,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
                     this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
                     this.checkAdherent(adh);
                     this.inscriptionService.checkControl(this.formGroup, 'birthdate');
+                    this.titles[0] = adh.FirstName || adh.LastName ? adh.FirstName + ' '  + adh.LastName : 'Adhérent';
                     this.change.emit(adh);
                 });
             });
@@ -127,11 +131,13 @@ export class MainFormComponent implements OnInit, OnDestroy {
     }
 
     onAddMember() {
+        this.resetOpened();
         const member = new Adherent(this.adherent);
         member.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
         this.adherent.Membres.push(member);
         this.members = [].concat(this.adherent.Membres);
         this.addMember.emit(this.adherent);
+        this.titles.push(member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length);
     }
 
     onRemoveMember(member: Adherent = null) {
@@ -141,15 +147,26 @@ export class MainFormComponent implements OnInit, OnDestroy {
             const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
             if (index >= 0) {
                 this.adherent.Membres.splice(index, 1);
+                this.titles.splice(index + 1, 1);
             }
         } else {
             user = this.adherent.Membres[this.adherent.Membres.length - 1].Uid;
             this.adherent.Membres.pop();
+            this.titles.pop();
         }
         this.members = [].concat(this.adherent.Membres);
         this.removeMember.emit({
             adherent: this.adherent,
             user: user
+        });
+        const current = this.members.length ? this.members[this.members.length - 1] : this.adherent;
+        this.resetOpened(current.Uid);
+    }
+
+    resetOpened(uid: string = null) {
+        this.adherent._opened = uid && this.adherent.Uid === uid;
+        this.adherent.Membres.forEach(m => {
+            m._opened = uid && m.Uid === uid;
         });
     }
 
@@ -157,6 +174,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
         if (index >= 0) {
             this.adherent.Membres[index] = member;
+            this.titles[index + 1] = member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length;
             this.change.emit(this.getFormAdherent());
         }
     }

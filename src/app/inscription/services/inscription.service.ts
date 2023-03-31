@@ -178,7 +178,7 @@ export class InscriptionService {
     }
 
     // Traitement signature
-    check.signatureNeeded = adherent.Age >= 18 && !adherent.Signature || this.isNull(adherent.Signature);
+    check.signatureNeeded = adherent.Age > 18 && !adherent.Signature || false;
 
     // Traitement accept
     check.accept = adherent.Rgpd;

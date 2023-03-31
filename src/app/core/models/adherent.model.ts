@@ -44,6 +44,7 @@ export class Adherent {
   TrainingFM?: boolean;
   TrainingFE?: boolean;
   Signature?: string;
+  _opened?: boolean;
 
   constructor(base: Adherent, cp: string = null) {
     this.IdAdherent = 0;
@@ -78,6 +79,7 @@ export class Adherent {
     this.AlertLastName = Adherent.debug ? 'DOMINICI' : null;
     this.AlertPhone = Adherent.debug ? '0620654010' : null;
     this.Signature = null;
+    this._opened = true;
   }
 
   public static getAge(birthdate: Date): number {

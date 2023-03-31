@@ -1,14 +1,14 @@
 <div class="center-container">
     <header>
         <h1>Accueil</h1>
-        <button mat-fab>
+        <!-- <button mat-fab>
           <mat-icon>menu</mat-icon>
-        </button>
+        </button> -->
     </header>
     
     
-    <div class="flex-content">
-        <!-- <app-tile *ngFor="let tile of tiles">{{ tile }}</app-tile> -->
+    <!-- <div class="flex-content">
+        <app-tile *ngFor="let tile of tiles">{{ tile }}</app-tile> 
         <mat-grid-list #grid  [cols]="cols" rowHeight="200px" [gutterSize]="'10px'">
             <mat-grid-tile *ngFor="let tile of tiles">
                 <mat-grid-tile-header>
@@ -26,7 +26,7 @@
                   </mat-card> 
             </mat-grid-tile>
         </mat-grid-list>
-    </div>
+    </div> -->
 </div>
 
 
@@ -49,7 +49,7 @@
     
 </mat-grid-list> -->
 
-<!-- <swiper *ngIf="slider"
+<swiper *ngIf="slider"
     [config]="slider.config"
     (swiper)="onSwiper($event)"
     (slideChange)="onSlideChange()" class="mySwiper"
@@ -58,4 +58,4 @@
         <img [src]="slide.src">
         <label>{{ slide.title }}</label>
     </ng-template>
-</swiper> -->
+</swiper>

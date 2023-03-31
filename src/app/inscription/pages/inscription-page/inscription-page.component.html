@@ -3,7 +3,7 @@
 </div>
 
 <div class="center-container main mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
-  <div class="ins_info">
+  <div *ngIf="step === 1" class="ins_info">
     Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer l'adhésion
     en ligne.
     Cela peut être une adhésion familiale ou individuelle.

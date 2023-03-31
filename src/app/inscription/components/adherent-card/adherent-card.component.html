@@ -114,7 +114,7 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check" [ngClass]="adherent.Signature && adherent.Rgpd ? 'valid' : 'error'">check_circle</mat-icon>
+                        <mat-icon class="check" [ngClass]="adherent.Rgpd && (checked.age > 18 ? adherent.Signature : true) ? 'valid' : 'error'">check_circle</mat-icon>
                         <span class="title">RGPD et Signature</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -164,8 +164,11 @@
                         </mat-error>
                     </div>
 
+                    <div *ngIf="checked.age > 18" class="section-title">
+                        <span class="title">Signature</span>
+                    </div>
 
-                    <div class="signature">
+                    <div *ngIf="checked.age > 18" class="signature">
                         <app-signature-form [signature]="adherent.Signature"
                             (changed)="onSignature($event)"></app-signature-form>
                     </div>
