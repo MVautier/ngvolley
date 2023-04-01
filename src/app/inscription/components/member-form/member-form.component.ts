@@ -20,7 +20,7 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 export class MemberFormComponent implements OnInit {
     @Input() adherent: Adherent;
     @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
-    @Output() remove: EventEmitter<Adherent> = new EventEmitter<Adherent>();
+    //@Output() remove: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     formGroup: FormGroup;
     phoneInputMask: string;
     all_sections: string[] = [];
@@ -88,10 +88,6 @@ export class MemberFormComponent implements OnInit {
         return this.inscriptionService.getInputError(this.formGroup, field);
     }
 
-    getCpError(field: string) {
-        return this.inscriptionService.getCpError(this.formGroup, field);
-    }
-
     getDateError(field: string): string | boolean {
         return this.inscriptionService.getDateError(this.formGroup, field);
     }
@@ -102,10 +98,6 @@ export class MemberFormComponent implements OnInit {
 
     getCheckError(field: string): string | boolean {
         return this.inscriptionService.getCheckError(this.formGroup, field);
-    }
-
-    onRemoveMember() {
-        this.remove.emit(this.adherent);
     }
 
     getFormAdherent(value: any): Adherent {

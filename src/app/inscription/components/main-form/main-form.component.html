@@ -164,7 +164,7 @@
                 <mat-panel-title>
                     <span class="title main">{{titles[i + 1]}}</span>
                     <div class="button-remove">
-                      <button mat-icon-button matPrefix class="icon-button remove enabled" (click)="onRemoveMember()" title="Supprimer le membre">
+                      <button mat-icon-button matPrefix class="icon-button remove enabled" (click)="showPopupRemove(member)" title="Supprimer le membre">
                         <mat-icon>person_remove</mat-icon>
                       </button>
                     </div>
@@ -174,7 +174,6 @@
                 <app-member-form 
                     [adherent]="member" 
                     (change)="onMemberChange($event)"
-                    (remove)="onRemoveMember($event)"
                 ></app-member-form>
             </section>
         </mat-expansion-panel>

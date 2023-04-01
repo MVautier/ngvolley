@@ -11,7 +11,7 @@
 <!-- Toolbar -->
 <div class="main-content" [ngClass]="{'dark-theme': theme === 'dark', 'light-theme': theme == 'light'}">
   <mat-toolbar color="primary" class="header">
-    <mat-icon (click)="toggleMenu()" class="hamburger">{{ opened ? 'menu_open' : 'menu' }}</mat-icon>
+    <mat-icon (click)="toggleMenu()" class="hamburger">{{ opened ? 'menu' : 'menu_open' }}</mat-icon>
     <div>CLLL COLOMIERS</div>
     <span class="nav-tool-items">
       <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme($event.checked)">Dark mode</mat-slide-toggle>
@@ -20,7 +20,7 @@
   
   <mat-sidenav-container>
     <!-- Sidenav -->
-    <mat-sidenav #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened" [fixedInViewport]="true" [fixedTopGap]>
+    <mat-sidenav #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [fixedInViewport]="true" [fixedTopGap]>
       <app-main-menu></app-main-menu>
     </mat-sidenav>
       

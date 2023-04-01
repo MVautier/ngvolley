@@ -1,6 +1,6 @@
 export class HelloassoToken {
     access_token: string;
     token_type: string;
-    expires_in: number;
+    expires_in: Date;
     refresh_token: string;
 }

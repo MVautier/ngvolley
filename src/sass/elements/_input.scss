@@ -9,7 +9,7 @@ textarea {
   border: 1px solid #c4c7ca;
   border-radius: 3px;
   padding: 0 25px;
-  transition: all 0.3s ease;
+  transition: var(--global-transition);
   &::placeholder {
     color: var(--grey);
     opacity: 1;

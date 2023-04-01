@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { SsrService } from '../../services/ssr.service';
 import { ThemeService } from '@app/core/services/theme.service';
 import { LayoutService } from '../../services/layout.service';
+import { environment } from '@env/environment';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { LayoutService } from '../../services/layout.service';
   encapsulation: ViewEncapsulation.None
 })
 export class MainComponent implements OnInit {
-  opened = true;
+  opened = environment.sidenavOpened;
   isDarkTheme: boolean;
   theme = 'dark';
 
@@ -62,6 +63,7 @@ export class MainComponent implements OnInit {
 
   toggleMenu() {
     this.sidenav.toggle();
+    this.opened = !this.opened;
     this.layoutService.setMenuOpened(this.sidenav.opened);
   }
 

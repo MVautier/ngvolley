@@ -7,7 +7,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: var(--white);
-  transition: all 0.3s ease;
+  transition: var(--global-transition);
   letter-spacing: -0.5px;
   &:not(:disabled):hover {
     color: var(--blue_dark);

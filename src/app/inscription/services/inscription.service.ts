@@ -83,15 +83,17 @@ export class InscriptionService {
     formGroup.get(field).hasError('licence') ? 'Le n° de licence ne correspond pas' : '';
   }
 
-  getCpError(formGroup: FormGroup, field: string) {
+  getCpError(formGroup: FormGroup, field: string, local: boolean) {
     return formGroup.get(field).hasError('required') ? this.requiredAlert :
-        formGroup.get(field).hasError('pattern') ? 'Le format est invalide ou ce code postal ne correspond pas ce qui a été déclaré à l\'étape précédente' : '';
+        formGroup.get(field).hasError('pattern') ? 
+        (local ? 'Le format est invalide ou ce code postal ne correspond pas ce qui a été déclaré à l\'étape précédente' : 'Le format est invalide') : '';
   }
 
   getDateError(formGroup: FormGroup, field: string): string | boolean {
     return formGroup.get(field).hasError('required') ? this.requiredAlert : 
     formGroup.get(field).hasError('date-minimum') ? 'L\'adhérent(e) doit être agé(e) d\'au moins 13 ans à la fin de cette année' : 
-    formGroup.get(field).hasError('date-section') ? 'L\'âge ne convient pas à la section choisie' : '';
+    formGroup.get(field).hasError('date-section') ? 'L\'âge ne convient pas à la section choisie' : 
+    formGroup.get(field).hasError('date-adulte') ? 'Le payeur doit être majeur' : '';
   }
 
   getFileError(formGroup: FormGroup, field: string): string | boolean {

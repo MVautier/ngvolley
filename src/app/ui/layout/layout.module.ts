@@ -22,6 +22,8 @@ import { LayoutService } from "./services/layout.service";
 import { ModalService } from "./services/modal.service";
 import { DynamicDirective } from "./directives/dynamic.directive";
 import { InscriptionService } from "@app/inscription/services/inscription.service";
+import { LoaderService } from "./services/loader.service";
+import { LoaderComponent } from "./components/loader/loader.component";
 
 @NgModule({
 
@@ -35,7 +37,8 @@ import { InscriptionService } from "@app/inscription/services/inscription.servic
     PageComponent,
     ModalComponent,
     CustomErrorComponent,
-    DynamicDirective
+    DynamicDirective,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +54,8 @@ import { InscriptionService } from "@app/inscription/services/inscription.servic
     TileComponent,
     MaterialThemeModule,
     ModalComponent,
-    CustomErrorComponent
+    CustomErrorComponent,
+    LoaderComponent
   ]
 })
 export class LayoutModule {
@@ -63,7 +67,8 @@ export class LayoutModule {
           BsModalService,
           LayoutService,
           ModalService,
-          InscriptionService
+          InscriptionService,
+          LoaderService
         ]
       };
     }

@@ -1,0 +1,10 @@
+<div class="ng-modal-body">
+    La suppression de ce membre entraîne la perte de toutes les informations saisies.
+    <br><br>
+    Confirmez-vous la suppression ?
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+    <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+</div>

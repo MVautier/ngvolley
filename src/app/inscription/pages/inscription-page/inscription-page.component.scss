@@ -1,11 +1,13 @@
 @import "breadcrumb";
 @import 'variables';
+@import 'form';
 
 .main {
     max-width: var(--form_width);
     transition: var(--global-transition);
     &.no-menu{
         max-width: calc(var(--form_width) + var(--sidenav_width));
+        //min-width: calc(var(--form_width) + var(--sidenav_width));
     }
 }
 .title{
@@ -16,7 +18,7 @@
 
 .ins_info{
     background: #eee;
-    max-width: 100%;
+    max-width: 350px;
     color: #000;
     text-align: center;
     padding: 25px;
@@ -34,7 +36,11 @@
 aside{
     position: fixed;
     top: 145px;
-    left: calc(var(--sidenav_width) + var(--form_width) + 60px);
+    left: calc(var(--sidenav_width) + var(--form_width));
+    transition: var(--global-transition);
+    // &.no-menu{
+    //     left: calc(var(--form_width));
+    // }
 }
 .form{
     border-radius: 10px;
@@ -47,7 +53,9 @@ aside{
     // }
     .inscription{
         padding: 30px;
-        
+        margin: auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 }
 

@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Type, ViewCh
 import { LoginComponent } from '@app/authentication/components/login/login.component';
 import { ThemeService } from '@app/core/services/theme.service';
 import { CameraComponent } from '@app/inscription/components/camera/camera.component';
-import { CartPaymentComponent } from '@app/inscription/components/cart-payment/cart-payment.component';
 import { CropperComponent } from '@app/inscription/components/cropper/cropper.component';
 import { ImageComponent } from '@app/inscription/components/image/image.component';
 import { ParentAuthComponent } from '@app/inscription/components/parent-auth/parent-auth.component';
@@ -13,6 +12,7 @@ import { ModalResult } from '../../models/modal-result.model';
 import { Size } from '../../models/size.model';
 import { ModalService } from '../../services/modal.service';
 import { DynamicDirective } from './../../directives/dynamic.directive';
+import { PopupRemoveComponent } from '@app/inscription/components/popup-remove/popup-remove.component';
 @Component({
     selector: 'app-modal',
     templateUrl: './modal.component.html',
@@ -87,8 +87,8 @@ export class ModalComponent implements OnInit, OnDestroy {
             case 'parent-auth':
                 comp = ParentAuthComponent;
                 break;
-            case 'payment':
-                comp = CartPaymentComponent;
+            case 'popup-remove':
+                comp = PopupRemoveComponent;
                 break;
         }
 

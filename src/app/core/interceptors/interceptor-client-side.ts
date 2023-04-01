@@ -69,7 +69,7 @@ export class InterceptorClientSide implements HttpInterceptor {
     }
 
     if (request.url.includes('helloasso')) {
-        next.handle(request);
+        return next.handle(request);
     }
 
     if (!this.connexionInfo.Token) {

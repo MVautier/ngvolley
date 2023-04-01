@@ -1,13 +1,14 @@
 import { Adherent } from "@app/core/models/adherent.model";
 import { environment } from "@env/environment";
 import { CartItem } from "./cart-item.model";
+import { Client } from "@app/core/models/client.model";
 
 export class Cart {
     id: number;
     items: CartItem[];
     date: Date;
     total: number;
-    client?: Adherent;
+    client?: Client;
 
     constructor() {
         this.id = 0;
@@ -39,8 +40,8 @@ export class Cart {
         this.total = this.items.map(i => i.montant).reduce((a, b) => { return a + b; });
     }
 
-    public setClient(client: Adherent) {
-        this.client = client;
+    public setClient(adherent: Adherent) {
+        this.client = this.mapAdherentToClient(adherent);
     }
 
     private getFlatItems(items: CartItem[]): CartItem[] {
@@ -63,6 +64,19 @@ export class Cart {
             }
         });
         return liste;
+    }
+
+    mapAdherentToClient(adherent: Adherent): Client {
+        return {
+            FirstName: adherent.FirstName,
+            LastName: adherent.LastName,
+            BirthdayDate: adherent.BirthdayDate,
+            Address: adherent.Address,
+            PostalCode: adherent.PostalCode,
+            City: adherent.City,
+            Email: adherent.Email,
+            adhesionType: adherent.Membres.length ? 'multiple' : 'simple'
+        }
     }
     
     private getGroupItems(items: CartItem[]): CartItem[] {

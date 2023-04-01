@@ -28,6 +28,7 @@ export class MainMenuComponent implements OnInit {
 
     subModal: Subscription;
     notifier = new Subject<void>();
+    inscriptionStep = 1;
 
     constructor(private themeService: ThemeService,
         private modalService: ModalService,
@@ -78,7 +79,8 @@ export class MainMenuComponent implements OnInit {
             });
         } else {
             if (page === 'inscription') {
-                this.router.navigate([page], { queryParams: { step: 1 } });
+                this.router.navigate([page], { queryParams: { step: this.inscriptionStep } });
+                this.inscriptionStep = this.inscriptionStep === 1 ? 0 : 1;
             } else {
                 this.router.navigate([page]);
             }

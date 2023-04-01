@@ -36,7 +36,7 @@ export class AdherentCardComponent implements OnInit {
         private fb: FormBuilder,
         private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
-        private modalService: ModalService,) { }
+        private modalService: ModalService) { }
 
     ngOnInit(): void {
         if (this.adherent) {

@@ -10,7 +10,8 @@ import { FileValidator } from 'ngx-material-file-input';
 import { environment } from '@env/environment';
 import { MemberRemove } from '@app/inscription/models/member-remove.model';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ModalService } from '@app/ui/layout/services/modal.service';
 
 @Component({
     selector: 'app-main-form',
@@ -36,12 +37,15 @@ export class MainFormComponent implements OnInit, OnDestroy {
     categories: Category[] = [];
     subAddAdherent: Subscription;
     titles: string[] = [];
+    notifier = new Subject<void>();
+    subModal: Subscription;
 
 
     constructor(
         private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
         private _adapter: DateAdapter<any>,
+        private modalService: ModalService,
         @Inject(MAT_DATE_LOCALE) private _locale: string,
         private formBuilder: FormBuilder) { }
 
@@ -115,7 +119,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
     }
 
     getCpError(field: string) {
-        return this.inscriptionService.getCpError(this.formGroup, field);
+        return this.inscriptionService.getCpError(this.formGroup, field, this.local);
     }
 
     getDateError(field: string): string | boolean {
@@ -140,6 +144,32 @@ export class MainFormComponent implements OnInit, OnDestroy {
         this.titles.push(member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length);
     }
 
+    showPopupRemove(member: Adherent = null) {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
+        }
+        this.modalService.open({
+            title: 'Suppression d\'un membre',
+            validateLabel: 'Valider',
+            cancelLabel: 'Annuler',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: '100%',
+                height: '240px'
+            },
+            component: 'popup-remove',
+            data: member
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                if (result?.data) {
+                    this.onRemoveMember(member);
+                }
+            });
+    }
+
     onRemoveMember(member: Adherent = null) {
         let user = '';
         if (member) {
@@ -162,6 +192,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
         const current = this.members.length ? this.members[this.members.length - 1] : this.adherent;
         this.resetOpened(current.Uid);
     }
+
+
 
     resetOpened(uid: string = null) {
         this.adherent._opened = uid && this.adherent.Uid === uid;

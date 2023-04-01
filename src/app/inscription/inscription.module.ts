@@ -30,6 +30,8 @@ import { DocumentFormComponent } from './components/document-form/document-form.
 import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
 import { CartPaymentComponent } from './components/cart-payment/cart-payment.component';
 import { HelloAssoService } from './services/helloasso.service';
+import { PopupRemoveComponent } from './components/popup-remove/popup-remove.component';
+import { CoreModule } from '@app/core/core.module';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -47,12 +49,14 @@ import { HelloAssoService } from './services/helloasso.service';
     FormFooterComponent,
     DocumentFormComponent,
     AdherentCardComponent,
-    CartPaymentComponent
+    CartPaymentComponent,
+    PopupRemoveComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     LayoutModule,
+    CoreModule,
     ReactiveFormsModule,
     MaterialThemeModule,
     MatNativeDateModule,
