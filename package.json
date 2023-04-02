@@ -6,7 +6,7 @@
     "start": "ng serve --ssl --ssl-key src/ssl/localhost.key  --ssl-cert src/ssl/localhost.crt",
     "start:ssr": "ng run colomiers-volley:serve-ssr:development",
     "build": "ng build",
-    "build-dev": "ng build --watch",
+    "build-dev": "ng build --configuration development",
     "build-prod": "npm run ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
