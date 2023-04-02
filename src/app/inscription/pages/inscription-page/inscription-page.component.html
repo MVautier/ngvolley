@@ -37,8 +37,7 @@
         <div class="breadcrumbs">
             <div class="breadcrumb-item" [ngClass]="{'current': step === 1, 'enabled': step > 1, 'disabled': step <= 1}"
                 (click)="setStep(1)">
-                <!-- <span class="label">Adhésion à {{asso}}</span> -->
-                <span class="label">Columérin ?</span>
+                <span class="label">Adhésion à {{asso}}</span>
             </div>
             <div class="breadcrumb-item" [ngClass]="{'current': step === 2, 'enabled': step > 2, 'disabled': step <= 2}"
                 (click)="setStep(2)">
