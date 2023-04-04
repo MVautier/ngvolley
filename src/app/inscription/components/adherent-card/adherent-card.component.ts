@@ -93,11 +93,6 @@ export class AdherentCardComponent implements OnInit {
         this.changed.emit(this.adherent);
     }
 
-    onSignature(s: string) {
-        this.adherent.Signature = s;
-        this.changed.emit(this.adherent);
-    }
-
     showModalAuthParent() {
         if (this.subModal) {
             this.subModal.unsubscribe();

@@ -164,15 +164,6 @@
                         </mat-error>
                     </div>
 
-                    <div *ngIf="checked.age > 18" class="section-title">
-                        <span class="title">Signature</span>
-                    </div>
-
-                    <div *ngIf="checked.age > 18" class="signature">
-                        <app-signature-form [signature]="adherent.Signature"
-                            (changed)="onSignature($event)"></app-signature-form>
-                    </div>
-
                 </div>
             </mat-expansion-panel>
         </mat-accordion>

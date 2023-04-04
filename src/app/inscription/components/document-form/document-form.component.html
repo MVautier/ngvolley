@@ -1,15 +1,28 @@
 <div *ngIf="adherent">
 
     <app-adherent-card 
-    [adherent]="adherent" 
-    (changed)="onAdherentChange($event)"
-    (savePdf)="onSavePdf($event, adherent.Uid)"></app-adherent-card>
+        [adherent]="adherent" 
+        (changed)="onAdherentChange($event)"
+        (savePdf)="onSavePdf($event, adherent.Uid)">
+    </app-adherent-card>
 
     <app-adherent-card *ngFor="let member of adherent.Membres" 
         [adherent]="member"
         (changed)="onMemberChange($event)"
-        (savePdf)="onSavePdf($event, member.Uid)"></app-adherent-card>
+        (savePdf)="onSavePdf($event, member.Uid)">
+    </app-adherent-card>
 
+    <section class="inscription border-div">
+        <div class="section-title">
+            <span class="title">Signature</span>
+        </div>
+    
+        <div class="signature">
+            <app-signature-form [signature]="adherent.Signature"
+                (changed)="onSignature($event)"></app-signature-form>
+        </div>
+    </section>
+    
 </div>
 
 <div class="ins-buttons">

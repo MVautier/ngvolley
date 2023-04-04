@@ -14,7 +14,6 @@ export class DocumentFormComponent implements OnInit {
     @Output() validate: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() cancel: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     isFormValid = false;
-    
 
     constructor(
         private inscriptionService: InscriptionService,
@@ -64,6 +63,11 @@ export class DocumentFormComponent implements OnInit {
         }
 
         this.isFormValid = valid;
+    }
+
+    onSignature(s: string) {
+        this.adherent.Signature = s;
+        this.setValid();
     }
 
     checkValid(adh: Adherent): boolean {

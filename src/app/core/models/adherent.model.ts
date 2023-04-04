@@ -62,8 +62,8 @@ export class Adherent {
     this.Rgpd = false;
     this.ImageRight = false;
     this.Photo = null;
-    this.Category = Adherent.debug ? 'C' : null;;
-    this.Authorization = Adherent.debug ? 'autorisation-parentale.pdf' : null;
+    this.Category = Adherent.debug ? 'C' : null; // convert to int for bdd
+    this.Authorization = null;//Adherent.debug ? 'autorisation-parentale.pdf' : null;
     this.FirstName = Adherent.debug ? 'Stéphanie' : null;
     this.LastName = Adherent.debug ? 'Lacroix' : null;
     this.Genre = Adherent.debug ? 'F' : null;
@@ -119,7 +119,9 @@ export class Adherent {
       Rgpd: data.Rgpd,
       ImageRight: data.ImageRight,
       Photo: data.Photo,
-      Signature: data.Signature
+      Signature: data.Signature,
+      PaymentComment: data.PaymentComment,
+      Payment: data.Payment
     }
   }
 }

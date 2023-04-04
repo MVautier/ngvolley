@@ -7,7 +7,7 @@
     "start:ssr": "ng run colomiers-volley:serve-ssr:development",
     "build": "ng build",
     "build-dev": "ng build --configuration development",
-    "build-prod": "npm run ng build --configuration=production",
+    "build-prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:ssr": "ng run colomiers-volley:serve-ssr",
