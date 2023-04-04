@@ -1,8 +1,8 @@
 export const environment = {
   environment: 'production',
   production: true,
-  apiRoot: 'https://localhost:7032/',
-  apiUrl: 'https://localhost:7032/api/',
+  apiRoot: 'https://api.inscription-colomiers-volley.fr/',
+  apiUrl: 'https://api.inscription-colomiers-volley.fr/api/',
   cookieName: 'ColomiersVolleyNg',
   assoTitle: 'Club Loisirs Léo Lagrange de Colomiers',
   asso: 'CLLLC',
