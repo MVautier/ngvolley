@@ -68,12 +68,11 @@ export class AppComponent implements OnInit {
     }
 
     goAdmin() {
-        if (!this.logged) {
-            this.showModalLogin();
-        } else {
+        if (this.logged) {
             this.router.navigate(['admin']);
+        } else {
+            this.showModalLogin();
         }
-        
     }
 
     showModalLogin() {
@@ -95,9 +94,10 @@ export class AppComponent implements OnInit {
                 if (result) {
                     this.notifier.next();
                     this.notifier.complete();
-                }
-                if (result?.data?.id_token) {
-                    this.router.navigate(['admin']);
+                    if (result.data?.id_token) {
+                        console.log('token ok: ', result.data.id_token);
+                        this.router.navigate(['admin']);
+                    }
                 }
             });
     }

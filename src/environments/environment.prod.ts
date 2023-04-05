@@ -25,7 +25,7 @@ export const environment = {
   basePath: 'https://inscription-colomiers-volley.fr/',
   basePathSsr: 'https://inscription-colomiers-volley.fr/',
   cookiePath: '/',
-  cookieDomain: 'localhost',
+  cookieDomain: 'inscription-colomiers-volley.fr',
   isSecure: true,
   sidenavOpened: true,
   ssr: {
