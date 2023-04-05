@@ -7,6 +7,7 @@ import { User } from '@app/authentication/models/user.model';
 import { ConnectionInfoService } from '@app/authentication/services/connexion-info.service';
 import { Tree } from '@app/core/models/tree.model';
 import { RouteService } from '@app/core/services/route.services';
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -17,6 +18,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   user: User;
   showDisplayMenu = false;
   showAdherentMenu = false;
+  fullApp = environment.fullApp;
 
   constructor(
     private routeService: RouteService,
@@ -24,7 +26,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private gallery: GalleryService,
     private connexionInfo: ConnectionInfoService,
     private layoutService: LayoutService,
-    private adherentServide: AdherentService
+    private adherentService: AdherentService
     ) { 
       this.routeService.subscribeConfig(tree => {
         this.tree = tree;
@@ -34,7 +36,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.adherentServide.getListe().then(data => {
+    this.adherentService.getListe().then(data => {
     }).catch((err) => {
       console.log('error getting adherents: ', err);
     });
@@ -63,6 +65,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   goMenu(menu: string) {
     this.router.navigate(['/admin/' + menu]);
     this.closeAllMenus();
+  }
+
+  exit() {
+    this.router.navigate(['/']);
   }
 
 }

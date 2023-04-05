@@ -46,11 +46,6 @@
     font-size: 16px;
     font-weight: 700;
 }
-
-app-toolbar {
-    @include mat-elevation(2);
-    display: block;
-}
 .content {
   padding: 4rem 6px;
   display: flex;

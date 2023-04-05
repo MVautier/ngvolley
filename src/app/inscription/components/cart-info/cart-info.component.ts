@@ -10,6 +10,7 @@ export class CartInfoComponent implements OnInit {
     @Input() dark: boolean;
     @Input() cart: Cart;
     @Input() step: number;
+    @Input() isMobile: boolean;
     @Output() addMember: EventEmitter<void> = new EventEmitter<void>();
     showPayment = false;
 

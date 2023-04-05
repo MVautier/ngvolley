@@ -1,7 +1,7 @@
 <div class="menu-container admin-menu">
     <div class="overflow-line"></div>
     <div class="menu">
-        <div class="main-menu">
+        <div *ngIf="fullApp" class="main-menu">
             <button mat-button [matMenuTriggerFor]="displayMenu">Contenu</button>
             <mat-menu class="sub-menu" #displayMenu="matMenu" yPosition="below">
                 <button mat-menu-item (click)="goMenu('pages')">Pages</button>
@@ -19,6 +19,10 @@
                 <button mat-menu-item (click)="goMenu('posts')">Export</button>
                 <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button>
             </mat-menu>
+        </div>
+
+        <div *ngIf="!fullApp" class="main-menu">
+            <mat-icon *ngIf="!fullApp" class="exit" (click)="exit()">logout</mat-icon>
         </div>
 
         <div *ngIf="user" class="user-info">

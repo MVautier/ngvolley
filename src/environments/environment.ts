@@ -5,6 +5,7 @@
 export const environment = {
   environment: 'development',
   production: false,
+  fullApp: false,
   apiRoot: 'https://localhost:7032/',
   apiUrl: 'https://localhost:7032/api/',
   cookieName: 'ColomiersVolleyNg',

@@ -2,21 +2,8 @@
     <h1>{{title}} au {{title2}}</h1>
 </div>
 
-<div class="center-container main mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
-    <!-- <div *ngIf="step === 1" class="ins_info">
-        Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
-        l'adhésion
-        en ligne.
-        Cela peut être une adhésion familiale ou individuelle.
-
-        Un tarif préférentiel de la 1ère inscription est accordé aux Columérins (19€ au lieu de 27€). Pour les autres
-        adhérents de la même famille (conjoint et descendants mineurs), le montant est identique pour tous (6€).
-        <br><br>
-        <b>il est nécessaire de télécharger au préalable
-            <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b>
-    </div> -->
-
-    <aside [ngClass]="{'no-menu': !isMenuOpened}">
+<div class="main" [ngClass]="{'mobile': isMobile}">
+    <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
             Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
             l'adhésion
@@ -29,53 +16,63 @@
             <b>il est nécessaire de télécharger au préalable
                 <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b>
         </div>
-        <app-cart-info *ngIf="cart && step > 1 && step < 4" [cart]="cart" [step]="step" (addMember)="onAddMemberFromCart()"></app-cart-info>
-    </aside>
-
-    <div class="form">
-
-        <div class="breadcrumbs">
-            <div class="breadcrumb-item" [ngClass]="{'current': step === 1, 'enabled': step > 1, 'disabled': step <= 1}"
-                (click)="setStep(1)">
-                <span class="label">Adhésion à {{asso}}</span>
+    
+        <div class="form">
+            <!-- DESKTOP MODE -->
+            <div *ngIf="!isMobile" class="breadcrumbs">
+                <div class="breadcrumb-item" [ngClass]="{'current': step === 1, 'enabled': step > 1, 'disabled': step <= 1}"
+                    (click)="setStep(1)">
+                    <span class="label">Adhésion à {{asso}}</span>
+                </div>
+                <div class="breadcrumb-item" [ngClass]="{'current': step === 2, 'enabled': step > 2, 'disabled': step <= 2}"
+                    (click)="setStep(2)">
+                    <span class="label">Informations</span>
+                </div>
+                <div class="breadcrumb-item" [ngClass]="{'current': step === 3, 'enabled': step > 3, 'disabled': step <= 3}"
+                    (click)="setStep(3)">
+                    <span class="label">Documents</span>
+                </div>
+                <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 4}">
+                    <span class="label">Paiement</span>
+                </div>
+                <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 5}" (click)="setStep(5)">
+                    <span class="label">Récapitulatif</span>
+                </div>
             </div>
-            <div class="breadcrumb-item" [ngClass]="{'current': step === 2, 'enabled': step > 2, 'disabled': step <= 2}"
-                (click)="setStep(2)">
-                <span class="label">Informations</span>
+            <!-- END DESKTOP MODE -->
+    
+            <!-- MOBILE MODE -->
+    
+            <!-- END MOBILE MODE -->
+    
+    
+            <div class="inscription" [ngClass]="{'mobile': isMobile}">
+                <app-start-form *ngIf="step === 1" [start]="startIns" (validate)="onStep1Validate($event)"></app-start-form>
+    
+                <app-main-form *ngIf="step === 2" [adherent]="adherent" [local]="startIns.local" [isMobile]="isMobile"
+                    (addMember)="onAddMember($event)" (change)="onAdherentChange($event)"
+                    (removeMember)="onRemoveMember($event)" (validate)="onStep2Validate($event)" (cancel)="onCancel()">
+                </app-main-form>
+    
+                <app-document-form *ngIf="step === 3" [adherent]="adherent" (validate)="onStep3Validate($event)"
+                    (cancel)="onStep3Cancel($event)">
+                </app-document-form>
+    
+                <app-cart-payment *ngIf="step === 4" [cart]="cart" [isMobile]="isMobile" (cancel)="onCancel()">
+                </app-cart-payment>
+    
+                <div *ngIf="step == 5">
+                    <div *ngIf="paymentStatus === 'error'">Payement error</div>
+                    <div *ngIf="paymentStatus === 'success'">Payment succeded</div>
+                </div>
+    
+                <!-- <iframe [src]="redirectUrl | safe: 'resourceUrl'" class="scroll1"></iframe> -->
             </div>
-            <div class="breadcrumb-item" [ngClass]="{'current': step === 3, 'enabled': step > 3, 'disabled': step <= 3}"
-                (click)="setStep(3)">
-                <span class="label">Documents</span>
-            </div>
-            <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 4}">
-                <span class="label">Paiement</span>
-            </div>
-            <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 5}" (click)="setStep(5)">
-                <span class="label">Récapitulatif</span>
-            </div>
-        </div>
-
-        <div class="inscription">
-            <app-start-form *ngIf="step === 1" [start]="startIns" (validate)="onStep1Validate($event)"></app-start-form>
-
-            <app-main-form *ngIf="step === 2" [adherent]="adherent" [local]="startIns.local"
-                (addMember)="onAddMember($event)" (change)="onAdherentChange($event)"
-                (removeMember)="onRemoveMember($event)" (validate)="onStep2Validate($event)" (cancel)="onCancel()">
-            </app-main-form>
-
-            <app-document-form *ngIf="step === 3" [adherent]="adherent" (validate)="onStep3Validate($event)"
-                (cancel)="onStep3Cancel($event)">
-            </app-document-form>
-
-            <app-cart-payment *ngIf="step === 4" [cart]="cart" (cancel)="onCancel()">
-            </app-cart-payment>
-
-            <div *ngIf="step == 5">
-                <div *ngIf="paymentStatus === 'error'">Payement error</div>
-                <div *ngIf="paymentStatus === 'success'">Payment succeded</div>
-            </div>
-
-            <!-- <iframe [src]="redirectUrl | safe: 'resourceUrl'" class="scroll1"></iframe> -->
         </div>
     </div>
+    
+    <aside class="col-progress">
+        <app-cart-info *ngIf="cart && step > 1 && step < 4" [cart]="cart" [step]="step" [isMobile]="isMobile" (addMember)="onAddMemberFromCart()"></app-cart-info>
+    </aside>
+
 </div>

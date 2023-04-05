@@ -1,14 +1,14 @@
-<form *ngIf="formGroup" [formGroup]="formGroup" class="form">
+<form *ngIf="formGroup" [formGroup]="formGroup" class="form" [ngClass]="{'mobile': isMobile}">
     <mat-accordion>
         <mat-expansion-panel [expanded]="adherent._opened">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <div class="section-title">
-                        <span class="title main">{{titles[0]}}</span>
+                        <span class="title main" [ngClass]="{'mobile': isMobile}">{{titles[0]}}</span>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <section class="inscription">
+            <section class="inscription" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="form-element row-item">
                     <mat-label>Section</mat-label>
                     <mat-select formControlName="category">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                <div class="form-element row-item flex">
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-50">
                         <input matInput placeholder="Nom" formControlName="lastname">
                         <mat-error
@@ -56,7 +56,7 @@
                     </mat-form-field>
                 </div>
 
-                <div class="form-element row-item flex">
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-25">
                         <mat-label>Genre</mat-label>
                         <mat-select formControlName="genre">
@@ -89,7 +89,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <div class="form-element row-item flex">
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-25">
                         <mat-label>Code postal</mat-label>
                         <input matInput [mask]="cpInputMask" placeholder="Code postal" formControlName="postalcode">
@@ -108,7 +108,7 @@
                     </mat-form-field>
                 </div>
 
-                <div class="form-element row-item flex">
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-25">
                         <mat-label>Téléphone</mat-label>
                         <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="phone">
@@ -127,10 +127,10 @@
                 </div>
 
                 <div class="section-title">
-                    <span class="title">Personne à prévenir en cas d'urgence</span>
+                    <span class="title" [ngClass]="{'mobile': isMobile}">Personne à prévenir en cas d'urgence</span>
                 </div>
 
-                <div class="form-element row-item flex">
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-33">
                         <input matInput placeholder="Nom" formControlName="alertlastname">
                         <mat-error
@@ -162,7 +162,7 @@
         <mat-expansion-panel *ngFor="let member of members; index as i" [expanded]="member._opened">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <span class="title main">{{titles[i + 1]}}</span>
+                    <span class="title main" [ngClass]="{'mobile': isMobile}">{{titles[i + 1]}}</span>
                     <div class="button-remove">
                       <button mat-icon-button matPrefix class="icon-button remove enabled" (click)="showPopupRemove(member)" title="Supprimer le membre">
                         <mat-icon>person_remove</mat-icon>
@@ -170,9 +170,10 @@
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <section class="inscription">
+            <section class="inscription" [ngClass]="{'mobile': isMobile}">
                 <app-member-form 
                     [adherent]="member" 
+                    [isMobile]="isMobile"
                     (change)="onMemberChange($event)"
                 ></app-member-form>
             </section>

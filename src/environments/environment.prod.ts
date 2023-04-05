@@ -1,6 +1,7 @@
 export const environment = {
   environment: 'production',
   production: true,
+  fullApp: false,
   apiRoot: 'https://api.inscription-colomiers-volley.fr/',
   apiUrl: 'https://api.inscription-colomiers-volley.fr/api/',
   cookieName: 'ColomiersVolleyNg',
@@ -21,8 +22,8 @@ export const environment = {
   minage: 13,
   debug: false,
   ssrMode: false,
-  basePath: 'https://localhost:4224/',
-  basePathSsr: 'https://localhost:4200/',
+  basePath: 'https://inscription-colomiers-volley.fr/',
+  basePathSsr: 'https://inscription-colomiers-volley.fr/',
   cookiePath: '/',
   cookieDomain: 'localhost',
   isSecure: true,

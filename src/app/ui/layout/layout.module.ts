@@ -10,7 +10,6 @@ import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TileComponent } from './components/tile/tile.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MaterialThemeModule } from "@app/material-theme/material-theme.module";
 import { CenterComponent } from './components/center/center.component';
 import { PageComponent } from "@app/ui/layout/components/page/page.component";
@@ -32,7 +31,6 @@ import { LoaderComponent } from "./components/loader/loader.component";
     MainComponent,
     MainMenuComponent,
     TileComponent,
-    ToolbarComponent,
     CenterComponent,
     PageComponent,
     ModalComponent,
@@ -51,6 +49,7 @@ import { LoaderComponent } from "./components/loader/loader.component";
     AuthenticationModule.forRoot()
   ],
   exports: [
+    MainComponent,
     TileComponent,
     MaterialThemeModule,
     ModalComponent,

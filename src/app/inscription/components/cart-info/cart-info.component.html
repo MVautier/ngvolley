@@ -1,7 +1,9 @@
-<div class="cart-info">
-    <div class="title">Montant de l'adhésion</div>
+<div class="cart-info" [ngClass]="{'small': isMobile}">
+    <div class="top">
+        <p class="label">Montant de l'adhésion</p>
+    </div>
 
-    <div class="body">
+    <div *ngIf="!isMobile" class="main">
         <div class="item" *ngFor="let item of cart.items">
             <div>
                 <span>{{item.libelle}}</span>
@@ -24,7 +26,7 @@
     </div>
 
     <div class="footer">
-        <img class="picto" src="assets/images/logos/logo-helloasso.svg">
+        <!-- <img class="picto" src="assets/images/logos/logo-helloasso.svg"> -->
         <!-- <div class="payment">Payer {{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div> -->
         <!-- <iframe id="haWidgetButton" src="https://www.helloasso.com/associations/sobak-mediation-animale/paiements/adhesion-clll/widget-bouton" style="border: none;"></iframe> -->
     </div>

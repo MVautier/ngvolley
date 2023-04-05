@@ -18,7 +18,7 @@ export class RouteService {
     public obsPage: BehaviorSubject<WebItem> = new BehaviorSubject<WebItem>(null);
     private dicoSubscriptions: Subscription[] = [];
     currentIp: string;
-    staticRoutes = ['home', 'inscription', 'admin'];
+    staticRoutes = environment.fullApp ? ['home', 'inscription', 'admin'] : ['', 'admin'];
 
     constructor(
         private adminService: AdminService, 
@@ -30,7 +30,7 @@ export class RouteService {
             this.pingService.getIPAddress().then(ip => {
                 this.currentIp = ip;
             });
-            if (!this.ssrService.isServer()) {
+            if (!this.ssrService.isServer() && environment.fullApp) {
                 console.log('init tree');
                 this.start().then(() => {
                     this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {

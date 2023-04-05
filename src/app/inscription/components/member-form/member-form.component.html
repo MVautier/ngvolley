@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="form-element row-item flex">
+  <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
     <mat-form-field class="first first-50">
       <input matInput placeholder="Nom" formControlName="lastname">
       <mat-error *ngIf="!formGroup.controls['lastname'].valid && formGroup.controls['lastname'].touched">
@@ -42,7 +42,7 @@
     </mat-form-field>
   </div>
 
-  <div class="form-element row-item flex">
+  <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
     <mat-form-field class="first first-33">
       <mat-label>Genre</mat-label>
       <mat-select formControlName="genre">
@@ -78,7 +78,7 @@
     </mat-form-field>
   </div>
 
-  <div class="form-element row-item flex">
+  <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
     <mat-form-field class="first first-25">
       <mat-label>Téléphone</mat-label>
       <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="phone">
@@ -96,7 +96,7 @@
     </mat-form-field>
   </div>
 
-  <mat-form-field class="form-element row-item">
+  <mat-form-field class="form-element row-item" [ngClass]="{'mobile': isMobile}">
     <mat-label>Sections CLLL</mat-label>
     <mat-select formControlName="sections" multiple>
       <mat-option *ngFor="let section of all_sections" [value]="section">{{section}}</mat-option>

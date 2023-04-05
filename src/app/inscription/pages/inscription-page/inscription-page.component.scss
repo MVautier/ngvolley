@@ -1,49 +1,88 @@
 @import "breadcrumb";
-@import 'variables';
-@import 'form';
+@import "variables";
+@import "form";
+
+.title {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
 
 .main {
-    max-width: var(--form_width);
+    display: flex;
+    margin: 0 auto;
+    padding: 0 30px;
+    //width: var(--container);
     transition: var(--global-transition);
-    &.no-menu{
+    &.mobile{
+        padding: 0 10px;
+    }
+
+    @media screen and (max-width: 1025px) {
+        display: block;
+    }
+
+    &.no-menu {
+        display: flex;
+        flex-direction: column;
         max-width: calc(var(--form_width) + var(--sidenav_width));
         //min-width: calc(var(--form_width) + var(--sidenav_width));
     }
-}
-.title{
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
+    .col-steps {
+        flex: 1 1 auto;
+        padding-right: 50px;
+
+        @media screen and (max-width: 1200px) {
+            padding-right: 20px;
+        }
+
+        @media screen and (max-width: 1025px) {
+            padding-right: 0;
+            min-height: none;
+            overflow: visible;
+        }
+    }
+
+    .col-progress {
+        flex: 0 0 308px;
+
+        @media screen and (max-width: 1025px) {
+            position: sticky;
+            bottom: 0;
+            margin: 0 -10px;
+        }
+
+        @media screen and (max-width: 600px) {
+            margin: 0 -10px;
+        }
+    }
 }
 
-.ins_info{
+.ins_info {
     background: #eee;
-    max-width: 350px;
     color: #000;
     text-align: center;
     padding: 25px;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     margin-bottom: 25px;
     border: 1px solid var(--border);
     transition: var(--global-transition);
-    &.no-menu{
+    &.no-menu {
         max-width: calc(var(--form_width) + var(--sidenav_width));
     }
-    a{
+    a {
         color: var(--accent);
     }
 }
-aside{
-    position: fixed;
-    top: 145px;
-    left: calc(var(--sidenav_width) + var(--form_width));
-    transition: var(--global-transition);
-    // &.no-menu{
-    //     left: calc(var(--form_width));
-    // }
+aside {
+    // position: fixed;
+    // top: 145px;
+    // left: calc(var(--sidenav_width) + var(--form_width));
+    // transition: var(--global-transition);
 }
-.form{
-    border-radius: 10px;
+.form {
+    border-radius: var(--border-radius);
     background: var(--background-dialog);
     border: 1px solid var(--border);
     margin-bottom: 30px;
@@ -51,11 +90,14 @@ aside{
     //     background-color: #fff;
     //     border: 1px solid rgba(255,255,255,.12);
     // }
-    .inscription{
+    .inscription {
         padding: 30px;
         margin: auto;
         margin-top: 30px;
         margin-bottom: 30px;
+        &.mobile {
+            padding: 6px;
+            margin: 3px;
+        }
     }
 }
-

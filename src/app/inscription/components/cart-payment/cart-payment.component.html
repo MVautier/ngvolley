@@ -1,11 +1,13 @@
 <div class="inscription border-div">
     <div *ngIf="cart?.client" class="section-title name">
-        <span class="title main">Montant de l'adhésion {{cart.client.adhesionType}} : {{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</span>
+        <span class="title main" [ngClass]="{'mobile': isMobile}">
+            Montant de l'adhésion {{cart.client.adhesionType}} : {{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}
+        </span>
     </div>
 
     <form *ngIf="formGroup && !redirectUrl" [formGroup]="formGroup" class="form">
-        <section class="inscription">
-            <div class="form-element row-item flex">
+        <section class="inscription" [ngClass]="{'mobile': isMobile}">
+            <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="first first-50">
                     <input matInput placeholder="Nom" formControlName="lastname">
                     <mat-error
@@ -23,7 +25,7 @@
                 </mat-form-field>
             </div>
         
-            <div class="form-element row-item flex">
+            <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="last">
                     <mat-label>Date de naissance</mat-label>
                     <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly>
@@ -44,7 +46,7 @@
                 </mat-error>
             </mat-form-field>
     
-            <div class="form-element row-item flex">
+            <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="first first-25">
                     <mat-label>Code postal</mat-label>
                     <input matInput [mask]="cpInputMask" placeholder="Code postal" formControlName="postalcode">
@@ -63,7 +65,7 @@
                 </mat-form-field>
             </div>
     
-            <div class="form-element row-item flex">
+            <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="form-element row-item">
                     <mat-label>Adresse de messagerie</mat-label>
                     <input matInput placeholder="Adresse de messagerie" formControlName="email">

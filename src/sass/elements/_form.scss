@@ -63,6 +63,9 @@ iframe {
     flex-wrap: wrap;
     margin-bottom: 20px;
     padding: 30px;
+    &.mobile{
+        padding: 3px;
+    }
     // border-radius: 10px;
     // border-style: solid;
     // border-width: 1px;
@@ -89,6 +92,12 @@ iframe {
             font-size: 16px;
             &.main {
                 font-size: 24px;
+                &.mobile{
+                    font-size: 14px;
+                }
+            }
+            &.mobile{
+                font-size: 11px;
             }
         }
         &.adherent {
@@ -222,6 +231,9 @@ iframe {
                 }
                 .last {
                     flex: inherit;
+                }
+                &.mobile{
+                    flex-direction: column;
                 }
             }
             mat-label.genre {

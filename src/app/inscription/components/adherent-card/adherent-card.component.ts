@@ -140,15 +140,11 @@ export class AdherentCardComponent implements OnInit {
             console.log('choosen file: ', file);
             this.adherent.HealthFile = file.name;
             console.log('adherent changed: ', this.adherent);
-            // this.readFile(file).subscribe(res => {
-            //   console.log(res);
-            // });
         }
     }
 
     setFormAdherent() {
         this.adherent.Licence = this.formGroup.get('licence').value;
         this.adherent.Rgpd = this.formGroup.get('rgpd').value;
-        //this.adherent.HealthFile = this.formGroup.get('file').value;
     }
 }

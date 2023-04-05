@@ -1,156 +1,159 @@
-@import 'variables';
+@import "variables";
 
 // Perso
 .main-content {
-  height: calc(100vh - 64px);
-  .flex-content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    app-tile {
-        flex: 30%;
-        margin: 0 10px 10px 0;
-        min-height: 200px;
-        border: 1px solid #fff;
-        border-radius: 8px;
-        padding: 10px;
+    justify-content: center;
+    height: calc(100vh - var(--header-height));
+    background: var(--background);
+    color: var(--foreground);
+    overflow: auto;
+    .flex-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        app-tile {
+            flex: 30%;
+            margin: 0 10px 10px 0;
+            min-height: 200px;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            padding: 10px;
+        }
     }
-  }
 }
 mat-toolbar {
-  .nav-tool-items {
-    display: inline-flex;
-    mat-slide-toggle {
-      font-size: 12px;
+    background: var(--primary) !important;
+    color: var(--background) !important;
+    .nav-tool-items {
+        display: inline-flex;
+        mat-slide-toggle {
+            font-size: 12px;
+        }
+        mat-icon {
+            margin: 0 0 0 10px;
+        }
     }
-    mat-icon {
-      margin: 0 0 0 10px;
+    &.mat-toolbar-single-row {
+        height: 64px !important;
+
+        @media screen and (max-width: 600px) {
+            height: 64px;
+        }
     }
-  }
-  &.mat-toolbar-single-row {
-    height: 64px;
-    @media screen and (max-width: 600px) {
-      height: 64px;
-    }
-  }
-  
 }
 // ============= Modal
 .ng-modal {
-  display: flex;
-  .ng-modal-content {
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    background: var(--background-dialog);
-    color: var(--primary);
-    .ng-modal-header {
-      border-bottom: 1px solid #dee2e6;
-      display: flex;
-      flex-shrink: 0;
-      justify-content: space-between;
-      padding: 1rem 1rem;
-      h1 {
-        font-size: 1.25rem!important;
-        margin: 0;
-      }
-      .close {
-        cursor: pointer;
-        opacity: 0.5;
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-    }
-    .ng-modal-body {
-      position: relative;
-      flex: 1 1 auto;
-      padding: 1rem;
-      .input {
+    .ng-modal-content {
         width: 100%;
-        margin-bottom: 10px;
-        input {
-          width: 100%;
-        }
-        &--pswd {
-          display: flex;
-          flex-direction: row;
-          &.error {
-            &:before {
-              right: 40px;
+        display: flex;
+        flex-direction: column;
+        background: var(--background-dialog);
+        color: var(--primary);
+        .ng-modal-header {
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            flex-shrink: 0;
+            justify-content: space-between;
+            padding: 1rem 1rem;
+            h1 {
+                font-size: 1.25rem !important;
+                margin: 0;
             }
-          }
+            .close {
+                cursor: pointer;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
         }
-      }
-      .error-msg {
-        margin-right: auto;
-        &.blocked {
-          text-align: center;
+        .ng-modal-body {
+            position: relative;
+            flex: 1 1 auto;
+            padding: 1rem;
+            .input {
+                width: 100%;
+                margin-bottom: 10px;
+                input {
+                    width: 100%;
+                }
+                &--pswd {
+                    display: flex;
+                    flex-direction: row;
+                    &.error {
+                        &:before {
+                            right: 40px;
+                        }
+                    }
+                }
+            }
+            .error-msg {
+                margin-right: auto;
+                &.blocked {
+                    text-align: center;
+                }
+            }
+            .eye-pwd {
+                position: absolute;
+                right: 20px;
+                margin-top: 8px;
+                cursor: pointer;
+                opacity: 0.7;
+                font-size: 1.3rem;
+            }
         }
-      }
-      .eye-pwd {
-        position: absolute;
-        right: 20px;
-        margin-top: 8px;
-        cursor: pointer;
-        opacity: 0.7;
-        font-size: 1.3rem;
-      }
+        .ng-modal-footer {
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0.75rem;
+            button {
+                margin-left: 15px;
+            }
+        }
     }
-    .ng-modal-footer {
-      border-top: 1px solid #dee2e6;
-      display: flex;
-      flex-shrink: 0;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 0.75rem;
-      button {
-        margin-left: 15px;
-      }
-    }
-  }
 }
 
 // ===================== nav menu
 .mat-nav-list {
-  display: flex;
-  flex-direction: column;
-  .tools {
-    border-top: 1px solid #eee;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+    display: flex;
+    flex-direction: column;
+    .tools {
+        border-top: 1px solid #eee;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
 }
 .center-container {
-  padding: 25px 40px 0;
+    padding: 25px 40px 0;
 }
 .top-container {
-  height: 50px;
-  line-height: 50px;
-  padding: 0 0 0 40px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 0 0 40px;
 }
 .top {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: normal;
-  align-items: center;
-  align-content: normal;
-  .back {
-    padding: 20px;
-    flex: 0 1 calc(100% - 180px);
-    order: 0;
-  }
-  .buttons {
-    flex: 0 1 180px;
-    order: 1;
-    button {
-        margin: 8px 8px 8px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: normal;
+    align-items: center;
+    align-content: normal;
+    .back {
+        padding: 20px;
+        flex: 0 1 calc(100% - 180px);
+        order: 0;
     }
-  }
+    .buttons {
+        flex: 0 1 180px;
+        order: 1;
+        button {
+            margin: 8px 8px 8px 0;
+        }
+    }
 }
-  
-
-  

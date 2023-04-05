@@ -16,6 +16,7 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
     @Output() photo: EventEmitter<string> = new EventEmitter<string>();
     files: File[] = [];
     imageChangedEvent: any = '';
+    public isMobile = false;
 
     subModal: Subscription;
     notifier = new Subject<void>();
@@ -23,7 +24,11 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private modalService: ModalService,
-        private inscriptionService: InscriptionService) { }
+        private inscriptionService: InscriptionService) {
+        if (window.matchMedia('(max-width: 1025px)').matches) {
+            this.isMobile = true;
+        }
+    }
 
 
     ngOnInit(): void {
@@ -53,8 +58,8 @@ export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
             showCancel: true,
             showValidate: true,
             size: {
-                width: '640px',
-                height: mode === 'cropper' ? '390px' : '665px'
+                width: this.isMobile ? '100%' : '640px',
+                height: mode === 'cropper' ? '390px' : (this.isMobile ? '390px' : '665px')
             },
             component: mode,
             data: mode === 'cropper' ? this.imageBase64 : null

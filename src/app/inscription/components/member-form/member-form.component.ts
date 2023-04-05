@@ -19,6 +19,7 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 })
 export class MemberFormComponent implements OnInit {
     @Input() adherent: Adherent;
+    @Input() isMobile: boolean;
     @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     //@Output() remove: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     formGroup: FormGroup;

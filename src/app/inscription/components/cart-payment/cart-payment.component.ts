@@ -19,6 +19,7 @@ import { environment } from '@env/environment';
 })
 export class CartPaymentComponent implements OnInit {
     @Input() cart: Cart;
+    @Input() isMobile: boolean;
     @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
     formGroup: FormGroup;
     phoneInputMask: string;

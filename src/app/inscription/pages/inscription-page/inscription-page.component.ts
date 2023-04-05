@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, QueryParamsHandling, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HelloAssoService } from '@app/inscription/services/helloasso.service';
 import { Adherent } from '@app/core/models/adherent.model';
 import { ThemeService } from '@app/core/services/theme.service';
@@ -10,8 +10,7 @@ import { StartInscription } from '@app/inscription/models/start-inscription.mode
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { LayoutService } from '@app/ui/layout/services/layout.service';
 import { environment } from '@env/environment';
-import { Subject, Subscription, filter, takeUntil } from 'rxjs';
-import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
+import { Subject, Subscription } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Location } from '@angular/common';
 
@@ -22,6 +21,8 @@ import { Location } from '@angular/common';
 })
 export class InscriptionPageComponent implements OnInit {
     title: string;
+    public isMobile = false;
+    private scrollPos = 0;
     otherSections: string[] = [];
     title2: string = environment.assoTitle;
     step = 1;
@@ -46,12 +47,16 @@ export class InscriptionPageComponent implements OnInit {
         private layoutService: LayoutService,
         private route: ActivatedRoute,
         private router: Router) {
+        if (window.matchMedia('(max-width: 1025px)').matches) {
+            this.isMobile = true;
+        }
         this.themeService.isDarkTheme.subscribe(isDark => {
             this.isDarkTheme = isDark;
         })
         this.layoutService.obsMenuOpened.subscribe(isOpened => {
             this.isMenuOpened = isOpened;
         });
+        let url = environment.fullApp ? '/' : '/inscription';
         this.route.queryParams.subscribe(params => {
             this.step = Number(params.step) || 1;
             this.paymentStatus = params.payment || null;
@@ -63,18 +68,18 @@ export class InscriptionPageComponent implements OnInit {
                 } else {
                     this.step = 5;
                 }
-                this.location.replaceState('/inscription');
+                this.location.replaceState(url);
             }
             if (this.step === 1) {
                 this.init();
-                this.location.replaceState('/inscription');
+                this.location.replaceState(url);
             }
         });
     }
 
     ngOnInit(): void {
         //window['_fs_namespace'] = 'FS';
-        
+
         //this.init();
     }
 

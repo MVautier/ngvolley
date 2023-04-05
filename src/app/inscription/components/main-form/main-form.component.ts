@@ -22,6 +22,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
     @Input() adherent: Adherent;
     @Input() members: Adherent[] = [];
     @Input() local: boolean;
+    @Input() isMobile: boolean;
     @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() validate: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
