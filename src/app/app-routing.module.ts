@@ -26,7 +26,8 @@ if (environment.fullApp) {
     routes = [
         { path: '', title: 'Inscription', loadChildren: () => import('./inscription/inscription.module').then(m => m.InscriptionModule) },
         { path: 'admin', title: 'Administration', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
-        { path: '**', redirectTo: '', pathMatch: 'full' }
+        { path: '**', redirectTo: 'inscription' },
+        { path: '**', redirectTo: '' }
     ];
 }
 
