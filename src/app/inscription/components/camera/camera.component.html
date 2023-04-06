@@ -6,7 +6,7 @@
         [trigger]="triggerObservable" 
         [allowCameraSwitch]="allowCameraSwitch" 
         [switchCamera]="nextWebcamObservable" 
-        [mirrorImage]="'never'"
+        [mirrorImage]="mirroring"
         [videoOptions]="videoOptions"
         (imageCapture)="imageCapture($event)" 
         (initError)="handleInitError($event)"

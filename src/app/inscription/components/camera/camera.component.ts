@@ -33,6 +33,7 @@ export class CameraComponent implements OnInit {
   };
   width = 640;
   height = 480;
+  mirroring = 'always';
 
   constructor() { 
     if (window.matchMedia('(max-width: 1025px)').matches) {
@@ -103,22 +104,20 @@ export class CameraComponent implements OnInit {
         const data = capture.imageAsDataUrl;
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        const x = this.width / 3.5;
-        const y = this.height / 6;
-        const w = this.width / 2.3;
-        const h = this.height / 1.4;
+        const x = 180; //this.width / 3.5;
+        const y = 80; //this.height / 6;
+        const w = 280; //this.width / 2.3;
+        const h = 340; //this.height / 1.4;
         canvas.width = w;
         canvas.height = h;
         const img = new Image();
         img.width = this.width;
         img.height = this.height;
         img.onload = () => {
-            
-            //context.drawImage(img, 0, 0, this.width, this.height, x, y, w, h);
             context.drawImage(img, x, y, w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
-            console.log('data: ', newData);
-            canvas.remove();
+            //console.log('data: ', newData);
+            //canvas.remove();
             resolve(newData);
         };
         img.onerror = () => {
