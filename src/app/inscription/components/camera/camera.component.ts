@@ -102,20 +102,17 @@ export class CameraComponent implements OnInit {
   cropPhoto(capture: WebcamImage): Promise<string> {
     return new Promise((resolve, reject) => {
         const data = capture.imageAsDataUrl;
+        const x = 180;
+        const y = 80;
+        const w = 280;
+        const h = 340;
         const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
         const context = canvas.getContext('2d');
-        const screenMode = window.screen.width > window.screen.height ? 'landscape' : 'portrait';
-        const x = 180; //screenMode === 'landscape' ? 180 : 80; //this.width / 3.5;
-        const y = 80; //screenMode === 'landscape' ? 80 : 180; //this.height / 6;
-        const w = 280; //this.width / 2.3;
-        const h = 340; //this.height / 1.4;
-        canvas.style.width = w + 'px'; //screenMode === 'landscape' ? w : h;
-        canvas.style.height = h + 'px'; //screenMode === 'landscape' ? h : w;
-        canvas.width = w * window.devicePixelRatio;
-        canvas.height = h * window.devicePixelRatio;
         const img = new Image();
-        img.width = 640; //this.width;
-        img.height = 480; //this.height;
+        //img.width = 640; //this.width;
+        //img.height = 480; //this.height;
         img.onload = () => {
             context.drawImage(img, x, y, w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
