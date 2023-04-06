@@ -111,8 +111,8 @@ export class CameraComponent implements OnInit {
         const h = 340; //this.height / 1.4;
         canvas.style.width = w + 'px'; //screenMode === 'landscape' ? w : h;
         canvas.style.height = h + 'px'; //screenMode === 'landscape' ? h : w;
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = w * window.devicePixelRatio;
+        canvas.height = h * window.devicePixelRatio;
         const img = new Image();
         img.width = 640; //this.width;
         img.height = 480; //this.height;
