@@ -1,13 +1,17 @@
-
+$breakpoint-tablet: 991px;
+$breakpoint-mobile: 667px;
 .sig{
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
+    align-items: end;
     width: 350px;
+    @media screen and (max-width: $breakpoint-mobile) {
+        width: 290px;
+    }
     canvas {
         display: block;
         box-shadow: 0 0 5px 1px #999;
-        margin: 2em auto;
+        margin: 20px auto;
         border-radius: 5px;
     }
     mat-icon {

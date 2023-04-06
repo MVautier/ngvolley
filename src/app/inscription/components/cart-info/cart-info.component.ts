@@ -13,14 +13,22 @@ export class CartInfoComponent implements OnInit {
     @Input() isMobile: boolean;
     @Output() addMember: EventEmitter<void> = new EventEmitter<void>();
     showPayment = false;
-
+    isMobileOpened = false;
     constructor() { }
 
     ngOnInit(): void {
 
     }
 
-    onAddMember() {
+    onAddMember(event: Event) {
         this.addMember.emit();
+        event.stopImmediatePropagation();
+    }
+
+    onSmallClick() {
+        if (this.isMobile) {
+            console.log('footer was clicked');
+            this.isMobileOpened = !this.isMobileOpened;
+        }
     }
 }

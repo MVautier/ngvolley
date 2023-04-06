@@ -12,7 +12,7 @@
 .main {
     display: flex;
     margin: 0 auto;
-    padding: 0 30px;
+    padding: 0 10px;
     //width: var(--container);
     transition: var(--global-transition);
     &.mobile{
@@ -45,7 +45,7 @@
     }
 
     .col-progress {
-        flex: 0 0 308px;
+        flex: 0 0 385px;
 
         @media screen and (max-width: 1025px) {
             position: sticky;
@@ -62,8 +62,8 @@
 .ins_info {
     background: #eee;
     color: #000;
-    text-align: center;
-    padding: 25px;
+    text-align: justify;
+    padding: 10px;
     border-radius: var(--border-radius);
     margin-bottom: 25px;
     border: 1px solid var(--border);

@@ -1,4 +1,6 @@
 @import "variables";
+$breakpoint-tablet: 991px;
+$breakpoint-mobile: 667px;
 
 iframe {
     width: 100%;
@@ -23,26 +25,26 @@ iframe {
             color: red;
         }
     }
-    mat-error{
+    mat-error {
         color: #f44336 !important;
         font-size: 16px;
     }
     mat-expansion-panel {
         margin-bottom: 20px;
-        transition: margin 900ms cubic-bezier(0.4, 0, 0.2, 1),box-shadow 1120ms cubic-bezier(0.4, 0, 0.2, 1);;
+        transition: margin 900ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1120ms cubic-bezier(0.4, 0, 0.2, 1);
     }
-    mat-panel-title{
-        span{
+    mat-panel-title {
+        span {
             margin-left: 20px;
         }
-        .button-remove{
+        .button-remove {
             position: absolute;
             left: 10px;
             button {
                 width: 20px !important;
                 height: 20px !important;
                 line-height: 20px;
-                span.mat-button-wrapper{
+                span.mat-button-wrapper {
                     margin-left: -2px;
                 }
             }
@@ -63,7 +65,7 @@ iframe {
     flex-wrap: wrap;
     margin-bottom: 20px;
     padding: 30px;
-    &.mobile{
+    &.mobile {
         padding: 3px;
     }
     // border-radius: 10px;
@@ -80,11 +82,11 @@ iframe {
         &.name {
             display: flex;
             justify-content: space-between;
-            .left{
+            .left {
                 text-align: left;
             }
         }
-        img{
+        img {
             border-radius: 5px;
         }
         span.title {
@@ -92,11 +94,11 @@ iframe {
             font-size: 16px;
             &.main {
                 font-size: 24px;
-                &.mobile{
+                &.mobile {
                     font-size: 14px;
                 }
             }
-            &.mobile{
+            &.mobile {
                 font-size: 11px;
             }
         }
@@ -200,11 +202,19 @@ iframe {
         padding: 10px;
         .info {
             text-align: center;
+            margin-bottom: 15px;
         }
         .choice {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            @media screen and (max-width: $breakpoint-tablet) {
+                flex-direction: column;
+            }
+
+            @media screen and (max-width: $breakpoint-tablet) {
+                flex-direction: column;
+            }
         }
     }
     .form-element {
@@ -232,7 +242,7 @@ iframe {
                 .last {
                     flex: inherit;
                 }
-                &.mobile{
+                &.mobile {
                     flex-direction: column;
                 }
             }

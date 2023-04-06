@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
@@ -15,6 +15,8 @@ export class CameraComponent implements OnInit {
   cancel: (result: ModalResult) => {};
   imageResult: string;
   audio: HTMLAudioElement;
+  
+  @ViewChild('webcam', { static: true }) webcam: ElementRef;
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -29,12 +31,31 @@ export class CameraComponent implements OnInit {
     // width: {ideal: 1024},
     // height: {ideal: 576}
   };
+  width = 640;
+  height = 480;
 
-  constructor() { }
+  constructor() { 
+    if (window.matchMedia('(max-width: 1025px)').matches) {
+        this.width = 320;
+        this.height = 240;
+    }
+  }
 
   ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs().then((mediaDevices: MediaDeviceInfo[]) => {
       this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
+      console.log('webcam: ', this.webcam.nativeElement);
+      const wrapper = this.webcam.nativeElement.querySelector('.webcam-wrapper') as HTMLDivElement;
+      console.log('webcam wrapper: ', wrapper);
+      wrapper.style.backgroundImage = 'url(./../../../../assets/images/gabarit_webcam.png)';
+      wrapper.style.backgroundSize = 'contain';
+      wrapper.style.backgroundRepeat = 'no-repeat';
+      wrapper.style.backgroundPosition = 'center';
+      const video = wrapper.getElementsByTagName('video')[0];
+      console.log('video: ', video);
+      if (video) {
+        video.style.opacity = '0.7';
+      }
     });
     this.audio = new Audio();
     //Can externalize the variables
@@ -72,7 +93,39 @@ export class CameraComponent implements OnInit {
   imageCapture(capture: WebcamImage) {
     this.audio.play();
     console.log('captured image: ', capture);
-    this.imageResult = capture.imageAsDataUrl;
+    this.cropPhoto(capture).then(data => {
+        this.imageResult = data;
+    });
+  }
+
+  cropPhoto(capture: WebcamImage): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const data = capture.imageAsDataUrl;
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const x = this.width / 3.5;
+        const y = this.height / 6;
+        const w = this.width / 2.3;
+        const h = this.height / 1.4;
+        canvas.width = w;
+        canvas.height = h;
+        const img = new Image();
+        img.width = this.width;
+        img.height = this.height;
+        img.onload = () => {
+            
+            //context.drawImage(img, 0, 0, this.width, this.height, x, y, w, h);
+            context.drawImage(img, x, y, w, h, 0, 0, w, h);
+            const newData = canvas.toDataURL();
+            console.log('data: ', newData);
+            canvas.remove();
+            resolve(newData);
+        };
+        img.onerror = () => {
+            resolve(data);
+        };
+        img.src = data;
+    });
   }
 
   onValidate() {

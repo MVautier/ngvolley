@@ -1,9 +1,9 @@
-<div class="cart-info" [ngClass]="{'small': isMobile}">
+<div class="cart-info" (click)="onSmallClick()" [ngClass]="{'small': isMobile, 'opened': isMobileOpened}">
     <div class="top">
         <p class="label">Montant de l'adhésion</p>
     </div>
 
-    <div *ngIf="!isMobile" class="main">
+    <div class="main">
         <div class="item" *ngFor="let item of cart.items">
             <div>
                 <span>{{item.libelle}}</span>
@@ -14,28 +14,32 @@
         </div>
     </div>
 
-    <div class="total">
-        <div class="item">
-            <div class="lib-total">
-                <span>Total</span>
-            </div>
-            <div>
-                <span class="number">{{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</span>
-            </div>
-        </div>
-    </div>
+    
 
     <div class="footer">
+        <div class="add-member">
+            <div class="buttons right">
+                <button mat-icon-button matSuffix class="icon-button add enabled" (click)="onAddMember($event)">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+              </div>
+        </div>
+
+        <div class="total">
+            <div class="item">
+                <div class="lib-total">
+                    <span>Total : </span>
+                </div>
+                <div>
+                    <span class="number">{{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</span>
+                </div>
+            </div>
+        </div>
+        
         <!-- <img class="picto" src="assets/images/logos/logo-helloasso.svg"> -->
         <!-- <div class="payment">Payer {{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div> -->
         <!-- <iframe id="haWidgetButton" src="https://www.helloasso.com/associations/sobak-mediation-animale/paiements/adhesion-clll/widget-bouton" style="border: none;"></iframe> -->
     </div>
 
-    <div class="add-member">
-        <div class="buttons right">
-            <button mat-icon-button matSuffix class="icon-button add enabled" (click)="onAddMember()">
-                <mat-icon>person_add</mat-icon>
-            </button>
-          </div>
-    </div>
+    
 </div>
