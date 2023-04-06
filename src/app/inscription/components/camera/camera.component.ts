@@ -104,19 +104,19 @@ export class CameraComponent implements OnInit {
         const data = capture.imageAsDataUrl;
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        const x = 180; //this.width / 3.5;
-        const y = 80; //this.height / 6;
+        //const screenMode = window.screen.width > window.screen.height ? 'landscape' : 'portrait';
+        const x = 180; //screenMode === 'landscape' ? 180 : 80; //this.width / 3.5;
+        const y = 80; //screenMode === 'landscape' ? 80 : 180; //this.height / 6;
         const w = 280; //this.width / 2.3;
         const h = 340; //this.height / 1.4;
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = w; //screenMode === 'landscape' ? w : h;
+        canvas.height = h; //screenMode === 'landscape' ? h : w;
         const img = new Image();
-        img.width = this.width;
-        img.height = this.height;
+        img.width = 640; //this.width;
+        img.height = 480; //this.height;
         img.onload = () => {
             context.drawImage(img, x, y, w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
-            //console.log('data: ', newData);
             //canvas.remove();
             resolve(newData);
         };

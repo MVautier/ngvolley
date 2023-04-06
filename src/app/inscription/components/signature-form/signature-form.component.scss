@@ -6,7 +6,7 @@ $breakpoint-mobile: 667px;
     align-items: end;
     width: 350px;
     @media screen and (max-width: $breakpoint-mobile) {
-        width: 290px;
+        width: 300px;
     }
     canvas {
         display: block;
