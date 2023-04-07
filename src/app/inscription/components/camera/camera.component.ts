@@ -108,7 +108,8 @@ export class CameraComponent implements OnInit {
         const h = 340;
         const img = new Image();
         img.onload = () => {
-            const info = `imgW: ${img.naturalWidth}<br>
+            const info = `
+            imgW: ${img.naturalWidth}<br>
             imgH: ${img.naturalHeight}<br>
             w: ${w}<br>
             h: ${h}<br>
@@ -117,9 +118,13 @@ export class CameraComponent implements OnInit {
             const canvas = document.createElement('canvas');
             canvas.width = w;
             canvas.height = h;
+            const screenMode = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
             const context = canvas.getContext('2d');
             this.mirrorImage(context, img, 0, 0, true);
-            context.drawImage(img, x, y, w, h, 0, 0, w, h);
+            context.drawImage(img, 
+                screenMode === 'landscape' ? x : y, 
+                screenMode === 'landscape' ? y : x, 
+                w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
             canvas.remove();
             resolve(newData);
