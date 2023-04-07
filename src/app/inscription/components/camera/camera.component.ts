@@ -122,8 +122,8 @@ export class CameraComponent implements OnInit {
             const context = canvas.getContext('2d');
             this.mirrorImage(context, img, 0, 0, true);
             context.drawImage(img, 
-                screenMode === 'landscape' ? x : y, 
-                screenMode === 'landscape' ? y : x, 
+                screenMode === 'landscape' ? x : y + 10, 
+                screenMode === 'landscape' ? y : x - 10, 
                 w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
             canvas.remove();
