@@ -8,11 +8,11 @@
             </div>
             
             <div *ngIf="adherent.Photo" class="right">
-                <img [src]="adherent.Photo" height="80">
+                <img [src]="adherent.Photo" height="80" (click)="mep.expanded = true; showEditPhoto();" title="Changer/Retoucher">
             </div>
         </div>
         <mat-accordion>
-            <mat-expansion-panel>
+            <mat-expansion-panel id="mep" #mep="matExpansionPanel">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon class="check" [ngClass]="adherent.Photo && !getLicenceError('licence') ? 'valid' : 'error'">check_circle</mat-icon>
@@ -22,12 +22,12 @@
                 <!--  ================ Licence et Photo-->
                 <div class="section-title adherent">
                     
-                    <div class="name">
+                    <!-- <div class="name">
                         <div class="left"></div>
                         <div *ngIf="licenceRequired && adherent.Photo" class="right">
                             <img [src]="adherent.Photo" height="80" (click)="showEditPhoto()" title="Changer/Retoucher">
                         </div>
-                    </div>
+                    </div> -->
 
                     <div *ngIf="licenceRequired" class="licence">
                         <mat-form-field class="form-element row-item">

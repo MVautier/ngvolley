@@ -84,6 +84,10 @@ export class AdherentCardComponent implements OnInit {
     }
 
     showEditPhoto() {
+        const div = document.querySelector('#mep');
+        if (div && !div.classList.contains('mat-expanded')) {
+
+        }
         this.editPhoto = true;
     }
 
