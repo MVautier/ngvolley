@@ -1,8 +1,15 @@
 
-.webcam{
-    width: 100%;
-    cursor: pointer;
+.body-photo{
+    display: flex;
+    flex-direction: row;
+    .webcam{
+        cursor: pointer;
+    }
+    .log-photo{
+        padding: 5px;
+    }
 }
+
 .btn-photo{
     width: 100%;
     display: flex;

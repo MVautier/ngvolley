@@ -1,19 +1,22 @@
-
-<div #webcam class="webcam">
-    <webcam 
-        [width]="width" 
-        [height]="height" 
-        [trigger]="triggerObservable" 
-        [allowCameraSwitch]="allowCameraSwitch" 
-        [switchCamera]="nextWebcamObservable" 
-        [mirrorImage]="mirroring"
-        [videoOptions]="videoOptions"
-        (imageCapture)="imageCapture($event)" 
-        (initError)="handleInitError($event)"
-        (cameraSwitched)="cameraWasSwitched($event)"
-        (click)="triggerSnapshot();"
-    ></webcam>
+<div class="body-photo">
+    <div #webcam class="webcam">
+        <webcam 
+            [width]="width" 
+            [height]="height" 
+            [trigger]="triggerObservable" 
+            [allowCameraSwitch]="allowCameraSwitch" 
+            [switchCamera]="nextWebcamObservable" 
+            [mirrorImage]="mirroring"
+            [videoOptions]="videoOptions"
+            (imageCapture)="imageCapture($event)" 
+            (initError)="handleInitError($event)"
+            (cameraSwitched)="cameraWasSwitched($event)"
+            (click)="triggerSnapshot();"
+        ></webcam>
+    </div>
+    <div id="log-photo" class="log-photo"></div>
 </div>
+
 
 <div class="btn-photo">
     <button type="button" mat-raised-button color="primary" (click)="triggerSnapshot()" title="Prendre la photo">📸</button>

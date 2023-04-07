@@ -31,14 +31,14 @@ export class CameraComponent implements OnInit {
     // width: {ideal: 1024},
     // height: {ideal: 576}
   };
-  width = 640;
-  height = 480;
+  width = 480;
+  height = 640;
   mirroring = 'always';
 
   constructor() { 
     if (window.matchMedia('(max-width: 1025px)').matches) {
-        this.width = 320;
-        this.height = 240;
+        this.width = 240;
+        this.height = 320;
     }
   }
 
@@ -106,14 +106,19 @@ export class CameraComponent implements OnInit {
         const y = 80;
         const w = 280;
         const h = 340;
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const context = canvas.getContext('2d');
         const img = new Image();
-        //img.width = 640; //this.width;
-        //img.height = 480; //this.height;
         img.onload = () => {
+            const info = `imgW: ${img.naturalWidth}<br>
+            imgH: ${img.naturalHeight}<br>
+            w: ${w}<br>
+            h: ${h}<br>
+            ratio: ${window.devicePixelRatio}<br>`;
+            document.querySelector('#log-photo').innerHTML = info;
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const context = canvas.getContext('2d');
+            this.mirrorImage(context, img, 0, 0, true);
             context.drawImage(img, x, y, w, h, 0, 0, w, h);
             const newData = canvas.toDataURL();
             canvas.remove();
@@ -125,6 +130,18 @@ export class CameraComponent implements OnInit {
         img.src = data;
     });
   }
+
+  mirrorImage(ctx, image, x = 0, y = 0, horizontal = false, vertical = false) {
+    ctx.save();  // save the current canvas state
+    ctx.setTransform(
+        horizontal ? -1 : 1, 0, // set the direction of x axis
+        0, vertical ? -1 : 1,   // set the direction of y axis
+        x + (horizontal ? image.width : 0), // set the x origin
+        y + (vertical ? image.height : 0)   // set the y origin
+    );
+    //ctx.drawImage(image,0,0);
+    ctx.restore(); // restore the state as it was when this function was called
+}
 
   onValidate() {
     this.validate({
