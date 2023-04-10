@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class ThemeService {
-    public isDarkTheme: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    public isDarkTheme: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     //isDarkTheme = this._darkTheme.asObservable();
 
     constructor() {

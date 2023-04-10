@@ -12,6 +12,7 @@ import { MemberRemove } from '@app/inscription/models/member-remove.model';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
+import { Questionary } from '@app/core/models/questionary.model';
 
 @Component({
     selector: 'app-main-form',
@@ -40,7 +41,6 @@ export class MainFormComponent implements OnInit, OnDestroy {
     titles: string[] = [];
     notifier = new Subject<void>();
     subModal: Subscription;
-
 
     constructor(
         private inscriptionService: InscriptionService,
@@ -171,6 +171,33 @@ export class MainFormComponent implements OnInit, OnDestroy {
             });
     }
 
+    showPopupHealth() {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
+        }
+        const data = Questionary.getMajor();
+        this.modalService.open({
+            title: data.title,
+            validateLabel: 'Valider',
+            cancelLabel: 'Annuler',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: '100%',
+                height: '500px'
+            },
+            component: 'health-form',
+            data: data
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                if (result?.data) {
+                    console.log('questionary data: ', result.data);
+                }
+            });
+    }
+
     onRemoveMember(member: Adherent = null) {
         let user = '';
         if (member) {
@@ -193,8 +220,6 @@ export class MainFormComponent implements OnInit, OnDestroy {
         const current = this.members.length ? this.members[this.members.length - 1] : this.adherent;
         this.resetOpened(current.Uid);
     }
-
-
 
     resetOpened(uid: string = null) {
         this.adherent._opened = uid && this.adherent.Uid === uid;

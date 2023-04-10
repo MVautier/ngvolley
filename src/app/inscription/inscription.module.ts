@@ -32,6 +32,8 @@ import { CartPaymentComponent } from './components/cart-payment/cart-payment.com
 import { HelloAssoService } from './services/helloasso.service';
 import { PopupRemoveComponent } from './components/popup-remove/popup-remove.component';
 import { CoreModule } from '@app/core/core.module';
+import { PhotoService } from './services/photo.service';
+import { HealthFormComponent } from './components/health-form/health-form.component';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -50,7 +52,8 @@ import { CoreModule } from '@app/core/core.module';
     DocumentFormComponent,
     AdherentCardComponent,
     CartPaymentComponent,
-    PopupRemoveComponent
+    PopupRemoveComponent,
+    HealthFormComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +73,8 @@ import { CoreModule } from '@app/core/core.module';
   ],
   providers: [
     InscriptionService,
-    HelloAssoService
+    HelloAssoService,
+    PhotoService
   ]
 })
 export class InscriptionModule { }

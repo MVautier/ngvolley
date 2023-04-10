@@ -1,12 +1,14 @@
 
 .body-photo{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    padding: 10px;
     .webcam{
         cursor: pointer;
+        text-align: center;
     }
     .log-photo{
-        padding: 5px;
+        padding: 10px;
     }
 }
 

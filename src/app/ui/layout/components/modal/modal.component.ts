@@ -13,6 +13,7 @@ import { Size } from '../../models/size.model';
 import { ModalService } from '../../services/modal.service';
 import { DynamicDirective } from './../../directives/dynamic.directive';
 import { PopupRemoveComponent } from '@app/inscription/components/popup-remove/popup-remove.component';
+import { HealthFormComponent } from '@app/inscription/components/health-form/health-form.component';
 @Component({
     selector: 'app-modal',
     templateUrl: './modal.component.html',
@@ -89,6 +90,9 @@ export class ModalComponent implements OnInit, OnDestroy {
                 break;
             case 'popup-remove':
                 comp = PopupRemoveComponent;
+                break;
+            case 'health-form':
+                comp = HealthFormComponent;
                 break;
         }
 

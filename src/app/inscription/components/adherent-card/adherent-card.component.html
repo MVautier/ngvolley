@@ -6,22 +6,33 @@
                 <br>
                 <span class="title">{{category}}</span>
             </div>
-            
-            <div *ngIf="adherent.Photo" class="right">
-                <img [src]="adherent.Photo" height="80" (click)="mep.expanded = true; showEditPhoto();" title="Changer/Retoucher">
+
+            <div class="right">
+                <button mat-button [matMenuTriggerFor]="menu_photo">
+                    <img [src]="adherent.Photo ? adherent.Photo : photo_default" height="80" title="Changer/Retoucher">
+                </button>
+                
+                <mat-menu #menu_photo="matMenu">
+                    <button mat-menu-item (click)="showModalPhoto('camera')">Prendre une photo</button>
+                    <button mat-menu-item (click)="f_input.click()">Importer une photo</button>
+                    <button mat-menu-item [disabled]="!adherent.Photo" (click)="showModalPhoto('cropper')">Recadrer la photo</button>
+                </mat-menu>
+
+                <input type="file" hidden #f_input (change)="onSelectPhoto(f_input.files)" />
             </div>
         </div>
         <mat-accordion>
             <mat-expansion-panel id="mep" #mep="matExpansionPanel">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check" [ngClass]="adherent.Photo && !getLicenceError('licence') ? 'valid' : 'error'">check_circle</mat-icon>
-                        <span class="title">Photo et Licence</span>
+                        <mat-icon class="check"
+                            [ngClass]="!getLicenceError('licence') ? 'valid' : 'error'">check_circle</mat-icon>
+                        <span class="title">Licence</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <!--  ================ Licence et Photo-->
                 <div class="section-title adherent">
-                    
+
                     <!-- <div class="name">
                         <div class="left"></div>
                         <div *ngIf="licenceRequired && adherent.Photo" class="right">
@@ -41,10 +52,9 @@
                         <div class="sub-info">(si renouvellement ou mutation)</div>
                     </div>
 
-                    <div *ngIf="licenceRequired && editPhoto" class="take-photo">
-                        <app-photo-taker [checked]="checked" [imageBase64]="adherent.Photo"
-                            (photo)="onPhoto($event)"></app-photo-taker>
-                    </div>
+                    <!-- <div *ngIf="licenceRequired && editPhoto" class="take-photo">
+                        <app-photo-taker [checked]="checked" [imageBase64]="adherent.Photo" (photo)="onPhoto($event)"></app-photo-taker>
+                    </div> -->
 
                 </div>
             </mat-expansion-panel>
@@ -69,7 +79,8 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check" [ngClass]="adherent.HealthFile ? 'valid' : 'error'">check_circle</mat-icon>
+                        <mat-icon class="check"
+                            [ngClass]="adherent.HealthFile ? 'valid' : 'error'">check_circle</mat-icon>
                         <span class="title">Certificat médical / attestation de santé</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -114,7 +125,8 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check" [ngClass]="adherent.Rgpd && (checked.age > 18 ? adherent.Signature : true) ? 'valid' : 'error'">check_circle</mat-icon>
+                        <mat-icon class="check"
+                            [ngClass]="adherent.Rgpd && (checked.age > 18 ? adherent.Signature : true) ? 'valid' : 'error'">check_circle</mat-icon>
                         <span class="title">RGPD et Signature</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>

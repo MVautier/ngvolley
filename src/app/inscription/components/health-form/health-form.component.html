@@ -1,0 +1,35 @@
+<div class="questionary" *ngIf="data">
+    <div class="description">{{data.description}}</div>
+    <div class="group-counter">{{groupIndex + 1}}/{{data.questionGroups.length}} - {{data.questionGroups[groupIndex].title}}</div>
+    <div *ngFor="let group of data.questionGroups; index as i">
+        
+        <div class="group" [ngClass]="{'active': groupIndex === i}">
+            <div class="item-counter">{{itemIndex + 1}}/{{group.items.length}}</div>
+            <div *ngFor="let item of group.items; index as j">
+                
+                <div class="question" [ngClass]="{'active': groupIndex === i && itemIndex === j}">
+                    <div class="text">{{item.question}}</div>
+                    <div class="answer">
+                        <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="item.answer"> 
+                            <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+                            <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    
+</div>
+
+<div class="health-buttons">
+    <button type="button" mat-raised-button (click)="onPrevious()">Précédent</button>
+    <button type="button" mat-raised-button color="primary" (click)="onNext()">Suivant</button>
+</div>
+
+<div class="ng-modal-footer">
+    <button type="button" mat-raised-button (click)="onCancel()">Annuler</button>
+    <button type="button" mat-raised-button color="primary" [disabled]="!terminated" (click)="onValidate()">Valider</button>
+</div>

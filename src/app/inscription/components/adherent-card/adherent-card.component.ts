@@ -12,6 +12,7 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
 import { PdfInfo } from '@app/core/models/pdf-info.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
+import { PhotoService } from '@app/inscription/services/photo.service';
 
 @Component({
     selector: 'app-adherent-card',
@@ -31,14 +32,20 @@ export class AdherentCardComponent implements OnInit {
     category: string;
     licenceRequired: boolean;
     editPhoto: boolean = true;
+    isMobile = false;
+    photo_default = 'assets/images/user-default.png';
 
     constructor(
         private fb: FormBuilder,
         private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
+        private photoService: PhotoService,
         private modalService: ModalService) { }
 
     ngOnInit(): void {
+        if (window.matchMedia('(max-width: 1025px)').matches) {
+            this.isMobile = true;
+        }
         if (this.adherent) {
             this.licenceInputMask = this.inscriptionService.licenceInputMask;
             this.initForm();
@@ -89,6 +96,55 @@ export class AdherentCardComponent implements OnInit {
 
         }
         this.editPhoto = true;
+    }
+
+    showMenuPhoto() {
+
+    }
+
+    showModalPhoto(mode: string) {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
+        }
+        this.modalService.open({
+            title: mode === 'camera' ? 'Prendre une photo' : 'Recadrer la photo',
+            validateLabel: 'Valider',
+            cancelLabel: 'Annuler',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: this.isMobile ? '100%' : '500px',
+                height: mode === 'cropper' ? '390px' : (this.isMobile ? '445px' : '620px')
+            },
+            component: mode,
+            data: mode === 'cropper' ? this.adherent.Photo : null
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                console.log('data received from modal: ', result);
+                if (result?.data) {
+                    this.adherent.Photo = result.data;
+                    this.changed.emit(this.adherent);
+                    //this.photo.emit(this.imageBase64);
+                    this.notifier.next();
+                    this.notifier.complete();
+                }
+            });
+    }
+
+    onSelectPhoto(fileList: FileList) {
+        console.log(fileList);
+        this.photoService.getBase64(fileList[0]).then(result => {
+            if (result) {
+                // this.imageBase64 = result;
+                // this.photo.emit(this.imageBase64);
+                this.adherent.Photo = result;
+                this.changed.emit(this.adherent);
+            }
+        }).catch(err => {
+            console.log('Error: ', err);
+        });
     }
 
     onPhoto(photo: string) {

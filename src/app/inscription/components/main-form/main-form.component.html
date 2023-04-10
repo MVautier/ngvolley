@@ -1,4 +1,5 @@
 <form *ngIf="formGroup" [formGroup]="formGroup" class="form" [ngClass]="{'mobile': isMobile}">
+    <button (click)="showPopupHealth()">Attestation de santé</button>
     <mat-accordion>
         <mat-expansion-panel [expanded]="adherent._opened">
             <mat-expansion-panel-header>
@@ -71,7 +72,7 @@
 
                     <mat-form-field class="last">
                         <mat-label>Date de naissance</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly>
+                        <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly (click)="picker.open()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                         <mat-error

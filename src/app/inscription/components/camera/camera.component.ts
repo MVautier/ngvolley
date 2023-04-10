@@ -108,13 +108,13 @@ export class CameraComponent implements OnInit {
         const h = 340;
         const img = new Image();
         img.onload = () => {
-            const info = `
-            imgW: ${img.naturalWidth}<br>
-            imgH: ${img.naturalHeight}<br>
-            w: ${w}<br>
-            h: ${h}<br>
-            ratio: ${window.devicePixelRatio}<br>`;
-            document.querySelector('#log-photo').innerHTML = info;
+            // const info = `
+            // imgW: ${img.naturalWidth}<br>
+            // imgH: ${img.naturalHeight}<br>
+            // w: ${w}<br>
+            // h: ${h}<br>
+            // ratio: ${window.devicePixelRatio}<br>`;
+            // document.querySelector('#log-photo').innerHTML = info;
             const canvas = document.createElement('canvas');
             canvas.width = w;
             canvas.height = h;

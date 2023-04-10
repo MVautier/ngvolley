@@ -18,9 +18,9 @@ import { ModalService } from './ui/layout/services/modal.service';
 export class AppComponent implements OnInit {
     title = 'colomiers-volley';
     logged: boolean;
-    isDarkTheme: boolean = true;
+    isDarkTheme: boolean = false;
     isMobile: boolean = false;
-    theme = 'dark';
+    theme = 'light';
     opened = environment.sidenavOpened;
     fullApp = environment.fullApp;
     subModal: Subscription;

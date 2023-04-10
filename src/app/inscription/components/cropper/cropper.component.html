@@ -37,22 +37,24 @@
 			<mat-icon>zoom_in</mat-icon>
 		</button>
 		
-		<mat-slider
-			thumbLabel
-			(input)="onOpacity($event)"
-			tickInterval="1"
-			min="0"
-			max="100"
-			step="1"
-			[value]="opacity"
-			[vertical]="true"
-			>
-		</mat-slider>
+		
 	</div>
 
     <div *ngIf="croppedImage" class="cropped">
         <div id="gabarit" class="gabarit">
             <img id="cropped" [src]="croppedImage" />
+        </div>
+        <div class="crop-slider">
+            <mat-slider
+                thumbLabel
+                (input)="onOpacity($event)"
+                tickInterval="1"
+                min="0"
+                max="100"
+                step="1"
+                [value]="opacity"
+                >
+            </mat-slider>
         </div>
     </div>
 </div>

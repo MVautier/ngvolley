@@ -13,15 +13,18 @@
             (cameraSwitched)="cameraWasSwitched($event)"
             (click)="triggerSnapshot();"
         ></webcam>
+        <div class="btn-photo">
+            <button type="button" mat-raised-button color="primary" (click)="triggerSnapshot()" title="Prendre la photo">📸</button>
+            <button type="button" mat-raised-button (click)="showNextWebcam(true)" title="Changer de caméra">🔁</button>
+        </div>
     </div>
-    <div id="log-photo" class="log-photo"></div>
+    <div id="log-photo" class="log-photo">
+        Prenez une photo en faisant coïncider votre visage avec l'ovale rouge en arrière-plan.
+    </div>
 </div>
 
 
-<div class="btn-photo">
-    <button type="button" mat-raised-button color="primary" (click)="triggerSnapshot()" title="Prendre la photo">📸</button>
-    <button type="button" mat-raised-button (click)="showNextWebcam(true)" title="Changer de caméra">🔁</button>
-</div>
+
 
 <div class="ng-modal-footer">
     <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
