@@ -36,14 +36,15 @@
             </button>
         </div>
         <div class="with-input" *ngIf="nbYes === 0">
+            Nom du représentant légal : 
+            <input class="form-control" type="text" name="city" placeholder="Nom" [(ngModel)]="nom" required [ngClass]="{error: !isValid(nom)}">
+        </div>
+        <div class="with-input" *ngIf="nbYes === 0">
             Fait à 
             <input class="form-control" type="text" name="city" placeholder="Commune" [(ngModel)]="city" required [ngClass]="{error: !isValid(city)}">
             , le {{now | date:'dd/MM/yyyy'}}
         </div>
-        <div class="with-input" *ngIf="nbYes === 0">
-            Nom du représentant légal : 
-            <input class="form-control" type="text" name="city" placeholder="Nom" [(ngModel)]="nom" required [ngClass]="{error: !isValid(nom)}">
-        </div>
+        
         <div class="center" *ngIf="nbYes === 0">
             <div class="signature">
                 <span class="title">Signature</span>
@@ -95,8 +96,7 @@
         <div class="center">
             <div class="signature">
                 <span class="title">Signature</span>
-                <app-signature-form [signature]="data.signature"
-                    (changed)="onSignature($event)"></app-signature-form>
+                <app-signature-form [signature]="data.signature" (changed)="onSignature($event)"></app-signature-form>
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
 </div>
 
 <div *ngIf="!terminated" class="ng-modal-footer">
-    <button type="button" mat-raised-button (click)="onDownload()">☑Test</button>
+    <!-- <button type="button" mat-raised-button (click)="onDownload()">☑Test</button> -->
     <button *ngIf="itemIndex > 0 || groupIndex > 0" type="button" mat-raised-button (click)="onPrevious()">Précédent</button>
     <button type="button" mat-raised-button color="primary" (click)="onNext()">Suivant</button>
 </div>

@@ -6,13 +6,16 @@ $breakpoint-mobile: 667px;
     align-items: flex-end;
     width: 350px;
     @media screen and (max-width: $breakpoint-mobile) {
-        width: 300px;
+        width: 100%;
     }
     .clear{
         z-index: 2;
+        margin: auto;
+        cursor: pointer;
     }
     .canvas{
         margin-top: -20px;
+        width: 100%;
     }
     canvas {
         display: block;

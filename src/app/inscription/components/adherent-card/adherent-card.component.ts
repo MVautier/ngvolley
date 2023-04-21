@@ -207,7 +207,7 @@ export class AdherentCardComponent implements OnInit {
             showValidate: true,
             size: {
                 width: '100%',
-                height: major ? '800px' : '650px'
+                height: major ? '830px' : '650px'
             },
             component: 'health-form',
             data: data

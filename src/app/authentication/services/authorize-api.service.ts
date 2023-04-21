@@ -27,10 +27,6 @@ export class AuthorizeApiService {
       return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/login', login));
     }
 
-    AuthorizeAnonymous(): Promise<UserToken> {
-        return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/anonymous', environment.clientID));
-      }
-
     public IsLogged(): Promise<boolean> {
       return this.CheckToken();
       }
@@ -42,13 +38,6 @@ export class AuthorizeApiService {
         });
     }
 
-    LoginAnonymous(): Promise<UserToken> {
-        return this.AuthorizeAnonymous().then((us) => {
-            this.AssignToken(us);
-            return us;
-        });
-    }
-  
     // suppr le refresh_token en base
     LogOut(): Promise<void> {
       this.cookieService.Delete(

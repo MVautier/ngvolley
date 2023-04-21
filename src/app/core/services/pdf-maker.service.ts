@@ -67,7 +67,7 @@ export class PdfMakerService {
         return new Promise((resolve) => {
             if (!data.nom && !data.prenom) resolve(null);
             try {
-                const filename = `attestation_${data.nom}_${data.prenom}`;
+                const filename = `attestation`;
                 if (forUser) {
                     if (data.mode === 'minor') {
                         this.buildHealthFormMinor(data, filename);
@@ -96,7 +96,6 @@ export class PdfMakerService {
         return new Promise((resolve) => {
             if (!data.child_firstname && !data.child_lastname) resolve(null);
             try {
-                const filename = `autorisation_${data.child_lastname}_${data.child_firstname}.pdf`;
                 const blob: Blob = this.buildParentAuthBlob(data);
                 resolve(blob);
             } catch (err) {
