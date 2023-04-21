@@ -47,33 +47,6 @@
                     <span class="show-mobile">Récap</span>
                 </a>
             </div>
-            <!-- DESKTOP MODE -->
-            <!-- <div *ngIf="!isMobile" class="breadcrumbs">
-                <div class="breadcrumb-item" [ngClass]="{'current': step === 1, 'enabled': step > 1, 'disabled': step <= 1}"
-                    (click)="setStep(1)">
-                    <span class="label">Adhésion à {{asso}}</span>
-                </div>
-                <div class="breadcrumb-item" [ngClass]="{'current': step === 2, 'enabled': step > 2, 'disabled': step <= 2}"
-                    (click)="setStep(2)">
-                    <span class="label">Informations</span>
-                </div>
-                <div class="breadcrumb-item" [ngClass]="{'current': step === 3, 'enabled': step > 3, 'disabled': step <= 3}"
-                    (click)="setStep(3)">
-                    <span class="label">Documents</span>
-                </div>
-                <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 4}">
-                    <span class="label">Paiement</span>
-                </div>
-                <div class="breadcrumb-item disabled" [ngClass]="{'current': step === 5}" (click)="setStep(5)">
-                    <span class="label">Récapitulatif</span>
-                </div>
-            </div> -->
-            <!-- END DESKTOP MODE -->
-
-            <!-- MOBILE MODE -->
-
-            <!-- END MOBILE MODE -->
-
 
             <div class="inscription" [ngClass]="{'mobile': isMobile}">
                 <app-start-form *ngIf="step === 1" [start]="startIns"
@@ -91,12 +64,29 @@
                 <app-cart-payment *ngIf="step === 4" [cart]="cart" [isMobile]="isMobile" (cancel)="onCancel()">
                 </app-cart-payment>
 
-                <div *ngIf="step == 5">
-                    <div *ngIf="paymentStatus === 'error'">Payement error</div>
-                    <div *ngIf="paymentStatus === 'success'">Payment succeded</div>
-                </div>
+                <div class="payment-result" *ngIf="step == 5">
+                    <div class="error" *ngIf="paymentStatus === 'error' || paymentError">
+                        <h3>Erreur de paiement</h3>
+                        <div class="payment-error" *ngIf="paymentError">
+                            Erreur rencontrée : {{paymentError}}
+                        </div>
+                    </div>
 
-                <!-- <iframe [src]="redirectUrl | safe: 'resourceUrl'" class="scroll1"></iframe> -->
+                    <div class="success" *ngIf="paymentStatus === 'success' && paymentCode === 'succeeded'">
+                        <h3 class="title">Paiement effectué</h3>
+                        <div class="title">
+                            Votre inscription a bien été prise en compte. Un email vous a été envoyé par Helloasso confirmant votre paiement.
+                        </div>
+                        <div class="print" *ngIf="paymentPrintUrl">
+                            <div class="title">
+                                Vous pouvez télécharger/imprimer votre attestation de paiement
+                            </div>
+                            <div class="attestation">
+                                <iframe [src]="paymentPrintUrl | safe: 'resourceUrl'" class="scroll1"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

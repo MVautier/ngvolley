@@ -13,6 +13,7 @@ import { RouteService } from './services/route.services';
 import { ThemeService } from './services/theme.service';
 import { TransferStateService } from './services/transfert-state.service';
 import { WindowStateService } from './services/window-state.service';
+import { UtilService } from './services/util.service';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { WindowStateService } from './services/window-state.service';
           ErrorHandlerService,
           TransferStateService,
           AdherentService,
-          PdfMakerService
+          PdfMakerService,
+          UtilService
         ]
       };
     }

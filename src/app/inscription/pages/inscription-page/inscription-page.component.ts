@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HelloAssoService } from '@app/inscription/services/helloasso.service';
 import { Adherent } from '@app/core/models/adherent.model';
 import { ThemeService } from '@app/core/services/theme.service';
 import { CartItem } from '@app/inscription/models/cart-item.model';
@@ -11,8 +10,12 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { LayoutService } from '@app/ui/layout/services/layout.service';
 import { environment } from '@env/environment';
 import { Subject, Subscription } from 'rxjs';
-import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Location } from '@angular/common';
+import { PdfMakerService } from '@app/core/services/pdf-maker.service';
+import { LoaderService } from '@app/ui/layout/services/loader.service';
+import { HelloAssoService } from '@app/inscription/services/helloasso.service';
+import { AdherentService } from '@app/core/services/adherent.service';
+import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 
 @Component({
     selector: 'app-inscription-page',
@@ -27,6 +30,10 @@ export class InscriptionPageComponent implements OnInit {
     title2: string = environment.assoTitle;
     step = 1;
     paymentStatus: string;
+    paymentCode: string;
+    paymentId: string;
+    paymentError: string;
+    paymentPrintUrl: string;
     adherent: Adherent;
     isDarkTheme: boolean;
     isMenuOpened: boolean;
@@ -40,16 +47,20 @@ export class InscriptionPageComponent implements OnInit {
 
     constructor(
         private inscriptionService: InscriptionService,
-        private helloasso: HelloAssoService,
-        private modalService: ModalService,
+        private adherentService: AdherentService,
+        private pdf: PdfMakerService,
         private themeService: ThemeService,
         private location: Location,
         private layoutService: LayoutService,
+        private loader: LoaderService,
         private route: ActivatedRoute,
+        private helloasso: HelloAssoService,
+        private authService: AuthorizeApiService,
         private router: Router) {
         if (window.matchMedia('(max-width: 1025px)').matches) {
             this.isMobile = true;
         }
+        //this.authService.AuthorizeAnonymous();
         this.themeService.isDarkTheme.subscribe(isDark => {
             this.isDarkTheme = isDark;
         })
@@ -66,7 +77,24 @@ export class InscriptionPageComponent implements OnInit {
                 if (this.paymentStatus === 'cancel') {
                     this.step = 4;
                 } else {
+                    this.paymentCode = params.code || null;
+                    this.paymentId = params.checkoutIntentId || null;
+                    this.paymentError = params.error || null;
+                    if (this.paymentCode === 'succeeded') {
+                        console.log('payment succeeded - ', this.paymentId, this.paymentError);
+                        this.getPaymentDoc(this.paymentId).then(url => {
+                            if (url) {
+                                this.paymentPrintUrl = url;
+                            }
+                        });
+                        // Ecriture de l'adhérent en base
+                        console.log('Ecriture de l\'adhérent en base: ', this.adherent);
+                        this.addOrUpdate();
+                    } else if (this.paymentCode === 'refused') {
+                        console.log('payment refused - ', this.paymentId, this.paymentError);
+                    }
                     this.step = 5;
+
                 }
                 this.location.replaceState(url);
             }
@@ -81,6 +109,16 @@ export class InscriptionPageComponent implements OnInit {
         //window['_fs_namespace'] = 'FS';
 
         //this.init();
+        // this.paymentStatus = 'success';
+        // this.paymentCode = 'succeeded';
+        // this.step = 5;
+        // this.paymentId = '5284';
+        // this.getPaymentDoc(this.paymentId).then(url => {
+        //     if (url) {
+        //         this.paymentPrintUrl = url; //'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/paiement-attestation/4230';
+        //         //this.onPaymentPrint();
+        //     }
+        // });
     }
 
     init() {
@@ -92,6 +130,37 @@ export class InscriptionPageComponent implements OnInit {
         this.startIns = {
             local: true
         };
+    }
+
+    addOrUpdate() {
+        this.adherentService.addOrUpdate(this.adherent).then(result => {
+            console.log('success addOrUpdate: ', result);
+        })
+            .catch(err => {
+                console.log('error addOrUpdate: ', err);
+            });
+    }
+
+    getPaymentDoc(id: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.helloasso.getCheckoutIntent(id).then(result => {
+                if (result) {
+                    const payments = result.order?.payments;
+                    if (payments?.length) {
+                        const url = payments[0].paymentReceiptUrl;
+                        if (url) {
+                            console.log('attestation url: ', url);
+                            resolve(url);
+                        }
+                    }
+                }
+                console.log('suuccess: ', result);
+            }).catch(err => {
+                console.log('error: ', err)
+                reject(err);
+            });
+        });
+
     }
 
     onAdherentChange(adherent: Adherent) {
@@ -167,8 +236,29 @@ export class InscriptionPageComponent implements OnInit {
         console.log('Go to Payment');
         console.log('adherent: ', adherent);
         console.log('cart: ', this.cart);
-        localStorage.setItem('adherent', JSON.stringify(adherent));
-        this.step++;
+        this.sendDocuments(adherent).then(() => {
+            localStorage.setItem('adherent', JSON.stringify(adherent));
+            this.step++;
+        });
+    }
+
+    sendDocuments(adherent: Adherent): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (adherent.Documents?.length) {
+                this.loader.setLoading(true);
+                this.pdf.sendDocuments(adherent.Uid, adherent.Documents).then(result => {
+                    resolve();
+                })
+                    .catch(err => {
+                        console.log('error sending documents: ', err);
+                    })
+                    .finally(() => {
+                        this.loader.setLoading(false);
+                    });
+            } else {
+                resolve();
+            }
+        });
     }
 
     onStep3Cancel(adherent: Adherent) {

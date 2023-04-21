@@ -99,8 +99,8 @@ export class MainMenuComponent implements OnInit {
             showCancel: true,
             showValidate: true,
             size: {
-                width: '',
-                height: ''
+                width: '100%',
+                height: '250px'
             },
             component: 'login'
         });

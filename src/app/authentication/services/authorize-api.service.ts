@@ -27,12 +27,23 @@ export class AuthorizeApiService {
       return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/login', login));
     }
 
+    AuthorizeAnonymous(): Promise<UserToken> {
+        return firstValueFrom(this.httpClient.post<UserToken>(environment.apiUrl + 'authentication/anonymous', environment.clientID));
+      }
+
     public IsLogged(): Promise<boolean> {
       return this.CheckToken();
       }
     
     Login(login: Login): Promise<UserToken> {
         return this.Authorize(login).then((us) => {
+            this.AssignToken(us);
+            return us;
+        });
+    }
+
+    LoginAnonymous(): Promise<UserToken> {
+        return this.AuthorizeAnonymous().then((us) => {
             this.AssignToken(us);
             return us;
         });

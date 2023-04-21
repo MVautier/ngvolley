@@ -2,6 +2,7 @@ export const environment = {
   environment: 'production',
   production: true,
   fullApp: false,
+  clientID: 'ngColomiersVolley',
   apiRoot: 'https://api.inscription-colomiers-volley.fr/',
   apiUrl: 'https://api.inscription-colomiers-volley.fr/api/',
   cookieName: 'ColomiersVolleyNg',

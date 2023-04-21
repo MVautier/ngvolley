@@ -98,6 +98,7 @@ export class InterceptorClientSide implements HttpInterceptor {
           this.connexionInfo.Token 
           && new Date((this.connexionInfo.Token as UserToken).expire_in) > new Date() 
           && !request.url.includes('/geolocation-db.com') 
+          && !request.url.endsWith('/anonymous')
           && !request.url.endsWith('/token') 
           && !request.url.endsWith('/login')) {
           return from(this.authService.RefreshToken((this.connexionInfo.Token as UserToken).refresh_token)).pipe(switchMap(t => {

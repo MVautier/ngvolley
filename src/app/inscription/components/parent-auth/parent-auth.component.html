@@ -1,5 +1,55 @@
 
-<div id="content-auth" class="main-form">
+<div class="questionary">
+    <div class="body">
+        <div>
+            Je soussigné(e), 
+        </div>
+        <div>
+            <input class="form-control" type="text" name="lastname" placeholder="Nom*" (input)="checkValid()" [(ngModel)]="data.lastname" required [ngClass]="{error: lastnameError}">
+            <input class="form-control" type="text" name="firstname" placeholder="Prénom*" (input)="checkValid()" [(ngModel)]="data.firstname" required [ngClass]="{error: firstnameError}">
+        </div>
+        <div class="center" [ngClass]="{error: statutError}">
+            <input type="radio" class="radio" name="statut" (change)="checkValid();" [(ngModel)]="data.status" [value]="'Père'"> Père
+            <input type="radio" class="radio" name="statut" (change)="checkValid()" [(ngModel)]="data.status" [value]="'Mère'"> Mère
+            <input type="radio" class="radio" name="statut" (change)="checkValid()" [(ngModel)]="data.status" [value]="'Tuteur légal'"> Tuteur légal
+        </div>
+        <div class="center">
+            <input class="form-control telephone" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Tél fixe" (input)="checkValid()" [(ngModel)]="data.telfixe" required [ngClass]="{error: telError}">
+            <input class="form-control mobile" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Tél mobile" (input)="checkValid()" [(ngModel)]="data.mobile" required [ngClass]="{error: telError}">
+        </div>
+        <div>
+            autorise mon enfant
+        </div>
+        <div>
+            <input class="form-control" type="text" name="childlastname" placeholder="Nom" [(ngModel)]="data.child_lastname" (input)="checkValid()" required [ngClass]="{error: childlastnameError}">
+            <input class="form-control" type="text" name="childfirstname" placeholder="Prénom" [(ngModel)]="data.child_firstname" (input)="checkValid()" required [ngClass]="{error: childfirstnameError}">
+        </div>
+        <div>
+            né(e) le  
+            <input class="form-control" type="date" name="datenaissance" [(ngModel)]="datenaissance" (input)="checkValid()" required [ngClass]="{error: datenaissanceError}">
+        </div>
+        <div>
+            à adhérer à la section Volley-ball (y compris toutes les activités proposées par cette section) et les responsables à faire procéder à toute 
+            intervention médicale d'urgence. 
+        </div>
+        <div>
+            Les responsables dégagent leur responsabilité dès la sortie des enfants du gymnase.
+        </div>
+        <div class="auth-form end">
+            A <input class="form-control" type="text" name="city" placeholder="Commune*" (input)="checkValid()" [(ngModel)]="data.commune" required [ngClass]="{error: cityError}">
+            , le {{now | date:'dd/MM/yyyy'}}
+             
+        </div>
+        <div class="center">
+            <div class="signature">
+                <span class="title" [ngClass]="{error: sigError}">Signature*</span>
+                <app-signature-form [signature]="data.signature" (changed)="onSignature($event)"></app-signature-form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div id="content-auth" class="main-form">
     <app-form-header></app-form-header>
     <div class="auth-form">
         Je soussigné(e), 
@@ -48,7 +98,7 @@
         Animation - Développement local - Vacances - Loisirs Enfance-Jeunes - Lieux culturels - Formation - Sports
          - Association d'éducation populaire reconnue d'utilité publique
     </div>
-</div>
+</div> -->
 
 <div class="ng-modal-footer">
     <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>

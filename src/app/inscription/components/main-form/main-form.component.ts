@@ -175,7 +175,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         if (this.subModal) {
             this.subModal.unsubscribe();
         }
-        const data = Questionary.getMajor();
+        const data = Questionary.getMinor('DOMINICI', 'Carla', 16, 'F');// Questionary.getMajor();
         this.modalService.open({
             title: data.title,
             validateLabel: 'Valider',
@@ -193,7 +193,9 @@ export class MainFormComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.notifier))
             .subscribe(result => {
                 if (result?.data) {
-                    console.log('questionary data: ', result.data);
+                    const filename = `attestation_${this.adherent.LastName}_${this.adherent.FirstName}`;
+                    Adherent.addDoc(this.adherent, 'attestation', filename + '.pdf', result.data);
+                    console.log('adherent with docs : ', this.adherent);
                 }
             });
     }
@@ -291,7 +293,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
             Signature: this.adherent.Signature,
             TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,
             TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
-            TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null
+            TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
+            Documents: this.adherent.Documents
         };
     }
 }

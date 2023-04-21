@@ -69,9 +69,13 @@
                 </mat-expansion-panel-header>
                 <!--  ================ Autorisation parentale -->
                 <div class="section-title adherent">
-                    <div class="parent-auth" (click)="showModalAuthParent()">
+                    <div class="health-input">
+                        <button (click)="showModalAuthParent()" mat-raised-button color="primary">
+                            <mat-icon>edit</mat-icon>Saisir l'autorisation parentale en ligne
+                        </button>
+                    </div>
+                    <div class="parent-auth">
                         {{ adherent.Authorization ? '' : 'Une autorisation parentale est requise' }}
-
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -79,9 +83,8 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check"
-                            [ngClass]="adherent.HealthFile ? 'valid' : 'error'">check_circle</mat-icon>
-                        <span class="title">Certificat médical / attestation de santé</span>
+                        <mat-icon class="check" [ngClass]="adherent.HealthFile || adherent.CertificateFile || !checked.certifNeeded ? 'valid' : 'error'">check_circle</mat-icon>
+                        <span class="title">{{ checked.certifLabel }}</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <!--  ================ Certificat médical ou attestation de santé -->
@@ -94,30 +97,32 @@
                             disposition
                             du code du sport et à la volonté fédérale de l'UNSLL
                             en matière de prévention de la santé du sportif.
+                            <div class="health-input">
+                                <mat-form-field>
+                                    <ngx-mat-file-input formControlName="file" [placeholder]="'Importer mon certificat médical'" (change)="onFileChange(formGroup.value)">
+                                    </ngx-mat-file-input>
+                                    <mat-icon matSuffix class="folder">folder</mat-icon>
+        
+                                    <mat-error *ngIf="formGroup.get('file').hasError('maxContentSize')">
+                                        File size {{formGroup.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
+                                        ({{formGroup.get('file').value.files[0].name | json}} g
+                                        {{formGroup.get('file')?.getError('maxContentSize').actualSize |
+                                        json
+                                        }} - {{formGroup.get('file')?.getError('maxContentSize').actualSize
+                                        | byteFormat}}).
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
                         </div>
                         <div *ngIf="!checked.certifNeeded" class="info">
                             <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal,
                             conformément au décret n°2016-1387 du 12/10/2016.
+                            <div class="health-input">
+                                <button (click)="showHealthForm()" mat-raised-button color="primary">
+                                    <mat-icon>edit</mat-icon>Saisir mon attestation en ligne
+                                </button>
+                            </div>
                         </div>
-
-                        <mat-form-field>
-                            <ngx-mat-file-input formControlName="file"
-                                [placeholder]="!checked.certifNeeded ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical'"
-                                (change)="onFileChange(formGroup.value)">
-                            </ngx-mat-file-input>
-                            <mat-icon matSuffix class="folder">folder</mat-icon>
-
-                            <mat-error *ngIf="formGroup.get('file').hasError('maxContentSize')">
-                                File size {{formGroup.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
-                                ({{formGroup.get('file').value.files[0].name | json}} g
-                                {{formGroup.get('file')?.getError('maxContentSize').actualSize |
-                                json
-                                }} - {{formGroup.get('file')?.getError('maxContentSize').actualSize
-                                | byteFormat}}).
-                            </mat-error>
-                        </mat-form-field>
-
-                        <div *ngIf="adherent.HealthFile" class="selected-file">{{adherent.HealthFile}}</div>
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -125,9 +130,10 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check"
-                            [ngClass]="adherent.Rgpd && (checked.age > 18 ? adherent.Signature : true) ? 'valid' : 'error'">check_circle</mat-icon>
-                        <span class="title">RGPD et Signature</span>
+                        <mat-icon class="check" [ngClass]="adherent.Rgpd ? 'valid' : 'error'">
+                            check_circle
+                        </mat-icon>
+                        <span class="title">RGPD</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <!--  ================ RGPD et Signature -->

@@ -18,7 +18,41 @@ export class HelloAssoService {
 
     }
 
-    token(): Promise<HelloassoToken> {
+    sendCheckoutIntent(cart: Cart): Promise<CheckoutIntentResult> {
+        return new Promise((resolve, reject) => {
+            this.getToken().then(token => {
+                console.log('success auth to helloasso: ', token);
+                const baseUrl = this.ssrService.isServer() ? environment.basePathSsr : environment.basePath;
+                const body = new PaymentRequest(cart, baseUrl);
+                console.log('intent body: ', body);
+                const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents';
+                const headers = new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                });
+                resolve(this.http.post<PaymentRequest>(url, body, {headers}));
+            }).catch(err => {
+                reject('error sendCheckoutIntent: ' + err.message);
+            });
+        });
+    }
+
+    getCheckoutIntent(intentId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.getToken().then(token => {
+                const headers = new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                });
+                const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents/' + intentId;
+                resolve(this.http.getWithOptions<any>(url, {headers}));
+            }).catch(err => {
+                reject('error getCheckoutIntent: ' + err.message);
+            });
+        });
+    }
+
+    private token(): Promise<HelloassoToken> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -30,7 +64,7 @@ export class HelloAssoService {
         return this.http.post<any>(this.apiAuth + '/token', body, options);
     }
 
-    refresh(refresh_token: string): Promise<HelloassoToken> {
+    private refresh(refresh_token: string): Promise<HelloassoToken> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
@@ -66,7 +100,7 @@ export class HelloAssoService {
         });
     }
 
-    renew(token: any): HelloassoToken {
+    private renew(token: any): HelloassoToken {
         const now = new Date();
         const expire = new Date(now);
         expire.setMinutes (now.getMinutes() + 30 );
@@ -80,25 +114,5 @@ export class HelloAssoService {
 
     private isExpired(token: HelloassoToken): boolean {
         return new Date().getTime() > token.expires_in.getTime();
-    }
-
-    sendCheckoutIntent(cart: Cart): Promise<CheckoutIntentResult> {
-        return new Promise((resolve, reject) => {
-            
-            this.getToken().then(token => {
-                console.log('success auth to helloasso: ', token);
-                const baseUrl = this.ssrService.isServer() ? environment.basePathSsr : environment.basePath;
-                const body = new PaymentRequest(cart, baseUrl);
-                console.log('intent body: ', body);
-                const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents';
-                const headers = new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token
-                });
-                resolve(this.http.post<PaymentRequest>(url, body, {headers}));
-            }).catch(err => {
-                reject('error: ' + err.message);
-            });
-        });
     }
 }

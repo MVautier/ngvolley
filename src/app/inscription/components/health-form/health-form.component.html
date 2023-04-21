@@ -1,16 +1,15 @@
-<div class="questionary" *ngIf="data">
+<!-- Questionnaire pour les mineurs et les majeurs -->
+<div class="questionary" *ngIf="!terminated && data">
     <div class="description">{{data.description}}</div>
     <div class="group-counter">{{groupIndex + 1}}/{{data.questionGroups.length}} - {{data.questionGroups[groupIndex].title}}</div>
     <div *ngFor="let group of data.questionGroups; index as i">
-        
         <div class="group" [ngClass]="{'active': groupIndex === i}">
             <div class="item-counter">{{itemIndex + 1}}/{{group.items.length}}</div>
             <div *ngFor="let item of group.items; index as j">
-                
                 <div class="question" [ngClass]="{'active': groupIndex === i && itemIndex === j}">
                     <div class="text">{{item.question}}</div>
                     <div class="answer">
-                        <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="item.answer"> 
+                        <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="item.answer">
                             <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
                             <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
                         </mat-radio-group>
@@ -18,18 +17,104 @@
                 </div>
             </div>
         </div>
-        
     </div>
-
-    
 </div>
 
-<div class="health-buttons">
-    <button type="button" mat-raised-button (click)="onPrevious()">Précédent</button>
+<!-- Questionnaire final pour les mineurs -->
+<div *ngIf="terminated && data && data.mode === 'minor'" class="questionary">
+    <div class="description" *ngIf="nbYes > 0">
+        <div>
+            Tu as répondu OUI à une ou plusieurs questions, tu dois consulter un médecin pour
+            qu'il t'examine et voit avec toi quel sport te convient. Au moment de la visite, donne-lui
+            ce questionnaire rempli.
+        </div>
+    </div>
+    <div class="body">
+        <div class="center">
+            <button (click)="onDownload()" mat-raised-button color="primary">
+                <mat-icon>download</mat-icon>Télécharger mon questionnaire rempli
+            </button>
+        </div>
+        <div class="with-input" *ngIf="nbYes === 0">
+            Fait à 
+            <input class="form-control" type="text" name="city" placeholder="Commune" [(ngModel)]="city" required [ngClass]="{error: !isValid(city)}">
+            , le {{now | date:'dd/MM/yyyy'}}
+        </div>
+        <div class="with-input" *ngIf="nbYes === 0">
+            Nom du représentant légal : 
+            <input class="form-control" type="text" name="city" placeholder="Nom" [(ngModel)]="nom" required [ngClass]="{error: !isValid(nom)}">
+        </div>
+        <div class="center" *ngIf="nbYes === 0">
+            <div class="signature">
+                <span class="title">Signature</span>
+                <app-signature-form [signature]="data.signature"
+                    (changed)="onSignature($event)"></app-signature-form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Questionnaire final pour les majeurs -->
+<div *ngIf="terminated && data && data.mode === 'major'" class="questionary">
+    <div class="description">
+        Attestation en vue du renouvellement de ma licence sportive relatif au « QS-SPORT » à
+        compter du 1er juillet 2017*
+    </div>
+    <div class="body">
+        <div>
+            Dans le cadre de la demande de renouvellement de ma licence auprès de l'UNSLL, je soussigné(e) {{data.nom}} {{data.prenom}} atteste avoir 
+            rempli le questionnaire de santé fixé par arrêté du ministre chargé des sports daté du 20 Avril 2017.
+        </div>
+        <div>
+            Conformément aux dispositions de l'article D. 231-1-4 du Code du Sport :
+        </div>
+        <div *ngIf="nbYes === 0">
+            <mat-checkbox checked="true"></mat-checkbox>
+            J'ai répondu NON à chacune des rubriques du questionnaire. Dans ce cas, la présente attestation sera fournie à l'association au sein de laquelle 
+            je sollicite le renouvellement de ma licence.
+        </div>
+        <div *ngIf="nbYes > 0">
+            <mat-checkbox checked="true"></mat-checkbox>
+            J'ai répondu OUI à une ou plusieurs rubriques du questionnaire. Dans ce cas, je consulte un médecin et lui présente ce questionnaire renseigné. 
+            Je fournis un certificat médical à l'association.
+            
+        </div>
+        <div class="center">
+            <button (click)="onDownload()" mat-raised-button color="primary">
+                <mat-icon>download</mat-icon>Télécharger mon questionnaire rempli
+            </button>
+        </div>
+        <div *ngIf="nbYes === 0">
+            Fait pour servir et valoir ce que de droit.
+        </div>
+        <div class="with-input" *ngIf="nbYes === 0">
+            Fait à 
+            <input class="form-control" type="text" name="city" placeholder="Commune" [(ngModel)]="city" required [ngClass]="{error: !isValid(city)}">
+            , le {{now | date:'dd/MM/yyyy'}}
+        </div>
+        <div class="center">
+            <div class="signature">
+                <span class="title">Signature</span>
+                <app-signature-form [signature]="data.signature"
+                    (changed)="onSignature($event)"></app-signature-form>
+            </div>
+        </div>
+    </div>
+    <div class="alinea">
+        *En référence au Décret n° 2016-1157 du 24 août 2016 relatif au certificat médical attestant de l'absence de contre-indication à
+        la pratique du sport
+    </div>
+</div>
+
+<div *ngIf="!terminated" class="ng-modal-footer">
+    <button type="button" mat-raised-button (click)="onDownload()">☑Test</button>
+    <button *ngIf="itemIndex > 0 || groupIndex > 0" type="button" mat-raised-button (click)="onPrevious()">Précédent</button>
     <button type="button" mat-raised-button color="primary" (click)="onNext()">Suivant</button>
 </div>
 
-<div class="ng-modal-footer">
-    <button type="button" mat-raised-button (click)="onCancel()">Annuler</button>
-    <button type="button" mat-raised-button color="primary" [disabled]="!terminated" (click)="onValidate()">Valider</button>
+<div *ngIf="terminated" class="ng-modal-footer">
+    <button type="button" mat-raised-button (click)="onReset()">Modifier</button>
+    <button *ngIf="nbYes === 0" type="button" mat-raised-button (click)="onCancel()">Annuler</button>
+    <button *ngIf="nbYes === 0" type="button" mat-raised-button color="primary" [disabled]="!checkValid()" (click)="onValidate()">Valider</button>
+    <button *ngIf="nbYes > 0" type="button" mat-raised-button color="primary" (click)="onCancel()">Fermer</button>
 </div>

@@ -1,14 +1,18 @@
 import { QuestionGroup } from "./question-group.model";
 
 export class Questionary {
-    logo?: string;
     title: string;
     description: string;
     nom?: string;
     prenom?: string;
     age?: number;
     genre?: string;
+    commune?: string;
+    date?: string;
+    tuteur?: string;
+    signature?: string;
     questionGroups: QuestionGroup[];
+    mode: string;
 
     constructor(type: string) {
         
@@ -16,10 +20,11 @@ export class Questionary {
 
     public static getMinor(nom: string, prenom: string, age: number, genre: string): Questionary {
         return {
+            mode: 'minor',
             title: 'Attestation de santé pour les mineurs',
             description: `Faire du sport : c'est recommandé pour tous. En as-tu parlé avec un médecin ?
-            Ce questionnaire n'est pas un contrôle. Tu réponds par OUI ou par NON, mais il n'y a pas de bonnes ou mauvaises réponses.
-            Tu peux regarder ton carnet de santé et demander à tes parents de t'aider`,
+Ce questionnaire n'est pas un contrôle. Tu réponds par OUI ou par NON, mais il n'y a pas de bonnes ou mauvaises réponses.
+Tu peux regarder ton carnet de santé et demander à tes parents de t'aider`,
             nom: nom,
             prenom: prenom,
             age: age,
@@ -37,7 +42,7 @@ export class Questionary {
                             answer: false
                         },
                         {
-                            question: 'As-tu beacoup plus grandi que les autres années ?',
+                            question: 'As-tu beaucoup plus grandi que les autres années ?',
                             answer: false
                         },
                         {
@@ -106,7 +111,7 @@ export class Questionary {
                     title: 'Aujourd\'hui',
                     items: [
                         {
-                            question: 'Penses-tu quelquefois arrêter de fair du sport ou à changer de sport ?',
+                            question: 'Penses-tu quelquefois arrêter de faire du sport ou à changer de sport ?',
                             answer: false
                         },
                         {
@@ -123,7 +128,7 @@ export class Questionary {
                     title: 'Questions à faire remplir par tes parents',
                     items: [
                         {
-                            question: 'QUelqu\'un dans votre famille proche a-t-il eu une maladie grave du coeur ou du cerveau, ou est-il décédé subitement avant l\'âge de 50 ans ?',
+                            question: 'Quelqu\'un dans votre famille proche a-t-il eu une maladie grave du coeur ou du cerveau, ou est-il décédé subitement avant l\'âge de 50 ans ?',
                             answer: false
                         },
                         {
@@ -131,7 +136,8 @@ export class Questionary {
                             answer: false
                         },
                         {
-                            question: 'Avez-vous manqué l\'examen de santé prévu à l\'âge de votre enfant chez le médecin ? Cet examen est prévu à l\'âge de 2 ans, 3 ans, 4 ans, 5 ans, entre 8 et 9 ans, entre 11 et 13 ans et entre 15 et 16 ans.',
+                            question: `Avez-vous manqué l\'examen de santé prévu à l\'âge de votre enfant chez le médecin ? 
+Cet examen est prévu à l\'âge de 2 ans, 3 ans, 4 ans, 5 ans, entre 8 et 9 ans, entre 11 et 13 ans et entre 15 et 16 ans.`,
                             answer: false
                         },
                     ]
@@ -140,9 +146,11 @@ export class Questionary {
         };
     }
 
-    public static getMajor(): Questionary {
+    public static getMajor(nom: string, prenom: string): Questionary {
         return {
-            logo: 'assets/images/logos/rf.png',
+            mode: 'major',
+            nom: nom,
+            prenom: prenom,
             title: 'Renouvellement de licence d\'une Fédération sportive',
             description: 'Ce questionnaire de santé permet de savoir si vous devez fournir un certificat médical pour renouveler votre licence sportive.',
             questionGroups: [

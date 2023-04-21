@@ -133,7 +133,8 @@ export class MemberFormComponent implements OnInit {
             Signature: this.adherent.Signature,
             TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,
             TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
-            TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null
+            TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
+            Documents: this.adherent.Documents
         };
     }
 }

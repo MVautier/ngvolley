@@ -1,10 +1,71 @@
-@import "form";
-.footer {
-    background: #fff;
-    color: #000;
-    width: 100%;
+@import "variables";
+
+.questionary {
+    padding: 10px;
     display: flex;
-    font-size: 7px;
-    line-height: 12px;
-    align-items: flex-end;
+    flex-direction: column;
+    min-height: 350px;
+    .description {
+        font-size: 14px;
+        font-style: italic;
+        margin: 0 -10px 10px -10px;
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+    }
+    .body{
+        display: flex;
+        flex-direction: column;
+        div{
+            margin-top: 10px;
+            display: flex;
+            flex-direction: row;;
+            &.center {
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+            }
+            &.with-input{
+                display: flex;
+                flex-direction: row; 
+            }
+            input{
+                width: 140px;
+                height: 23px;
+                margin: 0 5px;
+            }
+            input[type=radio]{
+                width: 15px;
+                height: 15px;
+            }
+            &.error{
+                border: 1px solid red;
+                border-radius: 5px;
+            }
+            input.error{
+                border: 1px solid red;
+            }
+            .title.error{
+                color: red;
+            }
+            .signature{
+                display: flex;
+            }
+        }
+    }
+    .alinea{
+        font-size: 9px;
+        font-style: italic;
+        position: absolute;
+        bottom: 65px;
+        line-height: 10px;
+    }
 }
+.health-buttons{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 20px;
+    button{
+        margin-right: 10px;
+    }
+}
+

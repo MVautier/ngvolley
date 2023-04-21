@@ -140,7 +140,7 @@ export class InscriptionService {
     const nextY = d.getFullYear() + (d.getMonth() > 5 ? 1 : 0);
 
     // Traitement certificat
-    if (adherent.HealthFile) {
+    if (adherent.HealthFile || adherent.CertificateFile) {
         check.certifNeeded = false;
     } else {
         if (check.found && check.found.CertificateDate) {
@@ -149,13 +149,13 @@ export class InscriptionService {
             const expire = new Date(currentY, certifDate.getMonth(), certifDate.getDay());
             const endOfSeason = new Date(nextY, 5, 30);
             const valid = this.compareDate(expire, endOfSeason);
-            check.certifLabel = valid >= 0 ? 'Attestation ou certificat' : 'Certificat';
+            check.certifLabel = valid >= 0 ? 'Certificat médical / attestation de santé' : 'Certificat médical';
             check.certifPlaceHolder = valid >= 0 ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical';
             check.certifNeeded = valid < 0;
         } else {
-            check.certifLabel = 'Certificat';
+            check.certifLabel = 'Certificat médical';
             check.certifPlaceHolder = 'Importer un certificat médical';
-            check.certifNeeded = this.isNull(adherent.HealthFile);
+            check.certifNeeded = this.isNull(adherent.HealthFile) && this.isNull(adherent.CertificateFile);
         }
     }
     

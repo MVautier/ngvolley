@@ -36,48 +36,49 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 
 const materialModules = [
-  CdkTreeModule,
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatProgressSpinnerModule,
-  MatPaginatorModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatFormFieldModule,
-  MatButtonToggleModule,
-  MatTreeModule,
-  OverlayModule,
-  PortalModule,
-  MatBadgeModule,
-  MatGridListModule,
-  MatRadioModule,
-  MatDatepickerModule,
-  MatTooltipModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatGridListModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    //CdkTreeModule,
+    //MatTooltipModule
+    //MatAutocompleteModule,
+    //MatCheckboxModule,
+    //MatChipsModule,
+    //MatDividerModule,
+    //MatProgressSpinnerModule,
+    //MatPaginatorModule,
+    //MatRippleModule,
+    //MatSnackBarModule,
+    //MatSortModule,
+    //MatTableModule,
+    //MatTabsModule,
+    //MatFormFieldModule,
+    //MatButtonToggleModule,
+    //MatTreeModule,
+    //OverlayModule,
+    //PortalModule,
+    //MatBadgeModule,
 ];
 @NgModule({
-  imports: [
-    CommonModule,
-    ...materialModules
-  ],
-  exports: [
-    ...materialModules
-  ],
+    imports: [
+        CommonModule,
+        ...materialModules
+    ],
+    exports: [
+        ...materialModules
+    ],
 })
 export class MaterialThemeModule { }

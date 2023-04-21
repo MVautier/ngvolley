@@ -13,6 +13,9 @@ import { CustomValidators } from '@app/inscription/validators/custom-validators'
 import { PdfInfo } from '@app/core/models/pdf-info.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { PhotoService } from '@app/inscription/services/photo.service';
+import { Questionary } from '@app/core/models/questionary.model';
+import { AdherentDoc } from '@app/core/models/adherent-doc.model';
+import { UtilService } from '@app/core/services/util.service';
 
 @Component({
     selector: 'app-adherent-card',
@@ -37,6 +40,7 @@ export class AdherentCardComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private util: UtilService,
         private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
         private photoService: PhotoService,
@@ -80,7 +84,7 @@ export class AdherentCardComponent implements OnInit {
 
     getLicenceError(field: string) {
         if (this.licenceRequired) {
-            if (!this.formGroup.get('licence').value) return true;
+            if (!this.formGroup.get('licence').value) return 'Le n° de licence est requis';
             return this.inscriptionService.getLicenceError(this.formGroup, field);
         }
         return false;
@@ -124,9 +128,7 @@ export class AdherentCardComponent implements OnInit {
             .subscribe(result => {
                 console.log('data received from modal: ', result);
                 if (result?.data) {
-                    this.adherent.Photo = result.data;
-                    this.changed.emit(this.adherent);
-                    //this.photo.emit(this.imageBase64);
+                    this.setPhoto(result.data);
                     this.notifier.next();
                     this.notifier.complete();
                 }
@@ -137,10 +139,7 @@ export class AdherentCardComponent implements OnInit {
         console.log(fileList);
         this.photoService.getBase64(fileList[0]).then(result => {
             if (result) {
-                // this.imageBase64 = result;
-                // this.photo.emit(this.imageBase64);
-                this.adherent.Photo = result;
-                this.changed.emit(this.adherent);
+                this.setPhoto(result);
             }
         }).catch(err => {
             console.log('Error: ', err);
@@ -148,8 +147,18 @@ export class AdherentCardComponent implements OnInit {
     }
 
     onPhoto(photo: string) {
-        this.adherent.Photo = photo;
+        this.setPhoto(photo);
         this.editPhoto = false;
+    }
+
+    setPhoto(dataurl: string) {
+        const blob = this.util.dataURLtoBlob(dataurl);
+        const ext = this.util.mime2ext(dataurl);
+        if (blob && ext) {
+            Adherent.addDoc(this.adherent, 'photo', 'photo.' + ext, blob);
+        }
+        console.log('adherent with photo: ', this.adherent);
+        this.adherent.Photo = dataurl;
         this.changed.emit(this.adherent);
     }
 
@@ -164,8 +173,8 @@ export class AdherentCardComponent implements OnInit {
             showCancel: true,
             showValidate: true,
             size: {
-                width: '800px',
-                height: '1040px'
+                width: '100%',
+                height: '700px'
             },
             component: 'parent-auth',
             data: this.adherent
@@ -174,32 +183,59 @@ export class AdherentCardComponent implements OnInit {
             .pipe(takeUntil(this.notifier))
             .subscribe(result => {
                 if (result?.data) {
-                    this.adherent.Authorization = result.data.name;
-                    if (result.action)
-                        this.notifier.next();
+                    const filename = `autorisation.pdf`;
+                    Adherent.addDoc(this.adherent, 'autorisation', filename, result.data);
+                    this.adherent.Authorization = filename;
+                    console.log('adherent with docs : ', this.adherent);
+                    this.notifier.next();
                     this.notifier.complete();
-                    this.savePdf.emit(result.data);
                 }
             });
     }
 
-    readFile(file: File | Blob): Observable<any> {
-        const reader = new FileReader();
-        let loadend = fromEvent(reader, 'loadend').pipe(
-            map((read: any) => {
-                return read.target.result;
-            })
-        );
-        reader.readAsDataURL(file);
-        return loadend;
+    showHealthForm() {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
+        }
+        const major = this.adherent.Age >= 18;
+        const data = major ? Questionary.getMajor(this.adherent.LastName, this.adherent.FirstName) : Questionary.getMinor(this.adherent.LastName, this.adherent.FirstName, this.adherent.Age, this.adherent.Genre);
+        this.modalService.open({
+            title: data.title,
+            validateLabel: 'Valider',
+            cancelLabel: 'Annuler',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: '100%',
+                height: major ? '800px' : '650px'
+            },
+            component: 'health-form',
+            data: data
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                if (result?.data) {
+                    const filename = `attestation.pdf`;
+                    Adherent.addDoc(this.adherent, 'attestation', filename, result.data);
+                    this.adherent.HealthFile = filename;
+                    console.log('adherent with docs : ', this.adherent);
+                    this.notifier.next();
+                    this.notifier.complete();
+                }
+            });
     }
 
     onFileChange(event) {
         const file = <File>event.file.files[0];
         if (file) {
             console.log('choosen file: ', file);
-            this.adherent.HealthFile = file.name;
-            console.log('adherent changed: ', this.adherent);
+            this.util.readFile(file).then(blob => {
+                const filename = `certificat.pdf`;
+                Adherent.addDoc(this.adherent, 'certificat', filename, blob);
+                this.adherent.CertificateFile = filename;
+                console.log('adherent changed: ', this.adherent);
+            }); 
         }
     }
 

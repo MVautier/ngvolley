@@ -54,4 +54,18 @@ export class AdherentService {
             }
         });
     }
+
+    addOrUpdate(adherent: Adherent): Promise<Adherent> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.http.post(environment.apiUrl + 'Adherent', adherent).then((result: Adherent) => {
+                    resolve(result);
+                }).catch(err => {
+                    reject(err);
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }

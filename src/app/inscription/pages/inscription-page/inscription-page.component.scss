@@ -101,3 +101,27 @@ aside {
         }
     }
 }
+.payment-result{
+    .error{
+        h3{
+            font-size: 20px;
+            color: red;
+        }
+        div{
+            margin: 50px;
+        }
+    }
+    .success{
+        h3{
+            font-size: 20px;
+            color: green;
+        }
+        .print{
+            .attestation{
+                iframe{
+                    height: 622px;
+                }
+            }
+        }
+    }
+}
