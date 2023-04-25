@@ -137,13 +137,14 @@ export class AuthorizeApiService {
 
     public SetUserInfo(token: string): void {
         try {
-            const jwt: any = JSON.parse(atob(token.split('.')[1]));
+            const jwt: any = JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1]))));
             const user: User = {
               ExpireDate: jwt.value.ExpireDate,
               IdUser: jwt.value.IdUser,
               Mail: jwt.value.Mail,
               FirstName: jwt.value.FirstName,
-              LastName: jwt.value.LastName
+              LastName: jwt.value.LastName,
+              Role: jwt.value.Role
             };
             this.FinaliseConnexionInfo(user);
           } catch (ex) {

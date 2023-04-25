@@ -18,11 +18,11 @@ import { AdherentDoc } from '@app/core/models/adherent-doc.model';
 import { UtilService } from '@app/core/services/util.service';
 
 @Component({
-    selector: 'app-adherent-card',
-    templateUrl: './adherent-card.component.html',
-    styleUrls: ['./adherent-card.component.scss']
+    selector: 'app-adherent-doc',
+    templateUrl: './adherent-doc.component.html',
+    styleUrls: ['./adherent-doc.component.scss']
 })
-export class AdherentCardComponent implements OnInit {
+export class AdherentDocComponent implements OnInit {
     @Input() adherent: Adherent;
     @Output() savePdf: EventEmitter<PdfInfo> = new EventEmitter<PdfInfo>();
     @Output() changed: EventEmitter<Adherent> = new EventEmitter<Adherent>();

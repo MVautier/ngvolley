@@ -24,6 +24,10 @@ import { CoreModule } from '@app/core/core.module';
 import { GalleryService } from './services/gallery.service';
 import { ItemEditButtonsComponent } from './components/item-edit-buttons/item-edit-buttons.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AdherentPageComponent } from './pages/adherent-page/adherent-page.component';
+import { AdherentListeComponent } from './components/adherent-liste/adherent-liste.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
+import { AdherentFilterComponent } from './components/adherent-filter/adherent-filter.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +40,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ItemCardComponent,
     ItemEditComponent,
     DashboardComponent,
-    ItemEditButtonsComponent
+    ItemEditButtonsComponent,
+    AdherentPageComponent,
+    AdherentListeComponent,
+    UserPageComponent,
+    AdherentFilterComponent
   ],
   imports: [
+
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

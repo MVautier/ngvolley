@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   validate: (result: ModalResult) => {};
   cancel: (result: ModalResult) => {};
 
-  email: string = 'dominici.martial@orange.fr';
+  email: string = '';
   password: string = '';
   authError = false;
   displayPassword = false;

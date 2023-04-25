@@ -1,0 +1,36 @@
+.top{
+    height: var(--admin-top-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    line-height: 60px;
+    input{
+        border-radius: 5px;
+        border-width: 1px;
+    }
+}
+.liste{
+    height: calc(100vh - var(--header-height) - var(--admin-menu-height) - var(--admin-top-height) - var(--admin-footer-height));
+}
+.footer{
+    height: var(--admin-footer-height);
+}
+
+.mat-sort-header{
+    mat-icon{
+        font-size: 16px;
+        margin-top: 10px;
+        visibility: hidden;
+    }
+    &:hover{
+        mat-icon{
+            visibility: visible;
+        }
+    }
+}
+.spinner-container {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+}

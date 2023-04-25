@@ -263,9 +263,12 @@ export class MainFormComponent implements OnInit, OnDestroy {
 
     getFormAdherent(): Adherent {
         const category = this.formGroup.get('category').value;
+        const age = Adherent.getAge(this.formGroup.get('birthdate').value);
+        const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
         return {
             IdAdherent: this.formGroup.get('id').value,
             Category: category,
+            Section: section,
             FirstName: this.formGroup.get('firstname').value,
             LastName: this.formGroup.get('lastname').value,
             Genre: this.formGroup.get('genre').value,

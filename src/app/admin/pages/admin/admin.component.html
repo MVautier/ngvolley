@@ -15,9 +15,10 @@
         <div class="main-menu">
             <button mat-button [matMenuTriggerFor]="dataMenu">Adhérents</button>
             <mat-menu class="sub-menu" #dataMenu="matMenu" yPosition="below">
-                <button mat-menu-item (click)="goMenu('pages')">Adhérents</button>
-                <button mat-menu-item (click)="goMenu('posts')">Export</button>
-                <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button>
+                <button mat-menu-item (click)="goMenu('adherents')">Adhérents</button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('users')">Utilisateurs</button>
+                <!-- <button mat-menu-item (click)="goMenu('posts')">Export</button>
+                <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button> -->
             </mat-menu>
         </div>
 

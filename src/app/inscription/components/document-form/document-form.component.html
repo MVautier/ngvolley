@@ -1,16 +1,16 @@
 <div *ngIf="adherent">
 
-    <app-adherent-card 
+    <app-adherent-doc 
         [adherent]="adherent" 
         (changed)="onAdherentChange($event)"
         (savePdf)="onSavePdf($event, adherent.Uid)">
-    </app-adherent-card>
+    </app-adherent-doc>
 
-    <app-adherent-card *ngFor="let member of adherent.Membres" 
+    <app-adherent-doc *ngFor="let member of adherent.Membres" 
         [adherent]="member"
         (changed)="onMemberChange($event)"
         (savePdf)="onSavePdf($event, member.Uid)">
-    </app-adherent-card>
+    </app-adherent-doc>
 
     <section class="inscription border-div">
         <div class="section-title">

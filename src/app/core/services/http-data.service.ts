@@ -28,6 +28,10 @@ export class HttpDataService<T> {
         return firstValueFrom(this.http.post<T>(action, item, options));
     }
 
+    postObs<D>(action: string, item: D, options?: {}): Observable<T> {
+        return this.http.post<T>(action, item, options);
+    }
+
     put<D>(action: string, item: D, options?: {}): Promise<T> {
         return firstValueFrom(this.http.put<T>( action, item, options));
     }

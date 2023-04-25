@@ -1,0 +1,45 @@
+.filter {
+    position: relative;
+    // left: 50%;
+    // top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: var(--background);
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    width: 336px;
+    z-index: 3;
+    .close{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+    }
+    
+    .filter-item{
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: row;
+        .field{
+            color: var(--primary);
+            width: 120px;
+        }
+        mat-select {
+            margin-left: 10px;
+        }
+        &.custom {
+            border: none;
+            margin-top: -25px;
+            mat-select {
+                margin-left: 0;
+            }
+        }
+    }
+    .buttons{
+        display: flex;    
+        max-height: 50px;
+        justify-content: space-evenly;
+    }
+}

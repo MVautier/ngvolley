@@ -2,15 +2,21 @@ import { Injectable } from "@angular/core";
 import { Adherent } from "@app/core/models/adherent.model";
 import { HttpDataService } from "@app/core/services/http-data.service";
 import { environment } from "@env/environment";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, map } from "rxjs";
 import { Category } from "../models/category.model";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { UtilService } from "./util.service";
+import { PagedList } from "../models/paged-list.model";
+import { AdherentFilter } from "../models/adherent-filter.model";
 
 @Injectable()
 export class AdherentService {
     public obsAdherents: BehaviorSubject<Adherent[]> = new BehaviorSubject<Adherent[]>([]);
     public obsCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
 
-    constructor(private http: HttpDataService<any>) {
+    constructor(
+        private util: UtilService,
+        private http: HttpDataService<any>) {
 
     }
     getListe(): Promise<Adherent[]> {
@@ -36,6 +42,19 @@ export class AdherentService {
         });
     }
 
+    findAdherents(
+        filter: AdherentFilter, 
+        sort: string = 'asc', 
+        sortColumn: string = 'IdAdherent', 
+        page: number = 0, 
+        size: number = 10): Observable<PagedList<Adherent>> {
+            const url = `${environment.apiUrl}Adherent/paged?sort=${sort}&sortColumn=${sortColumn}&page=${page}&size=${size}`;
+            return this.http.postObs<AdherentFilter>(url, filter)
+            .pipe(
+                map(res =>  res)
+            );
+    }
+
     getCategories(): Promise<Category[]> {
         return new Promise((resolve, reject) => {
             try {
@@ -58,7 +77,7 @@ export class AdherentService {
     addOrUpdate(adherent: Adherent): Promise<Adherent> {
         return new Promise((resolve, reject) => {
             try {
-                this.http.post(environment.apiUrl + 'Adherent', adherent).then((result: Adherent) => {
+                this.http.post<Adherent>(environment.apiUrl + 'Adherent', adherent).then((result: Adherent) => {
                     resolve(result);
                 }).catch(err => {
                     reject(err);

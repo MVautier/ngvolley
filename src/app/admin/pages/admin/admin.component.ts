@@ -19,6 +19,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   showDisplayMenu = false;
   showAdherentMenu = false;
   fullApp = environment.fullApp;
+  isAdmin = false;
 
   constructor(
     private routeService: RouteService,
@@ -33,13 +34,14 @@ export class AdminComponent implements OnInit, OnDestroy {
         this.initUI();
       }, 'subTreeAdmin');
       this.user = this.connexionInfo.UserInfo;
+      this.isAdmin = this.user.Role === 'admin';
     }
 
   ngOnInit(): void {
-    this.adherentService.getListe().then(data => {
-    }).catch((err) => {
-      console.log('error getting adherents: ', err);
-    });
+    // this.adherentService.getListe().then(data => {
+    // }).catch((err) => {
+    //   console.log('error getting adherents: ', err);
+    // });
   }
 
   ngOnDestroy(): void {

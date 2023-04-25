@@ -27,7 +27,7 @@ import { ParentAuthComponent } from './components/parent-auth/parent-auth.compon
 import { FormHeaderComponent } from './components/form-header/form-header.component';
 import { FormFooterComponent } from './components/form-footer/form-footer.component';
 import { DocumentFormComponent } from './components/document-form/document-form.component';
-import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
+import { AdherentDocComponent } from './components/adherent-doc/adherent-doc.component';
 import { CartPaymentComponent } from './components/cart-payment/cart-payment.component';
 import { HelloAssoService } from './services/helloasso.service';
 import { PopupRemoveComponent } from './components/popup-remove/popup-remove.component';
@@ -50,7 +50,7 @@ import { HealthFormComponent } from './components/health-form/health-form.compon
     FormHeaderComponent,
     FormFooterComponent,
     DocumentFormComponent,
-    AdherentCardComponent,
+    AdherentDocComponent,
     CartPaymentComponent,
     PopupRemoveComponent,
     HealthFormComponent

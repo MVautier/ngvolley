@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ParentAuth } from '@app/core/models/parent-auth.model';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
+import { UtilService } from '@app/core/services/util.service';
 import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 
@@ -32,7 +33,9 @@ export class ParentAuthComponent implements OnInit {
     data: ParentAuth;
     now: Date = new Date();
 
-    constructor(private datePipe: DatePipe,
+    constructor(
+        private datePipe: DatePipe,
+        private util: UtilService,
         private pdf: PdfMakerService) { }
 
     ngOnInit(): void {
@@ -40,19 +43,9 @@ export class ParentAuthComponent implements OnInit {
         console.log('data in auth-parent: ', this.config?.data);
         if (this.config?.data) {
             this.data = new ParentAuth(this.config.data);
-            this.datenaissance = this.date2String(this.config.data.BirthdayDate);
-            this.date = this.date2String(this.now);
+            this.datenaissance = this.util.date2String(this.config.data.BirthdayDate);
+            this.date = this.util.date2String(this.now);
         }
-    }
-
-    date2String(d: Date): string {
-        let s = '';
-        if (d) {
-            const m = d.getMonth() + 1;
-            const j = d.getDate();
-            return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m.toString() + '-' + (j < 10 ? '0' : '') + j.toString();
-        }
-        return s;
     }
 
     checkValid(): boolean {

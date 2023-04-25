@@ -39,4 +39,22 @@ export class UtilService {
         });
         
     }
+
+    date2String(d: Date, fr: boolean = false): string {
+        let s = '';
+        if (d) {
+            const m = d.getMonth() + 1;
+            const j = d.getDate();
+            const y = d.getFullYear();
+            const sm = (m < 10 ? '0' : '') + m.toString();
+            const sj = (j < 10 ? '0' : '') + j.toString();
+            if (fr) {
+                return sj + '/' + sm + '/' + y;
+            } else {
+                return y + '-' + sm + '-' + sj;
+            }
+            
+        }
+        return s;
+    }
 }

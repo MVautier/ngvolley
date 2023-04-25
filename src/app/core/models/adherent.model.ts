@@ -26,6 +26,7 @@ export class Adherent {
     Licence?: string;
     PaymentComment?: string;
     Membres?: Adherent[];
+    Section: string;
     Sections: string[];
     MainSectionInfo?: string;
     Relationship?: string;
@@ -73,6 +74,7 @@ export class Adherent {
         this.AlertFirstName = Adherent.debug ? 'Martial' : null;
         this.AlertPhone = Adherent.debug ? '0620654010' : null;
         this.Uid = uuidv4();
+        this.Section = Adherent.debug ? 'C' : null;
         this.Sections = [];
         this.Rgpd = false;
         this.ImageRight = false;
@@ -107,6 +109,7 @@ export class Adherent {
         return {
             IdAdherent: data.IdAdherent,
             Category: data.Category,
+            Section: data.Section,
             FirstName: data.FirstName,
             LastName: data.LastName,
             Genre: data.Genre,

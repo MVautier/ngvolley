@@ -103,9 +103,12 @@ export class MemberFormComponent implements OnInit {
 
     getFormAdherent(value: any): Adherent {
         const category = this.formGroup.get('category').value;
+        const age = Adherent.getAge(value.birthdate);
+        const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
         return {
             IdAdherent: value.id,
             Category: category, //this.categories.find(c => c.Code === this.formGroup.get('category').value)?.Code,
+            Section: section,
             FirstName: value.firstname,
             LastName: value.lastname,
             Genre: value.genre,
@@ -115,7 +118,7 @@ export class MemberFormComponent implements OnInit {
             City: this.adherent.City,
             Phone: value.phone,
             Email: value.email,
-            Age: Adherent.getAge(value.birthdate),
+            Age: age,
             Membres: [],
             Relationship: value.relationship,
             AlertLastName: this.adherent.AlertLastName,
