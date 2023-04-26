@@ -23,7 +23,12 @@
         }
         .user-info{
             position: absolute;
-            right: 60px;
+            right: 10px;
+            display: flex;
+            align-items: baseline;
+            button{
+                margin-left: 10px;
+            }
         }
     }
     .sub-menu {

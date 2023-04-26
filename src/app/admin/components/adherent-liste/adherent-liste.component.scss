@@ -11,7 +11,7 @@
     }
 }
 .liste{
-    height: calc(100vh - var(--header-height) - var(--admin-menu-height) - var(--admin-top-height) - var(--admin-footer-height));
+    height: calc(100vh - var(--header-height) - var(--admin-menu-height) - var(--admin-top-height) - var(--admin-footer-height) - 68px);
 }
 .footer{
     height: var(--admin-footer-height);

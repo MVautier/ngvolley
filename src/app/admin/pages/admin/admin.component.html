@@ -13,8 +13,9 @@
         </div>
 
         <div class="main-menu">
-            <button mat-button [matMenuTriggerFor]="dataMenu">Adhérents</button>
+            <button mat-button [matMenuTriggerFor]="dataMenu">Administration</button>
             <mat-menu class="sub-menu" #dataMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="goMenu('')">Tableau de bord</button>
                 <button mat-menu-item (click)="goMenu('adherents')">Adhérents</button>
                 <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('users')">Utilisateurs</button>
                 <!-- <button mat-menu-item (click)="goMenu('posts')">Export</button>
@@ -27,7 +28,10 @@
         </div>
 
         <div *ngIf="user" class="user-info">
-            {{user.FirstName}} {{user.LastName}}
+            <div>
+                {{user.FirstName}} {{user.LastName}}
+            </div>
+            <button mat-button><mat-icon *ngIf="!fullApp" class="exit" (click)="logout()">logout</mat-icon></button>
         </div>
     </div>
 </div>

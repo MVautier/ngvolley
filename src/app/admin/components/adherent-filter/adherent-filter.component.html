@@ -7,7 +7,7 @@
     <mat-icon class="close" (click)="onHideFilter()">close</mat-icon>
     <div class="filter-item">
         <mat-form-field appearance="fill">
-            <mat-label>Inscription</mat-label>
+            <mat-label>Date d'inscription</mat-label>
             <mat-date-range-input [rangePicker]="picker">
                 <input matStartDate placeholder="Start date" (dateChange)="setDate($event, 'start')">
                 <input matEndDate placeholder="End date" (dateChange)="setDate($event, 'end')">
@@ -48,6 +48,7 @@
             <mat-option value="16">U16</mat-option>
             <mat-option value="18">U18</mat-option>
             <mat-option value="A">Adulte</mat-option>
+            <mat-option value="O">Non renseigné</mat-option>
         </mat-select>
     </div>
     <mat-label>{{ filter?.DynamicFilter?.Alias}}</mat-label>

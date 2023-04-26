@@ -1,0 +1,49 @@
+<div *ngIf="user" class="user-card">
+    <form *ngIf="formGroup" [formGroup]="formGroup" class="form" [ngClass]="{'mobile': isMobile}">
+
+        <div class="fields">
+            <mat-form-field class="form-element row-item">
+                <mat-label>Nom</mat-label>
+                <input matInput placeholder="Nom" formControlName="nom">
+                <mat-error *ngIf="!formGroup.controls['nom'].valid && formGroup.controls['nom'].touched">
+                    {{ getInputError('nom') }}
+                </mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="form-element row-item">
+                <mat-label>Prénom</mat-label>
+                <input matInput placeholder="Prénom" formControlName="prenom">
+                <mat-error *ngIf="!formGroup.controls['prenom'].valid && formGroup.controls['prenom'].touched">
+                    {{ getInputError('prenom') }}
+                </mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="form-element row-item">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="mail">
+                <mat-error *ngIf="!formGroup.controls['mail'].valid && formGroup.controls['mail'].touched">
+                    {{ getInputError('mail') }}
+                </mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="form-element row-item">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                    <mat-option *ngFor="let role of roles" [value]="role.Id">{{ role.Libelle }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+
+        <div class="buttons">
+            <button mat-button raised color="primary" (click)="save()">
+                <mat-icon>save</mat-icon>
+            </button>
+
+            <button *ngIf="currentUser.IdUser !== user.IdUser" mat-button raised color="primary" (click)="remove()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+
+    </form>
+</div>

@@ -1,1 +1,15 @@
-<p>user-page works!</p>
+<div class="center-container">
+    <div class="title">
+        <h1>
+            Utilisateurs
+        </h1>
+    </div>
+    <div class="buttons">
+        <button mat-button raised color="primary" (click)="addUser()">
+            <mat-icon>person_add</mat-icon>
+        </button>
+    </div>
+    <div class="list">
+        <app-user-card *ngFor="let user of users; index as i" [user]="user" (onSave)="saveUser($event)" (onRemove)="removeUser(i)"></app-user-card>
+    </div>
+</div>

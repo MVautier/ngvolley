@@ -22,43 +22,35 @@
             </div>
         </div>
         <mat-accordion>
-            <mat-expansion-panel id="mep" #mep="matExpansionPanel">
+            <!--  ================ Licence -->
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check"
-                            [ngClass]="!getLicenceError('licence') ? 'valid' : 'error'">check_circle</mat-icon>
+                        <mat-icon class="check" [ngClass]="!getLicenceError('licence') ? 'valid' : 'error'">check_circle</mat-icon>
                         <span class="title">Licence</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--  ================ Licence et Photo-->
+                
                 <div class="section-title adherent">
 
-                    <!-- <div class="name">
-                        <div class="left"></div>
-                        <div *ngIf="licenceRequired && adherent.Photo" class="right">
-                            <img [src]="adherent.Photo" height="80" (click)="showEditPhoto()" title="Changer/Retoucher">
-                        </div>
-                    </div> -->
-
-                    <div *ngIf="licenceRequired" class="licence">
-                        <mat-form-field class="form-element row-item">
-                            <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier"
-                                formControlName="licence">
-                            <mat-error
-                                *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
+                    <div class="licence">
+                        <mat-form-field *ngIf="!firstLicence" class="form-element row-item">
+                            <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier" formControlName="licence">
+                            <mat-error *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
                                 {{ getLicenceError('licence') }}
                             </mat-error>
                         </mat-form-field>
+                        <mat-form-field *ngIf="firstLicence" class="form-element row-item">
+                            <input matInput placeholder="création" [value]="''" disabled>
+                        </mat-form-field>
+                        <mat-checkbox (change)="firstLicenceClick()" formControlName="firstLicence">Il s'agit de ma première licence</mat-checkbox>
                         <div class="sub-info">(si renouvellement ou mutation)</div>
                     </div>
-
-                    <!-- <div *ngIf="licenceRequired && editPhoto" class="take-photo">
-                        <app-photo-taker [checked]="checked" [imageBase64]="adherent.Photo" (photo)="onPhoto($event)"></app-photo-taker>
-                    </div> -->
 
                 </div>
             </mat-expansion-panel>
 
+            <!--  ================ Autorisation parentale -->
             <mat-expansion-panel *ngIf="checked.age <= 18">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -67,7 +59,7 @@
                         <span class="title">Autorisation parentale</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--  ================ Autorisation parentale -->
+                
                 <div class="section-title adherent">
                     <div class="health-input">
                         <button (click)="showModalAuthParent()" mat-raised-button color="primary">
@@ -80,6 +72,7 @@
                 </div>
             </mat-expansion-panel>
 
+            <!--  ================ Certificat médical ou attestation de santé -->
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -87,7 +80,7 @@
                         <span class="title">{{ checked.certifLabel }}</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--  ================ Certificat médical ou attestation de santé -->
+                
                 <div class="section-title adherent">
                     <div class="check">
                         <div class="info">
@@ -127,6 +120,7 @@
                 </div>
             </mat-expansion-panel>
 
+            <!--  ================ RGPD et Signature -->
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -136,7 +130,7 @@
                         <span class="title">RGPD</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--  ================ RGPD et Signature -->
+                
                 <div class="section-title adherent">
                     <div class="section-title">
                         <span class="title">Utilisation de l'image personnelle</span>

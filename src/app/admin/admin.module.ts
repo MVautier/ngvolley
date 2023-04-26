@@ -28,6 +28,8 @@ import { AdherentPageComponent } from './pages/adherent-page/adherent-page.compo
 import { AdherentListeComponent } from './components/adherent-liste/adherent-liste.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { AdherentFilterComponent } from './components/adherent-filter/adherent-filter.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { AdherentFilterComponent } from './components/adherent-filter/adherent-f
     AdherentPageComponent,
     AdherentListeComponent,
     UserPageComponent,
-    AdherentFilterComponent
+    AdherentFilterComponent,
+    UserCardComponent
   ],
   imports: [
 
@@ -65,7 +68,8 @@ import { AdherentFilterComponent } from './components/adherent-filter/adherent-f
     FormService,
     WysiswygService,
     UtilService,
-    GalleryService
+    GalleryService,
+    UserService
   ]
 })
 export class AdminModule { }

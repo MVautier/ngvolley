@@ -161,7 +161,7 @@ export class InscriptionService {
     
     // Traitement licence
     check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
-    if (check.found && adherent.Licence && check.found.Licence) {
+    if (check.found && adherent.Licence && check.found.Licence && adherent.Licence !== 'création') {
         check.licenceError = adherent.Licence !== check.found.Licence;
     }
 
@@ -186,7 +186,7 @@ export class InscriptionService {
     check.accept = adherent.Rgpd;
 
     check.birthdayDateValid = dateValid;
-    check.valid = dateValid && (step === 3 ? !check.parentAuthNeeded && !check.certifNeeded && !check.licenceNeeded && !check.signatureNeeded && check.accept : true);
+    check.valid = dateValid && (step === 3 ? !check.parentAuthNeeded && !check.certifNeeded && !check.licenceNeeded && !check.licenceError && !check.signatureNeeded && check.accept : true);
     return check;
   }
 

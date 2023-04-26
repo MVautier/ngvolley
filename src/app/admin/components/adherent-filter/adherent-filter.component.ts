@@ -61,8 +61,8 @@ export class AdherentFilterComponent implements OnInit {
             this.filter.HasLicence = event.value === 'tous' ? null : (event.value === 'avec' ? true : false);
         } else if (field === 'category') {
             this.filter.IdCategory = event.value === 'tous' ? null : (event.value === 'C' ? 1 : (event.value === 'L' ? 2 : 3));
-        } else if (field === 'licence') {
-            this.filter.IdSection = event.value === 'tous' ? null : (event.value === '16' ? 1 : (event.value === '18' ? 2 : 3));
+        } else if (field === 'section') {
+            this.filter.IdSection = event.value === 'tous' ? null : (event.value === '16' ? 1 : (event.value === '18' ? 2 : (event.value === 'A' ? 3 : 4)));
         } else if (field === 'custom') {
             this.filter.DynamicFilter.Field = event.value.columnDef;
         }
@@ -71,6 +71,11 @@ export class AdherentFilterComponent implements OnInit {
 
     initFilter() {
         this.filter = new AdherentFilter(this.selectedCustomField.columnDef);
+        this.hasPhoto = 'tous';
+        this.hasLicence = 'tous';
+        this.Categorie = 'tous';
+        this.Section = 'tous';
+        this.selectedCustomField = this.customFields[0];
     }
 
     onShowFilter() {

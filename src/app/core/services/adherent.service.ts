@@ -87,4 +87,15 @@ export class AdherentService {
             }
         });
     }
+
+    exportExcel(filter: AdherentFilter): Promise<Blob> {
+        return new Promise((resolve, reject) => {
+            const url = `${environment.apiUrl}Adherent/export`;
+            this.http.post<AdherentFilter>(url, filter, { responseType: 'blob'}).then(blob => {
+                resolve(blob);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
 }

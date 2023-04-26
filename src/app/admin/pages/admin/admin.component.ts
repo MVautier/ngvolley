@@ -8,6 +8,7 @@ import { ConnectionInfoService } from '@app/authentication/services/connexion-in
 import { Tree } from '@app/core/models/tree.model';
 import { RouteService } from '@app/core/services/route.services';
 import { environment } from '@env/environment';
+import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -27,6 +28,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private gallery: GalleryService,
     private connexionInfo: ConnectionInfoService,
     private layoutService: LayoutService,
+    private authService: AuthorizeApiService,
     private adherentService: AdherentService
     ) { 
       this.routeService.subscribeConfig(tree => {
@@ -71,6 +73,14 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   exit() {
     this.router.navigate(['/']);
+  }
+
+  logout() {
+    this.authService.LogOut().then(() => {
+        console.log('logged out');
+    }).finally(() => {
+        this.exit();
+    });
   }
 
 }

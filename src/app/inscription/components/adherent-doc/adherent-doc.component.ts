@@ -33,10 +33,11 @@ export class AdherentDocComponent implements OnInit {
     subModal: Subscription;
     notifier = new Subject<void>();
     category: string;
-    licenceRequired: boolean;
     editPhoto: boolean = true;
     isMobile = false;
     photo_default = 'assets/images/user-default.png';
+    firstLicence = false;
+    savedLicence: string;
 
     constructor(
         private fb: FormBuilder,
@@ -52,11 +53,11 @@ export class AdherentDocComponent implements OnInit {
         }
         if (this.adherent) {
             this.licenceInputMask = this.inscriptionService.licenceInputMask;
+            this.savedLicence = this.adherent.Licence;
             this.initForm();
             this.formGroup.markAllAsTouched();
             this.adherentService.getCategories().then(result => {
                 this.category = result.find(c => c.Code === this.adherent.Category)?.Libelle;
-                this.licenceRequired = ['C', 'E'].includes(this.adherent.Category);
             });
             this.formGroup.valueChanges.subscribe(val => {
                 this.setFormAdherent();
@@ -73,7 +74,8 @@ export class AdherentDocComponent implements OnInit {
         this.formGroup = this.fb.group({
             'licence': [this.adherent.Licence, [CustomValidators.licenceCheck(this.checked)]],
             'file': [null, [Validators.required, FileValidator.maxContentSize(this.inscriptionService.filemaxsize)]],
-            'rgpd': [this.adherent.Rgpd, [Validators.requiredTrue]]
+            'rgpd': [this.adherent.Rgpd, [Validators.requiredTrue]],
+            'firstLicence': [this.firstLicence]
         });
     }
 
@@ -82,12 +84,19 @@ export class AdherentDocComponent implements OnInit {
         console.log('checked: ', this.checked);
     }
 
+    firstLicenceClick() {
+        const checked = this.formGroup.get('firstLicence').value;
+        this.adherent.Licence = checked ? 'création' : this.savedLicence; 
+        console.log('current licence: ', this.adherent.Licence);
+        console.log('saved licence: ', this.savedLicence);
+    }
+
     getLicenceError(field: string) {
-        if (this.licenceRequired) {
+        if (this.checked?.licenceNeeded && !this.firstLicence) {
             if (!this.formGroup.get('licence').value) return 'Le n° de licence est requis';
             return this.inscriptionService.getLicenceError(this.formGroup, field);
         }
-        return false;
+        return '';
     }
 
     getCheckError(field: string): string | boolean {
@@ -240,7 +249,10 @@ export class AdherentDocComponent implements OnInit {
     }
 
     setFormAdherent() {
-        this.adherent.Licence = this.formGroup.get('licence').value;
+        this.firstLicence = this.formGroup.get('firstLicence').value;
+        this.adherent.Licence = this.firstLicence ? 'création' : this.formGroup.get('licence').value;
+        this.savedLicence = this.adherent.Licence;
         this.adherent.Rgpd = this.formGroup.get('rgpd').value;
+        
     }
 }

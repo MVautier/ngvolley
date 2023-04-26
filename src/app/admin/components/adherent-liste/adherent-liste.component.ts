@@ -8,6 +8,7 @@ import { AdherentDataSource } from '@app/core/models/adherent-datasource';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
 import { AdherentService } from '@app/core/services/adherent.service';
+import { FileService } from '@app/core/services/file.service';
 import { merge, tap } from 'rxjs';
 
 @Component({
@@ -36,6 +37,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     constructor(
         private route: ActivatedRoute, 
         @Inject(MAT_DATE_LOCALE) private _locale: string,
+        private fileService: FileService,
         private _adapter: DateAdapter<any>,
         private adherentService: AdherentService) {}
 
@@ -67,7 +69,11 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     }
 
     export() {
-
+        this.adherentService.exportExcel(this.filter || new AdherentFilter()).then(blob => {
+            this.fileService.download(blob, 'ExportAdherent.xlsx');
+        }).catch(err => {
+            console.error('error exporting adherents: ', err);
+          });
     }
 
     loadData(filter: AdherentFilter) {

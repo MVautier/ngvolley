@@ -1,0 +1,30 @@
+@import "form";
+
+.user-card {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    form{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &.mobile{
+            flex-direction: column;
+            height: auto;
+        }
+        .fields{
+            mat-form-field{
+                margin-left: 20px;
+            }
+        }
+        .buttons{
+            align-self: center;
+            button{
+                margin-left: 10px;
+            }
+        }
+    }
+    
+}
