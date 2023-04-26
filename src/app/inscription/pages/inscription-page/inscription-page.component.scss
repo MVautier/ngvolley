@@ -13,10 +13,12 @@
     display: flex;
     margin: 0 auto;
     padding: 0 10px;
+    margin: 0 10%;
     //width: var(--container);
     transition: var(--global-transition);
     &.mobile{
         padding: 0 10px;
+        margin: 0
     }
 
     @media screen and (max-width: 1025px) {
