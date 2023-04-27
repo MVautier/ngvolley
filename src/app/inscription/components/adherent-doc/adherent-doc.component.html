@@ -8,7 +8,8 @@
             </div>
 
             <div class="right">
-                <button mat-button [matMenuTriggerFor]="menu_photo">
+                <img [src]="adherent.Photo ? adherent.Photo : photo_default" height="80" title="Changer/Retoucher">
+                <!-- <button mat-button [matMenuTriggerFor]="menu_photo">
                     <img [src]="adherent.Photo ? adherent.Photo : photo_default" height="80" title="Changer/Retoucher">
                 </button>
                 
@@ -16,12 +17,29 @@
                     <button mat-menu-item (click)="showModalPhoto('camera')">Prendre une photo</button>
                     <button mat-menu-item (click)="f_input.click()">Importer une photo</button>
                     <button mat-menu-item [disabled]="!adherent.Photo" (click)="showModalPhoto('cropper')">Recadrer la photo</button>
-                </mat-menu>
+                </mat-menu> -->
 
                 <input type="file" hidden #f_input (change)="onSelectPhoto(f_input.files)" />
             </div>
         </div>
         <mat-accordion>
+            <!--  ================ Licence -->
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon class="check" [ngClass]="!getPhotoError() ? 'valid' : 'error'">check_circle</mat-icon>
+                        <span class="title">Photo</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="section-title adherent photo">
+                    <button mat-raised-button color="primary" (click)="showModalPhoto('camera')">Prendre une photo</button>
+                    <button mat-raised-button color="primary" (click)="f_input.click()">Importer une photo</button>
+                    <button mat-raised-button color="primary" [disabled]="!adherent.Photo" (click)="showModalPhoto('cropper')">Recadrer la photo</button>
+
+                    <input type="file" hidden #f_input (change)="onSelectPhoto(f_input.files)" />
+                </div>
+            </mat-expansion-panel>
             <!--  ================ Licence -->
             <mat-expansion-panel>
                 <mat-expansion-panel-header>

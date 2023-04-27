@@ -96,6 +96,7 @@ export class CameraComponent implements OnInit {
     console.log('captured image: ', capture);
     this.cropPhoto(capture).then(data => {
         this.imageResult = data;
+        this.onValidate();
     });
   }
 

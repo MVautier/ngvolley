@@ -99,6 +99,10 @@ export class AdherentDocComponent implements OnInit {
         return '';
     }
 
+    getPhotoError() {
+        return !this.adherent.Photo ;
+    }
+
     getCheckError(field: string): string | boolean {
         return this.inscriptionService.getCheckError(this.formGroup, field);
     }
@@ -110,11 +114,7 @@ export class AdherentDocComponent implements OnInit {
         }
         this.editPhoto = true;
     }
-
-    showMenuPhoto() {
-
-    }
-
+    
     showModalPhoto(mode: string) {
         if (this.subModal) {
             this.subModal.unsubscribe();
@@ -123,8 +123,8 @@ export class AdherentDocComponent implements OnInit {
             title: mode === 'camera' ? 'Prendre une photo' : 'Recadrer la photo',
             validateLabel: 'Valider',
             cancelLabel: 'Annuler',
-            showCancel: true,
-            showValidate: true,
+            showCancel: false,
+            showValidate: false,
             size: {
                 width: this.isMobile ? '100%' : '500px',
                 height: mode === 'cropper' ? '390px' : (this.isMobile ? '445px' : '620px')

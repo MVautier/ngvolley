@@ -88,10 +88,10 @@ iframe {
         }
         img {
             border-radius: 5px;
-            cursor: pointer;
-            &:hover {
-                border: 1px solid var(--border-accent);
-            }
+            // cursor: pointer;
+            // &:hover {
+            //     border: 1px solid var(--border-accent);
+            // }
         }
         span.title {
             color: var(--accent);
@@ -110,6 +110,15 @@ iframe {
             display: flex;
             justify-content: space-between;
             flex-direction: column;
+            &.photo {
+                flex-direction: row;
+                @media screen and (max-width: $breakpoint-mobile) {
+                    flex-direction: column;
+                    button{
+                        margin-bottom: 15px;
+                    }
+                }
+            }
             div {
                 &.name {
                     display: flex;
@@ -123,10 +132,10 @@ iframe {
                         width: 20%;
                         img {
                             border-radius: 5px;
-                            cursor: pointer;
-                            &:hover {
-                                border: 1px solid var(--border-accent);
-                            }
+                            // cursor: pointer;
+                            // &:hover {
+                            //     border: 1px solid var(--border-accent);
+                            // }
                         }
                     }
                 }
