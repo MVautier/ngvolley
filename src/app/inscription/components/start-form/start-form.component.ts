@@ -7,11 +7,12 @@ import { environment } from '@env/environment';
 @Component({
   selector: 'app-start-form',
   templateUrl: './start-form.component.html',
-  styleUrls: ['./start-form.component.scss']
+  styleUrls: ['./start-form.component.scss'],
 })
 export class StartFormComponent implements OnInit {
   @Input() start: StartInscription;
-  @Output() validate: EventEmitter<StartInscription> = new EventEmitter<StartInscription>();
+  @Output() validate: EventEmitter<StartInscription> =
+    new EventEmitter<StartInscription>();
   nom: string;
   prenom: string;
   section: string;
@@ -23,19 +24,20 @@ export class StartFormComponent implements OnInit {
 
   constructor(
     private inscriptionService: InscriptionService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     if (this.start) {
+      this.alreadySigned = this.start.nom !== null && this.start.prenom !== null && this.start.section !== null;
       this.sections = this.inscriptionService.sections;
       this.formGroup = this.formBuilder.group({
-        'local': [this.start.local, [Validators.required]],
-        'nom': [this.start.nom, [Validators.required]],
-        'prenom': [this.start.prenom, [Validators.required]],
-        'section': [this.start.section, [Validators.required]]
+        local: [this.start.local, [Validators.required]],
+        nom: [this.start.nom, [Validators.required]],
+        prenom: [this.start.prenom, [Validators.required]],
+        section: [this.start.section, [Validators.required]],
       });
     }
-    
   }
   getInputError(field: string) {
     return this.inscriptionService.getInputError(this.formGroup, field);
@@ -45,7 +47,6 @@ export class StartFormComponent implements OnInit {
     this.alreadySigned = false;
   }
 
-
   onValidate() {
     const info = this.getFormValue();
     this.validate.emit(info);
@@ -54,9 +55,10 @@ export class StartFormComponent implements OnInit {
   getFormValue(): StartInscription {
     return {
       local: this.start.local,
-      nom: this.formGroup.get('nom').value,
-      prenom: this.formGroup.get('prenom').value,
-      section: this.formGroup.get('section').value
+      already: this.start.already,
+      nom: this.alreadySigned ? this.formGroup.get('nom').value : null,
+      prenom: this.alreadySigned ? this.formGroup.get('prenom').value : null,
+      section: this.start.already || this.alreadySigned ? this.formGroup.get('section').value : null,
     };
   }
 }

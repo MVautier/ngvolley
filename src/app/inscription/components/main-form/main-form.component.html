@@ -1,5 +1,5 @@
 <form *ngIf="formGroup" [formGroup]="formGroup" class="form" [ngClass]="{'mobile': isMobile}">
-    <!-- <button (click)="showPopupHealth()">Attestation de santé</button> -->
+    <!-- <button (click)="showPdf()">Formulaire d'adhésion</button> -->
     <mat-accordion>
         <mat-expansion-panel [expanded]="adherent._opened">
             <mat-expansion-panel-header>
@@ -11,7 +11,7 @@
             </mat-expansion-panel-header>
             <section class="inscription" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="form-element row-item">
-                    <mat-label>Section</mat-label>
+                    <mat-label>Choix de la formule de Volley</mat-label>
                     <mat-select formControlName="category">
                         <mat-option *ngFor="let c of categories" [value]="c.Code">{{c.Libelle}}</mat-option>
                     </mat-select>
@@ -72,7 +72,8 @@
 
                     <mat-form-field class="last">
                         <mat-label>Date de naissance</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly (click)="picker.open()">
+                        <input matInput [matDatepicker]="picker" formControlName="birthdate" readonly
+                            (click)="picker.open()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                         <mat-error
@@ -157,6 +158,20 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
+
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
+                    <mat-form-field class="form-element row-item" [ngClass]="{'mobile': isMobile}">
+                        <mat-label>Autres sections où l’adhérent est inscrit</mat-label>
+                        <mat-select formControlName="sections" multiple>
+                            <mat-option *ngFor="let section of all_sections" [value]="section">{{section}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="!formGroup.controls['sections'].valid && formGroup.controls['sections'].touched">
+                            {{ getInputError('sections') }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
             </section>
         </mat-expansion-panel>
 
@@ -165,18 +180,16 @@
                 <mat-panel-title>
                     <span class="title main" [ngClass]="{'mobile': isMobile}">{{titles[i + 1]}}</span>
                     <div class="button-remove">
-                      <button mat-icon-button matPrefix class="icon-button remove enabled" (click)="showPopupRemove(member)" title="Supprimer le membre">
-                        <mat-icon>person_remove</mat-icon>
-                      </button>
+                        <button mat-icon-button matPrefix class="icon-button remove enabled"
+                            (click)="showPopupRemove(member)" title="Supprimer le membre">
+                            <mat-icon>person_remove</mat-icon>
+                        </button>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <section class="inscription" [ngClass]="{'mobile': isMobile}">
-                <app-member-form 
-                    [adherent]="member" 
-                    [isMobile]="isMobile"
-                    (change)="onMemberChange($event)"
-                ></app-member-form>
+                <app-member-form [adherent]="member" [isMobile]="isMobile"
+                    (change)="onMemberChange($event)"></app-member-form>
             </section>
         </mat-expansion-panel>
     </mat-accordion>

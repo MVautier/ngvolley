@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import domtoimage from 'dom-to-image';
 import { HttpDataService } from './http-data.service';
 
-import jsPDF from 'jspdf';
+import jsPDF, { TextOptionsLight } from 'jspdf';
 import autoTable, { Color, ThemeType } from 'jspdf-autotable';
 import { PdfFooter } from '../models/pdf-footer.model';
 import { DatePipe } from '@angular/common';
@@ -12,6 +12,7 @@ import { Questionary } from '../models/questionary.model';
 import { RowInput } from 'jspdf-autotable';
 import { ParentAuth } from '../models/parent-auth.model';
 import { AdherentDoc } from '../models/adherent-doc.model';
+import { Adherent } from '../models/adherent.model';
 
 @Injectable()
 export class PdfMakerService {
@@ -102,6 +103,211 @@ export class PdfMakerService {
                 resolve(null);
             }
         });
+    }
+
+    buildAdherentForm(data: Adherent): Promise<Blob> {
+        return new Promise((resolve) => {
+            try {
+                const blob: Blob = this.buildAdherentFormBlob(data);
+                resolve(blob);
+            } catch(err) {
+                resolve(null);
+            }
+        });
+    }
+
+    private buildAdherentFormBlob(data: Adherent): Blob {
+        const doc = new jsPDF({
+            orientation: "p", //set orientation
+            unit: "pt", //set unit for document
+            format: "letter" //set document standard
+        });
+
+        // Logo
+        doc.addImage('assets/images/logos/logo-CLLL.png', 'JPEG', 34, 2, 67, 63);
+
+        // Titre
+        let xOffset = (doc.internal.pageSize.width / 2);
+        let yOffset = 40;
+        const y = new Date().getFullYear();
+        let text = `Bulletin d\'adhésion ${y}-${y + 1}`;
+        doc.text(text, xOffset, yOffset, { align: 'center' });
+        text = `Club Loisirs Léo Lagrange de Colomiers`;
+        yOffset += 20;
+        doc.text(text, xOffset, yOffset, { align: 'center' });
+        const textWidth = doc.getTextWidth(text);
+        yOffset += 10;
+        doc.line(xOffset - (textWidth / 2), yOffset, xOffset + (textWidth / 2), yOffset);
+
+        doc.setFontSize(10);
+
+        // Pavé adresse
+        xOffset = 34;
+        yOffset = 150;
+        doc.setFont('helvetica', 'bold');
+        text = `Club Loisirs Léo Lagrange`;
+        doc.text(text, xOffset, yOffset);
+        yOffset += 12;
+        doc.setFont('helvetica', 'normal');
+        text = `6, Place du Val d\'Aran - 31770 Colomiers`;
+        doc.text(text, xOffset, yOffset);
+        yOffset += 12;
+        text = `Tél : 05 61 78 60 52`;
+        doc.text(text, xOffset, yOffset);
+        yOffset += 12;
+        text = `secretariat@leolagrangecolomiers.org`;
+        doc.text(text, xOffset, yOffset);
+
+        // Adhésion multiple/individuelle
+        xOffset = 450;
+        yOffset = 150;
+        this.drawCheckbox(doc, xOffset, yOffset);
+        text = `Adhésion Individuelle`;
+        doc.text(text, xOffset + 25, yOffset + 9);
+        if (!data.Membres?.length) {
+            doc.text('X', xOffset + 2, yOffset + 9);
+        }
+        yOffset += 20;
+        this.drawCheckbox(doc, xOffset, yOffset);
+        text = `Adhésion Multiple`;
+        doc.text(text, xOffset + 25, yOffset + 9);
+        if (data.Membres?.length) {
+            doc.text('X', xOffset + 2, yOffset + 9);
+        }
+
+        // Sections
+        xOffset = 34;
+        yOffset += 50;
+        doc.setFont('helvetica', 'bold');
+        text = 'Section(s) : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        if (data.Sections?.length) {
+            xOffset += 60;
+            text = data.Sections.join(', ');
+            doc.text(text, xOffset, yOffset);
+        }
+
+        // Infos générales
+        xOffset = 34;
+        yOffset = 240;
+        
+        // Gauche
+        doc.setFont('helvetica', 'bold');
+        text = 'Nom : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.LastName, xOffset + 70, yOffset);
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Genre : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.Genre, xOffset + 70, yOffset);
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Adresse : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.Address, xOffset + 70, yOffset);
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Code postal : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.PostalCode, xOffset + 70, yOffset);7
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Téléphone : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.Phone, xOffset + 70, yOffset);
+
+        // Droite
+        xOffset = 300; 
+        yOffset = 240;
+        doc.setFont('helvetica', 'bold');
+        text = 'Prénom : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.FirstName, xOffset + 50, yOffset);
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Date de naissance : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(this.datePipe.transform(data.BirthdayDate, 'dd/MM/yyyy'), xOffset + 100, yOffset);
+
+        yOffset += 40;
+        doc.setFont('helvetica', 'bold');
+        text = 'Ville : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.City, xOffset + 50, yOffset);
+
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Email : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.Email, xOffset + 50, yOffset);
+
+
+        yOffset += 40;
+        text = `Personne à prévenir en cas d\'urgence : `;
+        doc.setFont('helvetica', 'bold');
+        doc.text(text, xOffset, yOffset, { align: 'center' });
+
+        // Gauche
+        xOffset = 34;
+        yOffset += 20;
+        doc.setFont('helvetica', 'bold');
+        text = 'Nom : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.AlertLastName, xOffset + 70, yOffset);
+
+        // Centre
+        xOffset = 200; 
+        doc.setFont('helvetica', 'bold');
+        text = 'Prénom : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.AlertFirstName, xOffset + 50, yOffset);
+
+        // Droite
+        xOffset = 350;
+        doc.setFont('helvetica', 'bold');
+        text = 'Téléphone : ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text(data.AlertPhone, xOffset + 70, yOffset);
+
+        // Autres membres
+        xOffset = 34;
+        yOffset += 40;
+        doc.setFont('helvetica', 'bold');
+        text = 'Autres membres, ';
+        doc.text(text, xOffset, yOffset);
+        doc.setFont('helvetica', 'normal');
+        doc.text('si adhésion multiple, conjoints et descendants mineurs : ', xOffset + 85, yOffset);
+
+        yOffset += 20;
+        if (data.Membres?.length) {
+
+        } else {
+            doc.text('Aucun membre', xOffset, yOffset);
+        }
+
+
+        doc.save('adhesion.pdf');
+
+        return new Blob([doc.output('blob')], { type: 'application/pdf' });
     }
 
     private buildParentAuthBlob(data: ParentAuth): Blob {

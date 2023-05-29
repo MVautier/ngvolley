@@ -13,6 +13,7 @@ import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Questionary } from '@app/core/models/questionary.model';
+import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 
 @Component({
     selector: 'app-main-form',
@@ -41,16 +42,19 @@ export class MainFormComponent implements OnInit, OnDestroy {
     titles: string[] = [];
     notifier = new Subject<void>();
     subModal: Subscription;
+    all_sections: string[] = [];
 
     constructor(
         private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
         private _adapter: DateAdapter<any>,
         private modalService: ModalService,
+        private pdf: PdfMakerService,
         @Inject(MAT_DATE_LOCALE) private _locale: string,
         private formBuilder: FormBuilder) { }
 
     ngOnInit(): void {
+        this.all_sections = this.inscriptionService.sections;
         this.phoneInputMask = this.inscriptionService.phoneInputMask;
         this.cpInputMask = this.inscriptionService.cpInputMask;
         if (this.adherent) {
@@ -71,6 +75,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
                 console.log('categories: ', this.categories);
                 this.formGroup.valueChanges.subscribe(val => {
                     const adh = this.getFormAdherent();
+                    this.adherent.Sections = adh.Sections;
                     this.choosenSection = adh.Category !== null;
                     this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
                     this.checkAdherent(adh);
@@ -106,7 +111,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
             'alertlastname': [this.adherent.AlertLastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'alertfirstname': [this.adherent.AlertFirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'alertphone': [this.adherent.AlertPhone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
-            'category': [this.adherent.Category, [Validators.required]]
+            'category': [this.adherent.Category, [Validators.required]],
+            'sections': [this.adherent.Sections]
         });
     }
 
@@ -169,6 +175,16 @@ export class MainFormComponent implements OnInit, OnDestroy {
                     this.onRemoveMember(member);
                 }
             });
+    }
+
+    showPdf() {
+        this.pdf.buildAdherentForm(this.adherent).then(blob => {
+            const filename = `adhesion_${this.adherent.LastName}_${this.adherent.FirstName}`;
+            Adherent.addDoc(this.adherent, 'attestation', filename + '.pdf', blob);
+            console.log('adherent with docs : ', this.adherent);
+        }).catch(err => {
+            console.log('error generating adherent form: ', err);
+        });
     }
 
     showPopupHealth() {
@@ -284,7 +300,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
             AlertLastName: this.formGroup.get('alertlastname').value,
             AlertFirstName: this.formGroup.get('alertfirstname').value,
             AlertPhone: this.formGroup.get('alertphone').value,
-            Sections: this.inscriptionService.sections.filter(s => s === environment.section),
+            Sections: this.formGroup.get('sections').value, //this.inscriptionService.sections.filter(s => s === environment.section),
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,
             Licence: this.adherent.Licence,

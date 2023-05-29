@@ -28,7 +28,7 @@ export class Adherent {
     Membres?: Adherent[];
     Section: string;
     Sections: string[];
-    MainSectionInfo?: string;
+    VerifC3L?: string;
     Relationship?: string;
     AlertFirstName?: string;
     AlertLastName?: string;
@@ -77,7 +77,7 @@ export class Adherent {
         this.Section = Adherent.debug ? 'C' : null;
         this.Sections = [];
         this.Rgpd = false;
-        this.ImageRight = false;
+        this.ImageRight = true;
         this.Signature = null;
         
         this.Payment = null;
@@ -85,7 +85,7 @@ export class Adherent {
         this.CertificateFile = null;
         this.HealthFile = null;
         this.Documents = [];
-        this.MainSectionInfo = null;
+        this.VerifC3L = null;
         this.valid = false;
         this._opened = true;
     }
@@ -125,7 +125,7 @@ export class Adherent {
             Licence: data.Licence,
             Membres: [],
             Sections: [],
-            MainSectionInfo: null,
+            VerifC3L: null,
             Relationship: data.RelationShip,
             AlertFirstName: data.AlertFirstName,
             AlertLastName: data.AlertLastName,

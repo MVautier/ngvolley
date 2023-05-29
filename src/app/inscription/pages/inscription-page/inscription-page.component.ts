@@ -128,7 +128,11 @@ export class InscriptionPageComponent implements OnInit {
         const y = new Date().getFullYear();
         this.title = `Bulletin d\'adhésion ${y}-${y + 1}`;
         this.startIns = {
-            local: true
+            local: true,
+            already: false,
+            nom: null,
+            prenom: null,
+            section: null
         };
     }
 
@@ -195,12 +199,15 @@ export class InscriptionPageComponent implements OnInit {
         this.adherent = new Adherent(null, info.local ? environment.postalcode : null);
         if (info) {
             this.startIns = info;
-            const already = info.nom !== null && info.prenom !== null && info.section !== null;
+            const already = info.nom !== null && info.prenom !== null && this.startIns.section !== null;
+            
             if (already) {
-                this.adherent.MainSectionInfo = info.prenom + ' ' + info.nom + ': ' + info.section;
+                this.adherent.VerifC3L = 'Un autre membre, ' + info.prenom + ' ' + info.nom + ' est déjà inscrit en ' + this.startIns.section;
+            } else if (this.startIns.section) {
+                this.adherent.VerifC3L = 'L\'adhérent est déjà inscrit en ' + this.startIns.section;
             }
             this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-            const montant = already ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior);
+            const montant = this.startIns.already ? 0 : (already ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior));
             this.cart.addItem({
                 type: 'adhesion',
                 libelle: 'Adhésion ' + environment.asso,
@@ -217,6 +224,13 @@ export class InscriptionPageComponent implements OnInit {
             console.log('no info provided by step 1');
         }
         console.log('adherent: ', this.adherent);
+    }
+
+    onCancel() {
+        if (this.step === 2) {
+            this.adherent = null;
+        }
+        this.step--;
     }
 
     onStep2Validate(adherent: Adherent) {
@@ -263,16 +277,6 @@ export class InscriptionPageComponent implements OnInit {
 
     onStep3Cancel(adherent: Adherent) {
         this.adherent = adherent;
-        this.step--;
-    }
-
-    onCancel() {
-        if (this.step === 2) {
-            this.adherent = null;
-            this.startIns = {
-                local: true
-            };
-        }
         this.step--;
     }
 
