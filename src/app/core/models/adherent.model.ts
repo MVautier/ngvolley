@@ -98,7 +98,8 @@ export class Adherent {
         const doc: AdherentDoc = {
             filename: filename,
             type: type,
-            blob: blob
+            blob: blob,
+            sent: false
         };
         const docs = adherent.Documents.filter(d => d.type !== type);
         docs.push(doc);

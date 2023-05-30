@@ -72,7 +72,7 @@ export class InscriptionPageComponent implements OnInit {
             this.step = Number(params.step) || 1;
             this.paymentStatus = params.payment || null;
             if (this.paymentStatus) {
-                this.adherent = JSON.parse(localStorage.getItem('adherent'));
+                this.adherent = this.getAdherentFromLocalstorage();
                 this.cart = JSON.parse(localStorage.getItem('cart'));
                 if (this.paymentStatus === 'cancel') {
                     this.step = 4;
@@ -119,6 +119,14 @@ export class InscriptionPageComponent implements OnInit {
         //         //this.onPaymentPrint();
         //     }
         // });
+    }
+
+    private getAdherentFromLocalstorage(): Adherent {
+        const adherent = JSON.parse(localStorage.getItem('adherent'));
+        if (adherent && adherent.BirthdayDate) {
+            adherent.BirthdayDate = new Date(adherent.BirthdayDate);
+        } 
+        return adherent;
     }
 
     init() {
@@ -258,9 +266,12 @@ export class InscriptionPageComponent implements OnInit {
 
     sendDocuments(adherent: Adherent): Promise<void> {
         return new Promise((resolve, reject) => {
-            if (adherent.Documents?.length) {
+            if (adherent.Documents?.length && adherent.Documents.filter(d => !d.sent).length) {
                 this.loader.setLoading(true);
                 this.pdf.sendDocuments(adherent.Uid, adherent.Documents).then(result => {
+                    adherent.Documents.forEach(doc => {
+                        doc.sent = result;
+                    });
                     resolve();
                 })
                     .catch(err => {

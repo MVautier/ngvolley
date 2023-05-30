@@ -69,7 +69,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
                 }
             });
             this.adherentService.getCategories().then(liste => {
-                this.categories = liste;
+                this.categories = liste.filter(c => !c.Blocked);
                 this.initForm();
                 this.formGroup.markAllAsTouched();
                 console.log('categories: ', this.categories);

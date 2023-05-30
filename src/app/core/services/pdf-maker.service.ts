@@ -54,12 +54,15 @@ export class PdfMakerService {
     sendDocuments(id: string, docs: AdherentDoc[]): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const fd = this.getFormDataMultiple(id, docs);
-            this.sendDocs(fd).then((result) => {
-                resolve(result);
-            })
-                .catch(err => {
+            if (fd) {
+                this.sendDocs(fd).then((result) => {
+                    resolve(result);
+                }).catch(err => {
                     reject('error sending documents: ' + JSON.stringify(err));
                 });
+            } else {
+                resolve(true);
+            }
         });
 
     }
@@ -708,11 +711,15 @@ l'association au sein de laquelle je sollicite le renouvellement de ma licence.`
 
     private getFormDataMultiple(id: string, files: AdherentDoc[]): FormData {
         var formData = new FormData();
+        let added = false;
         formData.append('id', id);
         files.forEach(file => {
-            formData.append(file.filename, file.blob, file.filename);
+            if (!file.sent && file.blob instanceof Blob) {
+                formData.append(file.filename, file.blob, file.filename);
+                added = true;
+            }
         });
-        return formData;
+        return added ? formData : null;
     }
 
     private async sendPdf(data: FormData): Promise<string> {

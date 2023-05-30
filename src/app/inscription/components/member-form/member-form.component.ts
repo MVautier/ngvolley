@@ -47,7 +47,7 @@ export class MemberFormComponent implements OnInit {
         this.choosenSection = this.adherent.Category !== null;
         this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
         this.adherentService.getCategories().then(liste => {
-            this.categories = liste;
+            this.categories = liste.filter(c => !c.Blocked);
             this.initForm();
             this.checkAdherent(this.adherent);
             this.formGroup.markAllAsTouched();
