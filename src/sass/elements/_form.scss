@@ -81,9 +81,14 @@ iframe {
         position: relative;
         &.name {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             .left {
                 text-align: left;
+            }
+            .warning{
+                margin-top: 15px;
+                font-size: 13px;
             }
         }
         img {

@@ -150,7 +150,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
-                        <mat-label>Téléphone</mat-label>
+                        <mat-label>Téléphone 0 ou ind + 9 chiffres</mat-label>
                         <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="alertphone">
                         <mat-error
                             *ngIf="!formGroup.controls['alertphone'].valid && formGroup.controls['alertphone'].touched">
@@ -161,7 +161,7 @@
 
                 <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="form-element row-item" [ngClass]="{'mobile': isMobile}">
-                        <mat-label>Autres sections où l’adhérent est inscrit</mat-label>
+                        <mat-label>Autres sections où l’adhérent(e) est inscrit</mat-label>
                         <mat-select formControlName="sections" multiple>
                             <mat-option *ngFor="let section of all_sections" [value]="section">{{section}}</mat-option>
                         </mat-select>

@@ -34,6 +34,7 @@ import { PopupRemoveComponent } from './components/popup-remove/popup-remove.com
 import { CoreModule } from '@app/core/core.module';
 import { PhotoService } from './services/photo.service';
 import { HealthFormComponent } from './components/health-form/health-form.component';
+import { FormInfoComponent } from './components/form-info/form-info.component';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -53,7 +54,8 @@ import { HealthFormComponent } from './components/health-form/health-form.compon
     AdherentDocComponent,
     CartPaymentComponent,
     PopupRemoveComponent,
-    HealthFormComponent
+    HealthFormComponent,
+    FormInfoComponent
   ],
   imports: [
     CommonModule,

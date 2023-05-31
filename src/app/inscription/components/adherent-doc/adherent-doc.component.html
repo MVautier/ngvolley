@@ -102,12 +102,15 @@
                 <div class="section-title adherent">
                     <div class="check">
                         <div class="info">
-                            <span class="accent">Certificat médical</span> de non contre-indication à la pratique du
-                            sport ou de
-                            la discipline concernée pour toute nouvelle adhésion ou tous les 3 ans, conformément aux
-                            disposition
-                            du code du sport et à la volonté fédérale de l'UNSLL
-                            en matière de prévention de la santé du sportif.
+                            <div class="text">
+                                <span class="title">Certificat médical</span> de non contre-indication à la pratique du sport ou de
+                                la discipline concernée pour toute nouvelle adhésion ou tous les 3 ans, conformément aux
+                                disposition
+                                du code du sport et à la volonté fédérale de l'UNSLL
+                                en matière de prévention de la santé du sportif.
+                            </div>
+                            
+                            
                             <div class="health-input">
                                 <mat-form-field>
                                     <ngx-mat-file-input formControlName="file" [placeholder]="'Importer mon certificat médical'" (change)="onFileChange(formGroup.value)">
@@ -126,8 +129,11 @@
                             </div>
                         </div>
                         <div *ngIf="!checked.certifNeeded" class="info">
-                            <span class="accent">Ou Attestation de santé</span> entre chaque renouvellement triennal,
-                            conformément au décret n°2016-1387 du 12/10/2016.
+                            <div class="text">
+                                <span class="title">Ou Attestation de santé</span> entre chaque renouvellement triennal,
+                                conformément au décret n°2016-1387 du 12/10/2016.
+                            </div>
+                            
                             <div class="health-input">
                                 <button (click)="showHealthForm()" mat-raised-button color="primary">
                                     <mat-icon>edit</mat-icon>Saisir mon attestation en ligne
@@ -145,7 +151,7 @@
                         <mat-icon class="check" [ngClass]="adherent.Rgpd ? 'valid' : 'error'">
                             check_circle
                         </mat-icon>
-                        <span class="title">RGPD</span>
+                        <span class="title">Gestion des données personnelles</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 

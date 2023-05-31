@@ -3,6 +3,11 @@
         <span class="title main" [ngClass]="{'mobile': isMobile}">
             Montant de l'adhésion {{cart.client.adhesionType}} : {{cart.total | currency: "EUR":"symbol":"1.2-2":"fr"}}
         </span>
+        <span class="warning">
+            ATTENTION : Au moment du paiement, une contribution à Hello Asso est automatiquement proposée. 
+            Elle est facultative, elle peut être modifiée jusqu'à 0€ (zéro euros) en cliquant sur "Modifier", "Je ne souhaite pas soutenir...".
+        </span>
+        
     </div>
 
     <form *ngIf="formGroup && !redirectUrl" [formGroup]="formGroup" class="form">

@@ -132,6 +132,9 @@ export class InscriptionService {
     if (!check.found) {
         check.found = this.getExistingAdherent(adherent);
         console.log('found: ', check.found);
+        if (check.found && !adherent.IdAdherent) {
+            adherent.IdAdherent = check.found.IdAdherent;
+        }
     }
     check.certifLabel = 'Attestation ou certificat';
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';

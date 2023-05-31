@@ -94,7 +94,10 @@
 
     <aside class="col-progress">
         <app-cart-info *ngIf="cart && step > 1 && step < 4" [cart]="cart" [step]="step" [isMobile]="isMobile"
-            (addMember)="onAddMemberFromCart()"></app-cart-info>
+            (addMember)="onAddMemberFromCart()">
+        </app-cart-info>
+
+        <!-- <app-form-info [isMobile]="isMobile"></app-form-info> -->
     </aside>
 
 </div>
