@@ -150,7 +150,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
-                        <mat-label>Téléphone 0 ou ind + 9 chiffres</mat-label>
+                        <mat-label>Téléphone (0 ou ind + 9 chiffres)</mat-label>
                         <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="alertphone">
                         <mat-error
                             *ngIf="!formGroup.controls['alertphone'].valid && formGroup.controls['alertphone'].touched">
