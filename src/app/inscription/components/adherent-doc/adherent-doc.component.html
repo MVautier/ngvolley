@@ -94,7 +94,7 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon class="check" [ngClass]="adherent.HealthFile || adherent.CertificateFile || !checked.certifNeeded ? 'valid' : 'error'">check_circle</mat-icon>
+                        <mat-icon class="check" [ngClass]="adherent.HealthFile || adherent.CertificateFile ? 'valid' : 'error'">check_circle</mat-icon>
                         <span class="title">{{ checked.certifLabel }}</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>

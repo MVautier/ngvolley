@@ -262,7 +262,7 @@ export class PdfMakerService {
 
 
         yOffset += 40;
-        text = `Personne à prévenir en cas d\'urgence : `;
+        text = `Personne(s) à prévenir en cas d\'urgence : `;
         doc.setFont('helvetica', 'bold');
         doc.text(text, xOffset, yOffset, { align: 'center' });
 
@@ -270,26 +270,26 @@ export class PdfMakerService {
         xOffset = 34;
         yOffset += 20;
         doc.setFont('helvetica', 'bold');
-        text = 'Nom : ';
+        text = '1ère personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.AlertLastName, xOffset + 70, yOffset);
+        doc.text(data.Alert1, xOffset + 100, yOffset);
 
         // Centre
         xOffset = 200; 
         doc.setFont('helvetica', 'bold');
-        text = 'Prénom : ';
+        text = '2ème personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.AlertFirstName, xOffset + 50, yOffset);
+        doc.text(data.Alert2, xOffset + 100, yOffset);
 
         // Droite
         xOffset = 350;
         doc.setFont('helvetica', 'bold');
-        text = 'Téléphone : ';
+        text = '3ème personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.AlertPhone, xOffset + 70, yOffset);
+        doc.text(data.Alert3, xOffset + 100, yOffset);
 
         // Autres membres
         xOffset = 34;
@@ -348,6 +348,12 @@ proposées par cette section) et les responsables à faire procéder à toute in
         doc.text(text, xOffset, yOffset);
 
         yOffset += 50;
+        text = data.authorize ? `J'autorise` : `Je n'autorise pas`;
+        text += ` mon enfant à quitter seul les installations de Volley-Ball dès la fin des entraînements ou dès le retour au 
+point de rendez-vous, après un tournoi ou une sortie organisée par CLLL Colomiers.`;
+        doc.text(text, xOffset, yOffset);
+
+        yOffset += 50;
         text = `Les responsables dégagent leur responsabilité dès la sortie des enfants du gymnase.`;
         doc.text(text, xOffset, yOffset);
 
@@ -359,6 +365,7 @@ proposées par cette section) et les responsables à faire procéder à toute in
         text = `Signature`;
         doc.text(text, xOffset, yOffset);
 
+        yOffset += 30;
         doc.addImage(data.signature, 50, yOffset, 300, 150);
         return new Blob([doc.output('blob')], { type: 'application/pdf' });
     }

@@ -46,7 +46,7 @@ export class CustomValidators {
             if (control.value == null) {
                 return null;
             }
-            const check = checked && checked.found ? checked.found.Licence === control.value : true;
+            const check = checked && checked.found && checked.found.Licence ? checked.found.Licence === control.value : true;
             const match = new RegExp(/[0-9]{6,}/, 'g').test(control.value);
             return check && match ? null : (!check ? {
                 'licence': {

@@ -9,7 +9,7 @@ import { CheckAdherent } from '../models/check-adherent.model';
 @Injectable()
 export class InscriptionService {
     private obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(new Adherent(null));
-    public obsAddMember: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public obsAddMember: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
     private adherents: Adherent[] = [];
     requiredAlert: string = 'Ce champ est requis';
     phoneInputMask = '00 00 00 00 00||(+99) 0 00 00 00 00';
@@ -23,6 +23,7 @@ export class InscriptionService {
         'onlystring': { pattern: /[a-zA-Z- '"]/ },
         'telfixe': { pattern: /^(0|(\d){2})(1|2|3|4|5|6|7|9)([0-9]{2}){4}/ },
         'mobile': { pattern: /^0(6|7)([0-9]{2}){4}/ },
+        'alert': { pattern: /.{1,} (0|\(\+(\d){2}\))(1|2|3|4|5|6|7|9)(\s{0,1}[0-9]{2}){4}/},
         'email': { pattern: /^(?:[A-z0-9!#$%&'*\/=?^_{|}~]+(?:\.[A-z0-9!#$%&'*+\/=?^_{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")[\.\_\-\+]?(?:[A-z0-9!#$%&'*+\/=?^_{|}~-]+(?:\.[A-z0-9!#$%&'*+\/=?^_{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[A-z0-9](?:[A-z0-9-]*[A-z0-9])?\.)+[A-z0-9](?:[A-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[A-z0-9-]*[A-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/ } 
     };
     sections: string[] = [
@@ -73,6 +74,15 @@ export class InscriptionService {
     return null;
   }
 
+  findAdo(nom: string, prenom: string, birthday: Date): Adherent {
+    if (nom && prenom && birthday) {
+        return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(prenom) 
+        && this.normalize(a.LastName) === this.normalize(nom) 
+        && this.compareDate(a.BirthdayDate, birthday) === 0);
+    }
+    return null;
+  }
+
   getInputError(formGroup: FormGroup, field: string) {
     return formGroup.get(field).hasError('required') ? this.requiredAlert :
         formGroup.get(field).hasError('pattern') ? 'Le format est invalide' : '';
@@ -105,7 +115,7 @@ export class InscriptionService {
     return formGroup.get(field).hasError('required') ? 'L\'acceptation est requise' : '';
   }
 
-  getPatternError(formGroup: FormGroup, field: string): string | boolean {
+  getPatternError(formGroup: FormGroup, field: string, required: boolean = false): string | boolean {
     return formGroup.get(field).hasError('pattern') ? 'Le format est invalide' : '';
   }
 
@@ -163,7 +173,9 @@ export class InscriptionService {
     }
     
     // Traitement licence
-    check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
+    //check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
+    check.licenceNeeded = false;
+    check.licenceError = false;
     if (check.found && adherent.Licence && check.found.Licence && adherent.Licence !== 'création') {
         check.licenceError = adherent.Licence !== check.found.Licence;
     }
@@ -198,6 +210,6 @@ export class InscriptionService {
   }
 
   public isNull(value): boolean {
-    return value === null || value === undefined;
+    return value === null || value === undefined || value === '';
   }
 }

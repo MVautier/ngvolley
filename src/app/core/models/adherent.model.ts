@@ -30,9 +30,9 @@ export class Adherent {
     Sections: string[];
     VerifC3L?: string;
     Relationship?: string;
-    AlertFirstName?: string;
-    AlertLastName?: string;
-    AlertPhone?: string;
+    Alert1?: string;
+    Alert2?: string;
+    Alert3?: string;
     RelationShip?: string;
     valid: boolean;
     Uid: string;
@@ -50,31 +50,31 @@ export class Adherent {
     Photo?: string;
     Documents: AdherentDoc[];
 
-    constructor(base: Adherent, cp: string = null) {
-        this.IdAdherent = 0;
-        this.Category = Adherent.debug ? 'C' : null; // convert to int for bdd
+    constructor(base: Adherent, cp: string = null, isMember = false) {
+        this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
+        this.Category = base && !isMember ? base.Category : Adherent.debug ? 'C' : null; // convert to int for bdd
         this.Authorization = null;
-        this.LastName = Adherent.debug ? 'Lacroix' : null;
-        this.FirstName = Adherent.debug ? 'Stéphanie' : null;
-        this.Genre = Adherent.debug ? 'F' : null;
-        this.BirthdayDate = Adherent.debug ? new Date(1974, 5, 4) : null;
+        this.LastName = base ? base.LastName : Adherent.debug ? 'Lacroix' : null;
+        this.FirstName = base && !isMember ? base.FirstName : Adherent.debug ? 'Stéphanie' : null;
+        this.Genre = base && !isMember ? base.Genre : Adherent.debug ? 'F' : null;
+        this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? new Date(1974, 5, 4) : null;
         this.InscriptionDate = null;
-        this.Age = Adherent.debug ? 49 : null;
+        this.Age = base && !isMember ? base.Age : Adherent.debug ? 49 : null;
         this.HealthStatementDate = null;
-        this.Phone = Adherent.debug ? '0603568888' : null;
-        this.ParentPhone = null;
-        this.Address = Adherent.debug ? '33 allée de la canche' : base?.Address;
-        this.PostalCode = Adherent.debug ? '31770' : (base?.PostalCode || cp);
-        this.City = Adherent.debug ? 'Colomiers' : base?.City;
-        this.Email = Adherent.debug ? 'fanny.dominici@orange.fr' : null;
+        this.Phone = base && !isMember ? base.Phone : Adherent.debug ? '0603568888' : null;
+        this.ParentPhone = base && !isMember ? base.ParentPhone : null;
+        this.Address = base ? base.Address : Adherent.debug ? '33 allée de la canche' : base?.Address;
+        this.PostalCode = base ? base.PostalCode : Adherent.debug ? '31770' : cp;
+        this.City = base ? base.City : Adherent.debug ? 'Colomiers' : base?.City;
+        this.Email = base && !isMember ? base.Email : Adherent.debug ? 'fanny.dominici@orange.fr' : null;
         this.Photo = null;
-        this.Licence = Adherent.debug ? '297368' : null;
+        this.Licence = base && !isMember ? base.Licence : Adherent.debug ? '297368' : null;
         this.Membres = [];
-        this.AlertLastName = Adherent.debug ? 'DOMINICI' : null;
-        this.AlertFirstName = Adherent.debug ? 'Martial' : null;
-        this.AlertPhone = Adherent.debug ? '0620654010' : null;
+        this.Alert1 = base ? base.Alert1 : Adherent.debug ? 'DOMINICI Martial 0620654010' : null;
+        this.Alert2 = base ? base.Alert2 : Adherent.debug ? 'Martial' : null;
+        this.Alert3 = base ? base.Alert3 : Adherent.debug ? '0620654010' : null;
         this.Uid = uuidv4();
-        this.Section = Adherent.debug ? 'C' : null;
+        this.Section = base ? base.Section : Adherent.debug ? 'C' : null;
         this.Sections = [];
         this.Rgpd = false;
         this.ImageRight = true;
@@ -128,9 +128,9 @@ export class Adherent {
             Sections: [],
             VerifC3L: null,
             Relationship: data.RelationShip,
-            AlertFirstName: data.AlertFirstName,
-            AlertLastName: data.AlertLastName,
-            AlertPhone: data.AlertPhone,
+            Alert1: data.Alert1,
+            Alert2: data.Alert2,
+            Alert3: data.Alert3,
             valid: false,
             Uid: null,
             Rgpd: data.Rgpd,

@@ -33,6 +33,13 @@
             intervention médicale d'urgence. 
         </div>
         <div>
+            <input type="radio" class="radio" name="authorize" (change)="checkValid();" [(ngModel)]="authorize" [value]="true"> J'autorise
+            <input type="radio" class="radio" name="authorize" (change)="checkValid()" [(ngModel)]="authorize" [value]="false"> Je n'autorise pas
+        </div>
+        <div>
+            mon enfant à quitter seul les installations de Volley-Ball dès la fin des entraînements ou dès le retour au point de rendez-vous, après un tournoi ou une sortie organisée par CLLL Colomiers.
+        </div>
+        <div>
             Les responsables dégagent leur responsabilité dès la sortie des enfants du gymnase.
         </div>
         <div class="auth-form end">

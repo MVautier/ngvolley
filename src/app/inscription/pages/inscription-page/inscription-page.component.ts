@@ -9,13 +9,14 @@ import { StartInscription } from '@app/inscription/models/start-inscription.mode
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { LayoutService } from '@app/ui/layout/services/layout.service';
 import { environment } from '@env/environment';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { LoaderService } from '@app/ui/layout/services/loader.service';
 import { HelloAssoService } from '@app/inscription/services/helloasso.service';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
+import { ModalService } from '@app/ui/layout/services/modal.service';
 
 @Component({
     selector: 'app-inscription-page',
@@ -24,11 +25,12 @@ import { AuthorizeApiService } from '@app/authentication/services/authorize-api.
 })
 export class InscriptionPageComponent implements OnInit {
     title: string;
+    title2: string = environment.assoTitle;
+    step = 1;
+    reinscription: boolean = environment.reinscription;
     public isMobile = false;
     private scrollPos = 0;
     otherSections: string[] = [];
-    title2: string = environment.assoTitle;
-    step = 1;
     paymentStatus: string;
     paymentCode: string;
     paymentId: string;
@@ -56,6 +58,7 @@ export class InscriptionPageComponent implements OnInit {
         private route: ActivatedRoute,
         private helloasso: HelloAssoService,
         private authService: AuthorizeApiService,
+        private modalService: ModalService,
         private router: Router) {
         if (window.matchMedia('(max-width: 1025px)').matches) {
             this.isMobile = true;
@@ -106,19 +109,7 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        //window['_fs_namespace'] = 'FS';
 
-        //this.init();
-        // this.paymentStatus = 'success';
-        // this.paymentCode = 'succeeded';
-        // this.step = 5;
-        // this.paymentId = '5284';
-        // this.getPaymentDoc(this.paymentId).then(url => {
-        //     if (url) {
-        //         this.paymentPrintUrl = url; //'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/paiement-attestation/4230';
-        //         //this.onPaymentPrint();
-        //     }
-        // });
     }
 
     private getAdherentFromLocalstorage(): Adherent {
@@ -140,7 +131,8 @@ export class InscriptionPageComponent implements OnInit {
             already: false,
             nom: null,
             prenom: null,
-            section: null
+            section: null,
+            found: null
         };
     }
 
@@ -179,32 +171,17 @@ export class InscriptionPageComponent implements OnInit {
         this.setCategTarifs(adherent);
     }
 
-    onAddMemberFromCart() {
-        this.inscriptionService.obsAddMember.next(true);
-    }
-
-    onAddMember(adherent: Adherent) {
-        console.log('add member in inscription: ', adherent);
-        this.adherent = adherent;
-        this.cart.addItem({
-            type: 'membre',
-            libelle: 'Membre',
-            montant: environment.tarifs.member,
-            user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
-        });
-        this.setCategTarifs(adherent);
-        this.inscriptionService.obsAddMember.next(false);
-    }
-
-    onRemoveMember(removed: MemberRemove) {
-        console.log('remove member in inscription: ', removed);
-        this.adherent = removed.adherent;
-        this.cart.removeItem(removed.user);
-    }
+    // onAddMemberFromCart() {
+    //     this.inscriptionService.obsAddMember.next(true);
+    // }
 
     onStep1Validate(info: StartInscription) {
         this.cart = new Cart();
-        this.adherent = new Adherent(null, info.local ? environment.postalcode : null);
+        if (this.reinscription && info.found) {
+            this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null);
+        } else {
+            this.adherent = new Adherent(null, info.local ? environment.postalcode : null);
+        }
         if (info) {
             this.startIns = info;
             const already = info.nom !== null && info.prenom !== null && this.startIns.section !== null;
@@ -242,16 +219,67 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     onStep2Validate(adherent: Adherent) {
-        if (this.step === 2) {
-            this.adherent = adherent;
+        this.adherent = adherent;
+        this.showPopupAdd();
+    }
+
+    showPopupAdd() {
+        if (this.subModal) {
+            this.subModal.unsubscribe();
         }
-        if (this.step === 3) {
-            this.adherent.Membres.push(adherent);
+        this.modalService.open({
+            title: 'Ajouter un membre',
+            validateLabel: 'Oui',
+            cancelLabel: 'Non',
+            showCancel: true,
+            showValidate: true,
+            size: {
+                width: '100%',
+                height: '240px'
+            },
+            component: 'popup-add',
+            data: null
+        });
+        this.subModal = this.modalService.returnData
+            .pipe(takeUntil(this.notifier))
+            .subscribe(result => {
+                if (result && this.modalService.modalShown.value.component === 'popup-add') {
+                    if (result.data) {
+                        this.onAddMember();
+                    } else {
+                        this.inscriptionService.setAdherent(this.adherent);
+                        this.cart.setClient(this.adherent);
+                        this.step++;
+                        console.log('adherent: ', this.adherent);
+                    }
+                    this.notifier.next();
+                    this.notifier.complete();
+                }
+            });
+    }
+
+    onAddMember() {
+        const member = new Adherent(this.adherent, null, true);
+        member.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
+        this.adherent.Membres.push(member);
+        console.log('add member in inscription: ', this.adherent);
+        this.cart.addItem({
+            type: 'membre',
+            libelle: 'Membre',
+            montant: environment.tarifs.member,
+            user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
+        });
+        this.setCategTarifs(this.adherent);
+        this.inscriptionService.obsAddMember.next(member);
+    }
+
+    onRemoveMember(uid: string) {
+        if (uid && this.adherent.Membres?.length && this.adherent.Membres.findIndex(m => m.Uid === uid) >= 0) {
+            this.adherent.Membres = this.adherent.Membres.filter(m => m.Uid !== uid);
         }
-        this.inscriptionService.setAdherent(this.adherent);
-        this.cart.setClient(this.adherent);
-        this.step++;
-        console.log('adherent: ', adherent);
+        console.log('remove member in inscription: ', uid);
+        //this.adherent = removed.adherent;
+        this.cart.removeItem(uid);
     }
 
     onStep3Validate(adherent: Adherent) {

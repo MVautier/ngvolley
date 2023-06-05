@@ -32,6 +32,7 @@ export class ParentAuthComponent implements OnInit {
     phoneInputMask = '00 00 00 00 00||(+99) 0 00 00 00 00';
     data: ParentAuth;
     now: Date = new Date();
+    authorize: boolean = true;
 
     constructor(
         private datePipe: DatePipe,
@@ -80,6 +81,7 @@ export class ParentAuthComponent implements OnInit {
         if (this.checkValid()) {
             this.data.date = this.datePipe.transform(this.now, 'dd/MM/yyyy');
             this.data.child_birthdate = this.datePipe.transform(this.datenaissance, 'dd/MM/yyyy');
+            this.data.authorize = this.authorize;
             this.pdf.buildParentAuth(this.data).then(blob => {
                 if (blob) {
                     this.validate({

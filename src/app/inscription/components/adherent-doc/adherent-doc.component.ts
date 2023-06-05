@@ -92,9 +92,10 @@ export class AdherentDocComponent implements OnInit {
     }
 
     getLicenceError(field: string) {
-        if (this.checked?.licenceNeeded && !this.firstLicence) {
-            if (!this.formGroup.get('licence').value) return 'Le n° de licence est requis';
-            return this.inscriptionService.getLicenceError(this.formGroup, field);
+        if (!this.firstLicence) {
+            // if (!this.formGroup.get('licence').value) return 'Le n° de licence est requis';
+            // return this.inscriptionService.getLicenceError(this.formGroup, field);
+            if (this.formGroup.get('licence').value) return this.inscriptionService.getLicenceError(this.formGroup, field);
         }
         return '';
     }
@@ -183,7 +184,7 @@ export class AdherentDocComponent implements OnInit {
             showValidate: true,
             size: {
                 width: '100%',
-                height: '700px'
+                height: '800px'
             },
             component: 'parent-auth',
             data: this.adherent

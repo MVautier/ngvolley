@@ -71,6 +71,8 @@
         <mat-option value="P">Parent</mat-option>
         <mat-option value="C">Conjoint</mat-option>
         <mat-option value="E">Enfant</mat-option>
+        <mat-option value="F">Frère</mat-option>
+        <mat-option value="S">Soeur</mat-option>
       </mat-select>
       <mat-error *ngIf="!formGroup.controls['relationship'].valid && formGroup.controls['relationship'].touched">
         {{ getInputError('relationship') }}

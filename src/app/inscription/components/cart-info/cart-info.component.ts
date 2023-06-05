@@ -11,18 +11,12 @@ export class CartInfoComponent implements OnInit {
     @Input() cart: Cart;
     @Input() step: number;
     @Input() isMobile: boolean;
-    @Output() addMember: EventEmitter<void> = new EventEmitter<void>();
     showPayment = false;
     isMobileOpened = false;
     constructor() { }
 
     ngOnInit(): void {
 
-    }
-
-    onAddMember(event: Event) {
-        this.addMember.emit();
-        event.stopImmediatePropagation();
     }
 
     onSmallClick() {

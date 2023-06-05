@@ -28,8 +28,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
     @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() validate: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
-    @Output() addMember: EventEmitter<Adherent> = new EventEmitter<Adherent>();
-    @Output() removeMember: EventEmitter<MemberRemove> = new EventEmitter<MemberRemove>();
+    @Output() removeMember: EventEmitter<string> = new EventEmitter<string>();
     mode: string;
     formGroup: FormGroup;
     phoneInputMask: string;
@@ -63,9 +62,9 @@ export class MainFormComponent implements OnInit, OnDestroy {
             this.members = [].concat(this.adherent.Membres);
             this.choosenSection = this.adherent.Category !== null;
             this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
-            this.subAddAdherent = this.inscriptionService.obsAddMember.subscribe(add => {
-                if (add) {
-                    this.onAddMember();
+            this.subAddAdherent = this.inscriptionService.obsAddMember.subscribe(member => {
+                if (member) {
+                    this.onAddMember(member);
                 }
             });
             this.adherentService.getCategories().then(liste => {
@@ -108,9 +107,9 @@ export class MainFormComponent implements OnInit, OnDestroy {
             'city': [this.adherent.City, [this.mode === 'adherent' ? Validators.required : Validators.nullValidator, Validators.pattern(patterns.onlystring.pattern)]],
             'phone': [this.adherent.Phone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
             'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
-            'alertlastname': [this.adherent.AlertLastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
-            'alertfirstname': [this.adherent.AlertFirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
-            'alertphone': [this.adherent.AlertPhone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
+            'alert1': [this.adherent.Alert1, [Validators.minLength(10), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
+            'alert2': [this.adherent.Alert2, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
+            'alert3': [this.adherent.Alert3, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
             'category': [this.adherent.Category, [Validators.required]],
             'sections': [this.adherent.Sections]
         });
@@ -141,13 +140,9 @@ export class MainFormComponent implements OnInit, OnDestroy {
         return this.inscriptionService.getPatternError(this.formGroup, field);
     }
 
-    onAddMember() {
+    onAddMember(member: Adherent) {
         this.resetOpened();
-        const member = new Adherent(this.adherent);
-        member.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-        this.adherent.Membres.push(member);
         this.members = [].concat(this.adherent.Membres);
-        this.addMember.emit(this.adherent);
         this.titles.push(member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length);
     }
 
@@ -171,10 +166,28 @@ export class MainFormComponent implements OnInit, OnDestroy {
         this.subModal = this.modalService.returnData
             .pipe(takeUntil(this.notifier))
             .subscribe(result => {
-                if (result?.data) {
-                    this.onRemoveMember(member);
+                if (result && this.modalService.modalShown.value.component === 'popup-remove') {
+                    if (result.data) {
+                        this.onRemoveMember(member);
+                    }
+                    this.notifier.next();
+                    this.notifier.complete();
                 }
             });
+    }
+
+    onRemoveMember(member: Adherent = null) {
+        if (member) {
+            const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
+            if (index >= 0) {
+                this.adherent.Membres.splice(index, 1);
+                this.titles.splice(index + 1, 1);
+                this.members = [].concat(this.adherent.Membres);
+                const current = this.members.length ? this.members[this.members.length - 1] : this.adherent;
+                this.resetOpened(current.Uid);
+                this.removeMember.emit(member.Uid);
+            }
+        } 
     }
 
     showPdf() {
@@ -214,29 +227,6 @@ export class MainFormComponent implements OnInit, OnDestroy {
                     console.log('adherent with docs : ', this.adherent);
                 }
             });
-    }
-
-    onRemoveMember(member: Adherent = null) {
-        let user = '';
-        if (member) {
-            user = member.Uid;
-            const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
-            if (index >= 0) {
-                this.adherent.Membres.splice(index, 1);
-                this.titles.splice(index + 1, 1);
-            }
-        } else {
-            user = this.adherent.Membres[this.adherent.Membres.length - 1].Uid;
-            this.adherent.Membres.pop();
-            this.titles.pop();
-        }
-        this.members = [].concat(this.adherent.Membres);
-        this.removeMember.emit({
-            adherent: this.adherent,
-            user: user
-        });
-        const current = this.members.length ? this.members[this.members.length - 1] : this.adherent;
-        this.resetOpened(current.Uid);
     }
 
     resetOpened(uid: string = null) {
@@ -297,9 +287,9 @@ export class MainFormComponent implements OnInit, OnDestroy {
             Age: Adherent.getAge(this.formGroup.get('birthdate').value),
             Membres: this.adherent.Membres,
             Relationship: null,
-            AlertLastName: this.formGroup.get('alertlastname').value,
-            AlertFirstName: this.formGroup.get('alertfirstname').value,
-            AlertPhone: this.formGroup.get('alertphone').value,
+            Alert1: this.formGroup.get('alert1').value,
+            Alert2: this.formGroup.get('alert2').value,
+            Alert3: this.formGroup.get('alert3').value,
             Sections: this.formGroup.get('sections').value, //this.inscriptionService.sections.filter(s => s === environment.section),
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,

@@ -4,57 +4,91 @@
         <!-- <input class="form-control" type="text" name="section" placeholder="Nom des sections séparées par des vigules" [(ngModel)]="section" required> -->
         <form *ngIf="formGroup" [formGroup]="formGroup" class="form">
 
-            <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.local" [ngModelOptions]="{standalone: true}">
-                <label>Résidez-vous à {{city}} ?</label>  
-                <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
-                <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
-            </mat-radio-group>
-            
-            <mat-radio-group *ngIf="!alreadySigned" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.already" [ngModelOptions]="{standalone: true}">
-                <label>Etes-vous déjà inscrit(e) au CLLL Colomiers ?</label>  
-                <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
-                <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
-            </mat-radio-group>
+            <div *ngIf="reinscription">
+                <div  class="ins_info">
+                    Les site n'est actuellement ouvert qu'à la réinscription des jeunes.
+                    <br><br>
+                    Merci de s'identifier pour commencer.
+                </div>
 
-            <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="alreadySigned" [ngModelOptions]="{standalone: true}">
-                <label>Avez-vous un membre de la famille déjà inscrit à {{asso}} pour cette saison ?</label>  
-                <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
-                <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
-            </mat-radio-group>
-
-            <section *ngIf="start.already || alreadySigned" class="inscription">
-                <div *ngIf="!start.already" class="form-element row-item flex">
-                    <mat-form-field class="first first-50">
-                        <mat-label>Nom</mat-label>
-                        <input matInput placeholder="Nom" formControlName="nom" required>
-                        <mat-error *ngIf="!formGroup.controls['nom'].valid && formGroup.controls['nom'].touched">
-                            {{ getInputError('nom') }}
-                          </mat-error>
+                <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
+                    <mat-form-field class="first first-33">
+                        <input matInput placeholder="Nom" [(ngModel)]="nomado" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
-        
-                    <mat-form-field class="last">
-                        <mat-label>Prénom</mat-label>
-                        <input matInput placeholder="Prénom" formControlName="prenom" required>
-                        <mat-error *ngIf="!formGroup.controls['prenom'].valid && formGroup.controls['prenom'].touched">
-                            {{ getInputError('prenom') }}
-                          </mat-error>
+
+                    <mat-form-field class="first first-33">
+                        <input matInput placeholder="Prénom" [(ngModel)]="prenomado" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+
+                    <mat-form-field class="first first-33">
+                        <mat-label>Date de naissance</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="birthday" [ngModelOptions]="{standalone: true}" readonly
+                            (click)="picker.open()">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <mat-form-field class="form-element row-item">
-                    <mat-label *ngIf="!start.already">Dans quelle section ?</mat-label>
-                    <mat-label *ngIf="start.already">Section principale</mat-label>
-                    <mat-select formControlName="section">
-                        <mat-option *ngFor="let section of sections" [value]="section">{{section}}</mat-option>
-                      </mat-select>
-                    <mat-error *ngIf="!formGroup.controls['section'].valid && formGroup.controls['section'].touched">
-                        {{ getInputError('section') }}
-                      </mat-error>
-                </mat-form-field>
-            </section>
+
+                <div class="footer" *ngIf="!adofound">
+                    <button mat-raised-button color="primary" (click)="onValidateAdo()">Valider</button>
+                </div>
+            </div>
+
+            <div *ngIf="showForm">
+                <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.local" [ngModelOptions]="{standalone: true}">
+                    <label>Résidez-vous à {{city}} ?</label>  
+                    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                </mat-radio-group>
+                
+                <mat-radio-group *ngIf="!alreadySigned" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.already" [ngModelOptions]="{standalone: true}">
+                    <label>Etes-vous déjà inscrit(e) au CLLL Colomiers dans une autre section pour la saison {{year}} ?</label>  
+                    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                </mat-radio-group>
+    
+                <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="alreadySigned" [ngModelOptions]="{standalone: true}">
+                    <label>Avez-vous un membre de la famille déjà inscrit au CLLL Colomiers pour la saison {{year}} ?</label>  
+                    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                </mat-radio-group>
+    
+                <section *ngIf="start.already || alreadySigned" class="inscription">
+                    <div *ngIf="!start.already" class="form-element row-item flex">
+                        <mat-form-field class="first first-50">
+                            <mat-label>Nom</mat-label>
+                            <input matInput placeholder="Nom" formControlName="nom" required>
+                            <mat-error *ngIf="!formGroup.controls['nom'].valid && formGroup.controls['nom'].touched">
+                                {{ getInputError('nom') }}
+                              </mat-error>
+                        </mat-form-field>
+            
+                        <mat-form-field class="last">
+                            <mat-label>Prénom</mat-label>
+                            <input matInput placeholder="Prénom" formControlName="prenom" required>
+                            <mat-error *ngIf="!formGroup.controls['prenom'].valid && formGroup.controls['prenom'].touched">
+                                {{ getInputError('prenom') }}
+                              </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field class="form-element row-item">
+                        <mat-label *ngIf="!start.already">Dans quelle section ?</mat-label>
+                        <mat-label *ngIf="start.already">Section principale</mat-label>
+                        <mat-select formControlName="section">
+                            <mat-option *ngFor="let section of !start.already ? sections : sectionsWithoutVolley" [value]="section">{{section}}</mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="!formGroup.controls['section'].valid && formGroup.controls['section'].touched">
+                            {{ getInputError('section') }}
+                          </mat-error>
+                    </mat-form-field>
+                </section>
+            </div>
+
+            
         </form>
     </div>
 </div>
 
-<div class="footer">
-    <button mat-raised-button color="primary" (click)="onValidate()" [disabled]="alreadySigned && formGroup.invalid">Suivant</button>
+<div class="footer" *ngIf="showForm">
+    <button mat-raised-button color="primary" (click)="onValidate()" [disabled]="(start.already || alreadySigned) && formGroup.invalid">Suivant</button>
 </div>

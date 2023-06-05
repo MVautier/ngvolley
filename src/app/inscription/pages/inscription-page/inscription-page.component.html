@@ -14,11 +14,15 @@
             Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de 6€ chacun.
             <br><br>
 
-            Il sera <b>obligatoire</b> de présenter et téléverser un certificat médical ou de remplir une attestation de santé en ligne 
+            Pour réaliser cette inscription, il est <b>obligatoire</b> de présenter et téléverser un certificat médical ou de remplir une attestation de santé en ligne 
 
             <!-- <b>il est nécessaire de télécharger au préalable <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b> -->
             <br><br>
             Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
+            <br><br>
+            <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
+            <br>
+            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle.
         </div>
 
         <div class="form">
@@ -50,11 +54,10 @@
             </div>
 
             <div class="inscription" [ngClass]="{'mobile': isMobile}">
-                <app-start-form *ngIf="step === 1" [start]="startIns"
-                    (validate)="onStep1Validate($event)"></app-start-form>
+                <app-start-form *ngIf="step === 1" [start]="startIns" (validate)="onStep1Validate($event)"></app-start-form>
 
                 <app-main-form *ngIf="step === 2" [adherent]="adherent" [local]="startIns.local" [isMobile]="isMobile"
-                    (addMember)="onAddMember($event)" (change)="onAdherentChange($event)"
+                    (change)="onAdherentChange($event)"
                     (removeMember)="onRemoveMember($event)" (validate)="onStep2Validate($event)" (cancel)="onCancel()">
                 </app-main-form>
 
@@ -93,8 +96,7 @@
     </div>
 
     <aside class="col-progress">
-        <app-cart-info *ngIf="cart && step > 1 && step < 4" [cart]="cart" [step]="step" [isMobile]="isMobile"
-            (addMember)="onAddMemberFromCart()">
+        <app-cart-info *ngIf="cart && step > 1 && step < 4" [cart]="cart" [step]="step" [isMobile]="isMobile">
         </app-cart-info>
 
         <!-- <app-form-info [isMobile]="isMobile"></app-form-info> -->

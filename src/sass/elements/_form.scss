@@ -79,6 +79,8 @@ iframe {
         font-size: 18px;
         margin-bottom: 15px;
         position: relative;
+        margin-top: 40px;
+        font-weight: 700;
         &.name {
             display: flex;
             flex-direction: column;
@@ -149,6 +151,7 @@ iframe {
                     flex-direction: column;
                     justify-content: space-around;
                     align-items: baseline;
+                    font-size: 15px;
                     mat-form-field {
                         padding-bottom: 5px;
                         width: 100%;
@@ -173,6 +176,9 @@ iframe {
             }
         }
     }
+    .format-alert {
+        font-size: 13px;
+    }
     .parent-auth {
         text-align: center;
         font-size: initial;
@@ -195,6 +201,7 @@ iframe {
             padding: 15px 0;
             display: flex;
             flex-direction: column;
+            font-weight: 400;
             span.accent {
                 color: var(--accent);
                 font-weight: 450;

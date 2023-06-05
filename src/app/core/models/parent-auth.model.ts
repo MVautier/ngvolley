@@ -9,6 +9,7 @@ export class ParentAuth {
     child_firstname: string;
     child_lastname: string;
     child_birthdate: string;
+    authorize: boolean;
     commune: string;
     date: string;
     signature: string;
