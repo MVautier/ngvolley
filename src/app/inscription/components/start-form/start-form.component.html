@@ -29,6 +29,8 @@
                     </mat-form-field>
                 </div>
 
+                <div *ngIf="notFoundError" class="error">{{notFoundText}}</div>
+
                 <div class="footer" *ngIf="!adofound">
                     <button mat-raised-button color="primary" (click)="onValidateAdo()">Valider</button>
                 </div>

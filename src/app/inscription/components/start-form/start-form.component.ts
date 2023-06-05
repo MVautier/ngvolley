@@ -32,6 +32,8 @@ export class StartFormComponent implements OnInit {
     reinscription: boolean = environment.reinscription;
     showForm = false;
     adofound: Adherent = undefined;
+    notFoundError: boolean = false;
+    notFoundText = 'Un nom, un prénom et une date de naissance valides doivents être fournis pour la réinscription.';
 
     constructor(
         private inscriptionService: InscriptionService,
@@ -87,15 +89,18 @@ export class StartFormComponent implements OnInit {
     }
 
     onValidateAdo() {
+        this.notFoundError = false;
         if (this.nomado && this.prenomado && this.birthday) {
             this.adofound = this.inscriptionService.findAdo(this.nomado, this.prenomado, this.birthday);
             if (this.adofound) {
                 this.showForm = true;
             } else {
+                this.notFoundError = true;
                 this.showForm = false;
             }
         } else {
             this.adofound = undefined;
+            this.notFoundError = true;
             this.showForm = false;
         }
     }
