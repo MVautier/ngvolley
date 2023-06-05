@@ -45,6 +45,7 @@ export class InscriptionPageComponent implements OnInit {
     docurl = environment.urlassodocs;
     notifier = new Subject<void>();
     subModal: Subscription;
+    saison: number;
     redirectUrl = 'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/edbd162482a640d1ac05710a05943f38';
 
     constructor(
@@ -124,8 +125,8 @@ export class InscriptionPageComponent implements OnInit {
         this.step = 1;
         localStorage.removeItem('adherent');
         localStorage.removeItem('cart');
-        const y = new Date().getFullYear();
-        this.title = `Bulletin d\'adhésion ${y}-${y + 1}`;
+        this.saison = new Date().getFullYear();
+        this.title = `Bulletin d\'adhésion ${this.saison}-${this.saison + 1}`;
         this.startIns = {
             local: true,
             already: false,
@@ -137,12 +138,13 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     addOrUpdate() {
+        this.adherent.Saison = this.saison;
         this.adherentService.addOrUpdate(this.adherent).then(result => {
             console.log('success addOrUpdate: ', result);
         })
-            .catch(err => {
-                console.log('error addOrUpdate: ', err);
-            });
+        .catch(err => {
+            console.log('error addOrUpdate: ', err);
+        });
     }
 
     getPaymentDoc(id: string): Promise<string> {

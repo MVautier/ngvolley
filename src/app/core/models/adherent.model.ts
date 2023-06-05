@@ -49,6 +49,7 @@ export class Adherent {
     CertificateDate?: Date;
     Photo?: string;
     Documents: AdherentDoc[];
+    Saison: number;
 
     constructor(base: Adherent, cp: string = null, isMember = false) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
@@ -79,6 +80,7 @@ export class Adherent {
         this.Rgpd = false;
         this.ImageRight = true;
         this.Signature = null;
+        this.Saison = base ? base.Saison : new Date().getFullYear();
         
         this.Payment = null;
         this.CertificateDate = null;
@@ -144,7 +146,8 @@ export class Adherent {
             CertificateFile: data.CertificateFile,
             CertificateDate: data.CertificateDate ? new Date(data.CertificateDate) : null,
             Authorization: data.Authorization,
-            Documents: []
+            Documents: [],
+            Saison: data.Saison
         }
     }
 }
