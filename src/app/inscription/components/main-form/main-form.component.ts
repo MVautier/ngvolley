@@ -304,7 +304,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
             TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
             Documents: this.adherent.Documents,
-            Saison: this.adherent.Saison
+            Saison: this.adherent.Saison,
+            Order: null
         };
     }
 }

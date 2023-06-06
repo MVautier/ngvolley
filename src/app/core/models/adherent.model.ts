@@ -1,6 +1,7 @@
 import { environment } from "@env/environment";
 import { v4 as uuidv4 } from 'uuid';
 import { AdherentDoc } from "./adherent-doc.model";
+import { Order } from "./order.model";
 
 export class Adherent {
     private static debug = environment.debug;
@@ -50,6 +51,7 @@ export class Adherent {
     Photo?: string;
     Documents: AdherentDoc[];
     Saison: number;
+    Order: Order;
 
     constructor(base: Adherent, cp: string = null, isMember = false) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
@@ -90,6 +92,7 @@ export class Adherent {
         this.VerifC3L = null;
         this.valid = false;
         this._opened = true;
+        this.Order = null;
     }
 
     public static getAge(birthdate: Date): number {
@@ -147,7 +150,8 @@ export class Adherent {
             CertificateDate: data.CertificateDate ? new Date(data.CertificateDate) : null,
             Authorization: data.Authorization,
             Documents: [],
-            Saison: data.Saison
+            Saison: data.Saison,
+            Order: Order.fromJson(data.Order)
         }
     }
 }

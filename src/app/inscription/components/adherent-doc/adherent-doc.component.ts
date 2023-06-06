@@ -196,6 +196,14 @@ export class AdherentDocComponent implements OnInit {
                     const filename = `autorisation.pdf`;
                     Adherent.addDoc(this.adherent, 'autorisation', filename, result.data);
                     this.adherent.Authorization = filename;
+                    const tels: string[] = [];
+                    if (result.data.telfixe) {
+                        tels.push(result.data.telfixe);
+                    }
+                    if (result.data.mobile) {
+                        tels.push(result.data.mobile);
+                    }
+                    this.adherent.ParentPhone = tels.join(',');
                     console.log('adherent with docs : ', this.adherent);
                     this.notifier.next();
                     this.notifier.complete();
@@ -254,6 +262,5 @@ export class AdherentDocComponent implements OnInit {
         this.adherent.Licence = this.firstLicence ? 'création' : this.formGroup.get('licence').value;
         this.savedLicence = this.adherent.Licence;
         this.adherent.Rgpd = this.formGroup.get('rgpd').value;
-        
     }
 }

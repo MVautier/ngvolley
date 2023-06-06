@@ -17,6 +17,7 @@ import { HelloAssoService } from '@app/inscription/services/helloasso.service';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 import { ModalService } from '@app/ui/layout/services/modal.service';
+import { Order } from '@app/core/models/order.model';
 
 @Component({
     selector: 'app-inscription-page',
@@ -72,7 +73,7 @@ export class InscriptionPageComponent implements OnInit {
             this.isMenuOpened = isOpened;
         });
         let url = environment.fullApp ? '/' : '/inscription';
-        this.route.queryParams.subscribe(params => {
+        this.route.queryParams.subscribe(async params => {
             this.step = Number(params.step) || 1;
             this.paymentStatus = params.payment || null;
             if (this.paymentStatus) {
@@ -86,14 +87,13 @@ export class InscriptionPageComponent implements OnInit {
                     this.paymentError = params.error || null;
                     if (this.paymentCode === 'succeeded') {
                         console.log('payment succeeded - ', this.paymentId, this.paymentError);
-                        this.getPaymentDoc(this.paymentId).then(url => {
-                            if (url) {
-                                this.paymentPrintUrl = url;
-                            }
-                        });
+                        const url = await this.getPaymentDoc(this.paymentId);
+                        if (url) {
+                            this.paymentPrintUrl = url;
+                        }
                         // Ecriture de l'adhérent en base
                         console.log('Ecriture de l\'adhérent en base: ', this.adherent);
-                        this.addOrUpdate();
+                        //this.addOrUpdate();
                     } else if (this.paymentCode === 'refused') {
                         console.log('payment refused - ', this.paymentId, this.paymentError);
                     }
@@ -138,13 +138,53 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     addOrUpdate() {
-        this.adherent.Saison = this.saison;
-        this.adherentService.addOrUpdate(this.adherent).then(result => {
+        const membres: Adherent[] = [];
+        if (this.adherent.Membres?.length) {
+            this.adherent.Membres.forEach(m => {
+                m.BirthdayDate = new Date(m.BirthdayDate);
+                membres.push(this.prepareAdherentForBdd(m, false));
+            });
+        }
+        const adherent = this.prepareAdherentForBdd(this.adherent);
+        adherent.Membres = membres;
+        this.adherentService.addOrUpdate(adherent).then(result => {
             console.log('success addOrUpdate: ', result);
         })
         .catch(err => {
             console.log('error addOrUpdate: ', err);
         });
+    }
+
+    prepareAdherentForBdd(adherent: Adherent, main = true): Adherent {
+        adherent.Saison = new Date().getFullYear();
+        adherent.BirthdayDate = this.UtcDate(adherent.BirthdayDate);
+        adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.UtcDate(new Date()) : null;
+        adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
+        if (main) {
+            const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
+            const client = this.cart.client;
+            const order: Order = {
+                Id: 0,
+                IdPaiement: Number(this.paymentId),
+                IdAdherent: adherent.IdAdherent,
+                Date: this.UtcDate(new Date()),
+                CotisationC3L: toCLLL,
+                Total: this.cart.total,
+                Nom: client?.LastName,
+                Prenom: client?.FirstName,
+                Email: client?.Email,
+                DateNaissance: this.UtcDate(new Date(client?.BirthdayDate))
+            };
+            adherent.Order = order;
+            adherent.PaymentComment = this.paymentPrintUrl;
+        }
+        return adherent;
+    }
+
+    private UtcDate(date: Date): Date {
+        if (!date) return null;
+        const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
+        return new Date(UTCDate);
     }
 
     getPaymentDoc(id: string): Promise<string> {
