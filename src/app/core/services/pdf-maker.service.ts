@@ -51,6 +51,26 @@ export class PdfMakerService {
         });
     }
 
+    sendAllDocuments(adherent: Adherent): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const promises: Promise<boolean>[] = [];
+            if (adherent.Membres.length) {
+                adherent.Membres.forEach(m => {
+                    if (m.Documents.length) {
+                        promises.push(this.sendDocuments(m.Uid, m.Documents));
+                    }
+                });
+            }
+            promises.push(this.sendDocuments(adherent.Uid, adherent.Documents));
+            Promise.all(promises).then(results => {
+                const ok = results.filter(r => !r).length === 0; 
+                resolve(ok);
+            }).catch(err => {
+                reject('error sending documents: ' + JSON.stringify(err));
+            })
+        });
+    }
+
     sendDocuments(id: string, docs: AdherentDoc[]): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const fd = this.getFormDataMultiple(id, docs);
@@ -64,7 +84,6 @@ export class PdfMakerService {
                 resolve(true);
             }
         });
-
     }
 
     buildHealthForm(data: Questionary, forUser: boolean = true): Promise<Blob> {
@@ -207,7 +226,7 @@ export class PdfMakerService {
         text = 'Genre : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.Genre, xOffset + 70, yOffset);
+        doc.text(this.getLibGenre(data.Genre), xOffset + 70, yOffset);
 
         yOffset += 20;
         doc.setFont('helvetica', 'bold');
@@ -262,29 +281,26 @@ export class PdfMakerService {
 
 
         yOffset += 40;
-        text = `Personne(s) à prévenir en cas d\'urgence : `;
+        text = `Personne(s) à prévenir en cas d\'urgence`;
         doc.setFont('helvetica', 'bold');
         doc.text(text, xOffset, yOffset, { align: 'center' });
 
-        // Gauche
         xOffset = 34;
-        yOffset += 20;
+        yOffset += 40;
         doc.setFont('helvetica', 'bold');
         text = '1ère personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
         doc.text(data.Alert1, xOffset + 100, yOffset);
 
-        // Centre
-        xOffset = 200; 
+        yOffset += 20;
         doc.setFont('helvetica', 'bold');
         text = '2ème personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
         doc.text(data.Alert2, xOffset + 100, yOffset);
 
-        // Droite
-        xOffset = 350;
+        yOffset += 20;
         doc.setFont('helvetica', 'bold');
         text = '3ème personne : ';
         doc.text(text, xOffset, yOffset);
@@ -292,25 +308,123 @@ export class PdfMakerService {
         doc.text(data.Alert3, xOffset + 100, yOffset);
 
         // Autres membres
-        xOffset = 34;
+        xOffset = 300;
         yOffset += 40;
         doc.setFont('helvetica', 'bold');
-        text = 'Autres membres, ';
-        doc.text(text, xOffset, yOffset);
-        doc.setFont('helvetica', 'normal');
-        doc.text('si adhésion multiple, conjoints et descendants mineurs : ', xOffset + 85, yOffset);
+        text = 'Autres membres';
+        doc.text(text, xOffset, yOffset, { align: 'center' });
 
+        xOffset = 34;
         yOffset += 20;
         if (data.Membres?.length) {
-
+            let xm = xOffset;
+            let ym = yOffset;
+            let i = 2;
+            doc.setFont('helvetica', 'bold');
+            this.writeMemberHeader(doc, xm, ym + 20, 20);
+            doc.setFont('helvetica', 'normal');
+            data.Membres.forEach(m => {
+                xm += i == 2 ? 120 : 150;
+                ym = yOffset;
+                this.writeMemberColumn(doc, m, i, xm, ym, 20);
+                i++;
+            });
         } else {
             doc.text('Aucun membre', xOffset, yOffset);
         }
 
-
-        doc.save('adhesion.pdf');
+        //doc.save('adhesion.pdf');
 
         return new Blob([doc.output('blob')], { type: 'application/pdf' });
+    }
+
+    private writeMemberHeader(doc: jsPDF, x: number, y: number, inc: number) {  
+        y += inc;
+        let text = 'Nom';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Prénom';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Téléphone';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Lien de parenté';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Date de naissance';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Genre';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Email';
+        doc.text(text, x, y);
+        y += inc;
+        text = 'Sections';
+        doc.text(text, x, y);
+    }
+
+    private writeMemberColumn(doc: jsPDF, m: Adherent, i: number, x: number, y: number, inc: number) {
+        doc.setFont('helvetica', 'bold');
+        y += inc;
+        let text = 'Adhérent ' + i;
+        doc.text(text, x, y);
+        doc.setFont('helvetica', 'normal');
+        y += inc;
+        doc.text(m.LastName, x, y);
+        y += inc;
+        doc.text(m.FirstName, x, y);
+        y += inc;
+        doc.text(m.Phone, x, y);
+        y += inc;
+        doc.text(this.getLibParente(m.Relationship), x, y);
+        y += inc;
+        doc.text(this.datePipe.transform(m.BirthdayDate, 'dd/MM/yyyy'),x, y);
+        y += inc;
+        doc.text(this.getLibGenre(m.Genre), x, y);
+        y += inc;
+        doc.text(m.Email, x, y);
+        y += inc;
+        doc.text(m.Sections.length ? m.Sections.join(',') : '-', x, y);
+    }
+
+    private getLibGenre(code: string): string {
+        let value = '';
+        switch (code) {
+            case 'M': 
+                value = 'Masculin';
+                break;
+            case 'F': 
+                value = 'Féminin';
+                break;
+            case 'A': 
+                value = 'Autre';
+                break;
+        }
+        return value;
+    }
+
+    private getLibParente(code: string): string {
+        let value = '';
+        switch (code) {
+            case 'P': 
+                value = 'Parent';
+                break;
+            case 'C': 
+                value = 'Conjoint';
+                break;
+            case 'E': 
+                value = 'Enfant';
+                break;
+            case 'F': 
+                value = 'Frère';
+                break;
+            case 'S': 
+                value = 'Soeur';
+                break;
+        }
+        return value;
     }
 
     private buildParentAuthBlob(data: ParentAuth): Blob {

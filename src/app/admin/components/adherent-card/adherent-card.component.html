@@ -1,0 +1,85 @@
+<div>
+
+    <div class="top">
+        <div>
+            <button type="button" mat-raised-button color="primary" matPrefix (click)="returnToListe()">
+                <mat-icon>arrow_back</mat-icon>Retour à la liste
+            </button>
+        </div>
+    </div>
+
+    <div class="adherent-card" *ngIf="adherent">
+        <p class="adherent-card__title">
+            Informations générales ({{adherent.IdAdherent}})
+            <!-- <a href="#" class="link" [routerLink]="['/', 'accounts', detail?.CustomerId] "
+              [queryParams]="{sortField: 'id', sortAsc: true, page: 1, size: 10, tab: 'orders'}">Voir toutes les commandes du
+              client</a> -->
+        </p>
+
+        <div class="line">
+            <p class="label">Nom</p>
+            {{ adherent.LastName }}
+        </div>
+        <div class="line">
+            <p class="label">Prénom</p>
+            {{ adherent.FirstName }}
+        </div>
+        <div class="line">
+            <p class="label">Genre</p>
+            {{ adherent.Genre || '-' }}
+        </div>
+        <div class="line">
+            <p class="label">Date naissance</p>
+            {{ adherent.BirthdayDate | date:'dd/MM/yyyy' }} ({{adherent.Age }} ans)
+        </div>
+        <div class="line">
+            <p class="label">Adresse</p>
+            {{ adherent.Address }} {{ adherent.PostalCode }} {{ adherent.City }}
+        </div>
+        <div class="line">
+            <p class="label">Tél</p>
+            {{ adherent.Phone }}
+        </div>
+        <div class="line">
+            <p class="label">Email</p>
+            {{ adherent.Email }}
+        </div>
+
+        <p class="adherent-card__title">
+            Fiche Volley
+            <!-- <a href="#" class="link" [routerLink]="['/', 'accounts', detail?.CustomerId] "
+              [queryParams]="{sortField: 'id', sortAsc: true, page: 1, size: 10, tab: 'orders'}">Voir toutes les commandes du
+              client</a> -->
+        </p>
+
+        <div class="line">
+            <p class="label">Section</p>
+            {{ adherent.Section }}
+        </div>
+        <div class="line">
+            <p class="label">Formule</p>
+            {{ adherent.Category === 'C' ? 'Compétition' : adherent.Category === 'L' ? 'Loisirs' : 'Ados' }}
+        </div>
+        <div class="line">
+            <p class="label">Date certificat</p>
+            {{ adherent.CertificateDate | date:'dd/MM/yyyy' }}
+        </div>
+        <div class="line">
+            <p class="label">Licence</p>
+            {{ adherent.Licence }}
+        </div>
+        <div class="line">
+            <p class="label">Autres sections</p>
+            {{ adherent.Sections?.length ? adherent.Sections.join(',') : 'Aucune' }}
+        </div>
+        <div class="line">
+            <p class="label">Equipe 1</p>
+            {{ adherent.Team1 || '-' }}
+        </div>
+        <div class="line">
+            <p class="label">Equipe 2</p>
+            {{ adherent.Team2 || '-' }}
+        </div>
+    </div>
+
+</div>

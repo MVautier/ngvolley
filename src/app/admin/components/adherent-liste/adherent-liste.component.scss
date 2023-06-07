@@ -12,9 +12,15 @@
 }
 .liste{
     height: calc(100vh - var(--header-height) - var(--admin-menu-height) - var(--admin-top-height) - var(--admin-footer-height) - 68px);
+    &.hidden{
+        display: none;
+    }
 }
 .footer{
     height: var(--admin-footer-height);
+    &.hidden{
+        display: none;
+    }
 }
 
 .mat-sort-header{
@@ -27,6 +33,12 @@
         mat-icon{
             visibility: visible;
         }
+    }
+}
+.mat-row{
+    cursor: pointer;
+    &:hover {
+        background: aliceblue;
     }
 }
 .spinner-container {

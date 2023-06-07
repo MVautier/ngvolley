@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Operator } from '@app/core/models/operator.model';
 
@@ -9,9 +10,9 @@ import { Operator } from '@app/core/models/operator.model';
 })
 export class AdherentFilterComponent implements OnInit {
 
-    filter: AdherentFilter;
+    @Input() filter: AdherentFilter;
     @Output() apply: EventEmitter<AdherentFilter> = new EventEmitter<AdherentFilter>();
-
+    maxDate: Date = new Date();
     showFilter = false;
     hasPhoto = 'tous';
     hasLicence = 'tous';
@@ -30,7 +31,7 @@ export class AdherentFilterComponent implements OnInit {
     ];
 
     @ViewChild('input') input: ElementRef;
-    constructor() { }
+    constructor(private adherentService: AdherentAdminService) { }
 
     ngOnInit(): void {
         this.initFilter();
@@ -80,6 +81,7 @@ export class AdherentFilterComponent implements OnInit {
 
     onShowFilter() {
         this.showFilter = true;
+        console.log('current filter: ', this.filter);
     }
 
     onHideFilter() {

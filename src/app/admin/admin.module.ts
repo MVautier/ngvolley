@@ -30,6 +30,8 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { AdherentFilterComponent } from './components/adherent-filter/adherent-filter.component';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserService } from './services/user.service';
+import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
+import { AdherentAdminService } from './services/adherent-admin.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { UserService } from './services/user.service';
     AdherentListeComponent,
     UserPageComponent,
     AdherentFilterComponent,
-    UserCardComponent
+    UserCardComponent,
+    AdherentCardComponent
   ],
   imports: [
 
@@ -69,7 +72,8 @@ import { UserService } from './services/user.service';
     WysiswygService,
     UtilService,
     GalleryService,
-    UserService
+    UserService,
+    AdherentAdminService
   ]
 })
 export class AdminModule { }

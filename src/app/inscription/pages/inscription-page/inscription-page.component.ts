@@ -284,15 +284,23 @@ export class InscriptionPageComponent implements OnInit {
         });
         this.subModal = this.modalService.returnData
             .pipe(takeUntil(this.notifier))
-            .subscribe(result => {
+            .subscribe(async result => {
                 if (result && this.modalService.modalShown.value.component === 'popup-add') {
                     if (result.data) {
                         this.onAddMember();
                     } else {
                         this.inscriptionService.setAdherent(this.adherent);
                         this.cart.setClient(this.adherent);
-                        this.step++;
-                        console.log('adherent: ', this.adherent);
+                        this.pdf.buildAdherentForm(this.adherent).then(blob => {
+                            const filename = `adhesion`;
+                            Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
+                            console.log('adherent with docs : ', this.adherent);
+                        }).catch(err => {
+                            console.log('error generating adherent form: ', err);
+                        }).finally(() => {
+                            this.step++;
+                            console.log('adherent: ', this.adherent);
+                        });
                     }
                     this.notifier.next();
                     this.notifier.complete();
@@ -338,10 +346,17 @@ export class InscriptionPageComponent implements OnInit {
         return new Promise((resolve, reject) => {
             if (adherent.Documents?.length && adherent.Documents.filter(d => !d.sent).length) {
                 this.loader.setLoading(true);
-                this.pdf.sendDocuments(adherent.Uid, adherent.Documents).then(result => {
+                this.pdf.sendAllDocuments(adherent).then(result => {
                     adherent.Documents.forEach(doc => {
                         doc.sent = result;
                     });
+                    if (adherent.Membres.length) {
+                        adherent.Membres.forEach(m => {
+                            m.Documents.forEach(d => {
+                                d.sent = true;
+                            });
+                        });
+                    }
                     resolve();
                 })
                     .catch(err => {

@@ -193,7 +193,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
     showPdf() {
         this.pdf.buildAdherentForm(this.adherent).then(blob => {
             const filename = `adhesion_${this.adherent.LastName}_${this.adherent.FirstName}`;
-            Adherent.addDoc(this.adherent, 'attestation', filename + '.pdf', blob);
+            Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
             console.log('adherent with docs : ', this.adherent);
         }).catch(err => {
             console.log('error generating adherent form: ', err);

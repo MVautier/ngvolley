@@ -3,13 +3,14 @@ import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/co
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
 import { AdherentDataSource } from '@app/core/models/adherent-datasource';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
-import { merge, tap } from 'rxjs';
+import { Subscription, filter, merge, tap } from 'rxjs';
 
 @Component({
     selector: 'app-adherent-liste',
@@ -33,13 +34,25 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = this.columns.map(c => c.columnDef);
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    sub_router: Subscription;
+    selectedAdherent: Adherent;
     
     constructor(
         private route: ActivatedRoute, 
         @Inject(MAT_DATE_LOCALE) private _locale: string,
         private fileService: FileService,
         private _adapter: DateAdapter<any>,
-        private adherentService: AdherentService) {}
+        private router: Router,
+        private adherentAdminService: AdherentAdminService,
+        private adherentService: AdherentService) {
+            this.sub_router = this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationStart))
+                .subscribe((event: NavigationStart) => {
+            
+
+            });
+        }
 
     ngOnInit(): void {
         this._locale = 'fr';
@@ -78,6 +91,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
 
     loadData(filter: AdherentFilter) {
         this.filter = filter;
+        this.adherentAdminService.setFilter(filter);
         this.dataSource.loadData(
             this.filter,
             this.sort.direction,
@@ -86,7 +100,12 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
             this.paginator.pageSize);
     }
 
-    onRowClicked(row) {
+    showCard(row: Adherent) {
         console.log('Row clicked: ', row);
+        this.selectedAdherent = row;
+    }
+
+    hideCard() {
+        this.selectedAdherent = null;
     }
 }

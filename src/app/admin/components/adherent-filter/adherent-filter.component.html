@@ -9,8 +9,8 @@
         <mat-form-field appearance="fill">
             <mat-label>Date d'inscription</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" (dateChange)="setDate($event, 'start')">
-                <input matEndDate placeholder="End date" (dateChange)="setDate($event, 'end')">
+                <input matStartDate [max]="maxDate" [value]="filter.DateRange.Start" (dateChange)="setDate($event, 'start')">
+                <input matEndDate [max]="maxDate" [value]="filter.DateRange.End" (dateChange)="setDate($event, 'end')">
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
