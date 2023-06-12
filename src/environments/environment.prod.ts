@@ -23,7 +23,7 @@ export const environment = {
   minage: 13,
   debug: false,
   ssrMode: false,
-  reinscription: true,
+  reinscription: false,
   basePath: 'https://inscription-colomiers-volley.fr/',
   basePathSsr: 'https://inscription-colomiers-volley.fr/',
   cookiePath: '/',
