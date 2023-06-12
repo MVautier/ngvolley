@@ -12,10 +12,10 @@ function bootstrap() {
   platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 };
-if (environment.production) {
-    window.console.log = () => { };
-    window.console.warn = () => { };
-  }
+// if (environment.production) {
+//     window.console.log = () => { };
+//     window.console.warn = () => { };
+//   }
 
  if (document.readyState === 'complete') {
    bootstrap();
