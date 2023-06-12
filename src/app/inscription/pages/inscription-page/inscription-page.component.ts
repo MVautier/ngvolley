@@ -93,7 +93,7 @@ export class InscriptionPageComponent implements OnInit {
                         }
                         // Ecriture de l'adhérent en base
                         console.log('Ecriture de l\'adhérent en base: ', this.adherent);
-                        //this.addOrUpdate();
+                        this.addOrUpdate();
                     } else if (this.paymentCode === 'refused') {
                         console.log('payment refused - ', this.paymentId, this.paymentError);
                     }
