@@ -9,6 +9,11 @@
         border-radius: 5px;
         border-width: 1px;
     }
+    .actions{
+        button{
+            margin-right: 10px;
+        }
+    }
 }
 .liste{
     height: calc(100vh - var(--header-height) - var(--admin-menu-height) - var(--admin-top-height) - var(--admin-footer-height) - 68px);

@@ -68,7 +68,15 @@ export class InscriptionPageComponent implements OnInit {
         //this.authService.AuthorizeAnonymous();
         this.themeService.isDarkTheme.subscribe(isDark => {
             this.isDarkTheme = isDark;
-        })
+        });
+        const manual = localStorage.getItem('manualFill');
+        if (manual){
+            localStorage.removeItem('manualFill');
+            this.inscriptionService.setManualFill(true);
+        } else {
+            this.inscriptionService.setManualFill(false);
+        }
+        console.log('manual mode: ', this.inscriptionService.getManualFill());
         this.layoutService.obsMenuOpened.subscribe(isOpened => {
             this.isMenuOpened = isOpened;
         });

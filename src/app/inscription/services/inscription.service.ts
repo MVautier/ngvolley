@@ -16,6 +16,7 @@ export class InscriptionService {
     cpInputMask = '00000';
     licenceInputMask = '000000';
     filemaxsize = 5242880;
+    public manualFill: boolean = false;
     patterns = { 
         'postalcode': { pattern: /[0-9]{5}/ },
         'localpostalcode': { pattern: /31770/ },
@@ -55,6 +56,14 @@ export class InscriptionService {
     this.adherentService.getListe().then(list => {
         this.adherents = list;
     });
+  }
+
+  setManualFill(value: boolean) {
+    this.manualFill = value;
+  }
+
+  getManualFill(): boolean {
+    return this.manualFill;
   }
 
   getAdherent(): Adherent {

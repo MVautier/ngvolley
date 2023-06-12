@@ -7,7 +7,10 @@
         <div>
             <app-adherent-filter (apply)="loadData($event)"></app-adherent-filter>
         </div>
-        <div>
+        <div class="actions">
+            <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">
+                <mat-icon>person_add</mat-icon>Inscription manuelle
+            </button>
             <button type="button" mat-raised-button color="primary" matPrefix (click)="export()">
                 <mat-icon>download</mat-icon>Excel
             </button>

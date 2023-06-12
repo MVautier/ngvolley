@@ -108,4 +108,9 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     hideCard() {
         this.selectedAdherent = null;
     }
+
+    manualFill() {
+        localStorage.setItem('manualFill', 'true');
+        this.router.navigate(['/']);
+    }
 }
