@@ -45,6 +45,6 @@ export const environment = {
     clienId: 'c37c15b8790f4e69ae36e629bad01916',
     clientSecret: 'nT/IobgQODPH+/QLpqI1iW1FYqq5nhFl',
     itemName: 'Adhésion CLLL - Section Voley-Ball',
-    organizationSlug: 'clll-colomiers-volley-ball'
+    organizationSlug: 'clll-volley-ball'
   }
 };
