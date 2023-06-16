@@ -1,9 +1,12 @@
 <div>
 
     <div class="top">
-        <div>
+        <div class="actions">
             <button type="button" mat-raised-button color="primary" matPrefix (click)="returnToListe()">
                 <mat-icon>arrow_back</mat-icon>Retour à la liste
+            </button>
+            <button type="button" mat-raised-button color="primary" matPrefix (click)="openEdit()">
+                <mat-icon>edit</mat-icon>Modifier la fiche
             </button>
         </div>
     </div>
@@ -48,6 +51,10 @@
             <p class="title">Fiche Volley</p>
     
             <div class="line">
+                <p class="label">Saison</p>
+                {{ adherent.Saison }}
+            </div>
+            <div class="line">
                 <p class="label">Section</p>
                 {{ adherent.Section }}
             </div>
@@ -75,6 +82,18 @@
                 <p class="label">Equipe 2</p>
                 {{ adherent.Team2 || '-' }}
             </div>
+            <div class="line">
+                <p class="label">Personne à joindre 1</p>
+                {{ adherent.Alert1 || '-' }}
+            </div>
+            <div class="line">
+                <p class="label">Personne à joindre 2</p>
+                {{ adherent.Alert2 || '-' }}
+            </div>
+            <div class="line">
+                <p class="label">Personne à joindre 3</p>
+                {{ adherent.Alert3 || '-' }}
+            </div>
         </div>
         <div class="right">
             <p class="title">Documents</p>
@@ -88,9 +107,21 @@
                         <mat-icon>download</mat-icon>Télécharger
                     </button>
                 </div>
+                <div class="line" *ngIf="adherent.PaymentComment">
+                    <p class="label">Attestation paiement</p>
+                    <button type="button" mat-raised-button color="primary" matPrefix (click)="navigate(adherent.PaymentComment)">
+                        <mat-icon>receipt_long</mat-icon>Ouvrir
+                    </button>
+                </div>
             </div>
         </div>
         
     </div>
+    
+    
 
 </div>
+
+<!-- <app-generic-modal *ngIf="editMode" [config]="config">
+    <app-adherent-form [adherent]="adherent"></app-adherent-form>
+</app-generic-modal> -->

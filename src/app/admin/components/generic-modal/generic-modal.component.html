@@ -1,0 +1,16 @@
+<div *ngIf="config" class="ng-modal" [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'" [ngStyle]="{'width': config?.size.width, 'height': config?.size.height}">
+    <div class="ng-modal-content">
+        <div class="ng-modal-header">
+            <h1>{{ config?.title }}</h1>
+            <mat-icon class="close" (click)="onClose()">close</mat-icon>
+        </div>
+        <div class="ng-modal-body">
+            <app-adherent-form [adherent]="adherent"></app-adherent-form>
+        </div>
+        
+        <div class="ng-modal-footer">
+            <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
+            <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+        </div>
+    </div>
+</div>

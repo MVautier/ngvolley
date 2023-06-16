@@ -102,7 +102,20 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
 
     showCard(row: Adherent) {
         console.log('Row clicked: ', row);
-        this.selectedAdherent = row;
+        this.selectedAdherent = this.rowToAdherent(row);
+    }
+
+    rowToAdherent(row: Adherent): Adherent {
+        const adherent = new Adherent(row);
+        adherent.BirthdayDate = this.bindDate(row.BirthdayDate.toString());
+        return adherent;
+    }
+
+    bindDate(date: string): Date {
+        if (date) {
+            return new Date(date);
+        }
+        return null;
     }
 
     hideCard() {

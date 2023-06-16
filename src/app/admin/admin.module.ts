@@ -32,6 +32,10 @@ import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserService } from './services/user.service';
 import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
 import { AdherentAdminService } from './services/adherent-admin.service';
+import { InscriptionModule } from '@app/inscription/inscription.module';
+import { AdherentFormComponent } from './components/adherent-form/adherent-form.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { GenericModalComponent } from './components/generic-modal/generic-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,20 +54,23 @@ import { AdherentAdminService } from './services/adherent-admin.service';
     UserPageComponent,
     AdherentFilterComponent,
     UserCardComponent,
-    AdherentCardComponent
+    AdherentCardComponent,
+    AdherentFormComponent,
+    GenericModalComponent
   ],
   imports: [
-
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     CoreModule,
+    ReactiveFormsModule,
+    InscriptionModule,
     MaterialThemeModule,
     DragDropModule,
     BuilderEditorModule,
     ClickOutsideModule,
     AdminRoutingModule,
-    NgxChartsModule
+    NgxChartsModule,
+    NgxMaskModule
   ],
   providers: [
     IsLoggedGuard,

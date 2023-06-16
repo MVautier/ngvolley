@@ -9,6 +9,11 @@
         border-radius: 5px;
         border-width: 1px;
     }
+    .actions{
+        button{
+            margin-right: 10px;
+        }
+    }
 }
 
 .adherent-card{
@@ -55,6 +60,10 @@
   
     .label {
       flex: 0 0 160px;
+    }
+    button{
+        width: 140px;
+        margin-top: -5px;
     }
   
     .value {

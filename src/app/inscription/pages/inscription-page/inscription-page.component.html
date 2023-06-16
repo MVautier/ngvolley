@@ -58,7 +58,7 @@
 
                 <app-main-form *ngIf="step === 2" [adherent]="adherent" [local]="startIns.local" [isMobile]="isMobile"
                     (change)="onAdherentChange($event)"
-                    (removeMember)="onRemoveMember($event)" (validate)="onStep2Validate($event)" (cancel)="onCancel()">
+                    (removeMember)="onRemoveMember($event)" (validateForm)="onStep2Validate($event)" (cancelForm)="onCancel()">
                 </app-main-form>
 
                 <app-document-form *ngIf="step === 3" [adherent]="adherent" (validate)="onStep3Validate($event)"

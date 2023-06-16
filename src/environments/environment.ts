@@ -27,7 +27,7 @@ export const environment = {
   minage: 13,
   debug: true,
   ssrMode: false,
-  reinscription: false,
+  reinscription: true,
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
   cookiePath: '/',

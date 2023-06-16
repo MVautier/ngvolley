@@ -92,7 +92,7 @@ export class ModalComponent implements OnInit, OnDestroy {
             case 'popup-remove':
                 comp = PopupRemoveComponent;
                 break;
-                case 'popup-add':
+            case 'popup-add':
                 comp = PopupAddComponent;
                 break;
             case 'health-form':

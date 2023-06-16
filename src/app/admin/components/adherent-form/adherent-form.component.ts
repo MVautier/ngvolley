@@ -4,25 +4,19 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Adherent } from '@app/core/models/adherent.model';
 import { Category } from '@app/core/models/category.model';
 import { AdherentService } from '@app/core/services/adherent.service';
+import { PdfMakerService } from '@app/core/services/pdf-maker.service';
+import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
-import { FileValidator } from 'ngx-material-file-input';
-import { environment } from '@env/environment';
-import { MemberRemove } from '@app/inscription/models/member-remove.model';
-import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
-import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
-import { Questionary } from '@app/core/models/questionary.model';
-import { PdfMakerService } from '@app/core/services/pdf-maker.service';
-import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
-import { ModalResult } from '@app/ui/layout/models/modal-result.model';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-main-form',
-    templateUrl: './main-form.component.html',
-    styleUrls: ['./main-form.component.scss']
+    selector: 'app-adherent-form',
+    templateUrl: './adherent-form.component.html',
+    styleUrls: ['./adherent-form.component.scss']
 })
-export class MainFormComponent implements OnInit, OnDestroy {
+export class AdherentFormComponent implements OnInit, OnDestroy {
     @Input() adherent: Adherent;
     @Input() members: Adherent[] = [];
     @Input() local: boolean;
@@ -31,6 +25,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
     @Output() validateForm: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() cancelForm: EventEmitter<void> = new EventEmitter<void>();
     @Output() removeMember: EventEmitter<string> = new EventEmitter<string>();
+
     formGroup: FormGroup;
     phoneInputMask: string;
     cpInputMask: string;
@@ -44,22 +39,21 @@ export class MainFormComponent implements OnInit, OnDestroy {
     subModal: Subscription;
     all_sections: string[] = [];
 
-    constructor(
-        private inscriptionService: InscriptionService,
+
+    constructor(private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
         private _adapter: DateAdapter<any>,
         private modalService: ModalService,
         private pdf: PdfMakerService,
         @Inject(MAT_DATE_LOCALE) private _locale: string,
-        private formBuilder: FormBuilder
-        ) { }
+        private formBuilder: FormBuilder) { }
 
     ngOnInit(): void {
         this.all_sections = this.inscriptionService.sections;
         this.phoneInputMask = this.inscriptionService.phoneInputMask;
         this.cpInputMask = this.inscriptionService.cpInputMask;
         if (this.adherent) {
-            this.titles.push(this.adherent.FirstName || this.adherent.LastName ? this.adherent.FirstName + ' '  + this.adherent.LastName : 'Adhérent');
+            this.titles.push(this.adherent.FirstName || this.adherent.LastName ? this.adherent.FirstName + ' ' + this.adherent.LastName : 'Adhérent');
             this.checkAdherent(this.adherent);
             this.members = [].concat(this.adherent.Membres);
             this.choosenSection = this.adherent.Category !== null;
@@ -81,7 +75,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
                     this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
                     this.checkAdherent(adh);
                     this.inscriptionService.checkControl(this.formGroup, 'birthdate');
-                    this.titles[0] = adh.FirstName || adh.LastName ? adh.FirstName + ' '  + adh.LastName : 'Adhérent';
+                    this.titles[0] = adh.FirstName || adh.LastName ? adh.FirstName + ' ' + adh.LastName : 'Adhérent';
                     this.change.emit(adh);
                 });
             });
@@ -100,6 +94,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         const patterns = this.inscriptionService.patterns;
         this.formGroup = this.formBuilder.group({
             'id': [this.adherent.IdAdherent],
+            'saison': [this.adherent.Saison, [Validators.required, Validators.pattern(patterns.saison.pattern)]],
             'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'genre': [this.adherent.Genre, [Validators.required]],
@@ -202,49 +197,11 @@ export class MainFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    showPopupHealth() {
-        if (this.subModal) {
-            this.subModal.unsubscribe();
-        }
-        const data = Questionary.getMinor('DOMINICI', 'Carla', 16, 'F');// Questionary.getMajor();
-        this.modalService.open({
-            title: data.title,
-            validateLabel: 'Valider',
-            cancelLabel: 'Annuler',
-            showCancel: true,
-            showValidate: true,
-            size: {
-                width: '100%',
-                height: '500px'
-            },
-            component: 'health-form',
-            data: data
-        });
-        this.subModal = this.modalService.returnData
-            .pipe(takeUntil(this.notifier))
-            .subscribe(result => {
-                if (result?.data) {
-                    const filename = `attestation_${this.adherent.LastName}_${this.adherent.FirstName}`;
-                    Adherent.addDoc(this.adherent, 'attestation', filename + '.pdf', result.data);
-                    console.log('adherent with docs : ', this.adherent);
-                }
-            });
-    }
-
     resetOpened(uid: string = null) {
         this.adherent._opened = uid && this.adherent.Uid === uid;
         this.adherent.Membres.forEach(m => {
             m._opened = uid && m.Uid === uid;
         });
-    }
-
-    onMemberChange(member: Adherent) {
-        const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
-        if (index >= 0) {
-            this.adherent.Membres[index] = member;
-            this.titles[index + 1] = member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length;
-            this.change.emit(this.getFormAdherent());
-        }
     }
 
     onCancel() {

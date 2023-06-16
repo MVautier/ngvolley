@@ -18,6 +18,7 @@ export class InscriptionService {
     filemaxsize = 5242880;
     public manualFill: boolean = false;
     patterns = { 
+        'saison': { pattern: /[0-9]{4}/ },
         'postalcode': { pattern: /[0-9]{5}/ },
         'localpostalcode': { pattern: /31770/ },
         'licence': { pattern: /[0-9]{6,}/},

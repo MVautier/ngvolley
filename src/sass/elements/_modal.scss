@@ -1,6 +1,6 @@
 @import "variables";
 
-.ng-modal {
+:host ::ng-deep .ng-modal {
   display: flex;
   .ng-modal-content {
     width: 100%;
