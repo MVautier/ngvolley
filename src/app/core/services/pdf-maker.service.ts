@@ -2,17 +2,17 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import domtoimage from 'dom-to-image';
-import { HttpDataService } from './http-data.service';
-
 import jsPDF, { TextOptionsLight } from 'jspdf';
 import autoTable, { Color, ThemeType } from 'jspdf-autotable';
 import { PdfFooter } from '../models/pdf-footer.model';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Questionary } from '../models/questionary.model';
 import { RowInput } from 'jspdf-autotable';
 import { ParentAuth } from '../models/parent-auth.model';
 import { AdherentDoc } from '../models/adherent-doc.model';
 import { Adherent } from '../models/adherent.model';
+import { UtilService } from './util.service';
+import { FileService } from './file.service';
 
 @Injectable()
 export class PdfMakerService {
@@ -22,9 +22,12 @@ export class PdfMakerService {
     ratio = 0.75292857248934;
     theme: ThemeType = 'grid';
     tableLineColor: Color = [189, 195, 199];
+    currencyFormat = new Intl.NumberFormat('fr-FR');
     constructor(
-        private datePipe: DatePipe,
-        private http: HttpDataService<any>) {
+        private datePipe: DatePipe, 
+        private currencyPipe: CurrencyPipe, 
+        private decimalPipe: DecimalPipe,
+        private fileService: FileService) {
 
     }
 
@@ -33,8 +36,8 @@ export class PdfMakerService {
             const footer = this.getFooter(item, 'p');
             this.captureHTML(item).then(base64 => {
                 this.buildPdf(base64, footer).then((blob) => {
-                    const formData = this.getFormData(id, name, blob);
-                    this.sendPdf(formData).then((file) => {
+                    const formData = this.fileService.getFormData(id, name, blob);
+                    this.fileService.sendDoc(formData).then((file) => {
                         resolve(file);
                     })
                         .catch(err => {
@@ -73,9 +76,9 @@ export class PdfMakerService {
 
     sendDocuments(id: string, docs: AdherentDoc[]): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const fd = this.getFormDataMultiple(id, docs);
+            const fd = this.fileService.getFormDataMultiple(id, docs);
             if (fd) {
-                this.sendDocs(fd).then((result) => {
+                this.fileService.sendDocs(fd).then((result) => {
                     resolve(result);
                 }).catch(err => {
                     reject('error sending documents: ' + JSON.stringify(err));
@@ -136,6 +139,140 @@ export class PdfMakerService {
                 resolve(null);
             }
         });
+    }
+
+    buildOrderList(data: Adherent[], title: string): Promise<Blob> {
+        return new Promise((resolve) => {
+            try {
+                const blob: Blob = this.buildOrderListBlob(data, title);
+                resolve(blob);
+            } catch(err) {
+                resolve(null);
+            }
+        });
+    }
+
+    private buildOrderListBlob(data: Adherent[], title: string): Blob {
+        const doc = new jsPDF({
+            orientation: "p", //set orientation
+            unit: "pt", //set unit for document
+            format: "letter" //set document standard
+        });
+        doc.setLanguage('fr');
+
+        // Logo
+        doc.addImage('assets/images/logos/logo-CLLL.png', 'JPEG', 34, 2, 67, 63);
+
+         // Titre
+         let xOffset = (doc.internal.pageSize.width / 2);
+         let yOffset = 40;
+         let text = '';
+         doc.text(title, xOffset, yOffset, { align: 'center' });
+         const textWidth = doc.getTextWidth(title);
+         yOffset += 10;
+         doc.line(xOffset - (textWidth / 2), yOffset, xOffset + (textWidth / 2), yOffset);
+
+         // Headers
+        var columns: RowInput[] = [
+            [{ content: 'N°', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255] , halign: 'center'} },
+            { content: 'Date', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+            { content: 'Nom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+            { content: 'Prénom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+            { content: 'CLLL', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+            { content: 'Club', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+            { content: 'Total', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } }
+        ]
+        ];
+
+        // Rows
+        const rows: RowInput[] = [];
+        let totalC3l = 0;
+        let totalClub = 0;
+        let totalGen = 0;
+        let i = 0;
+        const nb = 50;
+        const d = data[0];
+        for (let i = 0; i < nb; i++) {
+            const o = d.Order;
+            const c3l = o.CotisationC3L;
+            const total = o.Total;
+            const club = total - c3l;
+            totalC3l += c3l;
+            totalClub += club;
+            totalGen += total;
+            rows.push([
+                //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+                { content: o.IdPaiement, styles: { halign: 'left' } },
+                { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                { content: d.LastName, styles: { halign: 'left' } },
+                { content: d.FirstName, styles: { halign: 'left' } },
+                { content: this.formatCurrency(c3l), styles: { halign: 'right' } },
+                { content: this.formatCurrency(club), styles: { halign: 'right' } },
+                { content: this.formatCurrency(total), styles: { halign: 'right' } }
+            ]);
+        }
+        // data.forEach(d => {
+        //     const o = d.Order;
+        //     const c3l = o.CotisationC3L;
+        //     const total = o.Total;
+        //     const club = total - c3l;
+        //     totalC3l += c3l;
+        //     totalClub += club;
+        //     totalGen += total;
+        //     rows.push([
+        //         //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+        //         { content: o.IdPaiement, styles: { halign: 'left' } },
+        //         { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+        //         { content: d.LastName, styles: { halign: 'left' } },
+        //         { content: d.FirstName, styles: { halign: 'left' } },
+        //         { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+        //         { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+        //         { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
+        //     ]);
+        // });
+
+        // Totaux
+        rows.push([
+            {
+                content: 'Totaux', colSpan: 4, styles: { halign: 'center' }
+            }, 
+            {
+                content: this.formatCurrency(totalC3l), styles: { halign: 'right' }
+            }, 
+            {
+                content: this.formatCurrency(totalClub), styles: { halign: 'right' }
+            }, 
+            {
+                content: this.formatCurrency(totalGen), styles: { halign: 'right' }
+            }
+        ]);
+
+        // Table
+        autoTable(doc, {
+            tableLineColor: this.tableLineColor,
+            tableLineWidth: 0.75,
+            theme: this.theme,
+            head: columns,
+            body: rows,
+            startY: 100,
+            // didDrawCell: (data) => {
+            //     if (data.section === 'body') {
+            //         // Dessin des checkboxes
+            //         if ((data.column.index === 1 || data.column.index === 2) && !data.cell.text.includes('')) {
+            //             data.cell.styles.font = 'courrier';
+            //             data.cell.styles.halign = 'center';
+            //             this.drawCheckbox(doc, data.cell.x + x, data.cell.y + y);
+            //         }
+            //     }
+            // }
+        });
+
+        return new Blob([doc.output('blob')], { type: 'application/pdf' });
+    }
+
+    private formatCurrency(value: number): string {
+        const result = this.currencyFormat.format(value).replace(/ /, ' ');
+        return '' + result + ',00 €';
     }
 
     private buildAdherentFormBlob(data: Adherent): Blob {
@@ -820,35 +957,6 @@ l'association au sein de laquelle je sollicite le renouvellement de ma licence.`
             }
             img.src = base64;
         });
-    }
-
-    private getFormData(id: string, name: string, blob: Blob): FormData {
-        var formData = new FormData();
-        formData.append('filename', name);
-        formData.append('id', id);
-        formData.append(name, blob, name);
-        return formData;
-    }
-
-    private getFormDataMultiple(id: string, files: AdherentDoc[]): FormData {
-        var formData = new FormData();
-        let added = false;
-        formData.append('id', id);
-        files.forEach(file => {
-            if (!file.sent && file.blob instanceof Blob) {
-                formData.append(file.filename, file.blob, file.filename);
-                added = true;
-            }
-        });
-        return added ? formData : null;
-    }
-
-    private async sendPdf(data: FormData): Promise<string> {
-        return this.http.post<FormData>(environment.apiUrl + 'Document/SavePDF', data, { responseType: 'text' });
-    }
-
-    private async sendDocs(data: FormData): Promise<boolean> {
-        return this.http.post<FormData>(environment.apiUrl + 'Document/SaveDocuments', data, { responseType: 'text' });
     }
 
     private getFooter(item: HTMLElement, orientation: string): PdfFooter {

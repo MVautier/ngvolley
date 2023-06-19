@@ -1,0 +1,40 @@
+
+<div class="order-periode" *ngIf="start && end">
+    <div class="dates">
+        <input type="date" id="cal-start" [valueAsDate]="start" [max]="end | date:'yyyy-MM-dd'" (change)="onDateChange('start', $event)" />
+        <input type="date" id="cal-end" [valueAsDate]="end" [min]="start | date:'yyyy-MM-dd'" (change)="onDateChange('end', $event)" />
+    </div>
+    <div class="actions">
+        <button type="button" mat-raised-button color="primary" matPrefix (click)="export('pdf')">
+            <mat-icon>picture_as_pdf</mat-icon>PDF
+        </button>
+        <button type="button" mat-raised-button color="primary" matPrefix (click)="export('excel')">
+            <mat-icon>table</mat-icon>Excel
+        </button>
+    </div>
+
+</div>
+
+<div class="order-liste" *ngIf="data.length">
+
+    <div class="order-header">
+        <div class="order-header-item id">Id</div>
+        <div class="order-header-item date">Date</div>
+        <div class="order-header-item nom">Nom</div>
+        <div class="order-header-item prenom">Prénom</div>
+        <div class="order-header-item c3l">CLLL</div>
+        <div class="order-header-item club">CLUB</div>
+        <div class="order-header-item total">Total</div>
+    </div>
+
+    <app-order-card *ngFor="let d of data" [data]="d"></app-order-card>
+    
+    <div class="totaux">
+        <div class="totaux-item label">Totaux</div>
+        <div class="totaux-item c3l">{{totalC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+        <div class="totaux-item club">{{totalClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+        <div class="totaux-item total">{{total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+    </div>
+
+</div>
+<p class="no-data" *ngIf="!data.length">Aucune donnée pour la période</p>

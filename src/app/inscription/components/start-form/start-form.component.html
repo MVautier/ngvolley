@@ -13,16 +13,16 @@
 
                 <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-33">
-                        <input matInput placeholder="Nom" [(ngModel)]="nomado" [ngModelOptions]="{standalone: true}">
+                        <input matInput placeholder="Nom" id="ado-nom" [(ngModel)]="nomado" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
-                        <input matInput placeholder="Prénom" [(ngModel)]="prenomado" [ngModelOptions]="{standalone: true}">
+                        <input matInput placeholder="Prénom" id="ado-prenom" [(ngModel)]="prenomado" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
                         <mat-label>Date de naissance</mat-label>
-                        <input matInput [matDatepicker]="picker" [(ngModel)]="birthday" [ngModelOptions]="{standalone: true}" readonly
+                        <input matInput [matDatepicker]="picker" id="ado-birthday" [(ngModel)]="birthday" [ngModelOptions]="{standalone: true}" readonly
                             (click)="picker.open()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
@@ -37,20 +37,20 @@
             </div>
 
             <div *ngIf="showForm">
-                <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.local" [ngModelOptions]="{standalone: true}">
-                    <label>Résidez-vous à {{city}} ?</label>  
+                <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" id="rd-city" [(ngModel)]="start.local" [ngModelOptions]="{standalone: true}">
+                    <label for="rd-city">Résidez-vous à {{city}} ?</label>  
                     <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
                     <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
                 </mat-radio-group>
                 
-                <mat-radio-group *ngIf="!alreadySigned" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="start.already" [ngModelOptions]="{standalone: true}">
-                    <label>Etes-vous déjà inscrit(e) au CLLL Colomiers dans une autre section pour la saison {{year}} ?</label>  
+                <mat-radio-group *ngIf="!alreadySigned" aria-labelledby="type-radio-group-label" id="rd-already" class="type-radio-group" [(ngModel)]="start.already" [ngModelOptions]="{standalone: true}">
+                    <label for="rd-already">Etes-vous déjà inscrit(e) au CLLL Colomiers dans une autre section pour la saison {{year}} ?</label>  
                     <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
                     <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
                 </mat-radio-group>
     
-                <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" class="type-radio-group" [(ngModel)]="alreadySigned" [ngModelOptions]="{standalone: true}">
-                    <label>Avez-vous un membre de la famille déjà inscrit au CLLL Colomiers pour la saison {{year}} ?</label>  
+                <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" id="rd-already2" class="type-radio-group" [(ngModel)]="alreadySigned" [ngModelOptions]="{standalone: true}">
+                    <label for="rd-already2">Avez-vous un membre de la famille déjà inscrit au CLLL Colomiers pour la saison {{year}} ?</label>  
                     <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
                     <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
                 </mat-radio-group>

@@ -14,7 +14,6 @@ import { MaterialThemeModule } from "@app/material-theme/material-theme.module";
 import { CenterComponent } from './components/center/center.component';
 import { PageComponent } from "@app/ui/layout/components/page/page.component";
 import { ModalComponent } from './components/modal/modal.component';
-import { SafeHtmlPipe } from "@app/core/pipes/safe-html.pipe";
 import { CoreModule } from "@app/core/core.module";
 import { CustomErrorComponent } from './components/custom-error/custom-error.component';
 import { LayoutService } from "./services/layout.service";
@@ -66,7 +65,6 @@ export class LayoutModule {
           BsModalService,
           LayoutService,
           ModalService,
-          InscriptionService,
           LoaderService
         ]
       };

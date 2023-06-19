@@ -8,6 +8,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { UtilService } from "./util.service";
 import { PagedList } from "../models/paged-list.model";
 import { AdherentFilter } from "../models/adherent-filter.model";
+import { Order } from "../models/order.model";
 
 @Injectable()
 export class AdherentService {
@@ -16,9 +17,8 @@ export class AdherentService {
 
     constructor(
         private util: UtilService,
-        private http: HttpDataService<any>) {
+        private http: HttpDataService<any>) { }
 
-    }
     getListe(): Promise<Adherent[]> {
         return new Promise((resolve, reject) => {
             try {
@@ -42,16 +42,26 @@ export class AdherentService {
         });
     }
 
+    getOrders(start: Date, end: Date): Promise<Adherent[]> {
+        return new Promise((resolve, reject) => {
+            this.getListe().then(liste => {
+                resolve(liste.filter(a => a.Order && a.Order.Date >= start && a.Order.Date <= end));
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
     findAdherents(
-        filter: AdherentFilter, 
-        sort: string = 'asc', 
-        sortColumn: string = 'IdAdherent', 
-        page: number = 0, 
+        filter: AdherentFilter,
+        sort: string = 'asc',
+        sortColumn: string = 'IdAdherent',
+        page: number = 0,
         size: number = 10): Observable<PagedList<Adherent>> {
-            const url = `${environment.apiUrl}Adherent/paged?sort=${sort}&sortColumn=${sortColumn}&page=${page}&size=${size}`;
-            return this.http.postObs<AdherentFilter>(url, filter)
+        const url = `${environment.apiUrl}Adherent/paged?sort=${sort}&sortColumn=${sortColumn}&page=${page}&size=${size}`;
+        return this.http.postObs<AdherentFilter>(url, filter)
             .pipe(
-                map(res =>  res)
+                map(res => res)
             );
     }
 
@@ -91,7 +101,7 @@ export class AdherentService {
     exportExcel(filter: AdherentFilter): Promise<Blob> {
         return new Promise((resolve, reject) => {
             const url = `${environment.apiUrl}Adherent/export`;
-            this.http.post<AdherentFilter>(url, filter, { responseType: 'blob'}).then(blob => {
+            this.http.post<AdherentFilter>(url, filter, { responseType: 'blob' }).then(blob => {
                 resolve(blob);
             }).catch(err => {
                 reject(err);

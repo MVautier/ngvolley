@@ -1,0 +1,46 @@
+
+.order-row{
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    margin-top: 3px;
+    cursor: pointer;
+    &:hover{
+        background: #eee;
+    }
+    .order-item {
+        padding: 5px 15px;
+        color: #000;
+        text-align: left;
+        
+        &.id {
+            flex: 0 0 50px;
+        }
+        &.date {
+            flex: 0 0 150px;
+        }
+        &.nom {
+            flex: 0 0 150px;
+        }
+        &.prenom {
+            flex: 0 0 150px;
+        }
+        &.c3l {
+            flex: 0 0 100px;
+            text-align: right;
+        }
+        &.club {
+            flex: 0 0 100px;
+            text-align: right;
+        }
+        &.total {
+            flex: 0 0 100px;
+            text-align: right;
+        }
+    }
+    .order-item:not(:last-child){
+        border-right: 1px solid #ccc;
+    }
+}

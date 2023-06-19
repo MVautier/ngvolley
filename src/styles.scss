@@ -6,6 +6,9 @@
 @import 'scrollbar';
 @import 'breadcrumb';
 @import 'modal';
+.cdk-overlay-container {
+    z-index: 1100 !important;
+}
 
 //@include scrollbar();
 

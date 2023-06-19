@@ -31,11 +31,14 @@ import { AdherentFilterComponent } from './components/adherent-filter/adherent-f
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserService } from './services/user.service';
 import { AdherentCardComponent } from './components/adherent-card/adherent-card.component';
-import { AdherentAdminService } from './services/adherent-admin.service';
+//import { AdherentAdminService } from './services/adherent-admin.service';
 import { InscriptionModule } from '@app/inscription/inscription.module';
 import { AdherentFormComponent } from './components/adherent-form/adherent-form.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { GenericModalComponent } from './components/generic-modal/generic-modal.component';
+import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
+import { OrderListeComponent } from './components/order-liste/order-liste.component';
+import { OrderCardComponent } from './components/order-card/order-card.component';
 
 @NgModule({
   declarations: [
@@ -56,14 +59,16 @@ import { GenericModalComponent } from './components/generic-modal/generic-modal.
     UserCardComponent,
     AdherentCardComponent,
     AdherentFormComponent,
-    GenericModalComponent
+    GenericModalComponent,
+    OrdersPageComponent,
+    OrderListeComponent,
+    OrderCardComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     CoreModule,
     ReactiveFormsModule,
-    InscriptionModule,
     MaterialThemeModule,
     DragDropModule,
     BuilderEditorModule,
@@ -79,8 +84,7 @@ import { GenericModalComponent } from './components/generic-modal/generic-modal.
     WysiswygService,
     UtilService,
     GalleryService,
-    UserService,
-    AdherentAdminService
+    UserService
   ]
 })
 export class AdminModule { }

@@ -1,3 +1,4 @@
+import { Adherent } from "../models/adherent.model";
 
 export class UtilService {
     db = require('mime-db')
@@ -22,6 +23,22 @@ export class UtilService {
         const exts = this.db[m];
         if ( exts && exts.extensions.length) {
             return exts.extensions[0];
+        }
+        return null;
+    }
+
+    bindDates(adherent: Adherent): Adherent {
+        if (adherent) {
+            adherent.BirthdayDate = this.bindDate(adherent.BirthdayDate?.toString());
+            adherent.InscriptionDate = this.bindDate(adherent.InscriptionDate?.toString());
+            adherent.CertificateDate = this.bindDate(adherent.CertificateDate?.toString());
+        }
+        return adherent;
+    }
+
+    bindDate(date: string): Date {
+        if (date) {
+            return this.UtcDate(new Date(date));
         }
         return null;
     }
@@ -56,5 +73,11 @@ export class UtilService {
             
         }
         return s;
+    }
+
+    public UtcDate(date: Date): Date {
+        if (!date) return null;
+        const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
+        return new Date(UTCDate);
     }
 }

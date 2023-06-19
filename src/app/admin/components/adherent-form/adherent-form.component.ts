@@ -5,6 +5,7 @@ import { Adherent } from '@app/core/models/adherent.model';
 import { Category } from '@app/core/models/category.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
+import { UtilService } from '@app/core/services/util.service';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
@@ -44,6 +45,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         private adherentService: AdherentService,
         private _adapter: DateAdapter<any>,
         private modalService: ModalService,
+        private util: UtilService,
         private pdf: PdfMakerService,
         @Inject(MAT_DATE_LOCALE) private _locale: string,
         private formBuilder: FormBuilder) { }
@@ -67,6 +69,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
                 this.categories = liste.filter(c => !c.Blocked);
                 this.initForm();
                 this.formGroup.markAllAsTouched();
+                //this.change.emit(this.formGroup);
                 console.log('categories: ', this.categories);
                 this.formGroup.valueChanges.subscribe(val => {
                     const adh = this.getFormAdherent();
@@ -108,7 +111,12 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             'alert2': [this.adherent.Alert2, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
             'alert3': [this.adherent.Alert3, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
             'category': [this.adherent.Category, [Validators.required]],
-            'sections': [this.adherent.Sections]
+            'sections': [this.adherent.Sections],
+            'rgpd': [this.adherent.Rgpd],
+            'team1': [this.adherent.Team1],
+            'team2': [this.adherent.Team2],
+            'certifdate': [this.adherent.CertificateDate],
+            'paycomment': [this.adherent.PaymentComment]
         });
     }
 
@@ -187,16 +195,6 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         } 
     }
 
-    showPdf() {
-        this.pdf.buildAdherentForm(this.adherent).then(blob => {
-            const filename = `adhesion`;
-            Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
-            console.log('adherent with docs : ', this.adherent);
-        }).catch(err => {
-            console.log('error generating adherent form: ', err);
-        });
-    }
-
     resetOpened(uid: string = null) {
         this.adherent._opened = uid && this.adherent.Uid === uid;
         this.adherent.Membres.forEach(m => {
@@ -206,11 +204,6 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
 
     onCancel() {
         this.cancelForm.emit();
-    }
-
-    onValidate() {
-        const adherent = this.getFormAdherent();
-        this.validateForm.emit(adherent);
     }
 
     isFormValid(): boolean {
@@ -228,7 +221,9 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
 
     getFormAdherent(): Adherent {
         const category = this.formGroup.get('category').value;
-        const age = Adherent.getAge(this.formGroup.get('birthdate').value);
+        const birthdate = this.util.UtcDate(this.formGroup.get('birthdate').value);
+        const certifdate = this.util.UtcDate(this.formGroup.get('certifdate').value);
+        const age = Adherent.getAge(birthdate);
         const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
         return {
             IdAdherent: this.formGroup.get('id').value,
@@ -237,34 +232,38 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             FirstName: this.formGroup.get('firstname').value,
             LastName: this.formGroup.get('lastname').value,
             Genre: this.formGroup.get('genre').value,
-            BirthdayDate: this.formGroup.get('birthdate').value,
+            BirthdayDate: birthdate,
             Address: this.formGroup.get('address').value,
             PostalCode: this.formGroup.get('postalcode').value,
             City: this.formGroup.get('city').value,
             Phone: this.formGroup.get('phone').value,
             Email: this.formGroup.get('email').value,
-            Age: Adherent.getAge(this.formGroup.get('birthdate').value),
+            Age: age,
             Membres: this.adherent.Membres,
             Relationship: null,
             Alert1: this.formGroup.get('alert1').value,
             Alert2: this.formGroup.get('alert2').value,
             Alert3: this.formGroup.get('alert3').value,
-            Sections: this.formGroup.get('sections').value, //this.inscriptionService.sections.filter(s => s === environment.section),
+            Sections: this.formGroup.get('sections').value,
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,
             Licence: this.adherent.Licence,
             HealthFile: this.adherent.HealthFile,
             Photo: this.adherent.Photo,
             Authorization: this.adherent.Authorization,
-            Rgpd: this.adherent.Rgpd,
+            Rgpd: this.formGroup.get('rgpd').value,
             ImageRight: this.adherent.ImageRight,
             Signature: this.adherent.Signature,
             TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,
             TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
             Documents: this.adherent.Documents,
-            Saison: this.adherent.Saison,
-            Order: null
+            Saison: this.formGroup.get('saison').value,
+            Order: null,
+            Team1: this.formGroup.get('team1').value,
+            Team2: this.formGroup.get('team2').value,
+            CertificateDate: certifdate,
+            PaymentComment: this.formGroup.get('paycomment').value
         };
     }
 }

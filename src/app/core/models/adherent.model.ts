@@ -56,12 +56,12 @@ export class Adherent {
     constructor(base: Adherent, cp: string = null, isMember = false) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
         this.Category = base && !isMember ? base.Category : Adherent.debug ? 'C' : null; // convert to int for bdd
-        this.Authorization = null;
+        this.Authorization = base ? base.Authorization : null;
         this.LastName = base ? base.LastName : Adherent.debug ? 'Lacroix' : null;
         this.FirstName = base && !isMember ? base.FirstName : Adherent.debug ? 'Stéphanie' : null;
         this.Genre = base && !isMember ? base.Genre : Adherent.debug ? 'F' : null;
         this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? new Date(1974, 5, 4) : null;
-        this.InscriptionDate = null;
+        this.InscriptionDate = base?.InscriptionDate || null;
         this.Age = base && !isMember ? base.Age : Adherent.debug ? 49 : null;
         this.HealthStatementDate = null;
         this.Phone = base && !isMember ? base.Phone : Adherent.debug ? '0603568888' : null;
@@ -70,29 +70,29 @@ export class Adherent {
         this.PostalCode = base ? base.PostalCode : Adherent.debug ? '31770' : cp;
         this.City = base ? base.City : Adherent.debug ? 'Colomiers' : base?.City;
         this.Email = base && !isMember ? base.Email : Adherent.debug ? 'fanny.dominici@orange.fr' : null;
-        this.Photo = null;
+        this.Photo = base ? base.Photo : null;
         this.Licence = base && !isMember ? base.Licence : Adherent.debug ? '297368' : null;
-        this.Membres = [];
+        this.Membres = base ? base.Membres : [];
         this.Alert1 = base ? base.Alert1 : Adherent.debug ? 'DOMINICI Martial 06 20 65 40 10' : null;
         this.Alert2 = base ? base.Alert2 : Adherent.debug ? null : null;
         this.Alert3 = base ? base.Alert3 : Adherent.debug ? null : null;
-        this.Uid = uuidv4();
+        this.Uid = base ? base.Uid : uuidv4();
         this.Section = base ? base.Section : Adherent.debug ? 'C' : null;
-        this.Sections = [];
-        this.Rgpd = false;
-        this.ImageRight = true;
-        this.Signature = null;
+        this.Sections = base ? base.Sections : [];
+        this.Rgpd = base ? base.Rgpd : false;
+        this.ImageRight = base ? base.ImageRight : true;
+        this.Signature = base ? base.Signature : null;
         this.Saison = base ? base.Saison : new Date().getFullYear();
         
         this.Payment = null;
-        this.CertificateDate = null;
-        this.CertificateFile = null;
-        this.HealthFile = null;
-        this.Documents = [];
+        this.CertificateDate = base ? base.CertificateDate : null;
+        this.CertificateFile = base ? base.CertificateFile : null;
+        this.HealthFile = base ? base.HealthFile : null;
+        this.Documents = base ? base.Documents : [];
         this.VerifC3L = null;
         this.valid = false;
         this._opened = true;
-        this.Order = null;
+        this.Order = base ? base.Order : null;
     }
 
     public static getAge(birthdate: Date): number {

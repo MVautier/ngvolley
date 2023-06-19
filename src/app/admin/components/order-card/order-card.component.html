@@ -1,0 +1,9 @@
+<div class="order-row" *ngIf="data">
+    <div class="order-item id">{{data.Order.IdPaiement}}</div>
+    <div class="order-item date">{{data.Order.Date | date: 'dd/MM/yyyy'}}</div>
+    <div class="order-item nom">{{data.LastName}}</div>
+    <div class="order-item prenom">{{data.FirstName}}</div>
+    <div class="order-item c3l">{{montantC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+    <div class="order-item club">{{montantClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+    <div class="order-item total">{{montantTotal | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+</div>

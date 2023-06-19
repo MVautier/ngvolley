@@ -18,6 +18,7 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Order } from '@app/core/models/order.model';
+import { UtilService } from '@app/core/services/util.service';
 
 @Component({
     selector: 'app-inscription-page',
@@ -60,6 +61,7 @@ export class InscriptionPageComponent implements OnInit {
         private route: ActivatedRoute,
         private helloasso: HelloAssoService,
         private authService: AuthorizeApiService,
+        private util: UtilService,
         private modalService: ModalService,
         private router: Router) {
         if (window.matchMedia('(max-width: 1025px)').matches) {
@@ -165,9 +167,10 @@ export class InscriptionPageComponent implements OnInit {
 
     prepareAdherentForBdd(adherent: Adherent, main = true): Adherent {
         adherent.Saison = new Date().getFullYear();
-        adherent.BirthdayDate = this.UtcDate(adherent.BirthdayDate);
-        adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.UtcDate(new Date()) : null;
+        adherent.BirthdayDate = this.util.UtcDate(adherent.BirthdayDate);
+        adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
         adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
+        adherent.InscriptionDate = new Date();
         if (main) {
             const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
             const client = this.cart.client;
@@ -175,24 +178,18 @@ export class InscriptionPageComponent implements OnInit {
                 Id: 0,
                 IdPaiement: Number(this.paymentId),
                 IdAdherent: adherent.IdAdherent,
-                Date: this.UtcDate(new Date()),
+                Date: this.util.UtcDate(new Date()),
                 CotisationC3L: toCLLL,
                 Total: this.cart.total,
                 Nom: client?.LastName,
                 Prenom: client?.FirstName,
                 Email: client?.Email,
-                DateNaissance: this.UtcDate(new Date(client?.BirthdayDate))
+                DateNaissance: this.util.UtcDate(new Date(client?.BirthdayDate)),
+                PaymentLink: this.paymentPrintUrl
             };
             adherent.Order = order;
-            adherent.PaymentComment = this.paymentPrintUrl;
         }
         return adherent;
-    }
-
-    private UtcDate(date: Date): Date {
-        if (!date) return null;
-        const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
-        return new Date(UTCDate);
     }
 
     getPaymentDoc(id: string): Promise<string> {

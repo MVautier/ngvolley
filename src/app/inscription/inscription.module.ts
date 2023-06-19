@@ -61,9 +61,9 @@ import { PopupAddComponent } from './components/popup-add/popup-add.component';
   ],
   imports: [
     CommonModule,
-    FormsModule,
     LayoutModule,
     CoreModule,
+    FormsModule,
     ReactiveFormsModule,
     MaterialThemeModule,
     MatNativeDateModule,
@@ -76,7 +76,6 @@ import { PopupAddComponent } from './components/popup-add/popup-add.component';
     WebcamModule
   ],
   providers: [
-    InscriptionService,
     HelloAssoService,
     PhotoService
   ]

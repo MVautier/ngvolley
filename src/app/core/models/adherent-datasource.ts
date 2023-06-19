@@ -41,4 +41,13 @@ export class AdherentDataSource extends DataSource<Adherent> {
                 this.countSubject.next((result as PagedList<Adherent>).Count);
             });
     }
+
+    updateRow(adherent: Adherent) {
+        const liste = this.adherentsSubject.value;
+        const index = liste.findIndex(a => a.Uid === adherent.Uid);
+        if (index >= 0) {
+            liste[index] = adherent;
+            this.adherentsSubject.next(liste);
+        }
+    }
 }

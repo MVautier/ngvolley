@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { HrefToRouterLinkDirective } from './directives/href-to-routerlink.directive';
@@ -14,6 +14,9 @@ import { ThemeService } from './services/theme.service';
 import { TransferStateService } from './services/transfert-state.service';
 import { WindowStateService } from './services/window-state.service';
 import { UtilService } from './services/util.service';
+import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InscriptionService } from '@app/inscription/services/inscription.service';
 
 @NgModule({
     declarations: [
@@ -21,7 +24,9 @@ import { UtilService } from './services/util.service';
       HrefToRouterLinkDirective
     ],
     imports: [
-      CommonModule
+      CommonModule,
+      FormsModule,
+      ReactiveFormsModule
     ],
     providers: [],
     exports: [
@@ -43,12 +48,16 @@ import { UtilService } from './services/util.service';
           AdminService,
           SafeHtmlPipe,
           DatePipe,
+          CurrencyPipe,
+          DecimalPipe,
           HrefToRouterLinkDirective,
           ErrorHandlerService,
           TransferStateService,
           AdherentService,
+          AdherentAdminService,
           PdfMakerService,
-          UtilService
+          UtilService,
+          InscriptionService
         ]
       };
     }

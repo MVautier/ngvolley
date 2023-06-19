@@ -25,7 +25,7 @@ export const environment = {
     ado: 50
   },
   minage: 13,
-  debug: true,
+  debug: false,
   ssrMode: false,
   reinscription: true,
   basePath: 'https://localhost:4224/',

@@ -28,11 +28,11 @@
                 </div>
 
                 <div class="choice">
-                    <mat-checkbox [(ngModel)]="adherent.TrainingTE" [ngModelOptions]="{standalone: true}">Mardi
+                    <mat-checkbox [(ngModel)]="adherent.TrainingTE" [ngModelOptions]="{standalone: true}" id="chk-mardi-soir">Mardi
                         soir</mat-checkbox>
-                    <mat-checkbox [(ngModel)]="adherent.TrainingFM"
+                    <mat-checkbox [(ngModel)]="adherent.TrainingFM" id="chk-vendredi-midi"
                         [ngModelOptions]="{standalone: true}">Vendredi midi</mat-checkbox>
-                    <mat-checkbox [(ngModel)]="adherent.TrainingFE"
+                    <mat-checkbox [(ngModel)]="adherent.TrainingFE" id="chk-vendredi-soir"
                         [ngModelOptions]="{standalone: true}">Vendredi soir</mat-checkbox>
                 </div>
 
@@ -160,6 +160,32 @@
                 *ngIf="!formGroup.controls['alert3'].valid && formGroup.controls['alert3'].touched">
                 {{ getPatternError('alert3') }}
             </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-element row-item">
+            <input matInput placeholder="Equipe 1" formControlName="team1">
+        </mat-form-field>
+
+        <mat-form-field class="form-element row-item">
+            <input matInput placeholder="Equipe 2" formControlName="team2">
+        </mat-form-field>
+
+        <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
+            <mat-form-field class="first first-50">
+                <mat-label>Date de certificat</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="certifdate" readonly
+                    (click)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="last">
+            <mat-checkbox formControlName="rgpd">RGPD</mat-checkbox>
+        </div>
+        
+        <mat-form-field class="form-element row-item">
+            <mat-label>Infos paiement</mat-label>
+            <input matInput placeholder="Infos paiement" formControlName="paycomment">
         </mat-form-field>
 
         <!-- <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">

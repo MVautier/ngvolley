@@ -42,6 +42,6 @@
     </div>
 
     <div *ngIf="selectedAdherent">
-        <app-adherent-card [adherent]="selectedAdherent" (hide)="hideCard()"></app-adherent-card>
+        <app-adherent-card [adherent]="selectedAdherent" (change)="adherentChange($event)" (reload)="reload()" (hide)="hideCard()"></app-adherent-card>
     </div>
 </div>

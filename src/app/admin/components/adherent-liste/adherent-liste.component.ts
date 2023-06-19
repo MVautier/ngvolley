@@ -10,6 +10,7 @@ import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
+import { UtilService } from '@app/core/services/util.service';
 import { Subscription, filter, merge, tap } from 'rxjs';
 
 @Component({
@@ -43,6 +44,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
         private fileService: FileService,
         private _adapter: DateAdapter<any>,
         private router: Router,
+        private util: UtilService,
         private adherentAdminService: AdherentAdminService,
         private adherentService: AdherentService) {
             this.sub_router = this.router.events
@@ -105,17 +107,17 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
         this.selectedAdherent = this.rowToAdherent(row);
     }
 
+    reload() {
+        this.loadData(this.filter);
+    }
+
     rowToAdherent(row: Adherent): Adherent {
-        const adherent = new Adherent(row);
-        adherent.BirthdayDate = this.bindDate(row.BirthdayDate.toString());
+        const adherent = this.util.bindDates(row); 
         return adherent;
     }
 
-    bindDate(date: string): Date {
-        if (date) {
-            return new Date(date);
-        }
-        return null;
+    adherentChange(adherent: Adherent) {
+        this.dataSource.updateRow(adherent);
     }
 
     hideCard() {
@@ -123,7 +125,6 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     }
 
     manualFill() {
-        localStorage.setItem('manualFill', 'true');
-        this.router.navigate(['/']);
+        this.selectedAdherent = new Adherent(null);
     }
 }

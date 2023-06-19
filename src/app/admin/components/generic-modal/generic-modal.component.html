@@ -5,12 +5,12 @@
             <mat-icon class="close" (click)="onClose()">close</mat-icon>
         </div>
         <div class="ng-modal-body">
-            <app-adherent-form [adherent]="adherent"></app-adherent-form>
+            <app-adherent-form [adherent]="adherent" (change)="onChange($event)"></app-adherent-form>
         </div>
         
         <div class="ng-modal-footer">
             <button type="button" mat-raised-button (click)="onCancel()">{{config.cancelLabel}}</button>
-            <button type="button" mat-raised-button color="primary" (click)="onValidate()">{{config.validateLabel}}</button>
+            <button type="button" mat-raised-button color="primary" [disabled]="!isValid" (click)="onValidate()">{{config.validateLabel}}</button>
         </div>
     </div>
 </div>
