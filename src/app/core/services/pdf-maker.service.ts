@@ -189,29 +189,10 @@ export class PdfMakerService {
         let totalC3l = 0;
         let totalClub = 0;
         let totalGen = 0;
-        let i = 0;
-        const nb = 50;
-        const d = data[0];
-        for (let i = 0; i < nb; i++) {
-            const o = d.Order;
-            const c3l = o.CotisationC3L;
-            const total = o.Total;
-            const club = total - c3l;
-            totalC3l += c3l;
-            totalClub += club;
-            totalGen += total;
-            rows.push([
-                //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
-                { content: o.IdPaiement, styles: { halign: 'left' } },
-                { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
-                { content: d.LastName, styles: { halign: 'left' } },
-                { content: d.FirstName, styles: { halign: 'left' } },
-                { content: this.formatCurrency(c3l), styles: { halign: 'right' } },
-                { content: this.formatCurrency(club), styles: { halign: 'right' } },
-                { content: this.formatCurrency(total), styles: { halign: 'right' } }
-            ]);
-        }
-        // data.forEach(d => {
+        // let i = 0;
+        // const nb = 50;
+        // const d = data[0];
+        // for (let i = 0; i < nb; i++) {
         //     const o = d.Order;
         //     const c3l = o.CotisationC3L;
         //     const total = o.Total;
@@ -225,11 +206,30 @@ export class PdfMakerService {
         //         { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
         //         { content: d.LastName, styles: { halign: 'left' } },
         //         { content: d.FirstName, styles: { halign: 'left' } },
-        //         { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
-        //         { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
-        //         { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
+        //         { content: this.formatCurrency(c3l), styles: { halign: 'right' } },
+        //         { content: this.formatCurrency(club), styles: { halign: 'right' } },
+        //         { content: this.formatCurrency(total), styles: { halign: 'right' } }
         //     ]);
-        // });
+        // }
+        data.forEach(d => {
+            const o = d.Order;
+            const c3l = o.CotisationC3L;
+            const total = o.Total;
+            const club = total - c3l;
+            totalC3l += c3l;
+            totalClub += club;
+            totalGen += total;
+            rows.push([
+                //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+                { content: o.IdPaiement, styles: { halign: 'left' } },
+                { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                { content: d.LastName, styles: { halign: 'left' } },
+                { content: d.FirstName, styles: { halign: 'left' } },
+                { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+                { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+                { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
+            ]);
+        });
 
         // Totaux
         rows.push([
