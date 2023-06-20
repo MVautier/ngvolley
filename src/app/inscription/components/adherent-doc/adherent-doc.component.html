@@ -121,10 +121,7 @@
                                     <mat-error *ngIf="formGroup.get('file').hasError('maxContentSize')">
                                         File size {{formGroup.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
                                         ({{formGroup.get('file').value.files[0].name | json}} g
-                                        {{formGroup.get('file')?.getError('maxContentSize').actualSize |
-                                        json
-                                        }} - {{formGroup.get('file')?.getError('maxContentSize').actualSize
-                                        | byteFormat}}).
+                                        {{formGroup.get('file')?.getError('maxContentSize').actualSize | json }} - {{formGroup.get('file')?.getError('maxContentSize').actualSize | byteFormat}}).
                                     </mat-error>
                                 </mat-form-field>
                             </div>

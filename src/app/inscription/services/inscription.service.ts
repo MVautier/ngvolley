@@ -160,7 +160,7 @@ export class InscriptionService {
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';
     let dateValid = false;
     const d = new Date();
-    const nextY = d.getFullYear() + (d.getMonth() > 5 ? 1 : 0);
+    const nextY = d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
 
     // Traitement certificat
     if (adherent.HealthFile || adherent.CertificateFile) {
