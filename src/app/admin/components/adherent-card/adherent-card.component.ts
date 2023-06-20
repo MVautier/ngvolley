@@ -133,11 +133,7 @@ export class AdherentCardComponent implements OnInit {
                         const id = this.adherent.Uid;
                         const formData = this.fileService.getFormData(id, filename, blob);
                         this.fileService.sendDoc(formData).then(result => {
-                            const doc = this.documents.find(d => d.type === this.selectedType);
-                            if (doc) {
-                                doc.sent = true;
-                                doc.filename = filename;
-                            }
+                            this.updateDocuments(filename, this.selectedType);
                             Adherent.addDoc(this.adherent, this.selectedType, filename, blob);
                             console.log('adherent changed: ', this.adherent);
                         });
@@ -145,7 +141,14 @@ export class AdherentCardComponent implements OnInit {
                 }); 
             }
         }
-        
+    }
+
+    updateDocuments(filename: string, type: string) {
+        const doc = this.documents.find(d => d.type === type);
+        if (doc) {
+            doc.sent = true;
+            doc.filename = filename;
+        }
     }
 
     navigate(url: string) {
@@ -180,12 +183,12 @@ export class AdherentCardComponent implements OnInit {
             console.log('validate adherent form: ', result);
             this.loader.setLoading(true);
             const reload = result.IdAdherent === 0;
+            const filename = `adhesion.pdf`;
             this.adherentService.addOrUpdate(result).then(a => {
                 this.adherent = this.util.bindDates(a);
                 if (!this.adherent.Documents.find(d => d.type === 'adhesion')) {
                     this.pdf.buildAdherentForm(this.adherent).then(blob => {
-                        const filename = `adhesion`;
-                        Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
+                        Adherent.addDoc(this.adherent, 'adhesion', filename, blob);
                         console.log('adherent with docs : ', this.adherent);
                         this.pdf.sendDocuments(this.adherent.Uid, this.adherent.Documents).then(() => {
     
@@ -199,6 +202,7 @@ export class AdherentCardComponent implements OnInit {
             }).finally(() => {
                 this.change.emit(this.adherent);
                 if (reload) {
+                    this.updateDocuments(filename, 'adhesion');
                     this.reload.emit();
                 }
                 console.log('adherent was saved by modal: ', this.adherent);

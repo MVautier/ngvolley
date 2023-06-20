@@ -95,7 +95,8 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon class="check" [ngClass]="adherent.HealthFile || adherent.CertificateFile ? 'valid' : 'error'">check_circle</mat-icon>
-                        <span class="title">{{ checked.certifLabel }}</span>
+                        <!-- <span class="title">{{ checked.certifLabel }}</span> -->
+                        <span class="title">Attestation ou certificat médical</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 
@@ -109,8 +110,7 @@
                                 du code du sport et à la volonté fédérale de l'UNSLL
                                 en matière de prévention de la santé du sportif.
                             </div>
-                            
-                            
+
                             <div class="health-input">
                                 <mat-form-field>
                                     <ngx-mat-file-input formControlName="file" [placeholder]="'Importer mon certificat médical'" (change)="onFileChange(formGroup.value)">
@@ -128,7 +128,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!checked.certifNeeded" class="info">
+                        <div class="info">
                             <div class="text">
                                 <span class="title">Ou Attestation de santé</span> entre chaque renouvellement triennal,
                                 conformément au décret n°2016-1387 du 12/10/2016.

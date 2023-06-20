@@ -16,6 +16,7 @@ import { Questionary } from '@app/core/models/questionary.model';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
+import { UtilService } from '@app/core/services/util.service';
 
 @Component({
     selector: 'app-main-form',
@@ -49,6 +50,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         private adherentService: AdherentService,
         private _adapter: DateAdapter<any>,
         private modalService: ModalService,
+        private util: UtilService,
         private pdf: PdfMakerService,
         @Inject(MAT_DATE_LOCALE) private _locale: string,
         private formBuilder: FormBuilder
@@ -257,7 +259,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
     }
 
     isFormValid(): boolean {
-        let valid = !this.formGroup.invalid && this.checked.valid;
+        //let valid = !this.formGroup.invalid && this.checked.valid;
+        let valid = this.getFormValid() && this.checked.valid;
         if (valid) {
             for (let i = 0; i < this.adherent.Membres.length; i++) {
                 if (!this.adherent.Membres[i].valid) {
@@ -269,9 +272,18 @@ export class MainFormComponent implements OnInit, OnDestroy {
         return valid;
     }
 
+    getFormValid(): boolean {
+        let valid = true;
+        for (const field in this.formGroup.controls) { // 'field' is a string
+            if(!this.formGroup.controls[field].valid) return false;
+          }
+        return valid;
+    }
+
     getFormAdherent(): Adherent {
         const category = this.formGroup.get('category').value;
-        const age = Adherent.getAge(this.formGroup.get('birthdate').value);
+        const birthdate = this.util.bindDate(this.formGroup.get('birthdate').value);
+        const age = Adherent.getAge(birthdate);
         const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
         return {
             IdAdherent: this.formGroup.get('id').value,
@@ -280,13 +292,13 @@ export class MainFormComponent implements OnInit, OnDestroy {
             FirstName: this.formGroup.get('firstname').value,
             LastName: this.formGroup.get('lastname').value,
             Genre: this.formGroup.get('genre').value,
-            BirthdayDate: this.formGroup.get('birthdate').value,
+            BirthdayDate: birthdate,
             Address: this.formGroup.get('address').value,
             PostalCode: this.formGroup.get('postalcode').value,
             City: this.formGroup.get('city').value,
             Phone: this.formGroup.get('phone').value,
             Email: this.formGroup.get('email').value,
-            Age: Adherent.getAge(this.formGroup.get('birthdate').value),
+            Age: age,
             Membres: this.adherent.Membres,
             Relationship: null,
             Alert1: this.formGroup.get('alert1').value,
