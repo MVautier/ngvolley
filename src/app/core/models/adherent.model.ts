@@ -76,7 +76,7 @@ export class Adherent {
         this.Alert1 = base ? base.Alert1 : Adherent.debug ? 'DOMINICI Martial 06 20 65 40 10' : null;
         this.Alert2 = base ? base.Alert2 : Adherent.debug ? null : null;
         this.Alert3 = base ? base.Alert3 : Adherent.debug ? null : null;
-        this.Uid = base ? base.Uid : uuidv4();
+        this.Uid = base && base.Uid && !isMember? base.Uid : uuidv4();
         this.Section = base ? base.Section : Adherent.debug ? 'C' : null;
         this.Sections = base ? base.Sections : [];
         this.Rgpd = base ? base.Rgpd : false;

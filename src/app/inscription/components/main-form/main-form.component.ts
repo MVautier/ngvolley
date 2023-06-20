@@ -61,7 +61,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         this.phoneInputMask = this.inscriptionService.phoneInputMask;
         this.cpInputMask = this.inscriptionService.cpInputMask;
         if (this.adherent) {
-            this.titles.push(this.adherent.FirstName || this.adherent.LastName ? this.adherent.FirstName + ' '  + this.adherent.LastName : 'Adhérent');
+            this.titles.push(this.getTitle(this.adherent, false));
             this.checkAdherent(this.adherent);
             this.members = [].concat(this.adherent.Membres);
             this.choosenSection = this.adherent.Category !== null;
@@ -83,11 +83,19 @@ export class MainFormComponent implements OnInit, OnDestroy {
                     this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
                     this.checkAdherent(adh);
                     this.inscriptionService.checkControl(this.formGroup, 'birthdate');
-                    this.titles[0] = adh.FirstName || adh.LastName ? adh.FirstName + ' '  + adh.LastName : 'Adhérent';
+                    this.titles[0] = this.getTitle(adh, false);
                     this.change.emit(adh);
                 });
             });
         }
+    }
+
+    getTitle(adh: Adherent, isMember: boolean): string {
+        return adh.FirstName || adh.LastName ? this.getValue(adh.FirstName) + ' '  + this.getValue(adh.LastName) : isMember ? 'Membre' + this.members.length : 'Adhérent';
+    }
+
+    getValue(value: string): string {
+        return this.inscriptionService.isNull(value) ? '' : value;
     }
 
     ngOnDestroy(): void {
@@ -147,7 +155,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
     onAddMember(member: Adherent) {
         this.resetOpened();
         this.members = [].concat(this.adherent.Membres);
-        this.titles.push(member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length);
+        const title = this.getTitle(member, true);
+        this.titles.push(title);
     }
 
     showPopupRemove(member: Adherent = null) {
@@ -244,7 +253,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
         if (index >= 0) {
             this.adherent.Membres[index] = member;
-            this.titles[index + 1] = member.FirstName || member.LastName ? member.FirstName + ' '  + member.LastName : 'Membre ' + this.members.length;
+            this.titles[index + 1] = this.getTitle(member, true);;
             this.change.emit(this.getFormAdherent());
         }
     }

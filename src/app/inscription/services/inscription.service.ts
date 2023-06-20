@@ -174,11 +174,11 @@ export class InscriptionService {
             const valid = this.compareDate(expire, endOfSeason);
             check.certifLabel = valid >= 0 ? 'Certificat médical / attestation de santé' : 'Certificat médical';
             check.certifPlaceHolder = valid >= 0 ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical';
-            //check.certifNeeded = valid < 0;
+            check.certifNeeded = valid < 0;
         } else {
             check.certifLabel = 'Certificat médical';
             check.certifPlaceHolder = 'Importer un certificat médical';
-            //check.certifNeeded = this.isNull(adherent.HealthFile) && this.isNull(adherent.CertificateFile);
+            check.certifNeeded = this.isNull(adherent.HealthFile) && this.isNull(adherent.CertificateFile);
         }
     }
     

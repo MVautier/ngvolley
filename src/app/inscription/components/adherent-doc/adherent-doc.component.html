@@ -96,7 +96,8 @@
                     <mat-panel-title>
                         <mat-icon class="check" [ngClass]="adherent.HealthFile || adherent.CertificateFile ? 'valid' : 'error'">check_circle</mat-icon>
                         <!-- <span class="title">{{ checked.certifLabel }}</span> -->
-                        <span class="title">Attestation ou certificat médical</span>
+                        <span class="title" *ngIf="checked.certifNeeded && checked.age > 18">Certificat médical</span>
+                        <span class="title" *ngIf="!checked.certifNeeded || checked.age <= 18">Attestation ou certificat médical</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 
@@ -128,7 +129,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="info">
+                        <div class="info" *ngIf="!checked.certifNeeded || checked.age <= 18">
                             <div class="text">
                                 <span class="title">Ou Attestation de santé</span> entre chaque renouvellement triennal,
                                 conformément au décret n°2016-1387 du 12/10/2016.
