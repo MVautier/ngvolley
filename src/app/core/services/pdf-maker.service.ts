@@ -470,6 +470,9 @@ export class PdfMakerService {
             doc.text('Aucun membre', xOffset, yOffset);
         }
 
+        yOffset += data.Membres?.length ? 200 : 30;
+        doc.addImage(data.Signature, 50, yOffset, 300, 150);
+
         //doc.save('adhesion.pdf');
 
         return new Blob([doc.output('blob')], { type: 'application/pdf' });
