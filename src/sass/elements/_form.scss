@@ -32,6 +32,21 @@ iframe {
     mat-expansion-panel {
         margin-bottom: 20px;
         transition: margin 900ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1120ms cubic-bezier(0.4, 0, 0.2, 1);
+        
+    }
+    mat-expansion-panel-header{
+        &.mat-expanded{
+            background: var(--border) !important;
+        }
+        div.section-title{
+            text-align: left !important;
+            margin-top: 15px !important;
+        }
+        span.title{
+            font-size: 16px !important;
+            color: inherit !important;
+            font-weight: normal;
+        }
     }
     mat-panel-title {
         span {
@@ -91,6 +106,10 @@ iframe {
             .warning{
                 margin-top: 15px;
                 font-size: 13px;
+                &.important{
+                    font-weight: normal;
+                    color: red;
+                }
             }
         }
         img {
@@ -104,7 +123,7 @@ iframe {
             color: var(--accent);
             font-size: 16px;
             &.main {
-                font-size: 24px;
+                font-size: 16px;
                 &.mobile {
                     font-size: 14px;
                 }

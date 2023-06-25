@@ -160,7 +160,7 @@ export class InscriptionService {
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';
     let dateValid = false;
     const d = new Date();
-    const nextY = d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
+    let nextY = d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
 
     // Traitement certificat
     if (adherent.HealthFile || adherent.CertificateFile) {
@@ -189,6 +189,8 @@ export class InscriptionService {
     if (check.found && adherent.Licence && check.found.Licence && adherent.Licence !== 'création') {
         check.licenceError = adherent.Licence !== check.found.Licence;
     }
+
+    nextY = d.getFullYear() + (d.getMonth() > 5 ? 1 : 0);
 
     // Traitement date de naissance
     if (adherent.BirthdayDate) {

@@ -8,4 +8,5 @@ export class Client {
     Email: string;
     IdCommand?: number;
     adhesionType?: string;
+    Age: number;
 }

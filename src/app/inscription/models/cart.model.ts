@@ -75,7 +75,8 @@ export class Cart {
             PostalCode: adherent.PostalCode,
             City: adherent.City,
             Email: adherent.Email,
-            adhesionType: adherent.Membres.length ? 'multiple' : 'simple'
+            adhesionType: adherent.Membres.length ? 'multiple' : 'simple',
+            Age: Adherent.getAge(adherent.BirthdayDate)
         }
     }
     

@@ -80,7 +80,7 @@ export class Adherent {
         this.Section = base ? base.Section : Adherent.debug ? 'C' : null;
         this.Sections = base ? base.Sections : [];
         this.Rgpd = base ? base.Rgpd : false;
-        this.ImageRight = base ? base.ImageRight : true;
+        this.ImageRight = true;
         this.Signature = base ? base.Signature : null;
         this.Saison = base ? base.Saison : new Date().getFullYear();
         
