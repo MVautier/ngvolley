@@ -147,51 +147,6 @@ export class InscriptionPageComponent implements OnInit {
         };
     }
 
-    addOrUpdate() {
-        const membres: Adherent[] = [];
-        if (this.adherent.Membres?.length) {
-            this.adherent.Membres.forEach(m => {
-                m.BirthdayDate = new Date(m.BirthdayDate);
-                membres.push(this.prepareAdherentForBdd(m, false));
-            });
-        }
-        const adherent = this.prepareAdherentForBdd(this.adherent);
-        adherent.Membres = membres;
-        this.adherentService.addOrUpdate(adherent).then(result => {
-            console.log('success addOrUpdate: ', result);
-        })
-        .catch(err => {
-            console.log('error addOrUpdate: ', err);
-        });
-    }
-
-    prepareAdherentForBdd(adherent: Adherent, main = true): Adherent {
-        adherent.Saison = new Date().getFullYear();
-        adherent.BirthdayDate = this.util.UtcDate(adherent.BirthdayDate);
-        adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
-        adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
-        adherent.InscriptionDate = new Date();
-        if (main) {
-            const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
-            const client = this.cart.client;
-            const order: Order = {
-                Id: 0,
-                IdPaiement: Number(this.paymentId),
-                IdAdherent: adherent.IdAdherent,
-                Date: this.util.UtcDate(new Date()),
-                CotisationC3L: toCLLL,
-                Total: this.cart.total,
-                Nom: client?.LastName,
-                Prenom: client?.FirstName,
-                Email: client?.Email,
-                DateNaissance: this.util.UtcDate(new Date(client?.BirthdayDate)),
-                PaymentLink: this.paymentPrintUrl
-            };
-            adherent.Order = order;
-        }
-        return adherent;
-    }
-
     getPaymentDoc(id: string): Promise<string> {
         return new Promise((resolve, reject) => {
             this.helloasso.getCheckoutIntent(id).then(result => {
@@ -211,7 +166,6 @@ export class InscriptionPageComponent implements OnInit {
                 reject(err);
             });
         });
-
     }
 
     onAdherentChange(adherent: Adherent) {
@@ -296,16 +250,7 @@ export class InscriptionPageComponent implements OnInit {
                     } else {
                         this.inscriptionService.setAdherent(this.adherent);
                         this.cart.setClient(this.adherent);
-                        this.pdf.buildAdherentForm(this.adherent).then(blob => {
-                            const filename = `adhesion`;
-                            Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
-                            console.log('adherent with docs : ', this.adherent);
-                        }).catch(err => {
-                            console.log('error generating adherent form: ', err);
-                        }).finally(() => {
-                            this.step++;
-                            console.log('adherent: ', this.adherent);
-                        });
+                        this.step++;
                     }
                     this.notifier.next();
                     this.notifier.complete();
@@ -341,9 +286,20 @@ export class InscriptionPageComponent implements OnInit {
         console.log('Go to Payment');
         console.log('adherent: ', adherent);
         console.log('cart: ', this.cart);
-        this.sendDocuments(adherent).then(() => {
-            localStorage.setItem('adherent', JSON.stringify(adherent));
-            this.step++;
+        this.pdf.buildAdherentForm(adherent).then(blob => {
+            const filename = `adhesion`;
+            Adherent.addDoc(adherent, 'adhesion', filename + '.pdf', blob);
+            console.log('adherent with docs : ', adherent);
+
+        }).catch(err => {
+            console.log('error generating adherent form: ', err);
+        }).finally(() => {
+            console.log('adherent: ', adherent);
+            this.sendDocuments(adherent).then(() => {
+                localStorage.setItem('adherent', JSON.stringify(adherent));
+                this.addOrUpdate(false);
+                this.step++;
+            });
         });
     }
 
@@ -374,6 +330,54 @@ export class InscriptionPageComponent implements OnInit {
                 resolve();
             }
         });
+    }
+
+    addOrUpdate(paymentCallback: boolean = true) {
+        const membres: Adherent[] = [];
+        if (this.adherent.Membres?.length) {
+            this.adherent.Membres.forEach(m => {
+                const d = new Date(m.BirthdayDate);
+                m.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
+                membres.push(this.prepareAdherentForBdd(m, false));
+            });
+        }
+        const adherent = this.prepareAdherentForBdd(this.adherent, true, paymentCallback);
+        adherent.Membres = membres;
+        this.adherentService.addOrUpdate(adherent).then(result => {
+            console.log('success addOrUpdate: ', result);
+        })
+        .catch(err => {
+            console.log('error addOrUpdate: ', err);
+        });
+    }
+
+    prepareAdherentForBdd(adherent: Adherent, main = true, paymentCallback: boolean = true): Adherent {
+        adherent.Saison = new Date().getFullYear();
+        const d = new Date(adherent.BirthdayDate);
+        adherent.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
+        adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
+        adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
+        adherent.InscriptionDate = new Date();
+        if (main) {
+            adherent.Payment = paymentCallback ? 'Terminé' : 'En attente';
+            const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
+            const client = this.cart.client;
+            const order: Order = paymentCallback ? {
+                Id: 0,
+                IdPaiement: Number(this.paymentId),
+                IdAdherent: adherent.IdAdherent,
+                Date: this.util.UtcDate(new Date()),
+                CotisationC3L: toCLLL,
+                Total: this.cart.total,
+                Nom: client?.LastName,
+                Prenom: client?.FirstName,
+                Email: client?.Email,
+                DateNaissance: this.util.UtcDate(new Date(client?.BirthdayDate)),
+                PaymentLink: this.paymentPrintUrl
+            } : null;
+            adherent.Order = order;
+        }
+        return adherent;
     }
 
     onStep3Cancel(adherent: Adherent) {

@@ -428,7 +428,7 @@ export class PdfMakerService {
         text = '1ère personne : ';
         doc.text(text, xOffset, yOffset);
         doc.setFont('helvetica', 'normal');
-        doc.text(data.Alert1, xOffset + 100, yOffset);
+        doc.text(data.Alert1 || '', xOffset + 100, yOffset);
 
         yOffset += 20;
         doc.setFont('helvetica', 'bold');
