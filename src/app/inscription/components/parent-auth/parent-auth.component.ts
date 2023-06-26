@@ -60,6 +60,7 @@ export class ParentAuthComponent implements OnInit {
         this.childlastnameError = (this.data.child_lastname || '').length < 2;
         this.datenaissanceError = this.datenaissance === undefined;
         this.cityError = (this.data.commune || '').length < 2;
+        //this.data.signature = '';
         this.sigError = this.data.signature === undefined || this.data.signature === null;
         return !this.firstnameError
             && !this.lastnameError

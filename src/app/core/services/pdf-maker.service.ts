@@ -470,9 +470,10 @@ export class PdfMakerService {
             doc.text('Aucun membre', xOffset, yOffset);
         }
 
-        yOffset += data.Membres?.length ? 200 : 30;
-        doc.addImage(data.Signature, 50, yOffset, 300, 150);
-
+        if (data.Signature) {
+            yOffset += data.Membres?.length ? 200 : 30;
+            doc.addImage(data.Signature, 50, yOffset, 300, 150);
+        }
         //doc.save('adhesion.pdf');
 
         return new Blob([doc.output('blob')], { type: 'application/pdf' });
@@ -619,8 +620,11 @@ point de rendez-vous, après un tournoi ou une sortie organisée par CLLL Colomi
         text = `Signature`;
         doc.text(text, xOffset, yOffset);
 
-        yOffset += 30;
-        doc.addImage(data.signature, 50, yOffset, 300, 150);
+        if (data.signature) {
+            yOffset += 30;
+            doc.addImage(data.signature, 50, yOffset, 300, 150);
+        }
+        
         return new Blob([doc.output('blob')], { type: 'application/pdf' });
     }
 
