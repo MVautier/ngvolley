@@ -1,0 +1,8 @@
+<button mat-button [matMenuTriggerFor]="displayMenu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu class="sub-menu" #displayMenu="matMenu" yPosition="below" xPosition="after">
+    <button [disabled]="!doc.sent" mat-menu-item (click)="onDownload()">Download</button>
+    <button mat-menu-item (click)="onUpload()">Upload</button>
+    <button [disabled]="doc.type !== 'adhesion'" mat-menu-item (click)="onGenerate()">Générer</button>
+</mat-menu>

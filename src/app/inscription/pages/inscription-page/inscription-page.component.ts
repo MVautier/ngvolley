@@ -289,6 +289,18 @@ export class InscriptionPageComponent implements OnInit {
         this.pdf.buildAdherentForm(adherent).then(blob => {
             const filename = `adhesion`;
             Adherent.addDoc(adherent, 'adhesion', filename + '.pdf', blob);
+            if (adherent.Signature) {
+                try {
+                    const b = this.util.dataURLtoBlob(adherent.Signature);
+                    const ext = this.util.mime2ext(adherent.Signature);
+                    if (b && ext) {
+                        Adherent.addDoc(adherent, 'signature', 'signature.' + ext, blob);
+                        adherent.Signature = adherent.Uid + '/' + 'signature.' + ext;
+                    }
+                } catch(err) {
+                    console.log('error converting signature', err);
+                }
+            }
             console.log('adherent with docs : ', adherent);
 
         }).catch(err => {

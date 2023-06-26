@@ -108,12 +108,13 @@
             <div>
                 <div class="line" *ngFor="let d of documents">
                     <p class="label">{{d.libtype}}</p>
-                    <button *ngIf="d.sent" type="button" title="Download" mat-raised-button color="primary" matPrefix (click)="download(d.filename)">
+                    <app-btn-action-doc [doc]="d" (download)="download($event)" (upload)="upload($event)" (generate)="generate()"></app-btn-action-doc>
+                    <!-- <button *ngIf="d.sent" type="button" title="Download" mat-raised-button color="primary" matPrefix (click)="download(d.filename)">
                         <mat-icon>download</mat-icon>
-                    </button>
-                    <button *ngIf="!d.sent" type="button" title="Upload" mat-raised-button color="secondary" matPrefix (click)="selectedType = d.type; fileInput.click()">
+                    </button> -->
+                    <!-- <button *ngIf="!d.sent" type="button" title="Upload" mat-raised-button color="secondary" matPrefix (click)="selectedType = d.type; fileInput.click()">
                         <mat-icon>upload</mat-icon>
-                    </button>
+                    </button> -->
                 </div>
                 <input #fileInput style="display: none" type="file" multiple="false" (change)="handleFileInput($event)">
                 <div class="line" *ngIf="adherent.Order?.PaymentLink">

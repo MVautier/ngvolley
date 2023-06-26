@@ -39,6 +39,7 @@ import { GenericModalComponent } from './components/generic-modal/generic-modal.
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { OrderListeComponent } from './components/order-liste/order-liste.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
+import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-doc.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { OrderCardComponent } from './components/order-card/order-card.component
     GenericModalComponent,
     OrdersPageComponent,
     OrderListeComponent,
-    OrderCardComponent
+    OrderCardComponent,
+    BtnActionDocComponent
   ],
   imports: [
     CommonModule,

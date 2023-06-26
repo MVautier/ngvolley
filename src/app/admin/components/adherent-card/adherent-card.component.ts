@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
 import { Adherent } from '@app/core/models/adherent.model';
@@ -47,6 +47,7 @@ export class AdherentCardComponent implements OnInit {
     hasToSave = false;
     address: string = '-';
     certifDate: string = '-';
+    @ViewChild('fileInput') fileInput: ElementRef;
 
     constructor(
         private adherentAdminService: AdherentAdminService,
@@ -114,11 +115,38 @@ export class AdherentCardComponent implements OnInit {
         }
     }
 
-    download(filename: string) {
-        this.adherentAdminService.downloadFile(this.adherent.Uid, filename).then(blob => {
-            this.fileService.download(blob, filename);
+    download(doc: AdherentDoc) {
+        this.adherentAdminService.downloadFile(this.adherent.Uid, doc.filename).then(blob => {
+            this.fileService.download(blob, doc.filename);
         }).catch(err => {
             console.error(err);
+        });
+    }
+
+    upload(doc: AdherentDoc) {
+        this.selectedType = doc.type; 
+        this.fileInput.nativeElement.click();
+    }
+
+    generate() {
+        this.pdf.buildAdherentForm(this.adherent).then(blob => {
+            const filename = `adhesion`;
+            Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
+            console.log('adherent with docs : ', this.adherent);
+        }).catch(err => {
+            console.log('error generating adherent form: ', err);
+        }).finally(() => {
+            console.log('adherent: ', this.adherent);
+            const doc = this.adherent.Documents.find(d => d.type === 'adhesion');
+            if (doc && doc.blob) {
+                // this.pdf.sendDocuments(this.adherent.Uid, [doc]).then(result => {
+                //     if (result) {
+                //         console.log('success send adhesion');
+                //     } else {
+                //         console.log('failed send adhesion');
+                //     }
+                // });
+            }
         });
     }
 
