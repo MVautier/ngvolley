@@ -30,6 +30,7 @@ export class AdherentCardComponent implements OnInit {
     @Output() hide: EventEmitter<void> = new EventEmitter<void>();
     photo_default = 'assets/images/user-default.png';
     photo: string;
+    signature: string;
     subModal: Subscription;
     notifier = new Subject<void>();
     editMode = false;
@@ -82,11 +83,16 @@ export class AdherentCardComponent implements OnInit {
             if (this.adherent?.Documents) {
                 this.adherent.Documents.forEach(d => {
                     this.setDoc(d);
-                    if (d.type === 'photo') {
+                    if (d.type === 'photo' || d.type === 'signature') {
                         this.adherentAdminService.downloadFile(this.adherent.Uid, d.filename).then(blob => {
                             this.util.blobToDataURL(blob, (result) => {
                                 if (result) {
-                                    this.photo = result;
+                                    if (d.type === 'photo') {
+                                        this.photo = result;
+                                    }
+                                    if (d.type === 'signature') {
+                                        this.signature = result;
+                                    }
                                 }
                             });
                         }).catch(err => {
@@ -129,7 +135,7 @@ export class AdherentCardComponent implements OnInit {
     }
 
     generate() {
-        this.pdf.buildAdherentForm(this.adherent).then(blob => {
+        this.pdf.buildAdherentForm(this.adherent, this.signature).then(blob => {
             const filename = `adhesion`;
             Adherent.addDoc(this.adherent, 'adhesion', filename + '.pdf', blob);
             console.log('adherent with docs : ', this.adherent);
@@ -139,13 +145,13 @@ export class AdherentCardComponent implements OnInit {
             console.log('adherent: ', this.adherent);
             const doc = this.adherent.Documents.find(d => d.type === 'adhesion');
             if (doc && doc.blob) {
-                // this.pdf.sendDocuments(this.adherent.Uid, [doc]).then(result => {
-                //     if (result) {
-                //         console.log('success send adhesion');
-                //     } else {
-                //         console.log('failed send adhesion');
-                //     }
-                // });
+                this.pdf.sendDocuments(this.adherent.Uid, [doc]).then(result => {
+                    if (result) {
+                        console.log('success send adhesion');
+                    } else {
+                        console.log('failed send adhesion');
+                    }
+                });
             }
         });
     }

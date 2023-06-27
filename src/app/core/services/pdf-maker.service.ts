@@ -130,10 +130,10 @@ export class PdfMakerService {
         });
     }
 
-    buildAdherentForm(data: Adherent): Promise<Blob> {
+    buildAdherentForm(data: Adherent, signature: string = null): Promise<Blob> {
         return new Promise((resolve) => {
             try {
-                const blob: Blob = this.buildAdherentFormBlob(data);
+                const blob: Blob = this.buildAdherentFormBlob(data, signature);
                 resolve(blob);
             } catch(err) {
                 resolve(null);
@@ -275,7 +275,7 @@ export class PdfMakerService {
         return '' + result + ',00 €';
     }
 
-    private buildAdherentFormBlob(data: Adherent): Blob {
+    private buildAdherentFormBlob(data: Adherent, signature: string = null): Blob {
         const doc = new jsPDF({
             orientation: "p", //set orientation
             unit: "pt", //set unit for document
@@ -470,9 +470,17 @@ export class PdfMakerService {
             doc.text('Aucun membre', xOffset, yOffset);
         }
 
-        if (data.Signature) {
-            yOffset += data.Membres?.length ? 200 : 30;
-            doc.addImage(data.Signature, 50, yOffset, 300, 150);
+        try {
+            if (signature || data.Signature) {
+                yOffset += data.Membres?.length ? 200 : 30;
+            }
+            if (signature) {
+                doc.addImage(signature, 50, yOffset, 300, 150);
+            } else if (data.Signature) {
+                doc.addImage(data.Signature, 50, yOffset, 300, 150);
+            }
+        } catch(err) {
+            console.log('error adding signature in adhesion: ', err);
         }
         //doc.save('adhesion.pdf');
 
