@@ -214,11 +214,12 @@ export class AdherentCardComponent implements OnInit {
         
         this.modalRef.content.config = this.config;
         this.modalRef.content.validate.subscribe((result: Adherent) => {
-            console.log('validate adherent form: ', result);
+            const adherent = this.util.bindDates(result);
+            console.log('validate adherent form: ', adherent);
             this.loader.setLoading(true);
-            const reload = result.IdAdherent === 0;
+            const reload = adherent.IdAdherent === 0;
             const filename = `adhesion.pdf`;
-            this.adherentService.addOrUpdate(result).then(a => {
+            this.adherentService.addOrUpdate(adherent).then(a => {
                 this.adherent = this.util.bindDates(a);
                 if (!this.adherent.Documents.find(d => d.type === 'adhesion')) {
                     this.pdf.buildAdherentForm(this.adherent).then(blob => {
