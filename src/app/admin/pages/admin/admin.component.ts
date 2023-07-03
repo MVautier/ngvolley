@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   showAdherentMenu = false;
   fullApp = environment.fullApp;
   isAdmin = false;
+  isManager = false;
 
   constructor(
     private routeService: RouteService,
@@ -37,6 +38,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       }, 'subTreeAdmin');
       this.user = this.connexionInfo.UserInfo;
       this.isAdmin = this.user.Role === 'admin';
+      this.isManager = this.user.Role === 'manager';
     }
 
   ngOnInit(): void {

@@ -19,10 +19,10 @@ export class AdherentService {
         private util: UtilService,
         private http: HttpDataService<any>) { }
 
-    getListe(): Promise<Adherent[]> {
+    getListe(force: boolean = false): Promise<Adherent[]> {
         return new Promise((resolve, reject) => {
             try {
-                if (this.obsAdherents.value && this.obsAdherents.value.length) {
+                if (!force && this.obsAdherents.value && this.obsAdherents.value.length) {
                     resolve(this.obsAdherents.value);
                 } else {
                     this.http.get(environment.apiUrl + 'Adherent').then((datas: Adherent[]) => {
