@@ -194,7 +194,7 @@ export class InscriptionService {
 
     // Traitement date de naissance
     if (adherent.BirthdayDate) {
-        const date18 = new Date(nextY - 18, 8, 1);
+        const date18 = new Date(nextY - 18, 6, 1);
         const date13 = new Date(nextY - 13, 11, 31);
         if (['C', 'L'].includes(adherent.Category)) {
             dateValid = this.compareDate(date18, adherent.BirthdayDate) > 0;
