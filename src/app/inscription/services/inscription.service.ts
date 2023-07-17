@@ -77,7 +77,7 @@ export class InscriptionService {
 
   getExistingAdherent(adherent: Adherent): Adherent {
     if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
-        return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(adherent.FirstName) 
+        return this.adherents.find(a => a.BirthdayDate && this.normalize(a.FirstName) === this.normalize(adherent.FirstName) 
         && this.normalize(a.LastName) === this.normalize(adherent.LastName) 
         && this.compareDate(a.BirthdayDate, adherent.BirthdayDate) === 0);
     }
@@ -130,7 +130,15 @@ export class InscriptionService {
   }
 
   compareDate(d1: Date, d2: Date): number {
-    return d1.getTime() === d2.getTime() ? 0 : (d1.getTime() > d2.getTime() ? 1 : -1);
+    if (d1 && d2) {
+        const _d1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
+        const _d2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+        return _d1.getTime() === _d2.getTime() ? 0 : (_d1.getTime() > _d2.getTime() ? 1 : -1);
+    } else if (!d1) {
+        return -1;
+    } else {    
+        return 1;
+    }
   }
 
   checkControl(formGroup: FormGroup, field: string) {

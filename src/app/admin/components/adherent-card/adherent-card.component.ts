@@ -216,7 +216,7 @@ export class AdherentCardComponent implements OnInit {
         this.modalRef.content.validate.subscribe((result: Adherent) => {
             if (result.BirthdayDate) {
                 var d = result.BirthdayDate;
-                result.BirthdayDate = this.util.bindDate(this.util.date2String(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0), true));
+                result.BirthdayDate = this.util.bindDate(this.util.date2String(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0), false));
             }
             console.log('validate adherent form: ', result);
             this.loader.setLoading(true);
