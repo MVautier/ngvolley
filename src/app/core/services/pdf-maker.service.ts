@@ -226,7 +226,7 @@ export class PdfMakerService {
                 { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
                 { content: d.LastName, styles: { halign: 'left' } },
                 { content: d.FirstName, styles: { halign: 'left' } },
-                { content: this.datePipe.transform(d.InscriptionDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                { content: this.datePipe.transform(d.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
                 { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
                 { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
                 { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
