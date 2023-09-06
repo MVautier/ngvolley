@@ -34,12 +34,16 @@ export class OrderListeComponent implements OnInit {
 
     getData() {
         this.adherentService.getOrders(this.start, this.end).then(results => {
-            this.data = results;
+            this.data = this.sortData(results);
             console.log('success orders: ', this.data);
             this.setTotaux();
         }).catch(err => {
             console.log('error getting orders: ', err);
         });
+    }
+
+    sortData(data: Adherent[]): Adherent[] {
+        return data.sort((a: Adherent, b: Adherent) => (a.InscriptionDate > b.InscriptionDate) ? 1 : ((b.InscriptionDate > a.InscriptionDate) ? -1 : 0));
     }
 
     export(type: string) {

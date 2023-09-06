@@ -24,14 +24,14 @@
 
 .no-data{
     margin-top: 30px;
-    width: 820px;
+    width: 950px;
     text-align: center;
     color: #ccc;
 }
 
 .order-liste{
     margin-top: 30px;
-    width: 820px;
+    width: 950px;
     .order-header{
         border-radius: 10px;
         background: var(--accent);
@@ -53,6 +53,9 @@
                 flex: 0 0 150px;
             }
             &.prenom {
+                flex: 0 0 150px;
+            }
+            &.naissance {
                 flex: 0 0 150px;
             }
             &.c3l {
