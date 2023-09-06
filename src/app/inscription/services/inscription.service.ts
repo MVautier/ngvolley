@@ -170,25 +170,28 @@ export class InscriptionService {
     const d = new Date();
     let nextY = d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
 
+    
+
     // Traitement certificat
-    if (adherent.HealthFile || adherent.CertificateFile) {
-        check.certifNeeded = false;
-    } else {
-        if (check.found && check.found.CertificateDate) {
-            const certifDate = check.found.CertificateDate;
-            const currentY = check.found.CertificateDate.getFullYear() + 3;
-            const expire = new Date(currentY, certifDate.getMonth(), certifDate.getDay());
-            const endOfSeason = new Date(nextY, 5, 30);
-            const valid = this.compareDate(expire, endOfSeason);
-            check.certifLabel = valid >= 0 ? 'Certificat médical / attestation de santé' : 'Certificat médical';
-            check.certifPlaceHolder = valid >= 0 ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical';
-            check.certifNeeded = valid < 0;
-        } else {
-            check.certifLabel = 'Certificat médical';
-            check.certifPlaceHolder = 'Importer un certificat médical';
-            check.certifNeeded = this.isNull(adherent.HealthFile) && this.isNull(adherent.CertificateFile);
-        }
-    }
+    check.certifNeeded = false;
+    // if (adherent.HealthFile || adherent.CertificateFile) {
+    //     check.certifNeeded = false;
+    // } else {
+    //     if (check.found && check.found.CertificateDate) {
+    //         const certifDate = check.found.CertificateDate;
+    //         const currentY = check.found.CertificateDate.getFullYear() + 3;
+    //         const expire = new Date(currentY, certifDate.getMonth(), certifDate.getDay());
+    //         const endOfSeason = new Date(nextY, 5, 30);
+    //         const valid = this.compareDate(expire, endOfSeason);
+    //         check.certifLabel = valid >= 0 ? 'Certificat médical / attestation de santé' : 'Certificat médical';
+    //         check.certifPlaceHolder = valid >= 0 ? 'Importer un certificat médical ou une attestation de santé' : 'Importer un certificat médical';
+    //         check.certifNeeded = valid < 0;
+    //     } else {
+    //         check.certifLabel = 'Certificat médical';
+    //         check.certifPlaceHolder = 'Importer un certificat médical';
+    //         check.certifNeeded = this.isNull(adherent.HealthFile) && this.isNull(adherent.CertificateFile);
+    //     }
+    // }
     
     // Traitement licence
     //check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);

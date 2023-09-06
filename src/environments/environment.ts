@@ -25,9 +25,9 @@ export const environment = {
     ado: 50
   },
   minage: 13,
-  debug: false,
+  debug: true,
   ssrMode: false,
-  reinscription: true,
+  reinscription: false,
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
   cookiePath: '/',

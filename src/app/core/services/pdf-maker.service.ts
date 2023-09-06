@@ -838,32 +838,37 @@ point de rendez-vous, après un tournoi ou une sortie organisée par CLLL Colomi
         let yOffset = 150;
         doc.setFontSize(10);
 
-        text = 'Attestation en vue du renouvellement de ma licence sportive relatif au « QS-SPORT » à compter du 1er juillet 2017*';
+        text = 'Attestation en vue du renouvellement de ma licence sportive relatif au « QS-SPORT » à compter du 4 Mars 2022*';
         doc.text(text, xOffset, yOffset);
 
         yOffset += 200;
+        const birthdayDate = data.birthdayDate ? ', né(e) le ' + this.datePipe.transform(data.birthdayDate, 'dd/MM/yyyy') + ', ' : ' ';
         text = `Dans le cadre de la demande de renouvellement de ma licence auprès de l'UNSLL, je soussigné(e) 
-${data.nom} ${data.prenom} atteste avoir rempli le questionnaire de santé fixé par arrêté du ministre chargé des sports 
-daté du 20 Avril 2017.`;
+${data.nom} ${data.prenom}${birthdayDate}atteste avoir renseigné et avoir répondu par la négative 
+à l'ensemble des questions du questionnaire de santé.`;
         doc.text(text, xOffset, yOffset);
-
+        
         yOffset += 60;
-        text = `Conformément aux dispositions de l'article D. 231-1-4 du Code du Sport :`;
+        text = `Saison 2023-2024, Club Loisir Léo Lagrange`;
         doc.text(text, xOffset, yOffset);
 
-        yOffset += 20;
-        this.drawCheckbox(doc, xOffset, yOffset);
-        doc.text('X', 36, yOffset + 9);
+        // yOffset += 60;
+        // text = `Conformément aux dispositions de l'article D. 231-1-4 du Code du Sport :`;
+        // doc.text(text, xOffset, yOffset);
 
-        text = `J'ai répondu NON à chacune des rubriques du questionnaire. Dans ce cas, la présente attestation sera fournie à  
-l'association au sein de laquelle je sollicite le renouvellement de ma licence.`;
-        doc.text(text, xOffset + 20, yOffset + 5);
+//         yOffset += 20;
+//         this.drawCheckbox(doc, xOffset, yOffset);
+//         doc.text('X', 36, yOffset + 9);
 
-        yOffset += 150;
+//         text = `J'ai répondu NON à chacune des rubriques du questionnaire. Dans ce cas, la présente attestation sera fournie à  
+// l'association au sein de laquelle je sollicite le renouvellement de ma licence.`;
+//         doc.text(text, xOffset + 20, yOffset + 5);
+
+        yOffset += 30;
         text = `Fait pour servir et valoir ce que de droit.`;
         doc.text(text, xOffset, yOffset);
 
-        yOffset += 20;
+        yOffset += 30;
         text = `Fait à ${data.commune}, le ${data.date}`;
         doc.text(text, xOffset, yOffset);
 

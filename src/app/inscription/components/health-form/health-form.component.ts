@@ -22,6 +22,7 @@ export class HealthFormComponent implements OnInit {
     city: string;
     now: Date = new Date();
     nom: string;
+    birthdayCity: string;
 
     constructor(
         private datePipe: DatePipe,
@@ -99,7 +100,7 @@ export class HealthFormComponent implements OnInit {
         if (this.data.mode === 'minor') {
             return this.isValid(this.city) && this.isValid(this.nom) && this.isValid(this.data.signature);
         } else {
-            return this.isValid(this.city) && this.isValid(this.data.signature);
+            return this.isValid(this.city) && this.isValid(this.birthdayCity) && this.isValid(this.data.signature);
         }
     }
 
@@ -110,6 +111,7 @@ export class HealthFormComponent implements OnInit {
     onValidate() {
         this.data.tuteur = this.nom;
         this.data.commune = this.city;
+        this.data.birthdayCity = this.birthdayCity;
         this.data.date = this.datePipe.transform(this.now, 'dd/MM/yyyy');
         this.pdf.buildHealthForm(this.data, false).then(blob => {
             if (blob) {

@@ -59,12 +59,16 @@
 <div *ngIf="terminated && data && data.mode === 'major'" class="questionary">
     <div class="description">
         Attestation en vue du renouvellement de ma licence sportive relatif au « QS-SPORT » à
-        compter du 1er juillet 2017*
+        compter du 2 Mars 2022*
     </div>
     <div class="body">
         <div>
-            Dans le cadre de la demande de renouvellement de ma licence auprès de l'UNSLL, je soussigné(e) {{data.nom}} {{data.prenom}} atteste avoir 
-            rempli le questionnaire de santé fixé par arrêté du ministre chargé des sports daté du 20 Avril 2017.
+            Dans le cadre de la demande de renouvellement de ma licence auprès de l'UNSLL, je soussigné(e) {{data.nom}} {{data.prenom}}, 
+            né(e) le {{data.birthdayDate | date:'dd/MM/yyyy'}} 
+            à <input class="form-control" type="text" name="birthdayCity" placeholder="Commune" [(ngModel)]="birthdayCity" required [ngClass]="{error: !isValid(birthdayCity)}">
+            
+            atteste avoir 
+            rempli le questionnaire de santé.
         </div>
         <div>
             Conformément aux dispositions de l'article D. 231-1-4 du Code du Sport :
@@ -101,7 +105,7 @@
         </div>
     </div>
     <div class="alinea">
-        *En référence au Décret n° 2016-1157 du 24 août 2016 relatif au certificat médical attestant de l'absence de contre-indication à
+        *En référence au Décret n° 2022-296 du 2 Mars 2022 relatif au certificat médical attestant de l'absence de contre-indication à
         la pratique du sport
     </div>
 </div>

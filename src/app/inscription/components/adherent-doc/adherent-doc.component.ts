@@ -216,7 +216,7 @@ export class AdherentDocComponent implements OnInit {
             this.subModal.unsubscribe();
         }
         const major = this.adherent.Age >= 18;
-        const data = major ? Questionary.getMajor(this.adherent.LastName, this.adherent.FirstName) : Questionary.getMinor(this.adherent.LastName, this.adherent.FirstName, this.adherent.Age, this.adherent.Genre);
+        const data = major ? Questionary.getMajor(this.adherent.LastName, this.adherent.FirstName, this.adherent.BirthdayDate) : Questionary.getMinor(this.adherent.LastName, this.adherent.FirstName, this.adherent.Age, this.adherent.Genre);
         this.modalService.open({
             title: data.title,
             validateLabel: 'Valider',

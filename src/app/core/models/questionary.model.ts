@@ -5,6 +5,8 @@ export class Questionary {
     description: string;
     nom?: string;
     prenom?: string;
+    birthdayDate?: Date;
+    birthdayCity?: string;
     age?: number;
     genre?: string;
     commune?: string;
@@ -146,11 +148,12 @@ Cet examen est prévu à l\'âge de 2 ans, 3 ans, 4 ans, 5 ans, entre 8 et 9 ans
         };
     }
 
-    public static getMajor(nom: string, prenom: string): Questionary {
+    public static getMajor(nom: string, prenom: string, birthdayDate: Date): Questionary {
         return {
             mode: 'major',
             nom: nom,
             prenom: prenom,
+            birthdayDate: birthdayDate,
             title: 'Renouvellement de licence d\'une Fédération sportive',
             description: 'Ce questionnaire de santé permet de savoir si vous devez fournir un certificat médical pour renouveler votre licence sportive.',
             questionGroups: [
