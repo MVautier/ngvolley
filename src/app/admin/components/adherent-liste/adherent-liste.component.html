@@ -14,6 +14,14 @@
             <button type="button" mat-raised-button color="primary" matPrefix (click)="export()">
                 <mat-icon>download</mat-icon>Excel
             </button>
+            <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">Documents</button>
+            <mat-menu class="sub-menu" #exportMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="exportDocs('adhesion')">Adhésions</button>
+                <button mat-menu-item (click)="exportDocs('autorisation')">Autorisations parentales</button>
+                <button mat-menu-item (click)="exportDocs('attestation')">Attestations</button>
+                <button mat-menu-item (click)="exportDocs('certificat')">Certificats</button>
+                <button mat-menu-item (click)="exportDocs('photo')">Photos</button>
+            </mat-menu>
         </div>
     </div>
 

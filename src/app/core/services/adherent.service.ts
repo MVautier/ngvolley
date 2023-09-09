@@ -108,4 +108,16 @@ export class AdherentService {
             });
         });
     }
+
+    getDocuments(filter: AdherentFilter, type: string): Promise<any> {
+        const url = `${environment.apiUrl}Adherent/docs?type=${type}`;
+        return new Promise((resolve, reject) => {
+            this.http.post<AdherentFilter>(url, filter, { responseType: 'blob', withCredentials: true }).then(result => {
+                resolve(result);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+        
+    }
 }

@@ -91,6 +91,13 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
           });
     }
 
+    exportDocs(type: string = 'adhesion') {
+        const filter = this.filter || new AdherentFilter();
+        this.adherentService.getDocuments(filter, type).then(blob => {
+            this.fileService.download(blob, type + 's.zip');
+        });
+    }
+
     loadData(filter: AdherentFilter) {
         this.filter = filter;
         this.adherentAdminService.setFilter(filter);
