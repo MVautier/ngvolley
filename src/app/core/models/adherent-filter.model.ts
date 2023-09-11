@@ -10,6 +10,7 @@ export class AdherentFilter{
     DateRange?: DateRange;
 
     constructor(field: string = null) {
+        const now = new Date();
         this.HasPhoto = null;
         this.HasLicence = null;
         this.IdSection = null;
@@ -21,7 +22,7 @@ export class AdherentFilter{
         };
         this.DateRange = {
             Start: null,
-            End: null
+            End: now
         }
     }
 }

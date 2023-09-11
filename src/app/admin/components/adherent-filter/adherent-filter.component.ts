@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
+import { UtilService } from '@app/core/services/util.service';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Operator } from '@app/core/models/operator.model';
 
@@ -31,10 +32,22 @@ export class AdherentFilterComponent implements OnInit {
     ];
 
     @ViewChild('input') input: ElementRef;
-    constructor(private adherentService: AdherentAdminService) { }
+    constructor(private adherentService: AdherentAdminService, private util: UtilService) { }
 
     ngOnInit(): void {
         this.initFilter();
+    }
+
+    onDateChange(mode: string, event: any) {
+        const d = this.util.UtcDate(new Date(event.target.value));
+        console.log('date changed in ', mode, ' mode: ', d);
+        if (mode === 'start') {
+            this.filter.DateRange.Start = d;
+        }
+        if (mode === 'end') {
+            this.filter.DateRange.End = d;
+        }
+        console.log('dates changed: ', this.filter.DateRange);
     }
 
     setDate(event: any, type: string) {

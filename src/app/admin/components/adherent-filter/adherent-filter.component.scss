@@ -26,6 +26,26 @@
             color: var(--primary);
             width: 120px;
         }
+        .dates {
+            display: flex;
+            flex-direction: column;
+            .title{
+                width: 100%;
+            }
+            .input{
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: start;
+                margin-bottom: 5px;
+                input{
+                    max-height: 40px;
+                    margin-right: 10px;
+                    width: 140px;
+                }
+            }
+            
+        }
         mat-select {
             margin-left: 10px;
         }

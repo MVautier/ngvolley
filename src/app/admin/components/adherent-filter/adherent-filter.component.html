@@ -6,15 +6,24 @@
     <h3>Filtrer</h3>
     <mat-icon class="close" (click)="onHideFilter()">close</mat-icon>
     <div class="filter-item">
-        <mat-form-field appearance="fill">
-            <mat-label>Date d'inscription</mat-label>
+        <!-- <mat-form-field appearance="fill">
             <mat-date-range-input [rangePicker]="picker">
                 <input matStartDate [max]="maxDate" [value]="filter.DateRange.Start" (dateChange)="setDate($event, 'start')">
                 <input matEndDate [max]="maxDate" [value]="filter.DateRange.End" (dateChange)="setDate($event, 'end')">
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
+        </mat-form-field> -->
+        
+        <div class="dates">
+            <div class="title">
+                <mat-label>Date d'inscription</mat-label>
+            </div>
+            <div class="input">
+                <input type="date" id="cal-start" [valueAsDate]="filter.DateRange.Start" [max]="filter.DateRange.End | date:'yyyy-MM-dd'" (change)="onDateChange('start', $event)" />
+                <input type="date" id="cal-end" [valueAsDate]="filter.DateRange.End" [min]="filter.DateRange.Start | date:'yyyy-MM-dd'" (change)="onDateChange('end', $event)" />
+            </div>
+        </div>
     </div>
     <div class="filter-item">
         <div class="field">Photo : </div>
