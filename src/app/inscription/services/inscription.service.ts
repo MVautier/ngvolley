@@ -14,7 +14,7 @@ export class InscriptionService {
     requiredAlert: string = 'Ce champ est requis';
     phoneInputMask = '00 00 00 00 00||(+99) 0 00 00 00 00';
     cpInputMask = '00000';
-    licenceInputMask = '000000';
+    //licenceInputMask = '000000';
     filemaxsize = 5242880;
     public manualFill: boolean = false;
     patterns = { 

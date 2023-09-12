@@ -27,7 +27,7 @@ export class AdherentDocComponent implements OnInit {
     @Output() savePdf: EventEmitter<PdfInfo> = new EventEmitter<PdfInfo>();
     @Output() changed: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     formGroup: FormGroup;
-    licenceInputMask: string;
+    //licenceInputMask: string;
     checked: CheckAdherent = new CheckAdherent();
     healthfile: File;
     subModal: Subscription;
@@ -52,7 +52,7 @@ export class AdherentDocComponent implements OnInit {
             this.isMobile = true;
         }
         if (this.adherent) {
-            this.licenceInputMask = this.inscriptionService.licenceInputMask;
+            //this.licenceInputMask = this.inscriptionService.licenceInputMask;
             this.savedLicence = this.adherent.Licence;
             this.initForm();
             this.formGroup.markAllAsTouched();

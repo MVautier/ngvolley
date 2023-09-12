@@ -53,7 +53,7 @@
 
                     <div class="licence">
                         <mat-form-field *ngIf="!firstLicence" class="form-element row-item">
-                            <input matInput [mask]="licenceInputMask" placeholder="N° de licence de l'an dernier" formControlName="licence">
+                            <input matInput placeholder="N° de licence de l'an dernier" formControlName="licence">
                             <mat-error *ngIf="!formGroup.controls['licence'].valid && formGroup.controls['licence'].touched">
                                 {{ getLicenceError('licence') }}
                             </mat-error>
