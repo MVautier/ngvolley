@@ -44,13 +44,17 @@ export class AdherentService {
 
     getOrders(start: Date, end: Date): Promise<Adherent[]> {
         return new Promise((resolve, reject) => {
+            const s = this.util.date2StringForFilter(start);
+            const e = this.util.date2StringForFilter(end);
             this.getListe().then(liste => {
-                resolve(liste.filter(a => a.Order && a.Order.Date >= start && a.Order.Date <= end));
+                resolve(liste.filter(a => a.Order && a.Order.Date && this.util.date2StringForFilter(a.Order.Date) >= s && this.util.date2StringForFilter(a.Order.Date) <= e));
             }).catch(err => {
                 reject(err);
             });
         });
     }
+
+
 
     findAdherents(
         filter: AdherentFilter,

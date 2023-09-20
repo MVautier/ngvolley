@@ -75,6 +75,20 @@ export class UtilService {
         return s;
     }
 
+    date2StringForFilter(d: Date): string {
+        let s = '';
+        if (d) {
+            const m = d.getMonth() + 1;
+            const j = d.getDate();
+            const y = d.getFullYear();
+            const sm = (m < 10 ? '0' : '') + m.toString();
+            const sj = (j < 10 ? '0' : '') + j.toString();
+            return y + sm + sj;
+            
+        }
+        return s;
+    }
+
     public UtcDate(date: Date): Date {
         if (!date) return null;
         const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
