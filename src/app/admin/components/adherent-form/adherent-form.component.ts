@@ -66,7 +66,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
                 }
             });
             this.adherentService.getCategories().then(liste => {
-                this.categories = liste.filter(c => !c.Blocked);
+                //this.categories = liste.filter(c => !c.Blocked);
+                this.categories = liste;
                 this.initForm();
                 this.formGroup.markAllAsTouched();
                 //this.change.emit(this.formGroup);
