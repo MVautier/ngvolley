@@ -2,6 +2,7 @@ import { DateRange } from "./date-range.model";
 import { DynamicFilter } from "./dynamic-filter.model";
 
 export class AdherentFilter{
+    HasPaid?: boolean;
     HasPhoto?: boolean;
     HasLicence?: boolean;
     IdSection?: number;
@@ -11,6 +12,7 @@ export class AdherentFilter{
 
     constructor(field: string = null) {
         const now = new Date();
+        this.HasPaid = null;
         this.HasPhoto = null;
         this.HasLicence = null;
         this.IdSection = null;

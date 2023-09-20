@@ -26,6 +26,14 @@
         </div>
     </div>
     <div class="filter-item">
+        <div class="field">A payé : </div>
+        <mat-select [(value)]="hasPaid" (selectionChange)="onOptionChange('payment', $event)">
+            <mat-option value="tous">Tous</mat-option>
+            <mat-option value="oui">Oui</mat-option>
+            <mat-option value="non">Non</mat-option>
+        </mat-select>
+    </div>
+    <div class="filter-item">
         <div class="field">Photo : </div>
         <mat-select [(value)]="hasPhoto" (selectionChange)="onOptionChange('photo', $event)">
             <mat-option value="tous">Tous</mat-option>

@@ -19,6 +19,7 @@ export class AdherentFilterComponent implements OnInit {
     hasLicence = 'tous';
     Categorie = 'tous';
     Section = 'tous';
+    hasPaid = 'tous';
     customFields = [
         { columnDef: 'LastName', header: 'Nom' },
         { columnDef: 'FirstName', header: 'Prénom' },
@@ -69,7 +70,9 @@ export class AdherentFilterComponent implements OnInit {
     }
 
     onOptionChange(field: string, event: any) {
-        if (field === 'photo') {
+        if (field === 'payment') {
+            this.filter.HasPaid = event.value === 'tous' ? null : (event.value === 'oui' ? true : false);
+        } else if (field === 'photo') {
             this.filter.HasPhoto = event.value === 'tous' ? null : (event.value === 'avec' ? true : false);
         } else if (field === 'licence') {
             this.filter.HasLicence = event.value === 'tous' ? null : (event.value === 'avec' ? true : false);
@@ -85,6 +88,7 @@ export class AdherentFilterComponent implements OnInit {
 
     initFilter() {
         this.filter = new AdherentFilter(this.selectedCustomField.columnDef);
+        this.hasPaid = 'tous';
         this.hasPhoto = 'tous';
         this.hasLicence = 'tous';
         this.Categorie = 'tous';
