@@ -23,9 +23,11 @@
         }
         &.nom {
             flex: 0 0 150px;
+            text-transform: uppercase;
         }
         &.prenom {
             flex: 0 0 150px;
+            text-transform: capitalize;
         }
         &.c3l {
             flex: 0 0 95px;
