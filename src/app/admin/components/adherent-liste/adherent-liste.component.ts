@@ -30,7 +30,8 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
         { columnDef: 'LastName', header: 'Nom', cell: (element: Adherent) => `${element.LastName}` },
         { columnDef: 'FirstName', header: 'Prénom', cell: (element: Adherent) => `${element.FirstName}` },
         { columnDef: 'Category', header: 'Catégorie', cell: (element: Adherent) => `${element.Category}` },
-        { columnDef: 'Section', header: 'Section', cell: (element: Adherent) => `${element.Section}` }
+        { columnDef: 'Section', header: 'Section', cell: (element: Adherent) => `${element.Section}` },
+        { columnDef: 'Payment', header: 'Paiement', cell: (element: Adherent) => `${element.Payment}` }
     ];
     displayedColumns: string[] = this.columns.map(c => c.columnDef);
     @ViewChild(MatSort) sort: MatSort;
