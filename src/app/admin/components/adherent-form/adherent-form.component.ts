@@ -117,7 +117,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             'team1': [this.adherent.Team1],
             'team2': [this.adherent.Team2],
             'certifdate': [this.adherent.CertificateDate],
-            'paycomment': [this.adherent.PaymentComment],
+            //'paycomment': [this.adherent.PaymentComment],
+            'payment': [this.adherent.Payment],
             'licence': [this.adherent.Licence]
         });
     }
@@ -265,7 +266,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             Team1: this.formGroup.get('team1').value,
             Team2: this.formGroup.get('team2').value,
             CertificateDate: certifdate,
-            PaymentComment: this.formGroup.get('paycomment').value,
+            Payment: this.formGroup.get('paycent').value,
             InscriptionDate: this.adherent.InscriptionDate
         };
     }
