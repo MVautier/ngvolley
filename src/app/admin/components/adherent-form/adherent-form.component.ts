@@ -266,7 +266,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             Team1: this.formGroup.get('team1').value,
             Team2: this.formGroup.get('team2').value,
             CertificateDate: certifdate,
-            Payment: this.formGroup.get('paycent').value,
+            Payment: this.formGroup.get('payment').value,
             InscriptionDate: this.adherent.InscriptionDate
         };
     }
