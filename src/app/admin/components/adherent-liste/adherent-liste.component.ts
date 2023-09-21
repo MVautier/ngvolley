@@ -99,14 +99,21 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     }
 
     loadData(filter: AdherentFilter) {
-        this.filter = filter;
-        this.adherentAdminService.setFilter(filter);
+        // this.filter = filter;
+        // this.adherentAdminService.setFilter(filter);
+        // this.paginator.pageIndex = 0;
         this.dataSource.loadData(
             this.filter,
             this.sort.direction,
             this.sort.active,
             this.paginator.pageIndex,
             this.paginator.pageSize);
+    }
+
+    filterChanged(filter: AdherentFilter){
+        this.filter = filter;
+        this.adherentAdminService.setFilter(filter);
+        this.paginator.pageIndex = 0;
     }
 
     showCard(row: Adherent) {

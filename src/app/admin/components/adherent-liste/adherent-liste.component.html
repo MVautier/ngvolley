@@ -5,7 +5,7 @@
 
     <div *ngIf="!selectedAdherent" class="top">
         <div>
-            <app-adherent-filter (apply)="loadData($event)"></app-adherent-filter>
+            <app-adherent-filter (change)="filterChanged($event)" (apply)="loadData($event)"></app-adherent-filter>
         </div>
         <div class="actions">
             <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">

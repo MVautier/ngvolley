@@ -12,6 +12,7 @@ import { Operator } from '@app/core/models/operator.model';
 export class AdherentFilterComponent implements OnInit {
 
     @Input() filter: AdherentFilter;
+    @Output() change: EventEmitter<AdherentFilter> = new EventEmitter<AdherentFilter>();
     @Output() apply: EventEmitter<AdherentFilter> = new EventEmitter<AdherentFilter>();
     maxDate: Date = new Date();
     showFilter = false;
@@ -107,12 +108,14 @@ export class AdherentFilterComponent implements OnInit {
 
     resetFilter() {
         this.initFilter();
+        this.change.emit(this.filter);
         this.apply.emit(this.filter);
         this.showFilter = false;
     }
 
     setFilter() {
         this.filter.DynamicFilter.Value = this.input.nativeElement.value;
+        this.change.emit(this.filter);
         this.apply.emit(this.filter);
         this.showFilter = false;
     }
