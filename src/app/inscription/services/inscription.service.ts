@@ -242,7 +242,7 @@ export class InscriptionService {
   }
 
   private normalize(s: string): string {
-    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
   }
 
   public isNull(value): boolean {

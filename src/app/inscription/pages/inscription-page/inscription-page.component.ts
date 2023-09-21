@@ -371,6 +371,8 @@ export class InscriptionPageComponent implements OnInit {
         adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
         adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
         adherent.InscriptionDate = new Date();
+        adherent.FirstName = adherent.FirstName ? adherent.FirstName.trim() : adherent.FirstName;
+        adherent.LastName = adherent.LastName ? adherent.LastName.trim() : adherent.LastName;
         if (main) {
             adherent.Payment = paymentCallback ? 'Terminé' : 'En attente';
             const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
