@@ -162,6 +162,7 @@ export class InscriptionService {
         console.log('found: ', check.found);
         if (check.found && !adherent.IdAdherent) {
             adherent.IdAdherent = check.found.IdAdherent;
+            adherent.Uid = check.found.Uid;
         }
     }
     check.certifLabel = 'Attestation ou certificat';

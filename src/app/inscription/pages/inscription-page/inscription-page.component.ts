@@ -181,8 +181,9 @@ export class InscriptionPageComponent implements OnInit {
         if (this.reinscription && info.found) {
             this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null);
         } else {
-            this.adherent = new Adherent(null, info.local ? environment.postalcode : null);
+            this.adherent = new Adherent(info.found ?? null, info.local ? environment.postalcode : null);
         }
+        const checked = this.inscriptionService.checkAdherent(null, this.adherent, 2);
         if (info) {
             this.startIns = info;
             const already = info.nom !== null && info.prenom !== null && this.startIns.section !== null;
