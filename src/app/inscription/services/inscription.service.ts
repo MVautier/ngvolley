@@ -5,6 +5,7 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { BehaviorSubject } from 'rxjs';
 import { CheckAdherent } from '../models/check-adherent.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class InscriptionService {
@@ -162,7 +163,11 @@ export class InscriptionService {
         console.log('found: ', check.found);
         if (check.found && !adherent.IdAdherent) {
             adherent.IdAdherent = check.found.IdAdherent;
-            adherent.Uid = check.found.Uid;
+            if (check.found.Uid) {
+                adherent.Uid = check.found.Uid;
+            } else if (!adherent.Uid) {
+                adherent.Uid = uuidv4();
+            }
         }
     }
     check.certifLabel = 'Attestation ou certificat';
