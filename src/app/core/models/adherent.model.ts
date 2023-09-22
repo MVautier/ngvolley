@@ -142,7 +142,7 @@ export class Adherent {
             ImageRight: data.ImageRight,
             Signature: data.Signature,
             PaymentComment: data.PaymentComment,
-            Payment: data.PaymentComment,
+            Payment: data.Payment,
             Photo: data.Photo,
             HealthFile: data.HealthFile,
             HealthStatementDate: data.HealthStatementDate ? new Date(data.HealthStatementDate) : null,

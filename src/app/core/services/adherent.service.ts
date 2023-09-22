@@ -42,12 +42,26 @@ export class AdherentService {
         });
     }
 
-    getOrders(start: Date, end: Date): Promise<Adherent[]> {
+    getOrders(start: Date, end: Date, isHelloasso: boolean): Promise<Adherent[]> {
         return new Promise((resolve, reject) => {
             const s = this.util.date2StringForFilter(start);
             const e = this.util.date2StringForFilter(end);
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth() + 1;
+            const season = m >= 6 ? y : y - 1;
             this.getListe().then(liste => {
-                resolve(liste.filter(a => a.Order && a.Order.Date && this.util.date2StringForFilter(a.Order.Date) >= s && this.util.date2StringForFilter(a.Order.Date) <= e));
+                let results: Adherent[] = [];
+                if (isHelloasso) {
+                    results = liste.filter(a => a.Saison === season && a.Order && a.Order.Date && this.util.date2StringForFilter(a.Order.Date) >= s && this.util.date2StringForFilter(a.Order.Date) <= e);
+                } else {
+                    results = liste.filter(a => a.Saison === season && !a.Order.Id
+                        && a.Payment && a.Payment !== 'Terminé' && a.Payment !== 'En attente' && a.Payment !== ''
+                        && a.InscriptionDate 
+                        && this.util.date2StringForFilter(a.InscriptionDate) >= s 
+                        && this.util.date2StringForFilter(a.InscriptionDate) <= e);
+                }
+                resolve(results);
             }).catch(err => {
                 reject(err);
             });

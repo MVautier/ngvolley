@@ -12,30 +12,51 @@
             <mat-icon>table</mat-icon>Excel
         </button>
     </div>
-
 </div>
 
-<div class="order-liste" *ngIf="data.length">
+<div class="orders">
+    <h3>Paiements Helloasso</h3>
+    <div class="order-liste" *ngIf="data.length">
 
-    <div class="order-header">
-        <div class="order-header-item id">Id</div>
-        <div class="order-header-item date">Date</div>
-        <div class="order-header-item nom">Nom</div>
-        <div class="order-header-item prenom">Prénom</div>
-        <div class="order-header-item naissance">Naissance</div>
-        <div class="order-header-item c3l">CLLL</div>
-        <div class="order-header-item club">CLUB</div>
-        <div class="order-header-item total">Total</div>
-    </div>
-
-    <app-order-card *ngFor="let d of data" [data]="d"></app-order-card>
+        <div class="order-header">
+            <div class="order-header-item id">Id</div>
+            <div class="order-header-item date">Date</div>
+            <div class="order-header-item nom">Nom</div>
+            <div class="order-header-item prenom">Prénom</div>
+            <div class="order-header-item naissance">Naissance</div>
+            <div class="order-header-item c3l">CLLL</div>
+            <div class="order-header-item club">CLUB</div>
+            <div class="order-header-item total">Total</div>
+        </div>
     
-    <div class="totaux">
-        <div class="totaux-item label">Totaux</div>
-        <div class="totaux-item c3l">{{totalC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
-        <div class="totaux-item club">{{totalClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
-        <div class="totaux-item total">{{total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+        <app-order-card *ngFor="let d of data" [data]="d"></app-order-card>
+        
+        <div class="totaux">
+            <div class="totaux-item label">Totaux</div>
+            <div class="totaux-item c3l">{{totalC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+            <div class="totaux-item club">{{totalClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+            <div class="totaux-item total">{{total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+        </div>
+    
     </div>
-
+    <p class="no-data" *ngIf="!data.length">Aucune donnée pour la période</p>
 </div>
-<p class="no-data" *ngIf="!data.length">Aucune donnée pour la période</p>
+
+<div class="orders">
+    <h3>Paiements manuels</h3>
+    <div class="order-liste" *ngIf="data_manual.length">
+
+        <div class="order-header">
+            <div class="order-header-item id">Id</div>
+            <div class="order-header-item date">Date</div>
+            <div class="order-header-item nom">Nom</div>
+            <div class="order-header-item prenom">Prénom</div>
+            <div class="order-header-item naissance">Naissance</div>
+            <div class="order-header-item manual">Paiement</div>
+        </div>
+    
+        <app-order-card *ngFor="let d of data_manual" [data]="d"></app-order-card>
+    </div>
+    <p class="no-data" *ngIf="!data_manual.length">Aucune donnée pour la période</p>
+</div>
+

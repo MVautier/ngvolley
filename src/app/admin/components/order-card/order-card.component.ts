@@ -11,14 +11,17 @@ export class OrderCardComponent implements OnInit {
 montantC3l: number = 0;
 montantClub: number = 0;
 montantTotal: number = 0;
+isHelloAsso: boolean = true;
   constructor() { }
 
   ngOnInit(): void {
-    if (this.data && this.data.Order) {
-        this.montantC3l = this.data.Order.CotisationC3L;
-        this.montantTotal = this.data.Order.Total;
-        this.montantClub = this.montantTotal - this.montantC3l;
+    this.isHelloAsso = this.data.Order.Id !== undefined;
+    if (this.data) {
+        if (this.isHelloAsso) {
+            this.montantC3l = this.data.Order.CotisationC3L;
+            this.montantTotal = this.data.Order.Total;
+            this.montantClub = this.montantTotal - this.montantC3l;
+        }
     }
   }
-
 }

@@ -141,10 +141,10 @@ export class PdfMakerService {
         });
     }
 
-    buildOrderList(data: Adherent[], title: string): Promise<Blob> {
+    buildOrderList(data: Adherent[], data_manual: Adherent[], title: string): Promise<Blob> {
         return new Promise((resolve) => {
             try {
-                const blob: Blob = this.buildOrderListBlob(data, title);
+                const blob: Blob = this.buildOrderListBlob(data, data_manual, title);
                 resolve(blob);
             } catch(err) {
                 resolve(null);
@@ -152,12 +152,13 @@ export class PdfMakerService {
         });
     }
 
-    private buildOrderListBlob(data: Adherent[], title: string): Blob {
+    private buildOrderListBlob(data: Adherent[], data_manual: Adherent[], title: string): Blob {
         const doc = new jsPDF({
             orientation: "p", //set orientation
             unit: "pt", //set unit for document
             format: "letter" //set document standard
         });
+        const rowHeight = 10;
         doc.setLanguage('fr');
 
         // Logo
@@ -166,52 +167,40 @@ export class PdfMakerService {
          // Titre
          let xOffset = (doc.internal.pageSize.width / 2);
          let yOffset = 40;
-         let text = '';
          doc.text(title, xOffset, yOffset, { align: 'center' });
-         const textWidth = doc.getTextWidth(title);
+         let textWidth = doc.getTextWidth(title);
          yOffset += 10;
          doc.line(xOffset - (textWidth / 2), yOffset, xOffset + (textWidth / 2), yOffset);
 
+         yOffset += 50;
+         title = 'Paiements Helloasso';
+         doc.text(title, xOffset, yOffset, { align: 'center' });
+         textWidth = doc.getTextWidth(title);
+         yOffset += 10;
+         doc.line(xOffset - (textWidth / 2), yOffset, xOffset + (textWidth / 2), yOffset);
+
+         yOffset += 50;
+
          // Headers
-        var columns: RowInput[] = [
-            [{ content: 'N°', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255] , halign: 'center'} },
-            { content: 'Date', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'Nom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'Prénom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'Naissance', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'CLLL', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'Club', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
-            { content: 'Total', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } }
-        ]
+        let columns: RowInput[] = [
+            [
+                { content: 'N°', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255] , halign: 'center'} },
+                { content: 'Date', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Nom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Prénom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Naissance', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'CLLL', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Club', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Total', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } }
+            ]
         ];
 
         // Rows
-        const rows: RowInput[] = [];
+        let rows: RowInput[] = [];
         let totalC3l = 0;
         let totalClub = 0;
         let totalGen = 0;
-        // let i = 0;
-        // const nb = 50;
-        // const d = data[0];
-        // for (let i = 0; i < nb; i++) {
-        //     const o = d.Order;
-        //     const c3l = o.CotisationC3L;
-        //     const total = o.Total;
-        //     const club = total - c3l;
-        //     totalC3l += c3l;
-        //     totalClub += club;
-        //     totalGen += total;
-        //     rows.push([
-        //         //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
-        //         { content: o.IdPaiement, styles: { halign: 'left' } },
-        //         { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
-        //         { content: d.LastName, styles: { halign: 'left' } },
-        //         { content: d.FirstName, styles: { halign: 'left' } },
-        //         { content: this.formatCurrency(c3l), styles: { halign: 'right' } },
-        //         { content: this.formatCurrency(club), styles: { halign: 'right' } },
-        //         { content: this.formatCurrency(total), styles: { halign: 'right' } }
-        //     ]);
-        // }
+
         data.forEach(d => {
             const o = d.Order;
             const c3l = o.CotisationC3L;
@@ -231,6 +220,7 @@ export class PdfMakerService {
                 { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
                 { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
             ]);
+            yOffset += rowHeight;
         });
 
         // Totaux
@@ -248,6 +238,7 @@ export class PdfMakerService {
                 content: this.formatCurrency(totalGen), styles: { halign: 'right' }
             }
         ]);
+        yOffset += rowHeight;
 
         // Table
         autoTable(doc, {
@@ -256,17 +247,51 @@ export class PdfMakerService {
             theme: this.theme,
             head: columns,
             body: rows,
-            startY: 100,
-            // didDrawCell: (data) => {
-            //     if (data.section === 'body') {
-            //         // Dessin des checkboxes
-            //         if ((data.column.index === 1 || data.column.index === 2) && !data.cell.text.includes('')) {
-            //             data.cell.styles.font = 'courrier';
-            //             data.cell.styles.halign = 'center';
-            //             this.drawCheckbox(doc, data.cell.x + x, data.cell.y + y);
-            //         }
-            //     }
-            // }
+            startY: 130,
+        });
+
+        doc.addPage();
+
+        yOffset = 50;
+        title = 'Paiements manuels';
+        doc.text(title, xOffset, yOffset, { align: 'center' });
+        textWidth = doc.getTextWidth(title);
+        yOffset += 10;
+        doc.line(xOffset - (textWidth / 2), yOffset, xOffset + (textWidth / 2), yOffset);
+        yOffset += 50;
+
+        // Headers
+        columns = [
+            [
+                { content: 'N°', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255] , halign: 'center'} },
+                { content: 'Date', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Nom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Prénom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Naissance', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+                { content: 'Paiement', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'left' } }
+            ]
+        ];
+        // Rows
+        rows = [];
+        data_manual.forEach(d => {
+            rows.push([
+                //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+                { content: d.IdAdherent, styles: { halign: 'left' } },
+                { content: this.datePipe.transform(d.InscriptionDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                { content: d.LastName, styles: { halign: 'left' } },
+                { content: d.FirstName, styles: { halign: 'left' } },
+                { content: this.datePipe.transform(d.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                { content: d.Payment, styles: { halign: 'left' } }
+            ]);
+        });
+
+        autoTable(doc, {
+            tableLineColor: this.tableLineColor,
+            tableLineWidth: 0.75,
+            theme: this.theme,
+            head: columns,
+            body: rows,
+            startY: yOffset,
         });
 
         return new Blob([doc.output('blob')], { type: 'application/pdf' });

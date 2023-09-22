@@ -41,6 +41,10 @@
             flex: 0 0 95px;
             text-align: right;
         }
+        &.manual {
+            flex: 0 0 285px;
+            text-align: left;
+        }
     }
     .order-item:not(:last-child){
         border-right: 1px solid #ccc;

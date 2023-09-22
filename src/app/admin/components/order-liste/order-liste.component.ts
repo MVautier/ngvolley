@@ -13,6 +13,7 @@ import { UtilService } from '@app/core/services/util.service';
 })
 export class OrderListeComponent implements OnInit {
     data: Adherent[] = [];
+    data_manual: Adherent[] = [];
     start: Date;
     end: Date;
     totalC3l: number = 0;
@@ -33,12 +34,18 @@ export class OrderListeComponent implements OnInit {
     }
 
     getData() {
-        this.adherentService.getOrders(this.start, this.end).then(results => {
+        this.adherentService.getOrders(this.start, this.end, true).then(results => {
             this.data = this.sortData(results);
             console.log('success orders: ', this.data);
             this.setTotaux();
         }).catch(err => {
             console.log('error getting orders: ', err);
+        });
+        this.adherentService.getOrders(this.start, this.end, false).then(results => {
+            this.data_manual = this.sortData(results);
+            console.log('success manual: ', this.data_manual);
+        }).catch(err => {
+            console.log('error getting manual: ', err);
         });
     }
 
@@ -49,7 +56,7 @@ export class OrderListeComponent implements OnInit {
     export(type: string) {
         const title = 'Paiements du ' + this.datePipe.transform(this.start, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(this.end, 'dd/MM/yyyy');
         if (type === 'pdf') {
-            this.pdf.buildOrderList(this.data, title).then(blob => {
+            this.pdf.buildOrderList(this.data, this.data_manual, title).then(blob => {
                 this.file.download(blob, 'export.pdf');
             }).catch(err => {
                 console.log('error exporting orders: ', err);
