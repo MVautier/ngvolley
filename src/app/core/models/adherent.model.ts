@@ -7,6 +7,7 @@ export class Adherent {
     private static debug = environment.debug;
 
     IdAdherent: number;
+    IdParent?: number;
     Category?: string;
     Authorization?: string;
     FirstName: string;
@@ -55,6 +56,7 @@ export class Adherent {
 
     constructor(base: Adherent, cp: string = null, isMember = false) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
+        this.IdParent = base && !isMember ? base.IdParent : null;
         this.Category = base && !isMember ? base.Category : Adherent.debug ? 'C' : null; // convert to int for bdd
         this.Authorization = base ? base.Authorization : null;
         this.LastName = base ? base.LastName : Adherent.debug ? 'Lacroix' : null;
@@ -115,6 +117,7 @@ export class Adherent {
         data.InscriptionDate = new Date(data.InscriptionDate);
         return {
             IdAdherent: data.IdAdherent,
+            IdParent: data.IdParent,
             Category: data.Category,
             Section: data.Section,
             FirstName: data.FirstName,

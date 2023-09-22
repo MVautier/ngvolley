@@ -15,7 +15,7 @@ isHelloAsso: boolean = true;
   constructor() { }
 
   ngOnInit(): void {
-    this.isHelloAsso = this.data.Order.Id !== undefined;
+    this.isHelloAsso = this.data.Order?.Id !== undefined;
     if (this.data) {
         if (this.isHelloAsso) {
             this.montantC3l = this.data.Order.CotisationC3L;

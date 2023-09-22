@@ -1,4 +1,4 @@
-<div class="order-row" *ngIf="data">
+<div class="order-row" [ngClass]="{'hasMember': data.Membres.length}" *ngIf="data && !data.IdParent">
     <div *ngIf="isHelloAsso" class="order-item id">{{data.Order.IdPaiement}}</div>
     <div *ngIf="isHelloAsso" class="order-item date">{{(data.Order.Date) | date: 'dd/MM/yyyy'}}</div>
 
@@ -12,4 +12,15 @@
     <div *ngIf="isHelloAsso" class="order-item club">{{montantClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
     <div *ngIf="isHelloAsso" class="order-item total">{{montantTotal | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
     <div *ngIf="!isHelloAsso" class="order-item manual">{{data.Payment}}</div>
+</div>
+<div class="order-row member" *ngIf="data && data.IdParent">
+    <div class="order-item id"></div>
+    <div class="order-item date">membre</div>
+    <div class="order-item nom">{{data.LastName}}</div>
+    <div class="order-item prenom">{{data.FirstName}}</div>
+    <div class="order-item date">{{data.BirthdayDate | date: 'dd/MM/yyyy'}}</div>
+    <div class="order-item manual">-</div>
+</div>
+<div *ngFor="let m of data.Membres">
+    <app-order-card  [data]="m"></app-order-card>
 </div>

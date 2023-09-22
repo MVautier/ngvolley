@@ -1,12 +1,22 @@
 
 .order-row{
-    border-radius: 10px;
+    border-radius: 3px;
     border: 1px solid #ccc;
     background: #fff;
     display: flex;
     flex-direction: row;
     margin-top: 3px;
     cursor: pointer;
+    &.hasMember {
+        background: #efb9a9;
+    }
+    &.member {
+        background: #efdcd3;
+        border: none;
+        .order-item:first-child{
+            background: #fff;
+        }
+    }
     &:hover{
         background: #eee;
     }
