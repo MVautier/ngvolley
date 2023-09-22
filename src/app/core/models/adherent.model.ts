@@ -112,6 +112,7 @@ export class Adherent {
     }
 
     public static fromJson(data: Adherent): Adherent {
+        data.InscriptionDate = new Date(data.InscriptionDate);
         return {
             IdAdherent: data.IdAdherent,
             Category: data.Category,

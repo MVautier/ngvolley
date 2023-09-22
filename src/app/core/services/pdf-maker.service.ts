@@ -27,6 +27,7 @@ export class PdfMakerService {
         private datePipe: DatePipe, 
         private currencyPipe: CurrencyPipe, 
         private decimalPipe: DecimalPipe,
+        private util: UtilService,
         private fileService: FileService) {
 
     }
@@ -220,6 +221,24 @@ export class PdfMakerService {
                 { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
                 { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
             ]);
+            if (d.Membres.length) {
+                d.Membres.forEach(m => {
+                    if (this.util.datesEquals(m.InscriptionDate, d.InscriptionDate)) {
+                        rows.push([
+                            //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+                            { content: '', styles: { halign: 'left' } },
+                            { content: 'membre', styles: { halign: 'left' } },
+                            { content: m.LastName, styles: { halign: 'left' } },
+                            { content: m.FirstName, styles: { halign: 'left' } },
+                            { content: this.datePipe.transform(m.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                            { content: '-', styles: { halign: 'right' } },
+                            { content: '-', styles: { halign: 'right' } },
+                            { content: '-', styles: { halign: 'right' } }
+                        ]);
+                    }
+                    
+                });
+            }
             yOffset += rowHeight;
         });
 

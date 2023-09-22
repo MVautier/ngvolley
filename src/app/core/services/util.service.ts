@@ -27,6 +27,12 @@ export class UtilService {
         return null;
     }
 
+    datesEquals(d1: Date, d2: Date): boolean {
+        const _d1 = new Date(d1);
+        const _d2 = new Date(d2);
+        return _d1.getFullYear() === _d2.getFullYear() && _d1.getMonth() === _d2.getMonth() && _d1.getDate() === _d2.getDate();
+    }
+
     bindDates(adherent: Adherent): Adherent {
         if (adherent) {
             adherent.BirthdayDate = this.bindDate(adherent.BirthdayDate?.toString());
