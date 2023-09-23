@@ -61,3 +61,22 @@
 .mat-column-FirstName{
     text-transform: capitalize;
 }
+.mat-column-Payment{
+    div{
+        &.text {
+            width: 100%;
+            text-align: center;
+        }
+    }
+    mat-icon {
+        width: 100%;
+        text-align: center;
+        &.check {
+            color: green;
+        }
+        &.wait {
+            color: red;
+        }
+    }
+    
+}

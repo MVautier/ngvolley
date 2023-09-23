@@ -1,5 +1,5 @@
 .filter {
-    position: relative;
+    position: absolute;
     // left: 50%;
     // top: 50px;
     display: flex;
@@ -9,7 +9,7 @@
     padding: 20px;
     border: 1px solid var(--border);
     border-radius: 5px;
-    width: 336px;
+    width: 360px;
     z-index: 3;
     .close{
         position: absolute;
@@ -17,46 +17,51 @@
         top: 10px;
         cursor: pointer;
     }
-    
-    .filter-item{
-        border-top: 1px solid var(--border);
-        display: flex;
-        flex-direction: row;
-        .field{
-            color: var(--primary);
-            width: 120px;
-        }
-        .dates {
+    .filters {
+        max-height: 408px;
+        overflow-y: auto;
+        .filter-item{
+            border-top: 1px solid var(--border);
             display: flex;
-            flex-direction: column;
-            .title{
-                width: 100%;
+            flex-direction: row;
+            .field{
+                color: var(--primary);
+                width: 120px;
             }
-            .input{
+            .dates {
                 display: flex;
-                justify-content: space-between;
-                flex-direction: row;
-                align-items: start;
-                margin-bottom: 5px;
-                input{
-                    max-height: 40px;
-                    margin-right: 10px;
-                    width: 140px;
+                flex-direction: column;
+                .title{
+                    width: 100%;
                 }
+                .input{
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+                    align-items: start;
+                    margin-bottom: 5px;
+                    input{
+                        max-height: 40px;
+                        margin-right: 10px;
+                        width: 140px;
+                    }
+                }
+                
             }
-            
-        }
-        mat-select {
-            margin-left: 10px;
-        }
-        &.custom {
-            border: none;
-            margin-top: -25px;
             mat-select {
-                margin-left: 0;
+                margin-left: 10px;
+            }
+            &.custom {
+                border: none;
+                margin-top: -25px;
+                mat-select {
+                    margin-left: 0;
+                }
             }
         }
     }
+    
+    
     .buttons{
         display: flex;    
         max-height: 50px;

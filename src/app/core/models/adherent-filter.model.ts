@@ -9,6 +9,7 @@ export class AdherentFilter{
     IdCategory?: number;
     DynamicFilter?: DynamicFilter;
     DateRange?: DateRange;
+    Team?: string;
 
     constructor(field: string = null) {
         const now = new Date();
@@ -17,6 +18,7 @@ export class AdherentFilter{
         this.HasLicence = null;
         this.IdSection = null;
         this.IdCategory = null;
+        this.Team = null;
         this.DynamicFilter = {
             Field: field,
             Operator: 'Equals',

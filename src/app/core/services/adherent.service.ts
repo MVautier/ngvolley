@@ -14,6 +14,7 @@ import { Order } from "../models/order.model";
 export class AdherentService {
     public obsAdherents: BehaviorSubject<Adherent[]> = new BehaviorSubject<Adherent[]>([]);
     public obsCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
+    public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4', 'Mixte 1', 'Mixte 2', 'Mixte 3']);
 
     constructor(
         private util: UtilService,

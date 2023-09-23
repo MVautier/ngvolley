@@ -39,7 +39,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
     notifier = new Subject<void>();
     subModal: Subscription;
     all_sections: string[] = [];
-
+    teams: string[] = [];
 
     constructor(private inscriptionService: InscriptionService,
         private adherentService: AdherentService,
@@ -51,6 +51,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder) { }
 
     ngOnInit(): void {
+        this.teams = this.adherentService.obsTeams.value;
         this.all_sections = this.inscriptionService.sections;
         this.phoneInputMask = this.inscriptionService.phoneInputMask;
         this.cpInputMask = this.inscriptionService.cpInputMask;
@@ -270,8 +271,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             Documents: this.adherent.Documents,
             Saison: this.formGroup.get('saison').value,
             Order: null,
-            Team1: this.formGroup.get('team1').value,
-            Team2: this.formGroup.get('team2').value,
+            Team1: this.formGroup.get('team1').value || null,
+            Team2: this.formGroup.get('team2').value || null,
             CertificateDate: certifdate,
             Payment: this.formGroup.get('payment').value,
             InscriptionDate: inscriptiondate

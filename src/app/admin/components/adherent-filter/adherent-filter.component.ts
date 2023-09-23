@@ -3,6 +3,7 @@ import { AdherentAdminService } from '@app/admin/services/adherent-admin.service
 import { UtilService } from '@app/core/services/util.service';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Operator } from '@app/core/models/operator.model';
+import { AdherentService } from '@app/core/services/adherent.service';
 
 @Component({
     selector: 'app-adherent-filter',
@@ -21,6 +22,8 @@ export class AdherentFilterComponent implements OnInit {
     Categorie = 'tous';
     Section = 'tous';
     hasPaid = 'oui';
+    Equipe: string = null;
+    teams: string[] = [];
     customFields = [
         { columnDef: 'LastName', header: 'Nom' },
         { columnDef: 'FirstName', header: 'Prénom' },
@@ -34,9 +37,10 @@ export class AdherentFilterComponent implements OnInit {
     ];
 
     @ViewChild('input') input: ElementRef;
-    constructor(private adherentService: AdherentAdminService, private util: UtilService) { }
+    constructor(private adherentService: AdherentAdminService, private adhService: AdherentService, private util: UtilService) { }
 
     ngOnInit(): void {
+        this.teams = this.adhService.obsTeams.value;
         this.initFilter();
     }
 
@@ -73,6 +77,8 @@ export class AdherentFilterComponent implements OnInit {
     onOptionChange(field: string, event: any) {
         if (field === 'payment') {
             this.filter.HasPaid = event.value === 'tous' ? null : (event.value === 'oui' ? true : false);
+        } else if (field === 'equipe') {
+            this.filter.Team = event.value === 'tous' ? null : event.value;
         } else if (field === 'photo') {
             this.filter.HasPhoto = event.value === 'tous' ? null : (event.value === 'avec' ? true : false);
         } else if (field === 'licence') {
@@ -89,11 +95,13 @@ export class AdherentFilterComponent implements OnInit {
 
     initFilter() {
         this.filter = new AdherentFilter(this.selectedCustomField.columnDef);
+        this.filter.HasPaid = true;
         this.hasPaid = 'oui';
         this.hasPhoto = 'tous';
         this.hasLicence = 'tous';
         this.Categorie = 'tous';
         this.Section = 'tous';
+        this.Equipe = 'tous';
         this.selectedCustomField = this.customFields[0];
     }
 
@@ -111,6 +119,12 @@ export class AdherentFilterComponent implements OnInit {
         this.change.emit(this.filter);
         this.apply.emit(this.filter);
         this.showFilter = false;
+    }
+
+    validateCustom(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            this.setFilter();
+        }
     }
 
     setFilter() {

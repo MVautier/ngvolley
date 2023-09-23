@@ -26,7 +26,7 @@
     </div>
 
     <div class="liste" [ngClass]="{'hidden': selectedAdherent}">
-        <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" cdkDropList
+        <!-- <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" cdkDropList
             cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" matSort matSortActive="IdAdherent"
             matSortDirection="asc" matSortDisableClear>
 
@@ -40,15 +40,11 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
             <mat-row *matRowDef="let row; columns: displayedColumns" (click)="showCard(row)"></mat-row>
-        </mat-table>
+        </mat-table> -->
 
-        <!-- <table mat-table [dataSource]="dataSource" matSort matSortActive="IdAdherent" matSortDirection="asc" matSortDisableClear> -->
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="IdAdherent" matSortDirection="asc" matSortDisableClear>
 
-            <!-- <ng-container  *ngFor="let disCol of displayedColumns" matColumnDef="{{disCol.key}}">
-                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th></tr>
-                <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.IdAdherent}} </td></tr>
-            </ng-container> -->
-            <!-- <ng-container matColumnDef="IdAdherent">
+            <ng-container matColumnDef="IdAdherent">
                 <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th></tr>
                 <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.IdAdherent}} </td></tr>
             </ng-container>
@@ -77,14 +73,17 @@
                 <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Paiement</th></tr>
                 <tr>
                     <td mat-cell *matCellDef="let row" style="width:20%" [ngSwitch]="row.Payment"> 
-                        <mat-icon *ngSwitchCase="'Terminé'">check</mat-icon>
-                        <mat-icon *ngSwitchCase="'En attente'">chronic</mat-icon>
-                        <mat-icon *ngSwitchCase="null || undefined || ''">check_indeterminate</mat-icon>
-                        <span *ngSwitchDefault>{{row.Payment}}</span>
+                        <mat-icon *ngSwitchCase="'Terminé'" class="check">check_circle</mat-icon>
+                        <mat-icon *ngSwitchCase="'En attente'" class="wait">pending</mat-icon>
+                        <mat-icon *ngSwitchCase="null || undefined || ''" class="empty">remove</mat-icon>
+                        <div *ngSwitchDefault class="text">{{row.Payment}}</div>
                     </td>
                 </tr>
-            </ng-container> -->
-        <!-- </table> -->
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showCard(row)"></tr>
+        </table>
 
         <mat-paginator [length]="adherentsCount" [pageSize]="10" [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
     </div>
