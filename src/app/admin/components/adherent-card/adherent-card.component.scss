@@ -59,7 +59,11 @@
     margin-bottom: 10px;
   
     .label {
-      flex: 0 0 170px;
+      flex: 0 0 180px;
+      mat-icon.valid {
+        color: green;
+        height: 23px;
+      } 
     }
     button{
         width: 140px;

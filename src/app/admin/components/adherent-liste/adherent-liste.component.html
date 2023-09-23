@@ -9,7 +9,7 @@
         </div>
         <div class="actions">
             <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">
-                <mat-icon>person_add</mat-icon>Inscription manuelle
+                <mat-icon>person_add</mat-icon>
             </button>
             <button type="button" mat-raised-button color="primary" matPrefix (click)="export()">
                 <mat-icon>download</mat-icon>Excel
@@ -41,12 +41,58 @@
 
             <mat-row *matRowDef="let row; columns: displayedColumns" (click)="showCard(row)"></mat-row>
         </mat-table>
+
+        <!-- <table mat-table [dataSource]="dataSource" matSort matSortActive="IdAdherent" matSortDirection="asc" matSortDisableClear> -->
+
+            <!-- <ng-container  *ngFor="let disCol of displayedColumns" matColumnDef="{{disCol.key}}">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.IdAdherent}} </td></tr>
+            </ng-container> -->
+            <!-- <ng-container matColumnDef="IdAdherent">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.IdAdherent}} </td></tr>
+            </ng-container>
+
+            <ng-container matColumnDef="LastName">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:35%"> {{row.LastName}} </td></tr>
+            </ng-container>
+
+            <ng-container matColumnDef="FirstName">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:30%"> {{row.FirstName}} </td></tr>
+            </ng-container>
+
+            <ng-container matColumnDef="Category">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Catégorie</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.Category}} </td></tr>
+            </ng-container>
+
+            <ng-container matColumnDef="Section">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Section</th></tr>
+                <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.Section}} </td></tr>
+            </ng-container>
+
+            <ng-container matColumnDef="Payment">
+                <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Paiement</th></tr>
+                <tr>
+                    <td mat-cell *matCellDef="let row" style="width:20%" [ngSwitch]="row.Payment"> 
+                        <mat-icon *ngSwitchCase="'Terminé'">check</mat-icon>
+                        <mat-icon *ngSwitchCase="'En attente'">chronic</mat-icon>
+                        <mat-icon *ngSwitchCase="null || undefined || ''">check_indeterminate</mat-icon>
+                        <span *ngSwitchDefault>{{row.Payment}}</span>
+                    </td>
+                </tr>
+            </ng-container> -->
+        <!-- </table> -->
+
+        <mat-paginator [length]="adherentsCount" [pageSize]="10" [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
     </div>
 
     
 
     <div class="footer" [ngClass]="{'hidden': selectedAdherent}">
-        <mat-paginator [length]="adherentsCount" [pageSize]="10" [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
+        
     </div>
 
     <div *ngIf="selectedAdherent">

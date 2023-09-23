@@ -65,7 +65,10 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
         this.dataSource.countSubject.subscribe(count => {
             this.adherentsCount = count;
         });
-        this.dataSource.loadData(new AdherentFilter());
+        this.filter = new AdherentFilter();
+        this.filter.HasPaid = true;
+        this.dataSource.loadData(this.filter);
+        console.log('dataSource: ', this.dataSource);
     }
 
     ngAfterViewInit(): void {

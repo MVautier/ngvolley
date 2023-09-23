@@ -107,7 +107,10 @@
             <p class="title">Documents</p>
             <div>
                 <div class="line" *ngFor="let d of documents">
-                    <p class="label">{{d.libtype}}</p>
+                    <p class="label">
+                        {{d.libtype}}
+                        <mat-icon class="valid" *ngIf="d.sent">check_circle</mat-icon>
+                    </p>
                     <app-btn-action-doc [doc]="d" (download)="download($event)" (upload)="upload($event)" (generate)="generate()"></app-btn-action-doc>
                     <!-- <button *ngIf="d.sent" type="button" title="Download" mat-raised-button color="primary" matPrefix (click)="download(d.filename)">
                         <mat-icon>download</mat-icon>

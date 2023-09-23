@@ -20,7 +20,7 @@ export class AdherentFilterComponent implements OnInit {
     hasLicence = 'tous';
     Categorie = 'tous';
     Section = 'tous';
-    hasPaid = 'tous';
+    hasPaid = 'oui';
     customFields = [
         { columnDef: 'LastName', header: 'Nom' },
         { columnDef: 'FirstName', header: 'Prénom' },
@@ -89,7 +89,7 @@ export class AdherentFilterComponent implements OnInit {
 
     initFilter() {
         this.filter = new AdherentFilter(this.selectedCustomField.columnDef);
-        this.hasPaid = 'tous';
+        this.hasPaid = 'oui';
         this.hasPhoto = 'tous';
         this.hasLicence = 'tous';
         this.Categorie = 'tous';
