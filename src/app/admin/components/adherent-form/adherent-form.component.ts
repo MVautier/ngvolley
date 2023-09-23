@@ -124,6 +124,11 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         });
     }
 
+    setNow(field: string) {
+        const now = this.util.UtcDate(new Date());
+        this.formGroup.get(field).setValue(now);
+    }
+
     checkAdherent(adherent: Adherent) {
         this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 2);
         console.log('checked: ', this.checked);
