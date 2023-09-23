@@ -62,6 +62,10 @@
                 {{ adherent.Saison }}
             </div>
             <div class="line">
+                <p class="label">Date d'inscription</p>
+                {{ adherent.InscriptionDate | date:'dd/MM/yyyy' }}
+            </div>
+            <div class="line">
                 <p class="label">Section</p>
                 {{ adherent.Section || '-' }}
             </div>

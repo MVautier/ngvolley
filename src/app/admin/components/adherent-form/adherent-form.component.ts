@@ -103,6 +103,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
             'genre': [this.adherent.Genre, [Validators.required]],
             'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
+            'inscriptiondate': [this.adherent.InscriptionDate],
             'address': [this.adherent.Address],
             'postalcode': [this.adherent.PostalCode],
             'city': [this.adherent.City],
@@ -226,6 +227,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         const category = this.formGroup.get('category').value;
         const birthdate = this.util.UtcDate(this.formGroup.get('birthdate').value);
         const certifdate = this.util.UtcDate(this.formGroup.get('certifdate').value);
+        const inscriptiondate = this.util.UtcDate(this.formGroup.get('inscriptiondate').value);
         const age = Adherent.getAge(birthdate);
         const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
         return {
@@ -267,7 +269,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             Team2: this.formGroup.get('team2').value,
             CertificateDate: certifdate,
             Payment: this.formGroup.get('payment').value,
-            InscriptionDate: this.adherent.InscriptionDate
+            InscriptionDate: inscriptiondate
         };
     }
 }
