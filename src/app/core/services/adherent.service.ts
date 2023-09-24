@@ -137,6 +137,16 @@ export class AdherentService {
                 reject(err);
             });
         });
-        
+    }
+
+    getEmails(filter: AdherentFilter): Promise<any> {
+        const url = `${environment.apiUrl}Adherent/export/email`;
+        return new Promise((resolve, reject) => {
+            this.http.post<AdherentFilter>(url, filter, { responseType: 'blob', withCredentials: true }).then(result => {
+                resolve(result);
+            }).catch(err => {
+                reject(err);
+            });
+        });
     }
 }

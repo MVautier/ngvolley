@@ -102,6 +102,13 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
         });
     }
 
+    exportEmails() {
+        const filter = this.filter || new AdherentFilter();
+        this.adherentService.getEmails(filter).then(blob => {
+            this.fileService.download(blob, 'Emails.txt');
+        });
+    }
+
     loadData(filter: AdherentFilter) {
         // this.filter = filter;
         // this.adherentAdminService.setFilter(filter);
