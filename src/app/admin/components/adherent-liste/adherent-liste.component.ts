@@ -150,6 +150,6 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     }
 
     manualFill() {
-        this.selectedAdherent = new Adherent(null);
+        this.selectedAdherent = new Adherent(null, null, null, this.adherentService.obsSeason.value);
     }
 }

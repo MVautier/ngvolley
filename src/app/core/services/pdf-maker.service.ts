@@ -13,6 +13,7 @@ import { AdherentDoc } from '../models/adherent-doc.model';
 import { Adherent } from '../models/adherent.model';
 import { UtilService } from './util.service';
 import { FileService } from './file.service';
+import { AdherentService } from './adherent.service';
 
 @Injectable()
 export class PdfMakerService {
@@ -28,6 +29,7 @@ export class PdfMakerService {
         private currencyPipe: CurrencyPipe, 
         private decimalPipe: DecimalPipe,
         private util: UtilService,
+        private adherentService: AdherentService,
         private fileService: FileService) {
 
     }
@@ -895,7 +897,8 @@ ${data.nom} ${data.prenom}${birthdayDate}atteste avoir renseigné et avoir répo
         doc.text(text, xOffset, yOffset);
         
         yOffset += 60;
-        text = `Saison 2023-2024, Club Loisir Léo Lagrange`;
+        const season = this.adherentService.obsSeason.value;
+        text = `Saison ${season}-${season + 1}, Club Loisir Léo Lagrange`;
         doc.text(text, xOffset, yOffset);
 
         // yOffset += 60;

@@ -2,6 +2,7 @@ import { environment } from "@env/environment";
 import { v4 as uuidv4 } from 'uuid';
 import { AdherentDoc } from "./adherent-doc.model";
 import { Order } from "./order.model";
+import { AdherentService } from "../services/adherent.service";
 
 export class Adherent {
     private static debug = environment.debug;
@@ -54,7 +55,7 @@ export class Adherent {
     Saison: number;
     Order: Order;
 
-    constructor(base: Adherent, cp: string = null, isMember = false) {
+    constructor(base: Adherent, cp: string = null, isMember = false, season: number) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
         this.IdParent = base && !isMember ? base.IdParent : null;
         this.Category = base && !isMember ? base.Category : Adherent.debug ? 'C' : null; // convert to int for bdd
@@ -84,7 +85,7 @@ export class Adherent {
         this.Rgpd = base ? base.Rgpd : false;
         this.ImageRight = true;
         this.Signature = base ? base.Signature : null;
-        this.Saison = base ? base.Saison : new Date().getFullYear();
+        this.Saison = base ? base.Saison : season;
         
         this.Payment = null;
         this.CertificateDate = base ? base.CertificateDate : null;

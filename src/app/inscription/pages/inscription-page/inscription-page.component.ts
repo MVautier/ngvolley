@@ -135,7 +135,7 @@ export class InscriptionPageComponent implements OnInit {
         this.step = 1;
         localStorage.removeItem('adherent');
         localStorage.removeItem('cart');
-        this.saison = new Date().getFullYear();
+        this.saison = this.adherentService.obsSeason.value;
         this.title = `Bulletin d\'adhésion ${this.saison}-${this.saison + 1}`;
         this.startIns = {
             local: true,
@@ -179,9 +179,9 @@ export class InscriptionPageComponent implements OnInit {
     onStep1Validate(info: StartInscription) {
         this.cart = new Cart();
         if (this.reinscription && info.found) {
-            this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null);
+            this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null, null, this.saison);
         } else {
-            this.adherent = new Adherent(info.found ?? null, info.local ? environment.postalcode : null);
+            this.adherent = new Adherent(info.found ?? null, info.local ? environment.postalcode : null, null, this.saison);
         }
         const checked = this.inscriptionService.checkAdherent(null, this.adherent, 2);
         if (info) {
@@ -260,7 +260,7 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     onAddMember() {
-        const member = new Adherent(this.adherent, null, true);
+        const member = new Adherent(this.adherent, null, true, this.saison);
         member.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
         this.adherent.Membres.push(member);
         console.log('add member in inscription: ', this.adherent);
@@ -308,10 +308,14 @@ export class InscriptionPageComponent implements OnInit {
             console.log('error generating adherent form: ', err);
         }).finally(() => {
             console.log('adherent: ', adherent);
-            this.sendDocuments(adherent).then(() => {
-                localStorage.setItem('adherent', JSON.stringify(adherent));
-                this.addOrUpdate(false);
-                this.step++;
+            this.addOrUpdate(false).then((adh: Adherent) => {
+                if (!adherent.IdAdherent || adherent.IdAdherent !== adh.IdAdherent) {
+                    adherent.IdAdherent = adh.IdAdherent;
+                }
+                this.sendDocuments(adherent).then(() => {
+                    localStorage.setItem('adherent', JSON.stringify(adherent));
+                    this.step++;
+                });
             });
         });
     }
@@ -345,27 +349,31 @@ export class InscriptionPageComponent implements OnInit {
         });
     }
 
-    addOrUpdate(paymentCallback: boolean = true) {
-        const membres: Adherent[] = [];
-        if (this.adherent.Membres?.length) {
-            this.adherent.Membres.forEach(m => {
-                const d = new Date(m.BirthdayDate);
-                m.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-                membres.push(this.prepareAdherentForBdd(m, false));
+    addOrUpdate(paymentCallback: boolean = true): Promise<Adherent> {
+        return new Promise((resolve, reject) => {
+            const membres: Adherent[] = [];
+            if (this.adherent.Membres?.length) {
+                this.adherent.Membres.forEach(m => {
+                    const d = new Date(m.BirthdayDate);
+                    m.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
+                    membres.push(this.prepareAdherentForBdd(m, false));
+                });
+            }
+            const adherent = this.prepareAdherentForBdd(this.adherent, true, paymentCallback);
+            adherent.Membres = membres;
+            this.adherentService.addOrUpdate(adherent).then(result => {
+                console.log('success addOrUpdate: ', result);
+                resolve(result);
+            })
+            .catch(err => {
+                console.log('error addOrUpdate: ', err);
+                resolve(this.adherent);
             });
-        }
-        const adherent = this.prepareAdherentForBdd(this.adherent, true, paymentCallback);
-        adherent.Membres = membres;
-        this.adherentService.addOrUpdate(adherent).then(result => {
-            console.log('success addOrUpdate: ', result);
-        })
-        .catch(err => {
-            console.log('error addOrUpdate: ', err);
         });
     }
 
     prepareAdherentForBdd(adherent: Adherent, main = true, paymentCallback: boolean = true): Adherent {
-        adherent.Saison = new Date().getFullYear();
+        adherent.Saison = this.saison;
         const d = new Date(adherent.BirthdayDate);
         adherent.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
         adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;

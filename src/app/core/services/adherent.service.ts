@@ -15,10 +15,17 @@ export class AdherentService {
     public obsAdherents: BehaviorSubject<Adherent[]> = new BehaviorSubject<Adherent[]>([]);
     public obsCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
     public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4', 'Mixte 1', 'Mixte 2', 'Mixte 3']);
+    public obsSeason: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     constructor(
         private util: UtilService,
-        private http: HttpDataService<any>) { }
+        private http: HttpDataService<any>) { 
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth();
+            this.obsSeason.next(m >= 5 ? y : y - 1);
+
+        }
 
     getListe(force: boolean = false): Promise<Adherent[]> {
         return new Promise((resolve, reject) => {
@@ -47,10 +54,7 @@ export class AdherentService {
         return new Promise((resolve, reject) => {
             const s = this.util.date2StringForFilter(start);
             const e = this.util.date2StringForFilter(end);
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = now.getMonth() + 1;
-            const season = m >= 6 ? y : y - 1;
+            const season = this.obsSeason.value;
             this.getListe().then(liste => {
                 let results: Adherent[] = [];
                 if (isHelloasso) {

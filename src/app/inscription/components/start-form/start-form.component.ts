@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Adherent } from '@app/core/models/adherent.model';
+import { AdherentService } from '@app/core/services/adherent.service';
 import { StartInscription } from '@app/inscription/models/start-inscription.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { environment } from '@env/environment';
@@ -37,6 +38,7 @@ export class StartFormComponent implements OnInit {
 
     constructor(
         private inscriptionService: InscriptionService,
+        private adherentService: AdherentService,
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
         @Inject(MAT_DATE_LOCALE) private _locale: string
@@ -56,7 +58,7 @@ export class StartFormComponent implements OnInit {
                 this.birthday = new Date(2006, 0, 14);
             }
             this.showForm = !this.reinscription;
-            const y = new Date().getFullYear();
+            const y = this.adherentService.obsSeason.value;
             this.year = y.toString() + '-' + (y + 1).toString();
             this.alreadySigned = this.start.nom !== null && this.start.prenom !== null && this.start.section !== null;
             this.sections = this.inscriptionService.sections;

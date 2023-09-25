@@ -22,7 +22,7 @@ export class GenericModalComponent implements OnInit {
 
     constructor(private adherentAdminService: AdherentAdminService) { 
         this.adherent = this.adherentAdminService.getAdherent();
-        this.adh = new Adherent(this.adherent);
+        this.adh = new Adherent(this.adherent, null, null, this.adherent.Saison);
     }
 
     ngOnInit(): void {

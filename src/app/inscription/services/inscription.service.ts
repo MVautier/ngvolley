@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class InscriptionService {
-    private obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(new Adherent(null));
+    private obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(new Adherent(null, null, null, null));
     public obsAddMember: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
     private adherents: Adherent[] = [];
     requiredAlert: string = 'Ce champ est requis';
