@@ -54,6 +54,7 @@ export class Adherent {
     Documents: AdherentDoc[];
     Saison: number;
     Order: Order;
+    Saved?: boolean;
 
     constructor(base: Adherent, cp: string = null, isMember = false, season: number) {
         this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
