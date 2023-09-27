@@ -438,11 +438,17 @@ export class InscriptionPageComponent implements OnInit {
             let item: CartItem;
             if (adherent.Category) {
                 item = this.getCartItemByCategory(adherent.Category, 'categorie', adherent.Uid);
+                if (adherent.OldUid && adherent.OldUid !== adherent.Uid) {
+                    this.cart.updateUid(adherent.OldUid, adherent.Uid);
+                }
                 this.cart.addItem(item);
             }
             adherent.Membres.forEach(member => {
                 if (member.Category) {
                     item = this.getCartItemByCategory(member.Category, 'categorie', member.Uid);
+                    if (member.OldUid && member.OldUid !== member.Uid) {
+                        this.cart.updateUid(member.OldUid, member.Uid);
+                    }
                     this.cart.addItem(item);
                 }
             });

@@ -258,6 +258,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             Sections: this.formGroup.get('sections').value,
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,
+            OldUid: this.adherent.OldUid,
             Licence: this.formGroup.get('licence').value,
             HealthFile: this.adherent.HealthFile,
             Photo: this.adherent.Photo,

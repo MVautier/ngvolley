@@ -127,6 +127,7 @@ export class MemberFormComponent implements OnInit {
             Sections: value.sections,
             valid: !this.formGroup.invalid && this.checked.valid,
             Uid: this.adherent.Uid,
+            OldUid: this.adherent.OldUid,
             Licence: this.adherent.Licence,
             HealthFile: this.adherent.HealthFile,
             Photo: this.adherent.Photo,

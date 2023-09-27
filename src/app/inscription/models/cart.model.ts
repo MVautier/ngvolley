@@ -29,6 +29,17 @@ export class Cart {
         this.updateTotal();
     }
 
+    public updateUid(old: string, uid: string) {
+        const items = this.getFlatItems(this.items);
+        const found = this.items.filter(i => i.user[0] === old);
+        if (found && found.length) {
+            found.forEach(i => {
+                i.user[0] = uid;
+            });
+            this.items = this.getGroupItems(items);
+        }
+    }
+
     public removeItem(user: string) {
         let items = this.getFlatItems(this.items);
         items = items.filter(i => i.user[0] !== user);

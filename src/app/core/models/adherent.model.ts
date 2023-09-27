@@ -38,6 +38,7 @@ export class Adherent {
     Alert3?: string;
     RelationShip?: string;
     valid: boolean;
+    OldUid: string;
     Uid: string;
     Rgpd: boolean;
     ImageRight: boolean;
@@ -81,6 +82,7 @@ export class Adherent {
         this.Alert2 = base ? base.Alert2 : Adherent.debug ? null : null;
         this.Alert3 = base ? base.Alert3 : Adherent.debug ? null : null;
         this.Uid = base && base.Uid && !isMember? base.Uid : uuidv4();
+        this.OldUid = this.Uid;
         this.Section = base ? base.Section : Adherent.debug ? 'C' : null;
         this.Sections = base ? base.Sections : [];
         this.Rgpd = base ? base.Rgpd : false;
@@ -144,6 +146,7 @@ export class Adherent {
             Alert3: data.Alert3,
             valid: false,
             Uid: data.Uid,
+            OldUid: null,
             Rgpd: data.Rgpd,
             ImageRight: data.ImageRight,
             Signature: data.Signature,

@@ -6,6 +6,8 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 import { BehaviorSubject } from 'rxjs';
 import { CheckAdherent } from '../models/check-adherent.model';
 import { v4 as uuidv4 } from 'uuid';
+import { CartItem } from '../models/cart-item.model';
+import { Cart } from '../models/cart.model';
 
 @Injectable()
 export class InscriptionService {
@@ -161,14 +163,18 @@ export class InscriptionService {
     if (!check.found) {
         check.found = this.getExistingAdherent(adherent);
         console.log('found: ', check.found);
-        if (check.found && !adherent.IdAdherent) {
-            adherent.IdAdherent = check.found.IdAdherent;
+        if (check.found) {
+            if (!adherent.IdAdherent) {
+                adherent.IdAdherent = check.found.IdAdherent;
+            }
             if (check.found.Uid) {
                 adherent.Uid = check.found.Uid;
             } else if (!adherent.Uid) {
                 adherent.Uid = uuidv4();
             }
         }
+    } else if (check.found.Uid){
+        adherent.Uid = check.found.Uid;
     }
     check.certifLabel = 'Attestation ou certificat';
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';

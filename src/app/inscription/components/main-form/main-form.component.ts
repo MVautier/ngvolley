@@ -316,6 +316,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
             Sections: this.formGroup.get('sections').value, //this.inscriptionService.sections.filter(s => s === environment.section),
             valid: !this.formGroup.invalid,
             Uid: this.adherent.Uid,
+            OldUid: this.adherent.OldUid,
             Licence: this.adherent.Licence,
             HealthFile: this.adherent.HealthFile,
             Photo: this.adherent.Photo,
