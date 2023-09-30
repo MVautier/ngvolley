@@ -381,7 +381,9 @@ export class InscriptionPageComponent implements OnInit {
     }
 
     prepareAdherentForBdd(adherent: Adherent, main = true, paymentCallback: boolean = true): Adherent {
-        adherent.Saison = this.saison;
+        if (!adherent.Saved && this.saison) {
+            adherent.Saison = this.saison;
+        }
         const d = new Date(adherent.BirthdayDate);
         adherent.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
         adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
