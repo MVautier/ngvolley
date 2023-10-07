@@ -4,11 +4,16 @@
     display: flex;
     flex-direction: row;
     div{
-        flex: 0 0 50%;
         &.dates {
+            flex: 0 0 34%;
+            align-items: start;
+        }
+        &.search {
+            flex: 0 0 33%;
             align-items: start;
         }
         &.actions {
+            flex: 0 0 33%;
             align-items: end;
         }
         input, button{
@@ -38,6 +43,7 @@
 
 .order-liste{
     margin-top: 30px;
+    margin-bottom: 30px;
     width: 950px;
     .order-header{
         border-radius: 10px;
@@ -94,18 +100,22 @@
             
             
             &.label {
-                flex: 0 0 670px;
+                flex: 0 0 665px;
                 text-align: left;
             }
-            &.c3l {
-                flex: 0 0 100px;
+            &.montant {
+                font-size: 14px;
+                &.c3l {
+                    flex: 0 0 95px;
+                }
+                &.club {
+                    flex: 0 0 95px;
+                }
+                &.total {
+                    flex: 0 0 95px;
+                }
             }
-            &.club {
-                flex: 0 0 100px;
-            }
-            &.total {
-                flex: 0 0 100px;
-            }
+            
         }
         .totaux-item:not(:last-child){
             border-right: 1px solid #ccc;

@@ -4,6 +4,9 @@
         <input type="date" id="cal-start" [valueAsDate]="start" [max]="end | date:'yyyy-MM-dd'" (change)="onDateChange('start', $event)" />
         <input type="date" id="cal-end" [valueAsDate]="end" [min]="start | date:'yyyy-MM-dd'" (change)="onDateChange('end', $event)" />
     </div>
+    <div class="search">
+        <input type="text" [(ngModel)]="search" placeholder="Chercher par nom" (keyup)="onSearch()" />
+    </div>
     <div class="actions">
         <button type="button" mat-raised-button color="primary" matPrefix (click)="export('pdf')">
             <mat-icon>picture_as_pdf</mat-icon>PDF
@@ -33,9 +36,9 @@
         
         <div class="totaux">
             <div class="totaux-item label">Totaux</div>
-            <div class="totaux-item c3l">{{totalC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
-            <div class="totaux-item club">{{totalClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
-            <div class="totaux-item total">{{total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+            <div class="totaux-item montant c3l">{{totalC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+            <div class="totaux-item montant club">{{totalClub | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+            <div class="totaux-item montant total">{{total | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
         </div>
     
     </div>

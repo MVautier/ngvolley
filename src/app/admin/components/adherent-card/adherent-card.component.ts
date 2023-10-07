@@ -118,6 +118,8 @@ export class AdherentCardComponent implements OnInit {
             doc.filename = document.filename;
             doc.blob = document.blob;
             doc.sent = document.sent;
+        } else {
+            this.documents.push(document);
         }
     }
 
@@ -131,7 +133,17 @@ export class AdherentCardComponent implements OnInit {
 
     upload(doc: AdherentDoc) {
         this.selectedType = doc.type; 
-        this.fileInput.nativeElement.click();
+        //this.fileInput.nativeElement.click();
+        if (doc.blob) {
+            const filename = `${this.selectedType}.pdf`;
+            const id = this.adherent.Uid;
+            const formData = this.fileService.getFormData(id, filename, doc.blob);
+            this.fileService.sendDoc(formData).then(result => {
+                this.updateDocuments(filename, this.selectedType);
+                Adherent.addDoc(this.adherent, this.selectedType, filename, doc.blob);
+                console.log('adherent changed: ', this.adherent);
+            });
+        } 
     }
 
     generate() {
@@ -147,6 +159,8 @@ export class AdherentCardComponent implements OnInit {
             if (doc && doc.blob) {
                 this.pdf.sendDocuments(this.adherent.Uid, [doc]).then(result => {
                     if (result) {
+                        doc.sent = true;
+                        this.setDoc(doc);
                         console.log('success send adhesion');
                     } else {
                         console.log('failed send adhesion');
@@ -154,27 +168,6 @@ export class AdherentCardComponent implements OnInit {
                 });
             }
         });
-    }
-
-    handleFileInput(event: any) {
-        if (this.selectedType) {
-            this.selectedFile = event.target?.files[0];
-            console.log('selected file: ', this.selectedFile);
-            if (this.selectedFile) {
-                this.util.readFile(this.selectedFile).then(blob => {
-                    if (blob) {
-                        const filename = `${this.selectedType}.pdf`;
-                        const id = this.adherent.Uid;
-                        const formData = this.fileService.getFormData(id, filename, blob);
-                        this.fileService.sendDoc(formData).then(result => {
-                            this.updateDocuments(filename, this.selectedType);
-                            Adherent.addDoc(this.adherent, this.selectedType, filename, blob);
-                            console.log('adherent changed: ', this.adherent);
-                        });
-                    } 
-                }); 
-            }
-        }
     }
 
     updateDocuments(filename: string, type: string) {

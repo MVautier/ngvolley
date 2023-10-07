@@ -14,11 +14,14 @@ import { UtilService } from '@app/core/services/util.service';
 export class OrderListeComponent implements OnInit {
     data: Adherent[] = [];
     data_manual: Adherent[] = [];
+    all_data: Adherent[] = [];
+    all_data_manual: Adherent[] = [];
     start: Date;
     end: Date;
     totalC3l: number = 0;
     totalClub: number = 0;
     total: number = 0;
+    search: string;
     constructor(
         private adherentService: AdherentService, 
         private pdf: PdfMakerService,
@@ -35,6 +38,7 @@ export class OrderListeComponent implements OnInit {
 
     getData() {
         this.adherentService.getOrders(this.start, this.end, true).then(results => {
+            this.all_data = results;
             this.data = this.sortData(results);
             console.log('success orders: ', this.data);
             this.setTotaux();
@@ -42,11 +46,23 @@ export class OrderListeComponent implements OnInit {
             console.log('error getting orders: ', err);
         });
         this.adherentService.getOrders(this.start, this.end, false).then(results => {
+            this.all_data_manual = results;
             this.data_manual = this.sortData(results);
             console.log('success manual: ', this.data_manual);
         }).catch(err => {
             console.log('error getting manual: ', err);
         });
+    }
+
+    onSearch() {
+        if (this.search) {
+            const regex: RegExp = new RegExp(this.search, 'gmi');
+            this.data = this.all_data.filter(a => a.LastName.match(regex));
+            this.data_manual = this.all_data_manual.filter(a => a.LastName.match(regex));
+        } else {
+            this.data = this.sortData(this.all_data);
+            this.data_manual = this.sortData(this.all_data_manual);
+        }
     }
 
     sortData(data: Adherent[]): Adherent[] {

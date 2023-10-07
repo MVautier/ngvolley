@@ -2,7 +2,10 @@
     <mat-icon>more_vert</mat-icon>
 </button>
 <mat-menu class="sub-menu" #displayMenu="matMenu" yPosition="below" xPosition="after">
-    <button [disabled]="!doc.sent" mat-menu-item (click)="onDownload()">Download</button>
-    <button mat-menu-item (click)="onUpload()">Upload</button>
-    <button [disabled]="doc.type !== 'adhesion'" mat-menu-item (click)="onGenerate()">Générer</button>
+    <button [disabled]="!doc.sent" mat-menu-item (click)="onDownload()"><i class="fa fa-download"></i> Download</button>
+    <label class="file-upload">
+        <input type="file" multiple="false" (change)="handleFileInput($event)"/>
+        <i class="fa fa-upload"></i> Upload
+    </label>
+    <button [disabled]="doc.type !== 'adhesion'" mat-menu-item (click)="onGenerate()"><i class="fa fa-cog"></i> Générer</button>
 </mat-menu>

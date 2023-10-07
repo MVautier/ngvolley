@@ -1,0 +1,21 @@
+
+input[type="file"] {
+    display: none;
+}
+
+.file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    i{
+        margin-left: 5px;
+    }
+    &:hover {
+        opacity: 0.7;
+    }
+}
+button{
+    &:hover {
+        opacity: 0.7;
+    }
+}
