@@ -75,6 +75,7 @@
             <div class="field">Equipe : </div>
             <mat-select [(value)]="Equipe" (selectionChange)="onOptionChange('equipe', $event)">
                 <mat-option value="tous">Tous</mat-option>
+                <mat-option value="sans">Aucune</mat-option>
                 <mat-option *ngFor="let team of teams" [value]="team">{{team}}</mat-option>
             </mat-select>
         </div>
