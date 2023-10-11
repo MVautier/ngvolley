@@ -26,4 +26,12 @@ export class Order {
             PaymentLink: data?.PaymentLink
         };
     }
+
+    public static fromJsonList(data: Order[]): Order[] {
+        var orders: Order[] = [];
+        data.forEach(d => {
+            orders.push(this.fromJson(d));
+        })
+        return orders;
+    }
 }

@@ -140,7 +140,7 @@ export class MemberFormComponent implements OnInit {
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
             Documents: this.adherent.Documents,
             Saison: this.adherent.Saison,
-            Order: null
+            Orders: []
         };
     }
 }

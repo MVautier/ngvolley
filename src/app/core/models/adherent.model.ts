@@ -54,7 +54,7 @@ export class Adherent {
     Photo?: string;
     Documents: AdherentDoc[];
     Saison: number;
-    Order: Order;
+    Orders: Order[];
     Saved?: boolean;
 
     constructor(base: Adherent, cp: string = null, isMember = false, season: number) {
@@ -98,7 +98,7 @@ export class Adherent {
         this.VerifC3L = null;
         this.valid = false;
         this._opened = true;
-        this.Order = base ? base.Order : null;
+        this.Orders = base ? base.Orders : [];
     }
 
     public static getAge(birthdate: Date): number {
@@ -160,7 +160,7 @@ export class Adherent {
             Authorization: data.Authorization,
             Documents: [],
             Saison: data.Saison,
-            Order: Order.fromJson(data.Order)
+            Orders: Order.fromJsonList(data.Orders)
         }
     }
 }

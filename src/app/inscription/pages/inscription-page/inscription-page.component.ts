@@ -290,7 +290,7 @@ export class InscriptionPageComponent implements OnInit {
         this.pdf.buildAdherentForm(adherent).then(blob => {
             const filename = `adhesion`;
             Adherent.addDoc(adherent, 'adhesion', filename + '.pdf', blob);
-            if (adherent.Signature) {
+            if (adherent.Signature && !adherent.Signature.endsWith('.png')) {
                 try {
                     const b = this.util.dataURLtoBlob(adherent.Signature);
                     const ext = this.util.mime2ext(adherent.Signature);
@@ -408,7 +408,12 @@ export class InscriptionPageComponent implements OnInit {
                 DateNaissance: this.util.UtcDate(new Date(client?.BirthdayDate)),
                 PaymentLink: this.paymentPrintUrl
             } : null;
-            adherent.Order = order;
+            if (!adherent.Orders) {
+                adherent.Orders = [];
+            }
+            if (order) {
+                adherent.Orders.push(order);
+            }
         }
         return adherent;
     }

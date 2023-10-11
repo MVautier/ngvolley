@@ -1,6 +1,6 @@
 <div class="order-row" [ngClass]="{'hasMember': data.Membres.length}" *ngIf="data && !data.IdParent">
-    <div *ngIf="isHelloAsso" class="order-item id">{{data.Order.IdPaiement}}</div>
-    <div *ngIf="isHelloAsso" class="order-item date">{{(data.Order.Date) | date: 'dd/MM/yyyy'}}</div>
+    <div *ngIf="isHelloAsso" class="order-item id">{{data.IdPaiement}}</div>
+    <div *ngIf="isHelloAsso" class="order-item date">{{(data.Date) | date: 'dd/MM/yyyy'}}</div>
 
     <div *ngIf="!isHelloAsso" class="order-item id">{{data.IdAdherent}}</div>
     <div *ngIf="!isHelloAsso" class="order-item date">{{(data.InscriptionDate) | date: 'dd/MM/yyyy'}}</div>
@@ -21,6 +21,6 @@
     <div class="order-item date">{{data.BirthdayDate | date: 'dd/MM/yyyy'}}</div>
     <div class="order-item manual">-</div>
 </div>
-<div *ngFor="let m of data.Membres">
+<div *ngFor="let m of memberOrders">
     <app-order-card  [data]="m"></app-order-card>
 </div>

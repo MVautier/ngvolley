@@ -329,7 +329,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
             Documents: this.adherent.Documents,
             Saison: this.adherent.Saison,
-            Order: null
+            Orders: []
         };
     }
 }

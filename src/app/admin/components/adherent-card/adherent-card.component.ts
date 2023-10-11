@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
 import { Adherent } from '@app/core/models/adherent.model';
@@ -23,7 +23,7 @@ import { LoaderService } from '@app/ui/layout/services/loader.service';
     templateUrl: './adherent-card.component.html',
     styleUrls: ['./adherent-card.component.scss']
 })
-export class AdherentCardComponent implements OnInit {
+export class AdherentCardComponent implements OnInit, OnChanges {
     @Input() adherent: Adherent;
     @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
     @Output() reload: EventEmitter<void> = new EventEmitter<void>();
@@ -63,6 +63,12 @@ export class AdherentCardComponent implements OnInit {
 
     ngOnInit(): void {
         this.init();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.adherent && changes.adherent.currentValue) {
+            this.init();
+        }
     }
 
     async init() {
@@ -137,6 +143,10 @@ export class AdherentCardComponent implements OnInit {
         if (doc.blob) {
             const filename = `${this.selectedType}.pdf`;
             const id = this.adherent.Uid;
+            if (this.selectedType === 'autorisation') {
+                this.adherent.Authorization = filename;
+                this.change.emit(this.adherent);
+            }
             const formData = this.fileService.getFormData(id, filename, doc.blob);
             this.fileService.sendDoc(formData).then(result => {
                 this.updateDocuments(filename, this.selectedType);

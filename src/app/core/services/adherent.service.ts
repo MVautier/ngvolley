@@ -9,6 +9,7 @@ import { UtilService } from "./util.service";
 import { PagedList } from "../models/paged-list.model";
 import { AdherentFilter } from "../models/adherent-filter.model";
 import { Order } from "../models/order.model";
+import { OrderFull } from "../models/order-full.model";
 
 @Injectable()
 export class AdherentService {
@@ -50,30 +51,46 @@ export class AdherentService {
         });
     }
 
-    getOrders(start: Date, end: Date, isHelloasso: boolean): Promise<Adherent[]> {
+    getOrders(start: Date, end: Date, isHelloasso: boolean): Promise<OrderFull[]> {
         return new Promise((resolve, reject) => {
             const s = this.util.date2StringForFilter(start);
             const e = this.util.date2StringForFilter(end);
             const season = this.obsSeason.value;
             this.getListe().then(liste => {
-                let results: Adherent[] = [];
-                if (isHelloasso) {
-                    results = liste.filter(a => a.Saison === season && a.Order && a.Order.Date && this.util.date2StringForFilter(a.Order.Date) >= s && this.util.date2StringForFilter(a.Order.Date) <= e);
-                } else {
-                    results = liste.filter(a => a.Saison === season && !a.Order.Id
-                        && a.Payment && a.Payment !== 'Terminé' && a.Payment !== 'En attente' && a.Payment !== ''
-                        && a.InscriptionDate 
-                        && this.util.date2StringForFilter(a.InscriptionDate) >= s 
-                        && this.util.date2StringForFilter(a.InscriptionDate) <= e);
-                }
+                let results: OrderFull[] = [];
+                liste.forEach(a => {
+                    if (isHelloasso) {
+                        if (a.Saison === season && a.Orders.length) {
+                            a.Orders.forEach(o => {
+                                if (o.Date && this.util.date2StringForFilter(o.Date) >= s && this.util.date2StringForFilter(o.Date) <= e) {
+                                    results.push(new OrderFull(a, o));
+                                }
+                            });  
+                        }
+                        
+                        // results = liste.filter(a => a.Saison === season 
+                        //     && a.Orders.length 
+                        //     && a.Orders.filter(o => o.Date !== undefined && o.Date !== null).length 
+                        //     // && this.util.date2StringForFilter(a.Order.Date) >= s 
+                        //     // && this.util.date2StringForFilter(a.Order.Date) <= e
+                        //     );
+                        // results = results.filter(a => a.Orders.map(o => this.util.date2StringForFilter(o.Date) <= s).length);
+                        // results = results.filter(a => a.Orders.map(o => this.util.date2StringForFilter(o.Date) >= e).length);
+                    } else {
+                        results = liste.filter(a => a.Saison === season 
+                            && !a.Orders.filter(o => o.Id !== undefined && o.Id !== null).length
+                            && a.Payment && a.Payment !== 'Terminé' && a.Payment !== 'En attente' && a.Payment !== ''
+                            && a.InscriptionDate 
+                            && this.util.date2StringForFilter(a.InscriptionDate) >= s 
+                            && this.util.date2StringForFilter(a.InscriptionDate) <= e).map(a => new OrderFull(a, null));
+                    }
+                });
                 resolve(results);
             }).catch(err => {
                 reject(err);
             });
         });
     }
-
-
 
     findAdherents(
         filter: AdherentFilter,

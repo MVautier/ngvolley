@@ -14,6 +14,7 @@ import { Adherent } from '../models/adherent.model';
 import { UtilService } from './util.service';
 import { FileService } from './file.service';
 import { AdherentService } from './adherent.service';
+import { OrderFull } from '../models/order-full.model';
 
 @Injectable()
 export class PdfMakerService {
@@ -144,7 +145,7 @@ export class PdfMakerService {
         });
     }
 
-    buildOrderList(data: Adherent[], data_manual: Adherent[], title: string): Promise<Blob> {
+    buildOrderList(data: OrderFull[], data_manual: OrderFull[], title: string): Promise<Blob> {
         return new Promise((resolve) => {
             try {
                 const blob: Blob = this.buildOrderListBlob(data, data_manual, title);
@@ -155,7 +156,7 @@ export class PdfMakerService {
         });
     }
 
-    private buildOrderListBlob(data: Adherent[], data_manual: Adherent[], title: string): Blob {
+    private buildOrderListBlob(data: OrderFull[], data_manual: OrderFull[], title: string): Blob {
         const doc = new jsPDF({
             orientation: "p", //set orientation
             unit: "pt", //set unit for document
@@ -205,24 +206,24 @@ export class PdfMakerService {
         let totalGen = 0;
 
         data.forEach(d => {
-            const o = d.Order;
-            const c3l = o.CotisationC3L;
-            const total = o.Total;
-            const club = total - c3l;
-            totalC3l += c3l;
-            totalClub += club;
-            totalGen += total;
-            rows.push([
-                //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
-                { content: o.IdPaiement, styles: { halign: 'left' } },
-                { content: this.datePipe.transform(o.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
-                { content: d.LastName, styles: { halign: 'left' } },
-                { content: d.FirstName, styles: { halign: 'left' } },
-                { content: this.datePipe.transform(d.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
-                { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
-                { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
-                { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
-            ]);
+            const c3l = d.CotisationC3L;
+                const total = d.Total;
+                const club = total - c3l;
+                totalC3l += c3l;
+                totalClub += club;
+                totalGen += total;
+                rows.push([
+                    //{ content: o.IdPaiement, styles: { halign: 'left', textColor: [255, 255, 255], fillColor: [192, 32, 38] } }
+                    { content: d.IdPaiement, styles: { halign: 'left' } },
+                    { content: this.datePipe.transform(d.Date, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                    { content: d.LastName, styles: { halign: 'left' } },
+                    { content: d.FirstName, styles: { halign: 'left' } },
+                    { content: this.datePipe.transform(d.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+                    { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+                    { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
+                    { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
+                ]);
+            
             if (d.Membres.length) {
                 d.Membres.forEach(m => {
                     if (this.util.datesEquals(m.InscriptionDate, d.InscriptionDate)) {

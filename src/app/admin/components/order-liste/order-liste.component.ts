@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Adherent } from '@app/core/models/adherent.model';
+import { OrderFull } from '@app/core/models/order-full.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
@@ -12,16 +13,20 @@ import { UtilService } from '@app/core/services/util.service';
     styleUrls: ['./order-liste.component.scss']
 })
 export class OrderListeComponent implements OnInit {
-    data: Adherent[] = [];
-    data_manual: Adherent[] = [];
-    all_data: Adherent[] = [];
-    all_data_manual: Adherent[] = [];
+    data: OrderFull[] = [];
+    data_manual: OrderFull[] = [];
+    all_data: OrderFull[] = [];
+    all_data_manual: OrderFull[] = [];
     start: Date;
     end: Date;
     totalC3l: number = 0;
     totalClub: number = 0;
     total: number = 0;
     search: string;
+
+    orders: OrderFull[] = [];
+    orders_manual: OrderFull[] = [];
+
     constructor(
         private adherentService: AdherentService, 
         private pdf: PdfMakerService,
@@ -39,7 +44,7 @@ export class OrderListeComponent implements OnInit {
     getData() {
         this.adherentService.getOrders(this.start, this.end, true).then(results => {
             this.all_data = results;
-            this.data = this.sortData(results);
+            this.data = this.sortData(results, true);
             console.log('success orders: ', this.data);
             this.setTotaux();
         }).catch(err => {
@@ -47,7 +52,7 @@ export class OrderListeComponent implements OnInit {
         });
         this.adherentService.getOrders(this.start, this.end, false).then(results => {
             this.all_data_manual = results;
-            this.data_manual = this.sortData(results);
+            this.data_manual = this.sortData(results, false);
             console.log('success manual: ', this.data_manual);
         }).catch(err => {
             console.log('error getting manual: ', err);
@@ -60,13 +65,19 @@ export class OrderListeComponent implements OnInit {
             this.data = this.all_data.filter(a => a.LastName.match(regex));
             this.data_manual = this.all_data_manual.filter(a => a.LastName.match(regex));
         } else {
-            this.data = this.sortData(this.all_data);
-            this.data_manual = this.sortData(this.all_data_manual);
+            this.data = this.sortData(this.all_data, true);
+            this.data_manual = this.sortData(this.all_data_manual, false);
         }
+        this.setTotaux();
     }
 
-    sortData(data: Adherent[]): Adherent[] {
-        return data.sort((a: Adherent, b: Adherent) => (a.InscriptionDate > b.InscriptionDate) ? 1 : ((b.InscriptionDate > a.InscriptionDate) ? -1 : 0));
+    sortData(data: OrderFull[], isHelloAsso: boolean): OrderFull[] {
+        if (isHelloAsso) {
+            return data.sort((a: OrderFull, b: OrderFull) => (a.Date > b.Date) ? 1 : ((b.Date > a.Date) ? -1 : 0));
+        } else {
+            return data.sort((a: OrderFull, b: OrderFull) => (a.InscriptionDate > b.InscriptionDate) ? 1 : ((b.InscriptionDate > a.InscriptionDate) ? -1 : 0));
+        }
+        
     }
 
     export(type: string) {
@@ -96,9 +107,9 @@ export class OrderListeComponent implements OnInit {
         this.totalC3l = 0;
         this.totalClub = 0;
         this.total = 0;
-        if (this.data) {
-            this.totalC3l = this.data.map(a => a.Order.CotisationC3L).reduce((a, b) => {return a + b});
-            this.total = this.data.map(a => a.Order.Total).reduce((a, b) => {return a + b});
+        if (this.data && this.data.length) {
+            this.totalC3l = this.data.map(a => a.CotisationC3L).reduce((a, b) => {return a + b});
+            this.total = this.data.map(a => a.Total).reduce((a, b) => {return a + b});
             this.totalClub = this.total - this.totalC3l;
         }
     }

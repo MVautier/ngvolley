@@ -271,7 +271,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
             TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
             Documents: this.adherent.Documents,
             Saison: this.formGroup.get('saison').value,
-            Order: null,
+            Orders: [],
             Team1: this.formGroup.get('team1').value || null,
             Team2: this.formGroup.get('team2').value || null,
             CertificateDate: certifdate,

@@ -143,6 +143,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
 
     adherentChange(adherent: Adherent) {
         this.dataSource.updateRow(adherent);
+        this.selectedAdherent = new Adherent(adherent, null, null, this.adherentService.obsSeason.value);
     }
 
     hideCard() {
