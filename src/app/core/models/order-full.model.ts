@@ -26,7 +26,7 @@ export class OrderFull {
         return {
             Id: order?.Id,
             IdPaiement: order?.IdPaiement,
-            IdAdherent: order?.IdAdherent,
+            IdAdherent: order?.IdAdherent || adherent.IdAdherent,
             Date: order?.Date ? new Date(order?.Date) : order?.Date,
             CotisationC3L: order?.CotisationC3L,
             Total: order?.Total,
