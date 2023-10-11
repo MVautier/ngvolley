@@ -117,7 +117,7 @@
                     </p>
                     <app-btn-action-doc [doc]="d" (download)="download($event)" (upload)="upload($event)" (generate)="generate()"></app-btn-action-doc>
                 </div>
-                <div class="line" *ngIf="adherent.Orders.length && adherent.Orders[0]?.PaymentLink">
+                <div class="line" *ngIf="adherent.Orders && adherent.Orders.length && adherent.Orders[0]?.PaymentLink">
                     <p class="label">Attestation paiement</p>
                     <button type="button" title="Open" mat-raised-button color="primary" matPrefix (click)="navigate(adherent.Orders[0].PaymentLink)">
                         <mat-icon>receipt_long</mat-icon>
