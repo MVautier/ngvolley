@@ -30,7 +30,6 @@
                 "glob": "**/*",
                 "input": "./projects/editor/src/lib/assets",
                 "output": "./assets"
-                
               }
             ],
             "styles": [
@@ -39,6 +38,14 @@
               "src/styles.scss"
             ],
             "scripts": [],
+            "allowedCommonJsDependencies": [
+              "jspdf-autotable",
+              "raf",
+              "core-js",
+              "ngx-charts",
+              "rfdc",
+              "rgbcolor"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/sass",
@@ -53,7 +60,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "10mb"
                 },
                 {
@@ -278,5 +285,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

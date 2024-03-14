@@ -109,10 +109,16 @@ export class AdherentCardComponent implements OnInit, OnChanges {
             }
             if (this.hasToSave) {
                 this.loader.setLoading(true);
-                await this.adherentService.addOrUpdate(this.adherent);
-                this.change.emit(this.adherent);
-                this.loader.setLoading(false);
-                console.log('adherent was saved with Uid: ', this.adherent);
+                await this.adherentService.addOrUpdate(this.adherent).then(adh => {
+                    this.change.emit(this.adherent);
+                    console.log('adherent was saved with Uid: ', this.adherent);
+                })
+                .catch(err => {
+                    console.log('erreur saving adherent: ', err);
+                })
+                .finally(() => {
+                    this.loader.setLoading(false);
+                });
             }
         }
         
