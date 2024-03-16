@@ -31,15 +31,15 @@ export class AdminComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private authService: AuthorizeApiService,
     private adherentService: AdherentService
-    ) { 
-      this.routeService.subscribeConfig(tree => {
-        this.tree = tree;
-        this.initUI();
-      }, 'subTreeAdmin');
-      this.user = this.connexionInfo.UserInfo;
-      this.isAdmin = this.user.Role === 'admin';
-      this.isManager = this.user.Role === 'manager';
-    }
+  ) {
+    this.routeService.subscribeConfig(tree => {
+      this.tree = tree;
+      this.initUI();
+    }, 'subTreeAdmin');
+    this.user = this.connexionInfo.UserInfo;
+    this.isAdmin = this.user.Role === 'admin';
+    this.isManager = this.user.Role === 'manager';
+  }
 
   ngOnInit(): void {
     // this.adherentService.getListe().then(data => {
@@ -49,7 +49,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
   closeDisplayMenu() {
@@ -65,11 +65,16 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   initUI() {
-    
+
   }
 
-  goMenu(menu: string) {
-    this.router.navigate(['/admin/' + menu]);
+  goMenu(menu: string, otherTab: boolean = false) {
+    if (otherTab) {
+      window.open(environment.basePath + 'admin/' + menu);
+    } else {
+      this.router.navigate(['/admin/' + menu]);
+    }
+
     this.closeAllMenus();
   }
 
@@ -79,9 +84,9 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.LogOut().then(() => {
-        console.log('logged out');
+      console.log('logged out');
     }).finally(() => {
-        this.exit();
+      this.exit();
     });
   }
 

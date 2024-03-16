@@ -16,23 +16,32 @@
             <button mat-button [matMenuTriggerFor]="dataMenu">Administration</button>
             <mat-menu class="sub-menu" #dataMenu="matMenu" yPosition="below">
                 <button mat-menu-item (click)="goMenu('')">Tableau de bord</button>
-                <button mat-menu-item (click)="goMenu('adherents')">Adhérents</button>
-                <button *ngIf="isAdmin || isManager" mat-menu-item (click)="goMenu('orders')">Paiements</button>
-                <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('users')">Utilisateurs</button>
+                <button mat-menu-item (click)="goMenu('adherents')">
+                  <mat-icon class="icon" (click)="goMenu('adherents', true)">open_in_new</mat-icon>
+                  Adhérents
+                </button>
+                <button *ngIf="isAdmin || isManager" mat-menu-item (click)="goMenu('orders')">
+                  <mat-icon class="icon" (click)="goMenu('orders', true)">open_in_new</mat-icon>
+                  Paiements
+                </button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('users')">
+                  <mat-icon class="icon" (click)="goMenu('users', true)">open_in_new</mat-icon>
+                  Utilisateurs
+                </button>
                 <!-- <button mat-menu-item (click)="goMenu('posts')">Export</button>
                 <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button> -->
             </mat-menu>
         </div>
 
         <div *ngIf="!fullApp" class="main-menu">
-            <mat-icon *ngIf="!fullApp" class="exit" (click)="exit()">logout</mat-icon>
+            <mat-icon *ngIf="!fullApp" class="exit" title="Sortir" (click)="exit()">logout</mat-icon>
         </div>
 
         <div *ngIf="user" class="user-info">
             <div>
                 {{user.FirstName}} {{user.LastName}}
             </div>
-            <button mat-button><mat-icon *ngIf="!fullApp" class="exit" (click)="logout()">logout</mat-icon></button>
+            <button mat-button><mat-icon *ngIf="!fullApp" title="Déconnexion" class="exit" (click)="logout()">logout</mat-icon></button>
         </div>
     </div>
 </div>

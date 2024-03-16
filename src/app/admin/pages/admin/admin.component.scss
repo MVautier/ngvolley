@@ -1,50 +1,56 @@
-.menu-container{
-    font-size: 14px;
-    height: var(--admin-menu-height);
-    .overflow-line {
-        height: 1px;
-        background: var(--primary-color);
-        opacity: 0.3;
+.menu-container {
+  font-size: 14px;
+  height: var(--admin-menu-height);
+  .overflow-line {
+    height: 1px;
+    background: var(--primary-color);
+    opacity: 0.3;
+  }
+  .menu {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    line-height: 30px;
+    padding: 7px 20px;
+    margin-top: -1px;
+    border-bottom: 1px solid var(--border);
+    .main-menu {
+      cursor: pointer;
+      margin-right: 30px;
+      &:hover {
+        color: var(--primary-color);
+      }
     }
-    .menu{
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        line-height: 30px;
-        padding: 7px 20px;
-        margin-top: -1px;
-        border-bottom: 1px solid var(--border);
-        .main-menu{
-            cursor: pointer;
-            margin-right: 30px;
-            &:hover{
-                color: var(--primary-color);
-            }
-        }
-        .user-info{
-            position: absolute;
-            right: 10px;
-            display: flex;
-            align-items: baseline;
-            button{
-                margin-left: 10px;
-            }
-        }
+    .user-info {
+      position: absolute;
+      right: 10px;
+      display: flex;
+      align-items: baseline;
+      button {
+        margin-left: 10px;
+      }
     }
-    .sub-menu {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        line-height: 20px;
-        margin-top: 7px;
-        :not(.overflow-line) {
-            padding: 7px 20px;
-        }
-        a{
-            cursor: pointer;
-            &:hover{
-                color: var(--primary-color);
-            }
-        }
+  }
+  .sub-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    margin-top: 7px;
+    :not(.overflow-line) {
+      padding: 7px 20px;
     }
+    a {
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+    button {
+      margin-left: 10px;
+      mat-icon {
+        margin-left: 20px !important;
+      }
+    }
+  }
 }
