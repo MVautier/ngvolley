@@ -26,6 +26,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   end?: Date;
   filter: AdherentFilter;
   saison: number;
+  search: string;
   columns = [
     { columnDef: 'IdAdherent', header: 'Id', cell: (element: Adherent) => `${element.IdAdherent}` },
     { columnDef: 'LastName', header: 'Nom', cell: (element: Adherent) => `${element.LastName}` },
@@ -89,6 +90,23 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
   }
 
+  onSearch() {
+    if (this.search) {
+      this.filter = new AdherentFilter(null, 'LastName', 'Contains', this.search, null);
+      this.loadData(this.filter);
+      this.adherentAdminService.setFilter(this.filter);
+    } else {
+      this.onResetSearch();
+    }
+  }
+
+  onResetSearch() {
+    this.search = null;
+    this.filter = new AdherentFilter(this.saison);
+    this.loadData(this.filter);
+    this.adherentAdminService.setFilter(this.filter);
+  }
+
   export() {
     this.adherentService.exportExcel(this.filter || new AdherentFilter(this.saison)).then(blob => {
       this.fileService.download(blob, 'ExportAdherent.xlsx');
@@ -112,9 +130,6 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   }
 
   loadData(filter: AdherentFilter) {
-    // this.filter = filter;
-    // this.adherentAdminService.setFilter(filter);
-    // this.paginator.pageIndex = 0;
     this.dataSource.loadData(
       this.filter,
       this.sort.direction,
@@ -124,9 +139,11 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   }
 
   filterChanged(filter: AdherentFilter) {
-    this.filter = filter;
-    this.adherentAdminService.setFilter(filter);
-    this.paginator.pageIndex = 0;
+    if (filter instanceof AdherentFilter) {
+      this.filter = filter;
+      this.adherentAdminService.setFilter(filter);
+      this.paginator.pageIndex = 0;
+    }
   }
 
   showCard(row: Adherent) {

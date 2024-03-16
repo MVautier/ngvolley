@@ -7,6 +7,12 @@
         <div>
             <app-adherent-filter (change)="filterChanged($event)" (apply)="loadData($event)"></app-adherent-filter>
         </div>
+        <div class="search">
+          <input type="text" [(ngModel)]="search" placeholder="Chercher par nom" (keyup)="onSearch()" />
+          <div *ngIf="search" class="search-reset" (click)="onResetSearch()">
+            <mat-icon>close_small</mat-icon>
+          </div>
+        </div>
         <div class="actions">
             <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">
                 <mat-icon>person_add</mat-icon>

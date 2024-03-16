@@ -26,19 +26,9 @@
           <mat-label>Date d'inscription</mat-label>
         </div>
         <div class="input">
-          <input
-            type="date"
-            id="cal-start"
-            [valueAsDate]="filter.DateRange.Start"
-            [max]="filter.DateRange.End | date : 'yyyy-MM-dd'"
-            (change)="onDateChange('start', $event)"
+          <input type="date" id="cal-start" [valueAsDate]="filter.DateRange?.Start" [max]="filter.DateRange?.End | date : 'yyyy-MM-dd'" (change)="onDateChange('start', $event)"
           />
-          <input
-            type="date"
-            id="cal-end"
-            [valueAsDate]="filter.DateRange.End"
-            [min]="filter.DateRange.Start | date : 'yyyy-MM-dd'"
-            (change)="onDateChange('end', $event)"
+          <input type="date" id="cal-end" [valueAsDate]="filter.DateRange?.End" [min]="filter.DateRange?.Start | date : 'yyyy-MM-dd'" (change)="onDateChange('end', $event)"
           />
         </div>
       </div>
@@ -46,52 +36,31 @@
 
     <div class="filter-item">
       <div class="field">Saison :</div>
-      <mat-select
-        [(value)]="Saison"
-        (selectionChange)="onOptionChange('season', $event)"
-      >
-        <mat-option *ngFor="let season of seasons" [value]="season">{{
-          season
-        }}</mat-option>
-        <mat-option value="tous">Tous</mat-option>
+      <mat-select [(value)]="Saison" (selectionChange)="onOptionChange('season', $event)">
+        <mat-option *ngFor="let season of seasons" [value]="season.toString()">{{ season }}</mat-option>
+        <mat-option value="0">Tous</mat-option>
       </mat-select>
     </div>
 
     <div class="filter-item">
       <div class="field">Custom :</div>
-      <mat-select
-        [(ngModel)]="selectedCustomField"
-        (selectionChange)="onOptionChange('custom', $event)"
-      >
-        <mat-option *ngFor="let field of customFields" [value]="field">{{
-          field.header
-        }}</mat-option>
+      <mat-select [(ngModel)]="selectedCustomField" (selectionChange)="onOptionChange('custom', $event)">
+        <mat-option *ngFor="let field of customFields" [value]="field">{{ field.header }}</mat-option>
       </mat-select>
     </div>
     <div class="filter-item custom" *ngIf="selectedCustomField">
       <mat-select [(ngModel)]="filter.DynamicFilter.Operator">
-        <mat-option *ngFor="let op of operators" [value]="op.value">{{
-          op.label
-        }}</mat-option>
+        <mat-option *ngFor="let op of operators" [value]="op.value">{{ op.label }}</mat-option>
       </mat-select>
 
       <mat-form-field>
-        <input
-          [ngModel]="filter.DynamicFilter.Value"
-          matInput
-          placeholder=""
-          #input
-          (keydown)="validateCustom($event)"
-        />
+        <input [(ngModel)]="filter.DynamicFilter.Value" matInput placeholder="" #input (keydown)="validateCustom($event)"/>
       </mat-form-field>
     </div>
 
     <div class="filter-item">
       <div class="field">A payé :</div>
-      <mat-select
-        [(value)]="hasPaid"
-        (selectionChange)="onOptionChange('payment', $event)"
-      >
+      <mat-select [(value)]="hasPaid" (selectionChange)="onOptionChange('payment', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="oui">Oui</mat-option>
         <mat-option value="non">Non</mat-option>
@@ -100,10 +69,7 @@
 
     <div class="filter-item">
       <div class="field">Licence :</div>
-      <mat-select
-        [(value)]="hasLicence"
-        (selectionChange)="onOptionChange('licence', $event)"
-      >
+      <mat-select [(value)]="hasLicence" (selectionChange)="onOptionChange('licence', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="avec">Avec</mat-option>
         <mat-option value="sans">Sans</mat-option>
@@ -112,10 +78,7 @@
 
     <div class="filter-item">
       <div class="field">Catégorie :</div>
-      <mat-select
-        [(value)]="Categorie"
-        (selectionChange)="onOptionChange('category', $event)"
-      >
+      <mat-select [(value)]="Categorie" (selectionChange)="onOptionChange('category', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="C">Compétition</mat-option>
         <mat-option value="L">Loisir</mat-option>
@@ -125,24 +88,16 @@
 
     <div class="filter-item">
       <div class="field">Equipe :</div>
-      <mat-select
-        [(value)]="Equipe"
-        (selectionChange)="onOptionChange('equipe', $event)"
-      >
+      <mat-select [(value)]="Equipe" (selectionChange)="onOptionChange('equipe', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="sans">Aucune</mat-option>
-        <mat-option *ngFor="let team of teams" [value]="team">{{
-          team
-        }}</mat-option>
+        <mat-option *ngFor="let team of teams" [value]="team">{{ team }}</mat-option>
       </mat-select>
     </div>
 
     <div class="filter-item">
       <div class="field">Section :</div>
-      <mat-select
-        [(value)]="Section"
-        (selectionChange)="onOptionChange('section', $event)"
-      >
+      <mat-select [(value)]="Section" (selectionChange)="onOptionChange('section', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="16">U16</mat-option>
         <mat-option value="18">U18</mat-option>
@@ -153,10 +108,7 @@
 
     <div class="filter-item">
       <div class="field">Photo :</div>
-      <mat-select
-        [(value)]="hasPhoto"
-        (selectionChange)="onOptionChange('photo', $event)"
-      >
+      <mat-select [(value)]="hasPhoto" (selectionChange)="onOptionChange('photo', $event)">
         <mat-option value="tous">Tous</mat-option>
         <mat-option value="avec">Avec</mat-option>
         <mat-option value="sans">Sans</mat-option>
@@ -167,21 +119,7 @@
   </div>
 
   <div class="filter-item buttons">
-    <button
-      type="button"
-      mat-raised-button
-      color="primary"
-      (click)="resetFilter()"
-    >
-      Effacer
-    </button>
-    <button
-      type="button"
-      mat-raised-button
-      color="primary"
-      (click)="setFilter()"
-    >
-      Valider
-    </button>
+    <button type="button" mat-raised-button color="primary" (click)="resetFilter()">Effacer</button>
+    <button type="button" mat-raised-button color="primary" (click)="setFilter()">Valider</button>
   </div>
 </div>

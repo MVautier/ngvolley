@@ -12,9 +12,9 @@ export class AdherentFilter {
   Team?: string;
   Saison?: number;
 
-  constructor(saison: number, field: string = null) {
+  constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, hasPaid: boolean = true) {
     const now = new Date();
-    this.HasPaid = null;
+    this.HasPaid = hasPaid;
     this.HasPhoto = null;
     this.HasLicence = null;
     this.IdSection = null;
@@ -23,8 +23,8 @@ export class AdherentFilter {
     this.Saison = saison;
     this.DynamicFilter = {
       Field: field,
-      Operator: 'Equals',
-      Value: null
+      Operator: operator,
+      Value: value
     };
     this.DateRange = {
       Start: null,
