@@ -24,7 +24,7 @@ export class AdherentService {
     const now = new Date();
     const y = now.getFullYear();
     const m = now.getMonth();
-    this.obsSeason.next(m >= 5 ? y : y - 1);
+    this.obsSeason.next(m >= 4 ? y : y - 1);
 
   }
 
