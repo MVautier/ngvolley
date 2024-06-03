@@ -5,11 +5,19 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
+
+          <p *ngIf="!reinscription">
             <b>Nous sommes désolés, en raison d'un nombre important d’adhésion, les inscriptions sont closes, que ce soit pour les jeunes et les adultes.</b>
             <br><br>
             <b>Seuls les joueurs retardataires déjà engagés en championnat FSGT peuvent régulariser leur inscription en ligne.</b>
-
             <br><br>
+          </p>
+          <p *ngIf="reinscription">
+            <b>Pour le moment, les inscriptions 2024-2025 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
+            <br><br>
+                    Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l’année dernière.
+          </p>
+            
             Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
             l'adhésion
             en ligne.
@@ -19,7 +27,7 @@
             Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de 6€ chacun.
             <br><br>
 
-            Pour réaliser cette inscription, il est <b>obligatoire</b> de présenter et téléverser un certificat médical ou de remplir une attestation de santé en ligne 
+            Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)  
 
             <!-- <b>il est nécessaire de télécharger au préalable <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b> -->
             <br><br>
@@ -27,7 +35,7 @@
             <br><br>
             <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
             <br>
-            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle.
+            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier.
         </div>
 
         <div class="form">
