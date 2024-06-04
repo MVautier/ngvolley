@@ -8,113 +8,112 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { environment } from '@env/environment';
 
 @Component({
-    selector: 'app-start-form',
-    templateUrl: './start-form.component.html',
-    styleUrls: ['./start-form.component.scss'],
+  selector: 'app-start-form',
+  templateUrl: './start-form.component.html',
+  styleUrls: ['./start-form.component.scss'],
 })
 export class StartFormComponent implements OnInit {
-    @Input() start: StartInscription;
-    @Output() validate: EventEmitter<StartInscription> =
-        new EventEmitter<StartInscription>();
-    nom: string;
-    prenom: string;
-    nomado: string;
-    prenomado: string;
-    birthday: Date;
-    section: string;
-    alreadySigned = false;
-    formGroup: FormGroup;
-    sections: string[] = [];
-    sectionsWithoutVolley: string[] = [];
-    city: string = environment.city;
-    asso = environment.asso;
-    year: string;
-    public isMobile = false;
-    reinscription: boolean = environment.reinscription;
-    showForm = false;
-    adofound: Adherent = undefined;
-    notFoundError: boolean = false;
-    notFoundText = 'Un nom, un prénom et une date de naissance valides doivents être fournis pour la réinscription.';
+  @Input() start: StartInscription;
+  @Output() validate: EventEmitter<StartInscription> = new EventEmitter<StartInscription>();
+  birthday: Date;
+  selectedSection: string;
+  sections: string[] = [];
+  sectionsWithoutVolley: string[] = [];
+  city: string = environment.city;
+  asso = environment.asso;
+  year: string;
+  public isMobile = false;
+  reinscription: boolean = environment.reinscription;
+  showForm = false;
+  adofound: Adherent = undefined;
+  notFoundError: boolean = false;
+  liens: string[] = ['Pére', 'Mère', 'Frère mineur', 'Soeur mineure'];
+  selectedLien: string;
+  notFoundText = 'Un nom, un prénom et une date de naissance valides doivents être fournis pour la réinscription.';
 
-    constructor(
-        private inscriptionService: InscriptionService,
-        private adherentService: AdherentService,
-        private formBuilder: FormBuilder,
-        private _adapter: DateAdapter<any>,
-        @Inject(MAT_DATE_LOCALE) private _locale: string
-    ) {
-        if (window.matchMedia('(max-width: 1025px)').matches) {
-            this.isMobile = true;
-        }
+  constructor(
+    private inscriptionService: InscriptionService,
+    private adherentService: AdherentService,
+    private _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) private _locale: string
+  ) {
+    if (window.matchMedia('(max-width: 1025px)').matches) {
+      this.isMobile = true;
     }
+  }
 
-    ngOnInit(): void {
-        if (this.start) {
-            this._locale = 'fr';
-            this._adapter.setLocale(this._locale);
-            if (this.reinscription && environment.debug) {
-                this.nomado = 'chene';
-                this.prenomado = 'paul';
-                this.birthday = new Date(2006, 0, 14);
-            }
-            this.showForm = !this.reinscription;
-            const y = this.adherentService.obsSeason.value;
-            this.year = y.toString() + '-' + (y + 1).toString();
-            this.alreadySigned = this.start.nom !== null && this.start.prenom !== null && this.start.section !== null;
-            this.sections = this.inscriptionService.sections;
-            this.sectionsWithoutVolley = this.inscriptionService.sections.filter(s => s !== 'Volley-ball');
-            this.formGroup = this.formBuilder.group({
-                local: [this.start.local, [Validators.required]],
-                nom: [this.start.nom, [Validators.required]],
-                prenom: [this.start.prenom, [Validators.required]],
-                section: [this.start.section, [Validators.required]],
-            });
-        }
+  ngOnInit(): void {
+    if (this.start) {
+      this._locale = 'fr';
+      this._adapter.setLocale(this._locale);
+      if (this.reinscription && environment.debug) {
+        this.start.nom = 'guillaud';
+        this.start.prenom = 'nelson';
+        this.birthday = new Date(2010, 2, 18);
+      }
+      this.showForm = !this.reinscription;
+      const y = this.adherentService.obsSeason.value;
+      this.year = y.toString() + '-' + (y + 1).toString();
+      this.sections = this.inscriptionService.sections;
+      this.sectionsWithoutVolley = this.inscriptionService.sections.filter(s => s !== 'Volley-ball');
     }
+  }
 
-    getInputError(field: string) {
-        return this.inscriptionService.getInputError(this.formGroup, field);
+  onValidateAdo() {
+    this.notFoundError = false;
+    if (this.start.nom && this.start.prenom && this.birthday) {
+      this.adofound = this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.birthday);
+      if (this.adofound) {
+        this.start.nom = this.adofound.LastName;
+        this.start.prenom = this.adofound.FirstName;
+        this.start.found = this.adofound;
+        this.showForm = true;
+      } else {
+        this.notFoundError = true;
+        this.showForm = false;
+      }
+    } else {
+      this.adofound = undefined;
+      this.notFoundError = true;
+      this.showForm = false;
     }
+  }
 
+  resetAlready() {
+    this.start.already = false;
+    this.selectedSection = null;
+    this.start.section = null;
+  }
 
-    getDateError(field: string): string | boolean {
-        return this.inscriptionService.getDateError(this.formGroup, field);
+  resetAlready2() {
+    this.start.already2 = false;
+    this.start.section = null;
+    this.start.nom2 = null;
+    this.start.prenom2 = null;
+    this.start.lien = null;
+    this.selectedSection = null;
+  }
+
+  setLien() {
+    this.start.lien = this.selectedLien;
+  }
+
+  setSection() {
+    this.start.section = this.selectedSection;
+  }
+
+  checkForm(): boolean {
+    let valid = true;
+    //console.log('info: ', this.start);
+    if (this.start.already) {
+      return this.start.nom != null && this.start.prenom != null && this.start.section != null;
+    } else if (this.start.already2) {
+      return this.start.nom2 != null && this.start.prenom2 != null && this.start.lien != null && this.start.section != null;
     }
+    return valid;
+  }
 
-    onCancel() {
-        this.alreadySigned = false;
-    }
-
-    onValidate() {
-        const info = this.getFormValue();
-        this.validate.emit(info);
-    }
-
-    onValidateAdo() {
-        this.notFoundError = false;
-        if (this.nomado && this.prenomado && this.birthday) {
-            this.adofound = this.inscriptionService.findAdo(this.nomado, this.prenomado, this.birthday);
-            if (this.adofound) {
-                this.showForm = true;
-            } else {
-                this.notFoundError = true;
-                this.showForm = false;
-            }
-        } else {
-            this.adofound = undefined;
-            this.notFoundError = true;
-            this.showForm = false;
-        }
-    }
-
-    getFormValue(): StartInscription {
-        return {
-            local: this.start.local,
-            already: this.start.already,
-            nom: this.alreadySigned ? this.formGroup.get('nom').value : null,
-            prenom: this.alreadySigned ? this.formGroup.get('prenom').value : null,
-            section: this.start.already || this.alreadySigned ? this.formGroup.get('section').value : null,
-            found: this.adofound
-        };
-    }
+  onValidate() {
+    this.validate.emit(this.start);
+  }
 }

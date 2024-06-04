@@ -2,26 +2,21 @@
 <div>
     <div class="input">
         <!-- <input class="form-control" type="text" name="section" placeholder="Nom des sections séparées par des vigules" [(ngModel)]="section" required> -->
-        <form *ngIf="formGroup" [formGroup]="formGroup" class="form">
+        <div class="form">
 
             <div *ngIf="reinscription">
-                <div  class="ins_info">
-                    
-                    
-                </div>
-
                 <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                     <mat-form-field class="first first-33">
-                        <input matInput placeholder="Nom" id="ado-nom" [(ngModel)]="nomado" [ngModelOptions]="{standalone: true}">
+                        <input matInput placeholder="Nom" id="ado-nom" [(ngModel)]="start.nom">
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
-                        <input matInput placeholder="Prénom" id="ado-prenom" [(ngModel)]="prenomado" [ngModelOptions]="{standalone: true}">
+                        <input matInput placeholder="Prénom" id="ado-prenom" [(ngModel)]="start.prenom">
                     </mat-form-field>
 
                     <mat-form-field class="first first-33">
                         <mat-label>Date de naissance</mat-label>
-                        <input matInput [matDatepicker]="picker" id="ado-birthday" [(ngModel)]="birthday" [ngModelOptions]="{standalone: true}" readonly
+                        <input matInput [matDatepicker]="picker" id="ado-birthday" [(ngModel)]="birthday" readonly
                             (click)="picker.open()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
@@ -36,60 +31,60 @@
             </div>
 
             <div *ngIf="showForm">
-                <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" id="rd-city" [(ngModel)]="start.local" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group aria-labelledby="type-radio-group-label" class="type-radio-group" id="rd-city" [(ngModel)]="start.local">
                     <label for="rd-city">Résidez-vous à {{city}} ?</label>  
                     <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
                     <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
                 </mat-radio-group>
                 
-                <mat-radio-group *ngIf="!alreadySigned" aria-labelledby="type-radio-group-label" id="rd-already" class="type-radio-group" [(ngModel)]="start.already" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group *ngIf="!start.already2" aria-labelledby="type-radio-group-label" id="rd-already" class="type-radio-group" [(ngModel)]="start.already">
                     <label for="rd-already">Etes-vous déjà inscrit(e) au CLLL Colomiers dans une autre section pour la saison {{year}} ?</label>  
-                    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
-                    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="true" (click)="resetAlready2()">Oui</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="false" (click)="resetAlready()">Non</mat-radio-button>
                 </mat-radio-group>
     
-                <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" id="rd-already2" class="type-radio-group" [(ngModel)]="alreadySigned" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group *ngIf="!start.already" aria-labelledby="type-radio-group-label" id="rd-already2" class="type-radio-group" [(ngModel)]="start.already2">
                     <label for="rd-already2">Avez-vous un membre de la famille déjà inscrit au C3L Colomiers pour la saison {{year}} ?</label>  
-                    <mat-radio-button class="type-radio-button" [value]="true">Oui</mat-radio-button>
-                    <mat-radio-button class="type-radio-button" [value]="false">Non</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="true" (click)="resetAlready()">Oui</mat-radio-button>
+                    <mat-radio-button class="type-radio-button" [value]="false" (click)="resetAlready2()">Non</mat-radio-button>
                 </mat-radio-group>
     
-                <section *ngIf="start.already || alreadySigned" class="inscription">
-                    <div *ngIf="!start.already" class="form-element row-item flex">
-                        <mat-form-field class="first first-50">
+                <section *ngIf="start.already || start.already2" class="inscription">
+                    <div *ngIf="start.already2" class="form-element row-item flex">
+                        <mat-form-field class="first first-33">
                             <mat-label>Nom</mat-label>
-                            <input matInput placeholder="Nom" formControlName="nom" required>
-                            <mat-error *ngIf="!formGroup.controls['nom'].valid && formGroup.controls['nom'].touched">
-                                {{ getInputError('nom') }}
-                              </mat-error>
+                            <input matInput placeholder="Nom" [(ngModel)]="start.nom2" required>
                         </mat-form-field>
             
-                        <mat-form-field class="last">
+                        <mat-form-field class="first first-33">
                             <mat-label>Prénom</mat-label>
-                            <input matInput placeholder="Prénom" formControlName="prenom" required>
-                            <mat-error *ngIf="!formGroup.controls['prenom'].valid && formGroup.controls['prenom'].touched">
-                                {{ getInputError('prenom') }}
-                              </mat-error>
+                            <input matInput placeholder="Prénom" [(ngModel)]="start.prenom2" required>
                         </mat-form-field>
+
+                        <mat-form-field>
+                          <mat-label>Lien de parenté</mat-label>
+                          <mat-select [(ngModel)]="selectedLien" (ngModelChange)="setLien()">
+                            <mat-option *ngFor="let lien of liens" [value]="lien">{{lien}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        
                     </div>
                     <mat-form-field class="form-element row-item">
                         <mat-label *ngIf="!start.already">Dans quelle section ?</mat-label>
                         <mat-label *ngIf="start.already">Section principale</mat-label>
-                        <mat-select formControlName="section">
-                            <mat-option *ngFor="let section of !start.already ? sections : sectionsWithoutVolley" [value]="section">{{section}}</mat-option>
-                          </mat-select>
-                        <mat-error *ngIf="!formGroup.controls['section'].valid && formGroup.controls['section'].touched">
-                            {{ getInputError('section') }}
-                          </mat-error>
+                        <mat-select [(ngModel)]="selectedSection" (ngModelChange)="setSection()">
+                          <mat-option *ngFor="let section of !start.already ? sections : sectionsWithoutVolley" [value]="section">{{section}}</mat-option>
+                        </mat-select>
+                        
                     </mat-form-field>
                 </section>
             </div>
 
             
-        </form>
+          </div>
     </div>
 </div>
 
 <div class="footer" *ngIf="showForm">
-    <button mat-raised-button color="primary" (click)="onValidate()" [disabled]="(start.already || alreadySigned) && formGroup.invalid">Suivant</button>
+    <button mat-raised-button color="primary" (click)="onValidate()" [disabled]="!checkForm()">Suivant</button>
 </div>
