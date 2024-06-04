@@ -106,9 +106,9 @@ export class StartFormComponent implements OnInit {
     let valid = true;
     //console.log('info: ', this.start);
     if (this.start.already) {
-      return this.start.nom != null && this.start.prenom != null && this.start.section != null;
+      return this.start.nom && this.start.prenom && this.start.section != null;
     } else if (this.start.already2) {
-      return this.start.nom2 != null && this.start.prenom2 != null && this.start.lien != null && this.start.section != null;
+      return this.start.nom2 && this.start.prenom2 && this.start.lien != null && this.start.section != null;
     }
     return valid;
   }
