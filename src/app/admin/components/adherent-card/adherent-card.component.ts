@@ -239,7 +239,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
             Adherent.addDoc(this.adherent, 'adhesion', filename, blob);
             console.log('adherent with docs : ', this.adherent);
             this.pdf.sendDocuments(this.adherent.Uid, this.adherent.Documents).then(() => {
-              this.adherentService.getListe(true);
+              this.adherentService.getListe(true, true);
             });
           }).catch(err => {
             console.log('error generating adherent form: ', err);

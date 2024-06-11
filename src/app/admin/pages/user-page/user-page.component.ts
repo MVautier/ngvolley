@@ -8,9 +8,9 @@ import { UserRole } from '@app/core/models/user-role.model';
   styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent implements OnInit {
-    users: UserRole[] = [];
+  users: UserRole[] = [];
 
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService) {
 
   }
 
@@ -20,7 +20,7 @@ export class UserPageComponent implements OnInit {
 
   init() {
     this.userService.getListe().then(users => {
-        this.users = users;
+      this.users = users;
     }).catch(err => console.log('error getting users: ', err));
   }
 
@@ -35,7 +35,7 @@ export class UserPageComponent implements OnInit {
   removeUser(index: number) {
     const user = this.users[index];
     if (user.IdUser === 0) {
-        this.users.splice(index, 1);
+      this.users.splice(index, 1);
     } else {
 
     }

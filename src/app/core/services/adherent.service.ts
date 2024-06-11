@@ -28,7 +28,7 @@ export class AdherentService {
 
   }
 
-  getListe(force: boolean = false): Promise<Adherent[]> {
+  getListe(force: boolean = false, admin: boolean = false): Promise<Adherent[]> {
     return new Promise((resolve, reject) => {
       try {
         if (!force && this.obsAdherents.value && this.obsAdherents.value.length) {
