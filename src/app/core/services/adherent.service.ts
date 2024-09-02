@@ -37,7 +37,7 @@ export class AdherentService {
           this.http.get(environment.apiUrl + 'Adherent').then((datas: Adherent[]) => {
             const adherents: Adherent[] = [];
             datas.forEach(data => {
-              adherents.push(Adherent.fromJson(data));
+              adherents.push(Adherent.fromJson(data, admin));
             });
             this.obsAdherents.next(adherents);
             resolve(adherents);
@@ -56,7 +56,7 @@ export class AdherentService {
       const s = this.util.date2StringForFilter(start);
       const e = this.util.date2StringForFilter(end);
       const season = this.obsSeason.value;
-      this.getListe().then(liste => {
+      this.getListe(false, true).then(liste => {
         let results: OrderFull[] = [];
         liste.forEach(a => {
           if (isHelloasso) {

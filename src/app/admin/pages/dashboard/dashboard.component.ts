@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
       }
     });
     if (!this.adherentService.obsAdherents.value?.length) {
-      this.adherentService.getListe(false, false);
+      this.adherentService.getListe(false, true);
     }
   }
 
