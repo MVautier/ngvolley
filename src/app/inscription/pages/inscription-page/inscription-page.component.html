@@ -7,15 +7,18 @@
         <div *ngIf="step === 1" class="ins_info">
 
           <p *ngIf="!reinscription">
-            <b>Nous sommes désolés, en raison d'un nombre important d’adhésion, les inscriptions sont closes, que ce soit pour les jeunes et les adultes.</b>
-            <br><br>
-            <b>Seuls les joueurs retardataires déjà engagés en championnat FSGT peuvent régulariser leur inscription en ligne.</b>
+            <b>Les inscriptions pour les mineurs ne sont plus possibles, l'école de Volley étant complète.</b>
             <br><br>
           </p>
           <p *ngIf="reinscription">
             <b>Pour le moment, les inscriptions 2024-2025 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
             <br><br>
                     Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l’année dernière.
+          </p>
+
+          <p *ngIf="!reinscription && !inscriptionOpened">
+            <b>Les inscriptions adultes seront prochainement ouvertes.</b>
+            <br><br>
           </p>
             
             Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
@@ -35,10 +38,10 @@
             <br><br>
             <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
             <br>
-            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier.
+            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227">https://colomiers-volley.fr/?page_id=227</a>.
         </div>
 
-        <div class="form">
+        <div class="form" *ngIf="reinscription || inscriptionOpened">
             <div class="breadcrumbs">
                 <a href="#" class="item" (click)="setStep(1)" [ngClass]="{'active': step === 1, 'completed': step > 1, 'disabled': step <= 1}">
                     <span class="arrow"></span>

@@ -30,6 +30,7 @@ export class InscriptionPageComponent implements OnInit {
   title2: string = environment.assoTitle;
   step = 1;
   reinscription: boolean = environment.reinscription;
+  inscriptionOpened: boolean = environment.inscriptionOpened;
   public isMobile = false;
   private scrollPos = 0;
   otherSections: string[] = [];
