@@ -128,7 +128,7 @@
                                     <ngx-mat-file-input formControlName="file" [placeholder]="'Importer mon certificat médical'" (change)="onFileChange(formGroup.value)">
                                     </ngx-mat-file-input>
                                     <mat-icon matSuffix class="folder">folder</mat-icon>
-        
+
                                     <mat-error *ngIf="formGroup.get('file').hasError('maxContentSize')">
                                         File size {{formGroup.get('file')?.getError('maxContentSize').maxSize | byteFormat}}
                                         ({{formGroup.get('file').value.files[0].name | json}} g

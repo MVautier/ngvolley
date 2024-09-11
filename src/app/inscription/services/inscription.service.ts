@@ -154,28 +154,31 @@ export class InscriptionService {
     //}
   }
 
-  checkAdherent(check: CheckAdherent, adherent: Adherent, step: number): CheckAdherent {
+  checkAdherent(check: CheckAdherent, adherent: Adherent, step: number, isMember: boolean = false): CheckAdherent {
     if (!check) {
       check = new CheckAdherent();
     }
 
-    // Recherche de l'adhérent dans les données
-    if (!check.found) {
-      check.found = this.getExistingAdherent(adherent);
-      console.log('found: ', check.found);
-      if (check.found) {
-        if (!adherent.IdAdherent) {
-          adherent.IdAdherent = check.found.IdAdherent;
+    if (!isMember) {
+      // Recherche de l'adhérent dans les données
+      if (!check.found) {
+        check.found = this.getExistingAdherent(adherent);
+        console.log('found: ', check.found);
+        if (check.found) {
+          if (!adherent.IdAdherent) {
+            adherent.IdAdherent = check.found.IdAdherent;
+          }
+          if (check.found.Uid) {
+            adherent.Uid = check.found.Uid;
+          } else if (!adherent.Uid) {
+            adherent.Uid = uuidv4();
+          }
         }
-        if (check.found.Uid) {
-          adherent.Uid = check.found.Uid;
-        } else if (!adherent.Uid) {
-          adherent.Uid = uuidv4();
-        }
+      } else if (check.found.Uid) {
+        adherent.Uid = check.found.Uid;
       }
-    } else if (check.found.Uid) {
-      adherent.Uid = check.found.Uid;
     }
+
     check.certifLabel = 'Attestation ou certificat';
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';
     let dateValid = false;

@@ -77,7 +77,7 @@ export class Adherent {
     this.Email = base && !isMember ? base.Email : Adherent.debug ? 'fanny.dominici@orange.fr' : null;
     this.Photo = base ? base.Photo : null;
     this.Licence = base && !isMember ? base.Licence : Adherent.debug ? '297368' : null;
-    this.Membres = base ? base.Membres : [];
+    this.Membres = base && !isMember ? base.Membres : [];
     this.Alert1 = base ? base.Alert1 : Adherent.debug ? 'DOMINICI Martial 06 20 65 40 10' : null;
     this.Alert2 = base ? base.Alert2 : Adherent.debug ? null : null;
     this.Alert3 = base ? base.Alert3 : Adherent.debug ? null : null;

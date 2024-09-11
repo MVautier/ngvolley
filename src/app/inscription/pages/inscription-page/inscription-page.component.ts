@@ -426,12 +426,10 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   onStep3Cancel(adherent: Adherent) {
-    this.adherent = adherent;
-    this.step--;
-  }
-
-  setStep(step: number) {
-    this.step = step;
+    if (adherent?.Uid) {
+      this.adherent = adherent;
+      this.step--;
+    }
   }
 
   onSubmit() {
@@ -449,6 +447,14 @@ export class InscriptionPageComponent implements OnInit {
 
   private setCategTarifs(adherent: Adherent) {
     if (adherent && adherent.Uid) {
+      console.log('Adherent Uid: ', adherent.Uid);
+      console.log('Adherent Category: ', adherent.Category);
+      if (adherent?.Membres.length) {
+        adherent.Membres.forEach(m => {
+          console.log('Member Uid: ', m.Uid);
+          console.log('Member Category: ', m.Category);
+        });
+      }
       let item: CartItem;
       if (adherent.Category) {
         item = this.getCartItemByCategory(adherent.Category, 'categorie', adherent.Uid);

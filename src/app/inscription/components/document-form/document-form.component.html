@@ -1,13 +1,14 @@
 <div *ngIf="adherent">
-
     <app-adherent-doc 
         [adherent]="adherent" 
+        [isMember]="false"
         (changed)="onAdherentChange($event)"
         (savePdf)="onSavePdf($event, adherent.Uid)">
     </app-adherent-doc>
 
     <app-adherent-doc *ngFor="let member of adherent.Membres" 
         [adherent]="member"
+        [isMember]="true"
         (changed)="onMemberChange($event)"
         (savePdf)="onSavePdf($event, member.Uid)">
     </app-adherent-doc>
@@ -26,6 +27,6 @@
 </div>
 
 <div class="ins-buttons">
-    <button type="button" mat-raised-button (click)="onCancel()">Retour</button>
+    <button type="button" mat-raised-button (click)="onCancelDoc()">Retour</button>
     <button type="button" mat-raised-button color="primary" (click)="onValidate()" [disabled]="!isFormValid">Valider</button>
 </div>

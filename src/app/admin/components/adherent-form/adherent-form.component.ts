@@ -63,6 +63,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
       this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
       this.subAddAdherent = this.inscriptionService.obsAddMember.subscribe(member => {
         if (member) {
+          member.Membres = [];
           this.onAddMember(member);
         }
       });

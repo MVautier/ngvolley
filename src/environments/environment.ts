@@ -25,7 +25,7 @@ export const environment = {
     ado: 55
   },
   minage: 13,
-  debug: false,
+  debug: true,
   ssrMode: false,
   inscriptionOpened: true,
   reinscription: false,

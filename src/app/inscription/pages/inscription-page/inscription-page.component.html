@@ -43,27 +43,27 @@
 
         <div class="form" *ngIf="reinscription || inscriptionOpened">
             <div class="breadcrumbs">
-                <a href="#" class="item" (click)="setStep(1)" [ngClass]="{'active': step === 1, 'completed': step > 1, 'disabled': step <= 1}">
+                <a class="item" [ngClass]="{'active': step === 1, 'completed': step > 1, 'disabled': step <= 1}">
                     <span class="arrow"></span>
                     <span class="hide-mobile">Adhésion à CLLL</span>
                     <span class="show-mobile">Adhésion</span>
                 </a>
-                <a href="#" class="item" (click)="setStep(2)" [ngClass]="{'active': step === 2, 'completed': step > 2, 'disabled': step <= 2}">
+                <a class="item" [ngClass]="{'active': step === 2, 'completed': step > 2, 'disabled': step <= 2}">
                     <span class="arrow"></span>
                     <span class="hide-mobile">Informations</span>
                     <span class="show-mobile">Infos</span>
                 </a>
-                <a href="#" class="item" (click)="setStep(3)" [ngClass]="{'active': step === 3, 'completed': step > 3, 'disabled': step <= 3}">
+                <a class="item" [ngClass]="{'active': step === 3, 'completed': step > 3, 'disabled': step <= 3}">
                     <span class="arrow"></span>
                     <span class="hide-mobile">Documents</span>
                     <span class="show-mobile">Docs</span>
                 </a>
-                <a href="#" class="item disabled" [ngClass]="{'active': step === 4, 'completed': step > 4}">
+                <a class="item disabled" [ngClass]="{'active': step === 4, 'completed': step > 4}">
                     <span class="arrow"></span>
                     <span class="hide-mobile">Paiement</span>
                     <span class="show-mobile">Payer</span>
                 </a>
-                <a href="#" class="item disabled" [ngClass]="{'active': step === 5, 'completed': step === 5}">
+                <a class="item disabled" [ngClass]="{'active': step === 5, 'completed': step === 5}">
                     <span class="hide-mobile">Récapitulatif</span>
                     <span class="show-mobile">Récap</span>
                 </a>
