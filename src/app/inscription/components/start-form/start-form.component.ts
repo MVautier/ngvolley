@@ -83,6 +83,7 @@ export class StartFormComponent implements OnInit {
     this.start.already = false;
     this.selectedSection = null;
     this.start.section = null;
+    console.log('resetAlready: already: ', this.start.already, ' - already2: ', this.start.already2);
   }
 
   resetAlready2() {
@@ -92,6 +93,7 @@ export class StartFormComponent implements OnInit {
     this.start.prenom2 = null;
     this.start.lien = null;
     this.selectedSection = null;
+    console.log('resetAlready2: already: ', this.start.already, ' - already2: ', this.start.already2);
   }
 
   setLien() {
@@ -104,9 +106,8 @@ export class StartFormComponent implements OnInit {
 
   checkForm(): boolean {
     let valid = true;
-    //console.log('info: ', this.start);
     if (this.start.already) {
-      return this.start.nom && this.start.prenom && this.start.section != null;
+      return this.start.section != null;
     } else if (this.start.already2) {
       return this.start.nom2 && this.start.prenom2 && this.start.lien != null && this.start.section != null;
     }
