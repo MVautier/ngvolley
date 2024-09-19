@@ -72,7 +72,7 @@
                     
                     <mat-form-field class="form-element row-item">
                         <mat-label *ngIf="!start.already">Dans quelle section ?</mat-label>
-                        <mat-label *ngIf="start.already">Section principale ?</mat-label>
+                        <mat-label *ngIf="start.already">Section principale</mat-label>
                         <mat-select [(ngModel)]="selectedSection" (ngModelChange)="setSection()">
                           <mat-option *ngFor="let section of !start.already ? sections : sectionsWithoutVolley" [value]="section">{{section}}</mat-option>
                         </mat-select>
