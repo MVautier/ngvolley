@@ -191,7 +191,7 @@ export class InscriptionPageComponent implements OnInit {
     const checked = this.inscriptionService.checkAdherent(null, this.adherent, 2);
     if (info) {
       this.startIns = info;
-      const already = info.already && info.nom !== null && info.prenom !== null && info.section !== null;
+      const already = info.already && info.section !== null;
       const already2 = info.already2 && info.nom2 !== null && info.prenom2 !== null && info.lien != null && info.section !== null;
 
       if (already) {

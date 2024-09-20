@@ -3,127 +3,129 @@
 @import "form";
 
 .title {
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 40px;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .main {
-    display: flex;
-    margin: 0 auto;
+  display: flex;
+  margin: 0 auto;
+  padding: 0 10px;
+  margin: 0 10%;
+  //width: var(--container);
+  transition: var(--global-transition);
+  &.mobile {
     padding: 0 10px;
-    margin: 0 10%;
-    //width: var(--container);
-    transition: var(--global-transition);
-    &.mobile{
-        padding: 0 10px;
-        margin: 0
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1025px) {
+    display: block;
+  }
+
+  &.no-menu {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(var(--form_width) + var(--sidenav_width));
+    //min-width: calc(var(--form_width) + var(--sidenav_width));
+  }
+  .col-steps {
+    flex: 1 1 auto;
+    padding-right: 50px;
+
+    @media screen and (max-width: 1200px) {
+      padding-right: 20px;
     }
 
     @media screen and (max-width: 1025px) {
-        display: block;
+      padding-right: 0;
+      min-height: none;
+      overflow: visible;
+    }
+  }
+
+  .col-progress {
+    flex: 0 0 385px;
+
+    @media screen and (max-width: 1025px) {
+      position: sticky;
+      bottom: 0;
+      margin: 0 -10px;
     }
 
-    &.no-menu {
-        display: flex;
-        flex-direction: column;
-        max-width: calc(var(--form_width) + var(--sidenav_width));
-        //min-width: calc(var(--form_width) + var(--sidenav_width));
+    @media screen and (max-width: 600px) {
+      margin: 0 -10px;
     }
-    .col-steps {
-        flex: 1 1 auto;
-        padding-right: 50px;
-
-        @media screen and (max-width: 1200px) {
-            padding-right: 20px;
-        }
-
-        @media screen and (max-width: 1025px) {
-            padding-right: 0;
-            min-height: none;
-            overflow: visible;
-        }
-    }
-
-    .col-progress {
-        flex: 0 0 385px;
-
-        @media screen and (max-width: 1025px) {
-            position: sticky;
-            bottom: 0;
-            margin: 0 -10px;
-        }
-
-        @media screen and (max-width: 600px) {
-            margin: 0 -10px;
-        }
-    }
+  }
 }
 
 .ins_info {
-    background: #eee;
-    color: #000;
-    text-align: justify;
-    padding: 10px;
-    border-radius: var(--border-radius);
-    margin-bottom: 25px;
-    border: 1px solid var(--border);
-    transition: var(--global-transition);
-    &.no-menu {
-        max-width: calc(var(--form_width) + var(--sidenav_width));
-    }
-    a {
-        color: var(--accent);
-    }
+  background: #eee;
+  color: #000;
+  text-align: justify;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  margin-bottom: 25px;
+  border: 1px solid var(--border);
+  transition: var(--global-transition);
+  &.no-menu {
+    max-width: calc(var(--form_width) + var(--sidenav_width));
+  }
+  a {
+    color: var(--accent);
+  }
 }
 aside {
-    // position: fixed;
-    // top: 145px;
-    // left: calc(var(--sidenav_width) + var(--form_width));
-    // transition: var(--global-transition);
+  // position: fixed;
+  // top: 145px;
+  // left: calc(var(--sidenav_width) + var(--form_width));
+  // transition: var(--global-transition);
 }
 .form {
-    border-radius: var(--border-radius);
-    background: var(--background-dialog);
-    border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  background: var(--background-dialog);
+  border: 1px solid var(--border);
+  margin-bottom: 30px;
+  // &.light{
+  //     background-color: #fff;
+  //     border: 1px solid rgba(255,255,255,.12);
+  // }
+  .inscription {
+    padding: 30px;
+    margin: auto;
+    margin-top: 30px;
     margin-bottom: 30px;
-    // &.light{
-    //     background-color: #fff;
-    //     border: 1px solid rgba(255,255,255,.12);
-    // }
-    .inscription {
-        padding: 30px;
-        margin: auto;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        &.mobile {
-            padding: 6px;
-            margin: 3px;
-        }
+    &.mobile {
+      padding: 6px;
+      margin: 3px;
     }
+  }
 }
-.payment-result{
-    .error{
-        h3{
-            font-size: 20px;
-            color: red;
-        }
-        div{
-            margin: 50px;
-        }
+.payment-result {
+  .error {
+    h3 {
+      font-size: 20px;
+      color: red;
     }
-    .success{
-        h3{
-            font-size: 20px;
-            color: green;
-        }
-        .print{
-            .attestation{
-                iframe{
-                    height: 622px;
-                }
-            }
-        }
+    div {
+      margin: 50px;
     }
+  }
+  .success {
+    h3 {
+      font-size: 20px;
+      color: green;
+    }
+    .print {
+      .attestation {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.attestation {
+  text-align: center;
 }

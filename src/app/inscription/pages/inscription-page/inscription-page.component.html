@@ -108,7 +108,8 @@
                                 Vous pouvez télécharger/imprimer votre attestation de paiement
                             </div>
                             <div class="attestation">
-                                <iframe [src]="paymentPrintUrl | safe: 'resourceUrl'" class="scroll1"></iframe>
+                                <!-- <iframe [src]="paymentPrintUrl | safe: 'resourceUrl'" class="scroll1"></iframe> -->
+                                 <a [href]="paymentPrintUrl" target="_blank">Mon attestation de paiement</a>
                             </div>
                         </div>
                     </div>

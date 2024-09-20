@@ -331,6 +331,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
       Documents: this.adherent.Documents,
       Saison: this.adherent.Saison,
+      VerifC3L: this.adherent.VerifC3L,
       Orders: []
     };
   }
