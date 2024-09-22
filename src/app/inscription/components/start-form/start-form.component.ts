@@ -24,6 +24,8 @@ export class StartFormComponent implements OnInit {
   year: string;
   public isMobile = false;
   reinscription: boolean = environment.reinscription;
+  inscriptionFilter: string = environment.inscriptionFilter;
+  inscriptionFilterIds: number[] = [];
   showForm = false;
   adofound: Adherent = undefined;
   notFoundError: boolean = false;
@@ -46,10 +48,12 @@ export class StartFormComponent implements OnInit {
     if (this.start) {
       this._locale = 'fr';
       this._adapter.setLocale(this._locale);
+      this.inscriptionFilterIds = this.inscriptionFilter && this.inscriptionFilter !== '*' ? this.inscriptionFilter.split(',').map((x) => parseInt(x)) : [];
+      console.log('filter ids: ', this.inscriptionFilterIds);
       if (this.reinscription && environment.debug) {
-        this.start.nom = 'guillaud';
-        this.start.prenom = 'nelson';
-        this.birthday = new Date(2010, 2, 18);
+        this.start.nom = 'ancel';
+        this.start.prenom = 'françois';
+        this.birthday = new Date(1972, 4, 28);
       }
       this.showForm = !this.reinscription;
       const y = this.adherentService.obsSeason.value;
@@ -63,6 +67,11 @@ export class StartFormComponent implements OnInit {
     this.notFoundError = false;
     if (this.start.nom && this.start.prenom && this.birthday) {
       this.adofound = this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.birthday);
+      if (this.adofound && this.inscriptionFilterIds.length) {
+        if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {
+          this.adofound = null;
+        }
+      }
       if (this.adofound) {
         this.start.nom = this.adofound.LastName;
         this.start.prenom = this.adofound.FirstName;

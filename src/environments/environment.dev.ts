@@ -29,6 +29,7 @@ export const environment = {
   ssrMode: false,
   inscriptionOpened: false,
   reinscription: false,
+  inscriptionFilter: '10,66,89,90',
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
   cookiePath: '/',
