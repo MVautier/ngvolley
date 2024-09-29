@@ -150,6 +150,24 @@ export class AdherentService {
     });
   }
 
+  exportOrders(start: Date, end: Date): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const url = `${environment.apiUrl}Adherent/export/order`;
+      const filter: AdherentFilter = {
+        DateRange: {
+          Start: start,
+          End: end
+        },
+        Saison: this.obsSeason.value
+      }
+      this.http.post<AdherentFilter>(url, filter, { responseType: 'blob' }).then(blob => {
+        resolve(blob);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
   getDocuments(filter: AdherentFilter, type: string): Promise<any> {
     const url = `${environment.apiUrl}Adherent/docs?type=${type}`;
     return new Promise((resolve, reject) => {
