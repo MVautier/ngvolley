@@ -10,11 +10,15 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AdherentAdminService {
-  obsFilter: BehaviorSubject<AdherentFilter> = new BehaviorSubject<AdherentFilter>(new AdherentFilter(null, 'LastName', 'Equals', null, true));
+  obsFilter: BehaviorSubject<AdherentFilter> = new BehaviorSubject<AdherentFilter>(null);
   obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
 
   constructor(private http: HttpDataService<any>) {
-
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth();
+    const saison = m >= 4 ? y : y - 1;
+    this.obsFilter.next(new AdherentFilter(saison, 'LastName', 'Equals', null, true));
   }
 
   downloadFile(uid: string, filename: string): Promise<any> {

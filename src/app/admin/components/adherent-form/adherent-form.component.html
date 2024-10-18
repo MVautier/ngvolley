@@ -210,11 +210,21 @@
         
         <mat-form-field class="form-element row-item">
             <mat-label>Infos paiement</mat-label>
-            <input matInput placeholder="Infos paiement" formControlName="payment">
+            <mat-select formControlName="payment">
+              <mat-option value="Terminé">Terminé</mat-option>
+              <mat-option value="En attente">En attente</mat-option>
+              <mat-option value="Manuel">Manuel</mat-option>
+          </mat-select>
+            <!-- <input matInput placeholder="Infos paiement" formControlName="payment"> -->
         </mat-form-field>
 
         <mat-form-field class="form-element row-item">
-          <mat-label>Verif C3L</mat-label>
+          <mat-label>Infos paiement manuel</mat-label>
+          <input matInput placeholder="Infos paiement manuel" formControlName="paycomment">
+      </mat-form-field>
+
+        <mat-form-field class="form-element row-item">
+          <mat-label>Verif C3L (autre adhérent déclaré)</mat-label>
           <input matInput placeholder="Verif C3L" formControlName="verfic3l">
       </mat-form-field>
 

@@ -53,9 +53,7 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
     this.teams = this.adhService.obsTeams.value;
     this.saison = this.adhService.obsSeason.value;
     this.Saison = this.saison ? this.saison.toString() : null;
-    if (!this.filter) {
-      this.initFilter();
-    }
+    //this.initFilter();
     this.initSeasons();
   }
 

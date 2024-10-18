@@ -29,6 +29,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   search: string;
   columns = [
     { columnDef: 'IdAdherent', header: 'Id', cell: (element: Adherent) => `${element.IdAdherent}` },
+    { columnDef: 'Saison', header: 'Saison', cell: (element: Adherent) => `${element.Saison}` },
     { columnDef: 'LastName', header: 'Nom', cell: (element: Adherent) => `${element.LastName}` },
     { columnDef: 'FirstName', header: 'Prénom', cell: (element: Adherent) => `${element.FirstName}` },
     { columnDef: 'Category', header: 'Catégorie', cell: (element: Adherent) => `${element.Category}` },
@@ -140,6 +141,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
 
   filterChanged(filter: AdherentFilter) {
     if (filter instanceof AdherentFilter) {
+      console.log('filterChanged: ', this.filter);
       this.filter = filter;
       this.adherentAdminService.setFilter(filter);
       this.paginator.pageIndex = 0;

@@ -56,6 +56,11 @@
                 <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.IdAdherent}} </td></tr>
             </ng-container>
 
+            <ng-container matColumnDef="Saison">
+              <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Saison</th></tr>
+              <tr><td mat-cell *matCellDef="let row" style="width:5%"> {{row.Saison}} </td></tr>
+          </ng-container>
+
             <ng-container matColumnDef="LastName">
                 <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th></tr>
                 <tr><td mat-cell *matCellDef="let row" style="width:35%"> {{row.LastName}} </td></tr>
@@ -79,7 +84,7 @@
             <ng-container matColumnDef="Payment">
                 <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Paiement</th></tr>
                 <tr>
-                    <td mat-cell *matCellDef="let row" style="width:20%" [ngSwitch]="row.Payment"> 
+                    <td mat-cell *matCellDef="let row" style="width:15%" [ngSwitch]="row.Payment"> 
                         <mat-icon *ngSwitchCase="'Terminé'" class="check">check_circle</mat-icon>
                         <mat-icon *ngSwitchCase="'En attente'" class="wait">pending</mat-icon>
                         <mat-icon *ngSwitchCase="null || undefined || ''" class="empty">remove</mat-icon>

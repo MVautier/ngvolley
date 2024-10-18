@@ -60,7 +60,7 @@ export class AdherentService {
         let results: OrderFull[] = [];
         liste.forEach(a => {
           if (isHelloasso) {
-            if (a.Saison === season && a.Orders.length) {
+            if (a.Saison === season && (a.Payment === 'Terminé' || a.Payment === 'En attente')) {
               a.Orders.forEach(o => {
                 if (o.Date && this.util.date2StringForFilter(o.Date) >= s && this.util.date2StringForFilter(o.Date) <= e) {
                   results.push(new OrderFull(a, o));
@@ -78,8 +78,8 @@ export class AdherentService {
             // results = results.filter(a => a.Orders.map(o => this.util.date2StringForFilter(o.Date) >= e).length);
           } else {
             results = liste.filter(a => a.Saison === season
-              && !a.Orders.filter(o => o.Id !== undefined && o.Id !== null).length
-              && a.Payment && a.Payment !== 'Terminé' && a.Payment !== 'En attente' && a.Payment !== ''
+              //&& !a.Orders.filter(o => o.Id !== undefined && o.Id !== null).length
+              && a.Payment && a.Payment === 'Manuel'
               && a.InscriptionDate
               && this.util.date2StringForFilter(a.InscriptionDate) >= s
               && this.util.date2StringForFilter(a.InscriptionDate) <= e).map(a => new OrderFull(a, null));
