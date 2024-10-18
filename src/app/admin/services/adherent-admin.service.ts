@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AdherentAdminService {
-  obsFilter: BehaviorSubject<AdherentFilter> = new BehaviorSubject<AdherentFilter>(new AdherentFilter(null, 'id'));
+  obsFilter: BehaviorSubject<AdherentFilter> = new BehaviorSubject<AdherentFilter>(new AdherentFilter(null, 'LastName', 'Equals', null, true));
   obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
 
   constructor(private http: HttpDataService<any>) {
