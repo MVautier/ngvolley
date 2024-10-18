@@ -90,12 +90,12 @@ export class Adherent {
     this.Signature = base ? base.Signature : null;
     this.Saison = base ? base.Saison : season;
 
-    this.Payment = null;
+    this.Payment = base ? base.Payment : null;
     this.CertificateDate = base ? base.CertificateDate : null;
     this.CertificateFile = base ? base.CertificateFile : null;
     this.HealthFile = base ? base.HealthFile : null;
     this.Documents = base ? base.Documents : [];
-    this.VerifC3L = null;
+    this.VerifC3L = base ? base.VerifC3L : null;
     this.valid = false;
     this._opened = true;
     this.Orders = base ? base.Orders : [];
