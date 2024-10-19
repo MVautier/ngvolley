@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AdherentDoc } from "./adherent-doc.model";
 import { Order } from "./order.model";
 import { AdherentService } from "../services/adherent.service";
+import { Histo } from "./histo.model";
 
 export class Adherent {
   private static debug = environment.debug;
@@ -56,6 +57,7 @@ export class Adherent {
   Saison: number;
   Orders: Order[];
   Saved?: boolean;
+  Histo: Histo[];
 
   constructor(base: Adherent, cp: string = null, isMember = false, season: number) {
     this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
@@ -99,6 +101,7 @@ export class Adherent {
     this.valid = false;
     this._opened = true;
     this.Orders = base ? base.Orders : [];
+    this.Histo = base ? base.Histo : [];
   }
 
   public static getAge(birthdate: Date): number {
@@ -164,7 +167,8 @@ export class Adherent {
       // Fin documents
       Documents: [],
       Saison: data.Saison,
-      Orders: Order.fromJsonList(data.Orders)
+      Orders: Order.fromJsonList(data.Orders),
+      Histo: Histo.fromJsonList(data.Histo)
     }
   }
 }

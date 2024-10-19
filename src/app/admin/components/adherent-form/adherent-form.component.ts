@@ -281,7 +281,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
       Payment: this.formGroup.get('payment').value,
       VerifC3L: this.formGroup.get('verfic3l').value || null,
       PaymentComment: this.formGroup.get('paycomment').value || null,
-      InscriptionDate: inscriptiondate
+      InscriptionDate: inscriptiondate,
+      Histo: this.adherent.Histo
     };
   }
 }

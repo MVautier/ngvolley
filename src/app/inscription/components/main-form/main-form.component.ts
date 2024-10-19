@@ -332,7 +332,8 @@ export class MainFormComponent implements OnInit, OnDestroy {
       Documents: this.adherent.Documents,
       Saison: this.adherent.Saison,
       VerifC3L: this.adherent.VerifC3L,
-      Orders: []
+      Orders: [],
+      Histo: this.adherent.Histo
     };
   }
 }
