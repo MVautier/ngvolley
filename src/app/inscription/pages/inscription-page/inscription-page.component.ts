@@ -182,6 +182,12 @@ export class InscriptionPageComponent implements OnInit {
   // }
 
   onStep1Validate(info: StartInscription) {
+    if (info.found) {
+      if (info.found.Saison === this.saison) {
+        this.showPopupError('Impossible de continuer', 'Vous êtes déjà inscrit(e) pour cette saison.');
+        return;
+      }
+    }
     this.cart = new Cart();
     if (this.reinscription && info.found) {
       this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null, null, this.saison);
@@ -228,8 +234,42 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   onStep2Validate(adherent: Adherent) {
+    const found = this.inscriptionService.getExistingAdherent(adherent);
+    if (found) {
+      if (found.Saison === this.saison) {
+        this.showPopupError('Impossible de continuer', 'Vous êtes déjà inscrit(e) pour cette saison.');
+        return;
+      }
+    }
     this.adherent = adherent;
     this.showPopupAdd();
+  }
+
+  showPopupError(title: string, content: string) {
+    if (this.subModal) {
+      this.subModal.unsubscribe();
+    }
+    this.modalService.open({
+      title: title,
+      validateLabel: 'Oui',
+      cancelLabel: 'Fermer',
+      showValidate: false,
+      showCancel: true,
+      size: {
+        width: '100%',
+        height: '200px'
+      },
+      component: 'popup-error',
+      data: content
+    });
+    this.subModal = this.modalService.returnData
+      .pipe(takeUntil(this.notifier))
+      .subscribe(async result => {
+        if (this.modalService.modalShown.value.component === 'popup-error') {
+          this.notifier.next();
+          this.notifier.complete();
+        }
+      });
   }
 
   showPopupAdd() {
@@ -252,16 +292,39 @@ export class InscriptionPageComponent implements OnInit {
     this.subModal = this.modalService.returnData
       .pipe(takeUntil(this.notifier))
       .subscribe(async result => {
+        let message: string = '';
+        let error = false;
         if (result && this.modalService.modalShown.value.component === 'popup-add') {
           if (result.data) {
             this.onAddMember();
           } else {
-            this.inscriptionService.setAdherent(this.adherent);
-            this.cart.setClient(this.adherent);
-            this.step++;
+            if (this.adherent.Membres?.length) {
+              this.adherent.Membres.forEach(m => {
+                const found = this.inscriptionService.getExistingAdherent(m);
+                if (found) {
+                  if (found.Saison === this.saison) {
+                    error = true;
+                    message += `<br>Le membre ${m.FirstName} ${m.LastName} est déjà inscrit(e) pour cette saison`;
+                  }
+                }
+              });
+            }
+            if (!error) {
+              this.inscriptionService.setAdherent(this.adherent);
+              this.cart.setClient(this.adherent);
+              this.step++;
+            }
           }
           this.notifier.next();
           this.notifier.complete();
+          if (error) {
+            if (this.subModal) {
+              this.subModal.unsubscribe();
+            }
+            setTimeout(() => {
+              this.showPopupError('Impossible de continuer', message);
+            }, 500);
+          }
         }
       });
   }

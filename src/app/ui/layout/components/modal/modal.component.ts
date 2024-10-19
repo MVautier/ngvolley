@@ -15,108 +15,112 @@ import { DynamicDirective } from './../../directives/dynamic.directive';
 import { PopupRemoveComponent } from '@app/inscription/components/popup-remove/popup-remove.component';
 import { HealthFormComponent } from '@app/inscription/components/health-form/health-form.component';
 import { PopupAddComponent } from '@app/inscription/components/popup-add/popup-add.component';
+import { PopupErrorComponent } from '@app/inscription/components/popup-error/popup-error.component';
 @Component({
-    selector: 'app-modal',
-    templateUrl: './modal.component.html',
-    styleUrls: ['./modal.component.scss']
+  selector: 'app-modal',
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit, OnDestroy {
 
-    @Output() validate: EventEmitter<ModalResult> = new EventEmitter<ModalResult>();
-    @Output() cancel: EventEmitter<ModalResult> = new EventEmitter<ModalResult>();
+  @Output() validate: EventEmitter<ModalResult> = new EventEmitter<ModalResult>();
+  @Output() cancel: EventEmitter<ModalResult> = new EventEmitter<ModalResult>();
 
-    @Input() config: ModalConfig;
-    title = 'titre';
-    validateLabel = 'Valider';
-    cancelLabel = 'Annuler';
-    component = 'login'
-    size: Size = {
-        width: '500px',
-        height: 'auto'
-    }
+  @Input() config: ModalConfig;
+  title = 'titre';
+  validateLabel = 'Valider';
+  cancelLabel = 'Annuler';
+  component = 'login'
+  size: Size = {
+    width: '500px',
+    height: 'auto'
+  }
 
-    subModal: Subscription;
-    isDarkTheme = true;
+  subModal: Subscription;
+  isDarkTheme = true;
 
-    @ViewChild(DynamicDirective, { static: true }) private dynamicHost!: DynamicDirective;
+  @ViewChild(DynamicDirective, { static: true }) private dynamicHost!: DynamicDirective;
 
-    constructor(
-        private modalService: ModalService,
-        private themService: ThemeService) {
-        this.themService.isDarkTheme.subscribe(isDark => {
-            this.isDarkTheme = isDark;
-        });
+  constructor(
+    private modalService: ModalService,
+    private themService: ThemeService) {
+    this.themService.isDarkTheme.subscribe(isDark => {
+      this.isDarkTheme = isDark;
+    });
 
-        this.title = this.config?.title || this.title;
-        this.validateLabel = this.config?.validateLabel || this.validateLabel;
-        this.cancelLabel = this.config?.cancelLabel || this.cancelLabel;
-        this.size = this.config?.size || this.size;
-        this.component = this.config?.component || this.component;
-    }
+    this.title = this.config?.title || this.title;
+    this.validateLabel = this.config?.validateLabel || this.validateLabel;
+    this.cancelLabel = this.config?.cancelLabel || this.cancelLabel;
+    this.size = this.config?.size || this.size;
+    this.component = this.config?.component || this.component;
+  }
 
-    ngOnInit(): void {
-        if (this.component) {
-            this.subModal = this.modalService.modalShown.subscribe(config => {
-                if (config) {
-                    this.config = config;
-                    this.loadComponent(this.config.component);
-                }
-            });
+  ngOnInit(): void {
+    if (this.component) {
+      this.subModal = this.modalService.modalShown.subscribe(config => {
+        if (config) {
+          this.config = config;
+          this.loadComponent(this.config.component);
         }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subModal) {
+      this.subModal.unsubscribe();
+    }
+  }
+
+  private componentTypeFactory(type: string): Type<DynamicComponent> {
+    let comp: Type<DynamicComponent> = null;
+    switch (type) {
+      case 'login':
+        comp = LoginComponent;
+        break;
+      case 'camera':
+        comp = CameraComponent;
+        break;
+      case 'cropper':
+        comp = CropperComponent;
+        break;
+      case 'image':
+        comp = ImageComponent;
+        break;
+      case 'parent-auth':
+        comp = ParentAuthComponent;
+        break;
+      case 'popup-remove':
+        comp = PopupRemoveComponent;
+        break;
+      case 'popup-add':
+        comp = PopupAddComponent;
+        break;
+      case 'popup-error':
+        comp = PopupErrorComponent;
+        break;
+      case 'health-form':
+        comp = HealthFormComponent;
+        break;
     }
 
-    ngOnDestroy(): void {
-        if (this.subModal) {
-            this.subModal.unsubscribe();
-        }
-    }
+    return comp;
+  }
 
-    private componentTypeFactory(type: string): Type<DynamicComponent> {
-        let comp: Type<DynamicComponent> = null;
-        switch (type) {
-            case 'login':
-                comp = LoginComponent;
-                break;
-            case 'camera':
-                comp = CameraComponent;
-                break;
-            case 'cropper':
-                comp = CropperComponent;
-                break;
-            case 'image':
-                comp = ImageComponent;
-                break;
-            case 'parent-auth':
-                comp = ParentAuthComponent;
-                break;
-            case 'popup-remove':
-                comp = PopupRemoveComponent;
-                break;
-            case 'popup-add':
-                comp = PopupAddComponent;
-                break;
-            case 'health-form':
-                comp = HealthFormComponent;
-                break;
-        }
+  onClose() {
+    this.modalService.close();
+  }
 
-        return comp;
-    }
-
-    onClose() {
-        this.modalService.close();
-    }
-
-    private loadComponent(component: string): void {
-        const viewContainerRef = this.dynamicHost.viewContainerRef;
-        viewContainerRef.clear();
-        const componentRef = viewContainerRef.createComponent<DynamicComponent>(this.componentTypeFactory(component));
-        componentRef.instance.config = this.config;
-        componentRef.instance.validate = (result) => {
-            this.validate.emit(result);
-        };
-        componentRef.instance.cancel = (result) => {
-            this.cancel.emit(result);
-        };
-    }
+  private loadComponent(component: string): void {
+    const viewContainerRef = this.dynamicHost.viewContainerRef;
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent<DynamicComponent>(this.componentTypeFactory(component));
+    componentRef.instance.config = this.config;
+    componentRef.instance.validate = (result) => {
+      this.validate.emit(result);
+    };
+    componentRef.instance.cancel = (result) => {
+      this.cancel.emit(result);
+    };
+  }
 }

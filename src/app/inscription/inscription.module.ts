@@ -36,6 +36,7 @@ import { PhotoService } from './services/photo.service';
 import { HealthFormComponent } from './components/health-form/health-form.component';
 import { FormInfoComponent } from './components/form-info/form-info.component';
 import { PopupAddComponent } from './components/popup-add/popup-add.component';
+import { PopupErrorComponent } from './components/popup-error/popup-error.component';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -57,7 +58,8 @@ import { PopupAddComponent } from './components/popup-add/popup-add.component';
     PopupRemoveComponent,
     HealthFormComponent,
     FormInfoComponent,
-    PopupAddComponent
+    PopupAddComponent,
+    PopupErrorComponent
   ],
   imports: [
     CommonModule,

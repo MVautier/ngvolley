@@ -28,7 +28,7 @@ export const environment = {
   debug: true,
   ssrMode: false,
   inscriptionOpened: true,
-  reinscription: true,
+  reinscription: false,
   inscriptionFilter: '',
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
