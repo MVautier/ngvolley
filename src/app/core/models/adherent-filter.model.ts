@@ -1,8 +1,9 @@
+import { EnumPayment } from "../enums/payment.enum";
 import { DateRange } from "./date-range.model";
 import { DynamicFilter } from "./dynamic-filter.model";
 
 export class AdherentFilter {
-  HasPaid?: boolean;
+  Payment?: EnumPayment;
   HasPhoto?: boolean;
   HasLicence?: boolean;
   IdSection?: number;
@@ -12,9 +13,9 @@ export class AdherentFilter {
   Team?: string;
   Saison?: number;
 
-  constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, hasPaid: boolean = true) {
+  constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, payment: EnumPayment = EnumPayment.Termine) {
     const now = new Date();
-    this.HasPaid = hasPaid;
+    this.Payment = payment;
     this.HasPhoto = null;
     this.HasLicence = null;
     this.IdSection = null;

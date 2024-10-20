@@ -1,124 +1,140 @@
 @import "variables";
 
-.order-periode{
+.order-periode {
+  display: flex;
+  flex-direction: row;
+  div {
+    &.dates {
+      flex: 0 0 30%;
+      align-items: start;
+    }
+    &.saison {
+      flex: 0 0 100px;
+      align-items: start;
+      background: #fff;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      height: 40px;
+      margin-right: 50px;
+      mat-select {
+        margin-left: 70px;
+        width: 100px;
+        display: flex;
+        flex-direction: row;
+        margin-top: -20px;
+      }
+    }
+    &.search {
+      flex: 0 0 20%;
+      align-items: start;
+    }
+    &.actions {
+      flex: 0 0 30%;
+      align-items: end;
+    }
+    input,
+    button {
+      margin-right: 20px;
+      height: 40px;
+      line-height: 32px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 0 10px;
+    }
+  }
+}
+
+.no-data {
+  margin-top: 30px;
+  width: 950px;
+  text-align: center;
+  color: #ccc;
+}
+.orders {
+  h3 {
+    font-size: 20px;
+    margin-top: 50px;
+    text-decoration: underline;
+  }
+}
+
+.order-liste {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 950px;
+  .order-header {
+    border-radius: 10px;
+    background: var(--accent);
     display: flex;
     flex-direction: row;
-    div{
-        &.dates {
-            flex: 0 0 34%;
-            align-items: start;
-        }
-        &.search {
-            flex: 0 0 33%;
-            align-items: start;
-        }
-        &.actions {
-            flex: 0 0 33%;
-            align-items: end;
-        }
-        input, button{
-            margin-right: 20px;
-            height: 40px;
-            line-height: 32px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            padding: 0 10px;
-        }
+    height: 40px;
+    line-height: 32px;
+    .order-header-item {
+      padding: 5px 15px;
+      color: #fff;
+      text-align: center;
+      &.id {
+        flex: 0 0 50px;
+      }
+      &.date {
+        flex: 0 0 150px;
+      }
+      &.nom {
+        flex: 0 0 150px;
+      }
+      &.prenom {
+        flex: 0 0 150px;
+      }
+      &.naissance {
+        flex: 0 0 150px;
+      }
+      &.c3l {
+        flex: 0 0 100px;
+      }
+      &.club {
+        flex: 0 0 100px;
+      }
+      &.total {
+        flex: 0 0 100px;
+      }
+      &.manual {
+        flex: 0 0 300px;
+      }
     }
-}
-
-.no-data{
+  }
+  .totaux {
+    border-radius: 10px;
     margin-top: 30px;
-    width: 950px;
-    text-align: center;
-    color: #ccc;
-}
-.orders{
-    h3{
-        font-size: 20px;
-        margin-top: 50px;
-        text-decoration: underline;
-    }
-}
+    height: 40px;
+    line-height: 32px;
+    display: flex;
+    flex-direction: row;
+    background: var(--accent);
+    .totaux-item {
+      padding: 5px 15px;
+      color: #fff;
+      text-align: right;
 
-.order-liste{
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 950px;
-    .order-header{
-        border-radius: 10px;
-        background: var(--accent);
-        display: flex;
-        flex-direction: row;
-        height: 40px;
-        line-height: 32px;
-        .order-header-item {
-            padding: 5px 15px;
-            color: #fff;
-            text-align: center;
-            &.id {
-                flex: 0 0 50px;
-            }
-            &.date {
-                flex: 0 0 150px;
-            }
-            &.nom {
-                flex: 0 0 150px;
-            }
-            &.prenom {
-                flex: 0 0 150px;
-            }
-            &.naissance {
-                flex: 0 0 150px;
-            }
-            &.c3l {
-                flex: 0 0 100px;
-            }
-            &.club {
-                flex: 0 0 100px;
-            }
-            &.total {
-                flex: 0 0 100px;
-            }
-            &.manual {
-                flex: 0 0 300px;
-            }
+      &.label {
+        flex: 0 0 665px;
+        text-align: left;
+      }
+      &.montant {
+        font-size: 14px;
+        &.c3l {
+          flex: 0 0 95px;
         }
+        &.club {
+          flex: 0 0 95px;
+        }
+        &.total {
+          flex: 0 0 95px;
+        }
+      }
     }
-    .totaux{
-        border-radius: 10px;
-        margin-top: 30px;
-        height: 40px;
-        line-height: 32px;
-        display: flex;
-        flex-direction: row;
-        background: var(--accent);
-        .totaux-item{
-            padding: 5px 15px;
-            color: #fff;
-            text-align: right;
-            
-            
-            &.label {
-                flex: 0 0 665px;
-                text-align: left;
-            }
-            &.montant {
-                font-size: 14px;
-                &.c3l {
-                    flex: 0 0 95px;
-                }
-                &.club {
-                    flex: 0 0 95px;
-                }
-                &.total {
-                    flex: 0 0 95px;
-                }
-            }
-            
-        }
-        .totaux-item:not(:last-child){
-            border-right: 1px solid #ccc;
-        }
+    .totaux-item:not(:last-child) {
+      border-right: 1px solid #ccc;
     }
+  }
 }

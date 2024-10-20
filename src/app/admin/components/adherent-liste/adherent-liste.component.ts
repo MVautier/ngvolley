@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
+import { EnumPayment } from '@app/core/enums/payment.enum';
 import { AdherentDataSource } from '@app/core/models/adherent-datasource';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
@@ -70,7 +71,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     });
     this.saison = this.adherentService.obsSeason.value;
     this.filter = new AdherentFilter(this.saison);
-    this.filter.HasPaid = true;
+    this.filter.Payment = EnumPayment.Termine;
     this.dataSource.loadData(this.filter);
     console.log('dataSource: ', this.dataSource);
   }

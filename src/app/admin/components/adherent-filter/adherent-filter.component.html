@@ -60,10 +60,12 @@
 
     <div class="filter-item">
       <div class="field">A payé :</div>
-      <mat-select [(value)]="hasPaid" (selectionChange)="onOptionChange('payment', $event)">
+      <mat-select [(value)]="payment" (selectionChange)="onOptionChange('payment', $event)">
         <mat-option value="tous">Tous</mat-option>
-        <mat-option value="oui">Oui</mat-option>
-        <mat-option value="non">Non</mat-option>
+        <mat-option value="termine">Terminé</mat-option>
+        <mat-option value="attente">En attente</mat-option>
+        <mat-option value="manuel">Manuel</mat-option>
+        <mat-option value="autre">Autre</mat-option>
       </mat-select>
     </div>
 

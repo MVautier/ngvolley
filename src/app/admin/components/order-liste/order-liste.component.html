@@ -4,6 +4,15 @@
         <input type="date" id="cal-start" [valueAsDate]="start" [max]="end | date:'yyyy-MM-dd'" (change)="onDateChange('start', $event)" />
         <input type="date" id="cal-end" [valueAsDate]="end" [min]="start | date:'yyyy-MM-dd'" (change)="onDateChange('end', $event)" />
     </div>
+
+    <div class="saison">
+      <div class="field">Saison :</div>
+      <mat-select [(value)]="Saison" mat-raise-button (selectionChange)="onSaisonChange($event)">
+        <mat-option *ngFor="let season of seasons" [value]="season.toString()">{{ season }}</mat-option>
+        <mat-option value="0">Tous</mat-option>
+      </mat-select>
+    </div>
+
     <div class="search">
         <input type="text" [(ngModel)]="search" placeholder="Chercher par nom" (keyup)="onSearch()" />
     </div>
@@ -18,7 +27,7 @@
 </div>
 
 <div class="orders">
-    <h3>Paiements Helloasso</h3>
+    <h3>Paiements Helloasso ({{data.length}})</h3>
     <div class="order-liste" *ngIf="data.length">
 
         <div class="order-header">
@@ -46,7 +55,7 @@
 </div>
 
 <div class="orders">
-    <h3>Paiements manuels</h3>
+    <h3>Paiements manuels ({{data_manual.length}})</h3>
     <div class="order-liste" *ngIf="data_manual.length">
 
         <div class="order-header">

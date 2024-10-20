@@ -6,6 +6,7 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { UtilService } from '@app/core/services/util.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-order-liste',
@@ -23,6 +24,10 @@ export class OrderListeComponent implements OnInit {
   totalClub: number = 0;
   total: number = 0;
   search: string;
+  Saison: string;
+  saison?: number;
+  firstSeason: number = environment.firstSeason;
+  seasons: number[] = [];
 
   orders: OrderFull[] = [];
   orders_manual: OrderFull[] = [];
@@ -35,14 +40,29 @@ export class OrderListeComponent implements OnInit {
     private util: UtilService) { }
 
   ngOnInit(): void {
+    this.saison = this.adherentService.obsSeason.value;
+    this.initSeasons();
     const d = new Date();
     this.start = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), 1));
     this.end = this.util.UtcDate(d);
-    this.getData();
+
+    this.getData('date');
   }
 
-  getData() {
-    this.adherentService.getOrders(this.start, this.end, true).then(results => {
+  initSeasons() {
+    this.seasons = [this.saison];
+    let season = this.saison;
+    while (season > this.firstSeason) {
+      season--;
+      this.seasons.push(season);
+    }
+  }
+
+  getData(mode: string) {
+    const start = mode === 'date' ? this.start : null;
+    const end = mode === 'date' ? this.end : null;
+    const season = mode === 'season' ? this.saison : null;
+    this.adherentService.getOrders(start, end, season, true).then(results => {
       this.all_data = results;
       this.data = this.sortData(results, true);
       console.log('success orders: ', this.data);
@@ -50,13 +70,19 @@ export class OrderListeComponent implements OnInit {
     }).catch(err => {
       console.log('error getting orders: ', err);
     });
-    this.adherentService.getOrders(this.start, this.end, false).then(results => {
+    this.adherentService.getOrders(start, end, season, false).then(results => {
       this.all_data_manual = results;
       this.data_manual = this.sortData(results, false);
       console.log('success manual: ', this.data_manual);
     }).catch(err => {
       console.log('error getting manual: ', err);
     });
+  }
+
+  onSaisonChange(season: any) {
+    console.log('saison: ', Number(season.value));
+    this.saison = Number(season.value);
+    this.getData('season');
   }
 
   onSearch() {
@@ -107,7 +133,7 @@ export class OrderListeComponent implements OnInit {
     if (mode === 'end') {
       this.end = d;
     }
-    this.getData();
+    this.getData('date');
   }
 
   setTotaux() {

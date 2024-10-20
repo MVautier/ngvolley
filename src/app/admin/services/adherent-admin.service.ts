@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { EnumPayment } from '@app/core/enums/payment.enum';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
 import { WebItem } from '@app/core/models/web-item.model';
@@ -18,7 +19,7 @@ export class AdherentAdminService {
     const y = now.getFullYear();
     const m = now.getMonth();
     const saison = m >= 4 ? y : y - 1;
-    this.obsFilter.next(new AdherentFilter(saison, 'LastName', 'Equals', null, true));
+    this.obsFilter.next(new AdherentFilter(saison, 'LastName', 'Equals', null, EnumPayment.Tous));
   }
 
   downloadFile(uid: string, filename: string): Promise<any> {

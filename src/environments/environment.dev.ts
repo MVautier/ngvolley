@@ -16,6 +16,7 @@ export const environment = {
   postalcode: '31770',
   city: 'Colomiers',
   section: 'Volley-ball',
+  firstSeason: 2022,
   tarifs: {
     local: 19,
     exterior: 27,

@@ -5,6 +5,8 @@ import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Operator } from '@app/core/models/operator.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { Subscription } from 'rxjs';
+import { EnumPayment } from '@app/core/enums/payment.enum';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-adherent-filter',
@@ -17,12 +19,13 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
   @Output() change: EventEmitter<AdherentFilter> = new EventEmitter<AdherentFilter>();
   @Output() apply: EventEmitter<AdherentFilter> = new EventEmitter<AdherentFilter>();
   maxDate: Date = new Date();
+  firstSeason: number = environment.firstSeason;
   showFilter = false;
   hasPhoto = 'tous';
   hasLicence = 'tous';
   Categorie = 'tous';
   Section = 'tous';
-  hasPaid = 'oui';
+  payment = 'tous';
   Saison: string;
   saison?: number;
   Equipe: string = null;
@@ -65,8 +68,8 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
 
   initFilter() {
     this.filter = new AdherentFilter(this.saison, this.selectedCustomField.columnDef);
-    this.filter.HasPaid = true;
-    this.hasPaid = 'oui';
+    this.filter.Payment = EnumPayment.Tous;
+    this.payment = 'tous';
     this.hasPhoto = 'tous';
     this.hasLicence = 'tous';
     this.Categorie = 'tous';
@@ -78,15 +81,17 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
 
   initSeasons() {
     this.seasons = [this.saison];
-    for (let i = 1; i < 3; i++) {
-      this.seasons.push(this.saison - i);
+    let season = this.saison;
+    while (season > this.firstSeason) {
+      season--;
+      this.seasons.push(season);
     }
   }
 
   setVariablesByFilter() {
     if (this.filter) {
       this.Saison = this.filter.Saison ? this.filter.Saison.toString() : '0';
-      this.hasPaid = this.filter.HasPaid === null ? 'tous' : (this.filter.HasPaid ? 'oui' : 'non');
+      this.payment = this.getVarPayment();
       this.hasPhoto = this.filter.HasPhoto === null ? 'tous' : (this.filter.HasPhoto ? 'avec' : 'sans');
       this.hasLicence = this.filter.HasLicence === null ? 'tous' : (this.filter.HasLicence ? 'avec' : 'sans');
       this.Categorie = this.filter.IdCategory === null ? 'tous' : (this.filter.IdCategory === 1 ? 'C' : (this.filter.IdCategory === 2 ? 'L' : 'E'));
@@ -95,9 +100,57 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
     }
   }
 
+  getVarPayment(): string {
+    let pay = 'tous';
+    if (this.filter) {
+      switch (this.filter.Payment) {
+        case EnumPayment.Termine:
+          pay = 'termine';
+          break;
+        case EnumPayment.Attente:
+          pay = 'attente';
+          break;
+        case EnumPayment.Autre:
+          pay = 'autre';
+          break;
+        case EnumPayment.Manuel:
+          pay = 'manuel';
+          break;
+        case EnumPayment.Tous:
+          pay = 'tous';
+          break;
+      }
+    }
+
+    return pay;
+  }
+
+  getPayment(event: any): EnumPayment {
+    let pay = EnumPayment.Tous;
+    switch (event.value) {
+      case 'termine':
+        pay = EnumPayment.Termine;
+        break;
+      case 'attente':
+        pay = EnumPayment.Attente;
+        break;
+      case 'autre':
+        pay = EnumPayment.Autre;
+        break;
+      case 'manuel':
+        pay = EnumPayment.Manuel;
+        break;
+      case 'tous':
+        pay = EnumPayment.Tous;
+        break;
+    }
+
+    return pay;
+  }
+
   onOptionChange(field: string, event: any) {
     if (field === 'payment') {
-      this.filter.HasPaid = event.value === 'tous' ? null : (event.value === 'oui' ? true : false);
+      this.filter.Payment = this.getPayment(event);
     } else if (field === 'equipe') {
       this.filter.Team = event.value === 'tous' ? null : event.value;
     } else if (field === 'photo') {

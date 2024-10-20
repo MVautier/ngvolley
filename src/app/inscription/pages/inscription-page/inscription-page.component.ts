@@ -473,6 +473,7 @@ export class InscriptionPageComponent implements OnInit {
         Id: 0,
         IdPaiement: Number(this.paymentId),
         IdAdherent: adherent.IdAdherent,
+        Saison: adherent.Saison,
         Date: this.util.UtcDate(new Date()),
         CotisationC3L: toCLLL,
         Total: this.cart.total,

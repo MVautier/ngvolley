@@ -5,6 +5,7 @@ export class OrderFull {
   Id: number;
   IdPaiement: number;
   IdAdherent: number;
+  Saison: number;
   CotisationC3L: number;
   Date: Date;
   Total: number;
@@ -27,6 +28,7 @@ export class OrderFull {
       Id: order?.Id,
       IdPaiement: order?.IdPaiement,
       IdAdherent: order?.IdAdherent || adherent.IdAdherent,
+      Saison: order?.Saison || adherent.Saison,
       Date: order?.Date ? new Date(order?.Date) : order?.Date,
       CotisationC3L: order?.CotisationC3L,
       Total: order?.Total,

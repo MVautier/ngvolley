@@ -51,38 +51,33 @@ export class AdherentService {
     });
   }
 
-  getOrders(start: Date, end: Date, isHelloasso: boolean): Promise<OrderFull[]> {
+  getOrders(start: Date, end: Date, season: number, isHelloasso: boolean): Promise<OrderFull[]> {
     return new Promise((resolve, reject) => {
       const s = this.util.date2StringForFilter(start);
       const e = this.util.date2StringForFilter(end);
-      const season = this.obsSeason.value;
       this.getListe(false, true).then(liste => {
         let results: OrderFull[] = [];
         liste.forEach(a => {
           if (isHelloasso) {
-            if (a.Saison === season && (a.Payment === 'Terminé' || a.Payment === 'En attente')) {
+            if (a.Payment === 'Terminé' || a.Payment === 'En attente') {
               a.Orders.forEach(o => {
-                if (o.Date && this.util.date2StringForFilter(o.Date) >= s && this.util.date2StringForFilter(o.Date) <= e) {
+                if (s && e && o.Date && this.util.date2StringForFilter(o.Date) >= s && this.util.date2StringForFilter(o.Date) <= e) {
+                  results.push(new OrderFull(a, o));
+                } else if (season && o.Saison === season) {
                   results.push(new OrderFull(a, o));
                 }
               });
             }
-
-            // results = liste.filter(a => a.Saison === season 
-            //     && a.Orders.length 
-            //     && a.Orders.filter(o => o.Date !== undefined && o.Date !== null).length 
-            //     // && this.util.date2StringForFilter(a.Order.Date) >= s 
-            //     // && this.util.date2StringForFilter(a.Order.Date) <= e
-            //     );
-            // results = results.filter(a => a.Orders.map(o => this.util.date2StringForFilter(o.Date) <= s).length);
-            // results = results.filter(a => a.Orders.map(o => this.util.date2StringForFilter(o.Date) >= e).length);
           } else {
-            results = liste.filter(a => a.Saison === season
-              //&& !a.Orders.filter(o => o.Id !== undefined && o.Id !== null).length
-              && a.Payment && a.Payment === 'Manuel'
-              && a.InscriptionDate
-              && this.util.date2StringForFilter(a.InscriptionDate) >= s
-              && this.util.date2StringForFilter(a.InscriptionDate) <= e).map(a => new OrderFull(a, null));
+            let tmp = liste.filter(a => a.Payment && a.Payment === 'Manuel');
+            if (s && e) {
+              tmp = tmp.filter(a => a.InscriptionDate
+                && this.util.date2StringForFilter(a.InscriptionDate) >= s
+                && this.util.date2StringForFilter(a.InscriptionDate));
+            } else if (season) {
+              tmp = tmp.filter(a => a.Saison === season);
+            }
+            results = tmp.map(a => new OrderFull(a, null));
           }
         });
         resolve(results);
