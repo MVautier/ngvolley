@@ -13,7 +13,7 @@ export class AdherentFilter {
   Team?: string;
   Saison?: number;
 
-  constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, payment: EnumPayment = EnumPayment.Termine) {
+  constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, payment: EnumPayment = EnumPayment.Tous) {
     const now = new Date();
     this.Payment = payment;
     this.HasPhoto = null;

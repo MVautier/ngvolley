@@ -35,7 +35,8 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     { columnDef: 'FirstName', header: 'Prénom', cell: (element: Adherent) => `${element.FirstName}` },
     { columnDef: 'Category', header: 'Catégorie', cell: (element: Adherent) => `${element.Category}` },
     { columnDef: 'Section', header: 'Section', cell: (element: Adherent) => `${element.Section}` },
-    { columnDef: 'Payment', header: 'Paiement', cell: (element: Adherent) => `${element.Payment}` }
+    { columnDef: 'Payment', header: 'Paiement', cell: (element: Adherent) => `${element.Payment}` },
+    { columnDef: 'PaymentComment', header: 'Info paiement', cell: (element: Adherent) => `${element.PaymentComment}` }
   ];
   displayedColumns: string[] = this.columns.map(c => c.columnDef);
   @ViewChild(MatSort) sort: MatSort;
@@ -71,7 +72,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     });
     this.saison = this.adherentService.obsSeason.value;
     this.filter = new AdherentFilter(this.saison);
-    this.filter.Payment = EnumPayment.Termine;
+    this.filter.Payment = EnumPayment.Tous;
     this.dataSource.loadData(this.filter);
     console.log('dataSource: ', this.dataSource);
   }

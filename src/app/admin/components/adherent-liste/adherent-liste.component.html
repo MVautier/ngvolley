@@ -84,7 +84,7 @@
             <ng-container matColumnDef="Payment">
                 <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Paiement</th></tr>
                 <tr>
-                    <td mat-cell *matCellDef="let row" style="width:15%" [ngSwitch]="row.Payment"> 
+                    <td mat-cell *matCellDef="let row" style="width:5%" [ngSwitch]="row.Payment"> 
                         <mat-icon *ngSwitchCase="'Terminé'" class="check">check_circle</mat-icon>
                         <mat-icon *ngSwitchCase="'En attente'" class="wait">pending</mat-icon>
                         <mat-icon *ngSwitchCase="null || undefined || ''" class="empty">remove</mat-icon>
@@ -92,6 +92,11 @@
                     </td>
                 </tr>
             </ng-container>
+
+            <ng-container matColumnDef="PaymentComment">
+              <tr><th mat-header-cell *matHeaderCellDef mat-sort-header>Info paiement</th></tr>
+              <tr><td mat-cell *matCellDef="let row" style="width:10%"> {{row.PaymentComment}} </td></tr>
+          </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showCard(row)"></tr>
