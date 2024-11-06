@@ -96,11 +96,17 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   onSearch() {
     if (this.search) {
       this.filter = new AdherentFilter(null, 'LastName', 'Contains', this.search, null);
+      this.paginator.pageIndex = 0
       this.loadData(this.filter);
       this.adherentAdminService.setFilter(this.filter);
     } else {
       this.onResetSearch();
     }
+  }
+
+  onFilter(filter: AdherentFilter) {
+    this.paginator.pageIndex = 0;
+    this.loadData(filter);
   }
 
   onResetSearch() {

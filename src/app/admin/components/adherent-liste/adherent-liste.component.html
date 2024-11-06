@@ -5,7 +5,7 @@
 
     <div *ngIf="!selectedAdherent" class="top">
         <div>
-            <app-adherent-filter (change)="filterChanged($event)" (apply)="loadData($event)"></app-adherent-filter>
+            <app-adherent-filter (change)="filterChanged($event)" (apply)="onFilter($event)"></app-adherent-filter>
         </div>
         <div class="search">
           <input type="text" [(ngModel)]="search" placeholder="Chercher par nom" (keyup)="onSearch()" />
