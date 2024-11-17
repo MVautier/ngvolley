@@ -48,7 +48,7 @@ export class AdherentDocComponent implements OnInit {
     private photoService: PhotoService,
     private modalService: ModalService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     if (window.matchMedia('(max-width: 1025px)').matches) {
       this.isMobile = true;
     }
@@ -60,13 +60,13 @@ export class AdherentDocComponent implements OnInit {
       this.adherentService.getCategories().then(result => {
         this.category = result.find(c => c.Code === this.adherent.Category)?.Libelle;
       });
-      this.formGroup.valueChanges.subscribe(val => {
+      this.formGroup.valueChanges.subscribe(async val => {
         this.setFormAdherent();
-        this.checkAdherent(this.adherent);
+        await this.checkAdherent(this.adherent);
         this.changed.emit(this.adherent);
       });
       this.editPhoto = !this.adherent.Photo;
-      this.checked = this.inscriptionService.checkAdherent(this.checked, this.adherent, 3, this.isMember);
+      this.checked = await this.inscriptionService.checkAdherent(this.checked, this.adherent, 3, this.isMember);
       console.log('checked in adherent-card: ', this.checked);
     }
   }
@@ -80,8 +80,8 @@ export class AdherentDocComponent implements OnInit {
     });
   }
 
-  checkAdherent(adherent: Adherent) {
-    this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 3, this.isMember);
+  async checkAdherent(adherent: Adherent) {
+    this.checked = await this.inscriptionService.checkAdherent(this.checked, adherent, 3, this.isMember);
     console.log('checked: ', this.checked);
   }
 

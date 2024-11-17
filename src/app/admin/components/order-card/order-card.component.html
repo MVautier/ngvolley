@@ -1,4 +1,4 @@
-<div class="order-row" [ngClass]="{'hasMember': data.Membres.length}" *ngIf="data && !data.IdParent">
+<div *ngIf="data && !data.IdParent" class="order-row" [ngClass]="{'hasMember': data.Membres?.length}">
     <div *ngIf="isHelloAsso" class="order-item id">{{data.IdPaiement}}</div>
     <div *ngIf="isHelloAsso" class="order-item date">{{(data.Date) | date: 'dd/MM/yyyy'}}</div>
 

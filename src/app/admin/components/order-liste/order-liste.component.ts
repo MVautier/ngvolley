@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Adherent } from '@app/core/models/adherent.model';
 import { OrderFull } from '@app/core/models/order-full.model';
+import { OrderSearch } from '@app/core/models/order-search.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
@@ -59,23 +60,19 @@ export class OrderListeComponent implements OnInit {
   }
 
   getData(mode: string) {
-    const start = mode === 'date' ? this.start : null;
-    const end = mode === 'date' ? this.end : null;
+    const start = mode === 'date' ? this.util.UtcDate(this.start) : null;
+    const end = mode === 'date' ? this.util.UtcDate(this.end) : null;
     const season = mode === 'season' ? this.saison : null;
-    this.adherentService.getOrders(start, end, season, true).then(results => {
-      this.all_data = results;
-      this.data = this.sortData(results, true);
-      console.log('success orders: ', this.data);
-      this.setTotaux();
-    }).catch(err => {
-      console.log('error getting orders: ', err);
-    });
-    this.adherentService.getOrders(start, end, season, false).then(results => {
-      this.all_data_manual = results;
-      this.data_manual = this.sortData(results, false);
-      console.log('success manual: ', this.data_manual);
-    }).catch(err => {
-      console.log('error getting manual: ', err);
+    const search: OrderSearch = {
+      start: start,
+      end: end,
+      season: season
+    };
+    this.adherentService.getOrders(search).then(orders => {
+      this.all_data = orders.filter(o => o.PaymentMode === 'Helloasso');
+      this.data = orders.filter(o => o.PaymentMode === 'Helloasso');
+      this.all_data_manual = orders.filter(o => o.PaymentMode === 'Manuel');
+      this.data_manual = orders.filter(o => o.PaymentMode === 'Manuel');
     });
   }
 
@@ -91,19 +88,10 @@ export class OrderListeComponent implements OnInit {
       this.data = this.all_data.filter(a => a.LastName.match(regex));
       this.data_manual = this.all_data_manual.filter(a => a.LastName.match(regex));
     } else {
-      this.data = this.sortData(this.all_data, true);
-      this.data_manual = this.sortData(this.all_data_manual, false);
+      this.data = this.all_data.map(o => o);
+      this.data_manual = this.all_data_manual.map(o => o);
     }
     this.setTotaux();
-  }
-
-  sortData(data: OrderFull[], isHelloAsso: boolean): OrderFull[] {
-    if (isHelloAsso) {
-      return data.sort((a: OrderFull, b: OrderFull) => (a.Date > b.Date) ? 1 : ((b.Date > a.Date) ? -1 : 0));
-    } else {
-      return data.sort((a: OrderFull, b: OrderFull) => (a.InscriptionDate > b.InscriptionDate) ? 1 : ((b.InscriptionDate > a.InscriptionDate) ? -1 : 0));
-    }
-
   }
 
   export(type: string) {

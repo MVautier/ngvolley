@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   adherents: Adherent[] = [];
   pieChartOptions: any;
   geoData: any[] = [];
-  typeData: any[] = [];
+  categoryData: any[] = [];
   below = LegendPosition.Below;
   chartColor = { fill: '#2b2b2b' };
   constructor(
@@ -29,26 +29,26 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('dashboard init');
+    this.initStats()
+  }
 
-    this.adherentService.obsAdherents.subscribe(data => {
-      this.adherents = data;
-      if (data && data.length) {
-        console.log('adherents: ', this.adherents);
-        const total = this.adherents.length;
-        this.geoData = [
-          { name: "Colomiers", value: this.adherents.filter(a => a.PostalCode === environment.postalcode).length },
-          { name: "Externe", value: this.adherents.filter(a => a.PostalCode !== environment.postalcode).length }
-        ];
-        this.typeData = [
-          { name: "Compétition", value: this.adherents.filter(a => a.Category === 'C').length },
-          { name: "Loisir", value: this.adherents.filter(a => a.Category === 'L').length },
-          { name: "Enfants", value: this.adherents.filter(a => a.Category === 'E').length },
-        ];
+  initStats() {
+    this.adherentService.getStats().then(stats => {
+      if (stats) {
+        this.geoData = stats.filter(s => s.type === 'geo').map(s => {
+          return {
+            name: s.label,
+            value: s.value
+          };
+        });
+        this.categoryData = stats.filter(s => s.type === 'category').map(s => {
+          return {
+            name: s.label,
+            value: s.value
+          };
+        });
       }
     });
-    if (!this.adherentService.obsAdherents.value?.length) {
-      this.adherentService.getListe(false, true);
-    }
   }
 
   formatLabel() {

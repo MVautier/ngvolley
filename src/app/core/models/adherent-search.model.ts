@@ -1,4 +1,5 @@
 export class AdherentSearch {
-    Name: string;
-    PostalCode: string;
+  nom: string;
+  prenom: string;
+  birthdayDate: Date;
 }

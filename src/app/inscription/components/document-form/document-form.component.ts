@@ -20,8 +20,8 @@ export class DocumentFormComponent implements OnInit {
     private inscriptionService: InscriptionService,
     private pdf: PdfMakerService) { }
 
-  ngOnInit(): void {
-    this.setValid();
+  async ngOnInit() {
+    await this.setValid();
   }
 
   onSavePdf(data: PdfInfo, id: string) {
@@ -39,24 +39,24 @@ export class DocumentFormComponent implements OnInit {
     }
   }
 
-  onAdherentChange(adherent: Adherent) {
+  async onAdherentChange(adherent: Adherent) {
     this.adherent = adherent;
-    this.setValid();
+    await this.setValid();
   }
 
-  onMemberChange(member: Adherent) {
+  async onMemberChange(member: Adherent) {
     const index = this.adherent.Membres.findIndex(m => m.Uid === member.Uid);
     if (index >= 0) {
       this.adherent.Membres[index] = member;
     }
-    this.setValid();
+    await this.setValid();
   }
 
-  setValid() {
-    let valid = this.checkValid(this.adherent);
+  async setValid() {
+    let valid = await this.checkValid(this.adherent);
     if (valid && this.adherent.Membres.length) {
       for (let i = 0; i < this.adherent.Membres.length; i++) {
-        valid = this.checkValid(this.adherent.Membres[i]);
+        valid = await this.checkValid(this.adherent.Membres[i]);
         if (!valid) {
           break;
         }
@@ -71,8 +71,8 @@ export class DocumentFormComponent implements OnInit {
     this.setValid();
   }
 
-  checkValid(adh: Adherent): boolean {
-    const checked = this.inscriptionService.checkAdherent(null, this.adherent, 3);
+  async checkValid(adh: Adherent): Promise<boolean> {
+    const checked = await this.inscriptionService.checkAdherent(null, this.adherent, 3);
     return checked.valid && !this.inscriptionService.isNull(adh.Photo);
   }
 

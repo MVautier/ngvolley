@@ -9,6 +9,9 @@
     align-items: flex-start;
     flex-direction: row;
     line-height: 60px;
+    &.hidden {
+      display: none;
+    }
     input {
       border-radius: 5px;
       border-width: 1px;

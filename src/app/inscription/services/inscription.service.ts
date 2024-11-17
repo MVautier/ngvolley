@@ -8,6 +8,7 @@ import { CheckAdherent } from '../models/check-adherent.model';
 import { v4 as uuidv4 } from 'uuid';
 import { CartItem } from '../models/cart-item.model';
 import { Cart } from '../models/cart.model';
+import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 
 @Injectable()
 export class InscriptionService {
@@ -54,12 +55,10 @@ export class InscriptionService {
   ];
 
 
-  constructor(
-    private modalService: ModalService,
-    private adherentService: AdherentService) {
-    this.adherentService.getListe(false, false).then(list => {
-      this.adherents = list;
-    });
+  constructor(private adherentService: AdherentService) {
+    // this.adherentService.getListe(false, false).then(list => {
+    //   this.adherents = list;
+    // });
   }
 
   setManualFill(value: boolean) {
@@ -78,22 +77,37 @@ export class InscriptionService {
     this.obsAdherent.next(adherent);
   }
 
-  getExistingAdherent(adherent: Adherent): Adherent {
-    if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
-      return this.adherents.find(a => a.BirthdayDate && this.normalize(a.FirstName) === this.normalize(adherent.FirstName)
-        && this.normalize(a.LastName) === this.normalize(adherent.LastName)
-        && this.compareDate(a.BirthdayDate, adherent.BirthdayDate) === 0);
-    }
-    return null;
+  getExistingAdherent(adherent: Adherent): Promise<Adherent> {
+    return new Promise((resolve, reject) => {
+      if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
+        this.adherentService.searchAdherent(adherent.LastName, adherent.FirstName, adherent.BirthdayDate).then(result => {
+          resolve(result);
+        }).catch(err => reject(err));
+      } else {
+        resolve(null);
+      }
+    });
+    // if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
+    //   return this.adherents.find(a => a.BirthdayDate && this.normalize(a.FirstName) === this.normalize(adherent.FirstName)
+    //     && this.normalize(a.LastName) === this.normalize(adherent.LastName)
+    //     && this.compareDate(a.BirthdayDate, adherent.BirthdayDate) === 0);
+    // }
+    // return null;
   }
 
-  findAdo(nom: string, prenom: string, birthday: Date): Adherent {
-    if (nom && prenom && birthday) {
-      return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(prenom)
-        && this.normalize(a.LastName) === this.normalize(nom)
-        && this.compareDate(a.BirthdayDate, birthday) === 0);
-    }
-    return null;
+  findAdo(nom: string, prenom: string, birthday: Date): Promise<Adherent> {
+    return new Promise((resolve, reject) => {
+      if (nom && prenom && birthday) {
+        this.adherentService.searchAdherent(nom, prenom, birthday).then(adherent => {
+          resolve(adherent);
+        }).catch(err => reject(err));
+        // return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(prenom)
+        //   && this.normalize(a.LastName) === this.normalize(nom)
+        //   && this.compareDate(a.BirthdayDate, birthday) === 0);
+      } else {
+        resolve(null);
+      }
+    });
   }
 
   getInputError(formGroup: FormGroup, field: string) {
@@ -134,6 +148,8 @@ export class InscriptionService {
 
   compareDate(d1: Date, d2: Date): number {
     if (d1 && d2) {
+      d1 = new Date(d1);
+      d2 = new Date(d2);
       const _d1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
       const _d2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
       return _d1.getTime() === _d2.getTime() ? 0 : (_d1.getTime() > _d2.getTime() ? 1 : -1);
@@ -154,7 +170,7 @@ export class InscriptionService {
     //}
   }
 
-  checkAdherent(check: CheckAdherent, adherent: Adherent, step: number, isMember: boolean = false): CheckAdherent {
+  async checkAdherent(check: CheckAdherent, adherent: Adherent, step: number, isMember: boolean = false): Promise<CheckAdherent> {
     if (!check) {
       check = new CheckAdherent();
     }
@@ -162,7 +178,7 @@ export class InscriptionService {
     if (!isMember) {
       // Recherche de l'adhérent dans les données
       if (!check.found) {
-        check.found = this.getExistingAdherent(adherent);
+        check.found = await this.getExistingAdherent(adherent);
         console.log('found: ', check.found);
         if (check.found) {
           if (!adherent.IdAdherent) {

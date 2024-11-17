@@ -181,7 +181,7 @@ export class InscriptionPageComponent implements OnInit {
   //     this.inscriptionService.obsAddMember.next(true);
   // }
 
-  onStep1Validate(info: StartInscription) {
+  async onStep1Validate(info: StartInscription) {
     if (info.found) {
       if (info.found.Saison === this.saison) {
         this.showPopupError('Impossible de continuer', 'Vous êtes déjà inscrit(e) pour cette saison.');
@@ -194,7 +194,7 @@ export class InscriptionPageComponent implements OnInit {
     } else {
       this.adherent = new Adherent(info.found ?? null, info.local ? environment.postalcode : null, null, this.saison);
     }
-    const checked = this.inscriptionService.checkAdherent(null, this.adherent, 2);
+    const checked = await this.inscriptionService.checkAdherent(null, this.adherent, 2);
     if (checked?.found) {
       this.adherent.Histo = checked.found.Histo;
       this.adherent.Orders = checked.found.Orders;
@@ -237,8 +237,8 @@ export class InscriptionPageComponent implements OnInit {
     this.step--;
   }
 
-  onStep2Validate(adherent: Adherent) {
-    const found = this.inscriptionService.getExistingAdherent(adherent);
+  async onStep2Validate(adherent: Adherent) {
+    const found = await this.inscriptionService.getExistingAdherent(adherent);
     if (found) {
       if (found.Saison === this.saison) {
         this.showPopupError('Impossible de continuer', 'Vous êtes déjà inscrit(e) pour cette saison.');
@@ -303,8 +303,8 @@ export class InscriptionPageComponent implements OnInit {
             this.onAddMember();
           } else {
             if (this.adherent.Membres?.length) {
-              this.adherent.Membres.forEach(m => {
-                const found = this.inscriptionService.getExistingAdherent(m);
+              this.adherent.Membres.forEach(async m => {
+                const found = await this.inscriptionService.getExistingAdherent(m);
                 if (found) {
                   if (found.Saison === this.saison) {
                     error = true;

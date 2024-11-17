@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Adherent } from "@app/core/models/adherent.model";
 import { HttpDataService } from "@app/core/services/http-data.service";
 import { environment } from "@env/environment";
-import { BehaviorSubject, Observable, map } from "rxjs";
+import { BehaviorSubject, Observable, firstValueFrom, map } from "rxjs";
 import { Category } from "../models/category.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { UtilService } from "./util.service";
@@ -10,6 +10,9 @@ import { PagedList } from "../models/paged-list.model";
 import { AdherentFilter } from "../models/adherent-filter.model";
 import { Order } from "../models/order.model";
 import { OrderFull } from "../models/order-full.model";
+import { AdherentSearch } from "../models/adherent-search.model";
+import { OrderSearch } from "../models/order-search.model";
+import { AdherentStat } from "@app/admin/models/adherent-stat.model";
 
 @Injectable()
 export class AdherentService {
@@ -20,6 +23,7 @@ export class AdherentService {
 
   constructor(
     private util: UtilService,
+    private httpClient: HttpClient,
     private http: HttpDataService<any>) {
     const now = new Date();
     const y = now.getFullYear();
@@ -28,63 +32,12 @@ export class AdherentService {
 
   }
 
-  getListe(force: boolean = false, admin: boolean = false): Promise<Adherent[]> {
-    return new Promise((resolve, reject) => {
-      try {
-        if (!force && this.obsAdherents.value && this.obsAdherents.value.length) {
-          resolve(this.obsAdherents.value);
-        } else {
-          this.http.get(environment.apiUrl + 'Adherent').then((datas: Adherent[]) => {
-            const adherents: Adherent[] = [];
-            datas.forEach(data => {
-              adherents.push(Adherent.fromJson(data, admin));
-            });
-            this.obsAdherents.next(adherents);
-            resolve(adherents);
-          }).catch(err => {
-            reject(err);
-          });
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
+  getStats(): Promise<AdherentStat[]> {
+    return firstValueFrom(this.httpClient.get<AdherentStat[]>(environment.apiUrl + 'Adherent/stats'));
   }
 
-  getOrders(start: Date, end: Date, season: number, isHelloasso: boolean): Promise<OrderFull[]> {
-    return new Promise((resolve, reject) => {
-      const s = this.util.date2StringForFilter(start);
-      const e = this.util.date2StringForFilter(end);
-      this.getListe(false, true).then(liste => {
-        let results: OrderFull[] = [];
-        liste.forEach(a => {
-          if (isHelloasso) {
-            if (a.Payment === 'Terminé' || a.Payment === 'En attente') {
-              a.Orders.forEach(o => {
-                if (s && e && o.Date && this.util.date2StringForFilter(o.Date) >= s && this.util.date2StringForFilter(o.Date) <= e) {
-                  results.push(new OrderFull(a, o));
-                } else if (season && o.Saison === season) {
-                  results.push(new OrderFull(a, o));
-                }
-              });
-            }
-          } else {
-            let tmp = liste.filter(a => a.Payment && a.Payment === 'Manuel');
-            if (s && e) {
-              tmp = tmp.filter(a => a.InscriptionDate
-                && this.util.date2StringForFilter(a.InscriptionDate) >= s
-                && this.util.date2StringForFilter(a.InscriptionDate));
-            } else if (season) {
-              tmp = tmp.filter(a => a.Saison === season);
-            }
-            results = tmp.map(a => new OrderFull(a, null));
-          }
-        });
-        resolve(results);
-      }).catch(err => {
-        reject(err);
-      });
-    });
+  getOrders(search: OrderSearch): Promise<OrderFull[]> {
+    return firstValueFrom(this.httpClient.post<OrderFull[]>(environment.apiUrl + 'Adherent/orders', search));
   }
 
   findAdherents(
@@ -98,6 +51,21 @@ export class AdherentService {
       .pipe(
         map(res => res)
       );
+  }
+
+  searchAdherent(nom: string, prenom: string, birthdayDate: Date = null): Promise<Adherent> {
+    return new Promise((resolve, reject) => {
+      const search: AdherentSearch = {
+        nom: nom,
+        prenom: prenom,
+        birthdayDate: this.util.UtcDate(new Date(birthdayDate))
+      };
+      this.http.post<AdherentSearch>(environment.apiUrl + 'Adherent/search', search).then((result: Adherent) => {
+        resolve(result);
+      }).catch(err => {
+        reject(err);
+      });
+    });
   }
 
   getCategories(): Promise<Category[]> {

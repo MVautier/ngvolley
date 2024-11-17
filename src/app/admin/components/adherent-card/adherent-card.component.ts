@@ -1,13 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
 import { Adherent } from '@app/core/models/adherent.model';
 import { FileService } from '@app/core/services/file.service';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { UtilService } from '@app/core/services/util.service';
-import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
-import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Subject, Subscription, first, takeUntil } from 'rxjs';
 import { GenericModalComponent } from '../generic-modal/generic-modal.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -57,7 +54,6 @@ export class AdherentCardComponent implements OnInit, OnChanges {
     private bsModal: BsModalService,
     private datePipe: DatePipe,
     private loader: LoaderService,
-    private inscriptionService: InscriptionService,
     private pdf: PdfMakerService,
     private fileService: FileService) { }
 
@@ -239,7 +235,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
             Adherent.addDoc(this.adherent, 'adhesion', filename, blob);
             console.log('adherent with docs : ', this.adherent);
             this.pdf.sendDocuments(this.adherent.Uid, this.adherent.Documents).then(() => {
-              this.adherentService.getListe(true, true);
+              console.log('success send documents');
             });
           }).catch(err => {
             console.log('error generating adherent form: ', err);
@@ -261,11 +257,8 @@ export class AdherentCardComponent implements OnInit, OnChanges {
     });
 
     this.modalRef.content.cancel.pipe(first()).subscribe((result: ModalResult) => {
-      // this.returnData.next(result);
       this.modalRef.hide();
-      // this.returnData.next(null);
     });
-    //this.modalShown.next(config);
   }
 
   onEditMember() {
@@ -275,5 +268,4 @@ export class AdherentCardComponent implements OnInit, OnChanges {
   returnToListe() {
     this.hide.emit();
   }
-
 }

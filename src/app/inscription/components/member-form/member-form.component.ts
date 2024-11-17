@@ -41,22 +41,22 @@ export class MemberFormComponent implements OnInit {
   ) { }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.all_sections = this.inscriptionService.sections;
     this.phoneInputMask = this.inscriptionService.phoneInputMask;
     this.choosenSection = this.adherent.Category !== null;
     this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
-    this.adherentService.getCategories().then(liste => {
+    this.adherentService.getCategories().then(async liste => {
       this.categories = liste.filter(c => !c.Blocked);
       this.initForm();
-      this.checkAdherent(this.adherent);
+      await this.checkAdherent(this.adherent);
       this.formGroup.markAllAsTouched();
-      this.formGroup.valueChanges.subscribe(val => {
+      this.formGroup.valueChanges.subscribe(async val => {
         const adh = this.getFormAdherent(val);
         console.log('member changed in member form: ', adh.Category, adh.Uid);
         this.choosenSection = adh.Category !== null;
         this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
-        this.checkAdherent(adh);
+        await this.checkAdherent(adh);
         this.inscriptionService.checkControl(this.formGroup, 'birthdate');
         this.change.emit(adh);
       });
@@ -82,8 +82,8 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  checkAdherent(adherent: Adherent) {
-    this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 2, true);
+  async checkAdherent(adherent: Adherent) {
+    this.checked = await this.inscriptionService.checkAdherent(this.checked, adherent, 2, true);
   }
 
   getInputError(field: string) {

@@ -50,14 +50,14 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
     @Inject(MAT_DATE_LOCALE) private _locale: string,
     private formBuilder: FormBuilder) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.teams = this.adherentService.obsTeams.value;
     this.all_sections = this.inscriptionService.sections;
     this.phoneInputMask = this.inscriptionService.phoneInputMask;
     this.cpInputMask = this.inscriptionService.cpInputMask;
     if (this.adherent) {
       this.titles.push(this.adherent.FirstName || this.adherent.LastName ? this.adherent.FirstName + ' ' + this.adherent.LastName : 'Adhérent');
-      this.checkAdherent(this.adherent);
+      await this.checkAdherent(this.adherent);
       this.members = [].concat(this.adherent.Membres);
       this.choosenSection = this.adherent.Category !== null;
       this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
@@ -74,12 +74,12 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
         this.formGroup.markAllAsTouched();
         //this.change.emit(this.formGroup);
         console.log('categories: ', this.categories);
-        this.formGroup.valueChanges.subscribe(val => {
+        this.formGroup.valueChanges.subscribe(async val => {
           const adh = this.getFormAdherent();
           this.adherent.Sections = adh.Sections;
           this.choosenSection = adh.Category !== null;
           this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
-          this.checkAdherent(adh);
+          await this.checkAdherent(adh);
           this.inscriptionService.checkControl(this.formGroup, 'birthdate');
           this.titles[0] = adh.FirstName || adh.LastName ? adh.FirstName + ' ' + adh.LastName : 'Adhérent';
           this.change.emit(adh);
@@ -133,8 +133,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
     this.formGroup.get(field).setValue(now);
   }
 
-  checkAdherent(adherent: Adherent) {
-    this.checked = this.inscriptionService.checkAdherent(this.checked, adherent, 2);
+  async checkAdherent(adherent: Adherent) {
+    this.checked = await this.inscriptionService.checkAdherent(this.checked, adherent, 2);
     console.log('checked: ', this.checked);
   }
 

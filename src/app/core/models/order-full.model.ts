@@ -22,6 +22,7 @@ export class OrderFull {
   BirthdayDate: Date;
   Payment: string;
   InscriptionDate: Date;
+  PaymentMode: string;
 
   constructor(adherent: Adherent, order: Order) {
     return {
@@ -43,7 +44,8 @@ export class OrderFull {
       FirstName: adherent.FirstName,
       BirthdayDate: adherent.BirthdayDate,
       Payment: adherent.PaymentComment,
-      InscriptionDate: adherent.InscriptionDate
+      InscriptionDate: adherent.InscriptionDate,
+      PaymentMode: order ? 'Helloasso' : 'Manuel'
     };
   }
 }

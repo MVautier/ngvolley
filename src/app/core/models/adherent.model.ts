@@ -93,6 +93,7 @@ export class Adherent {
     this.Saison = base ? base.Saison : season;
 
     this.Payment = base ? base.Payment : null;
+    this.PaymentComment = base ? base.PaymentComment : null;
     this.CertificateDate = base ? base.CertificateDate : null;
     this.CertificateFile = base ? base.CertificateFile : null;
     this.HealthFile = base ? base.HealthFile : null;
@@ -105,7 +106,7 @@ export class Adherent {
   }
 
   public static getAge(birthdate: Date): number {
-    return birthdate ? new Date().getFullYear() - birthdate.getFullYear() : null;
+    return birthdate ? new Date().getFullYear() - new Date(birthdate).getFullYear() : null;
   }
 
   public static addDoc(adherent: Adherent, type: string, filename: string, blob: Blob) {

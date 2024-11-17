@@ -51,9 +51,9 @@ export class StartFormComponent implements OnInit {
       this.inscriptionFilterIds = this.inscriptionFilter && this.inscriptionFilter !== '*' ? this.inscriptionFilter.split(',').map((x) => parseInt(x)) : [];
       console.log('filter ids: ', this.inscriptionFilterIds);
       if (this.reinscription && environment.debug) {
-        this.start.nom = 'ancel';
-        this.start.prenom = 'françois';
-        this.birthday = new Date(1972, 4, 28);
+        this.start.nom = 'lacroix';
+        this.start.prenom = 'stephanie';
+        this.birthday = new Date(1974, 5, 4);
       }
       this.showForm = !this.reinscription;
       const y = this.adherentService.obsSeason.value;
@@ -66,21 +66,23 @@ export class StartFormComponent implements OnInit {
   onValidateAdo() {
     this.notFoundError = false;
     if (this.start.nom && this.start.prenom && this.birthday) {
-      this.adofound = this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.birthday);
-      if (this.adofound && this.inscriptionFilterIds.length) {
-        if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {
-          this.adofound = null;
+      this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.birthday).then(result => {
+        this.adofound = result;
+        if (this.adofound && this.inscriptionFilterIds.length) {
+          if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {
+            this.adofound = null;
+          }
         }
-      }
-      if (this.adofound) {
-        this.start.nom = this.adofound.LastName;
-        this.start.prenom = this.adofound.FirstName;
-        this.start.found = this.adofound;
-        this.showForm = true;
-      } else {
-        this.notFoundError = true;
-        this.showForm = false;
-      }
+        if (this.adofound) {
+          this.start.nom = this.adofound.LastName;
+          this.start.prenom = this.adofound.FirstName;
+          this.start.found = this.adofound;
+          this.showForm = true;
+        } else {
+          this.notFoundError = true;
+          this.showForm = false;
+        }
+      });
     } else {
       this.adofound = undefined;
       this.notFoundError = true;

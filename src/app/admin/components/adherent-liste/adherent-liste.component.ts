@@ -84,7 +84,10 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     // on sort or paginate events, load a new page
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
-        tap(() => this.loadData(this.filter))
+        tap(() => {
+          console.log('page: ', this.paginator.pageIndex);
+          this.loadData(this.filter);
+        })
       )
       .subscribe();
   }
