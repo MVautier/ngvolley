@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AdherentAdminService } from '@app/admin/services/adherent-admin.service';
@@ -52,6 +53,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private util: UtilService,
     private adherentAdminService: AdherentAdminService,
+    private snackBar: MatSnackBar,
     private adherentService: AdherentService) {
     this.sub_router = this.router.events
       .pipe(
@@ -130,7 +132,11 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   exportDocs(type: string = 'adhesion') {
     const filter = this.filter || new AdherentFilter(this.saison);
     this.adherentService.getDocuments(filter, type).then(blob => {
-      this.fileService.download(blob, type + 's.zip');
+      if (blob) {
+        this.fileService.download(blob, type + 's.zip');
+      }
+    }).catch(err => {
+      this.snackBar.open('Aucun document trouvé', null, { duration: 5000 });
     });
   }
 

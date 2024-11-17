@@ -37,52 +37,53 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { getFrenchPaginatorIntl } from './custom/french-paginator-intl';
 
 const materialModules = [
-    MatButtonModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatGridListModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatNativeDateModule
-    //CdkTreeModule,
-    //MatTooltipModule
-    //MatAutocompleteModule,
-    //MatCheckboxModule,
-    //MatChipsModule,
-    //MatDividerModule,
-    //MatProgressSpinnerModule,
-    //MatRippleModule,
-    //MatSnackBarModule,
-    //MatTabsModule,
-    //MatFormFieldModule,
-    //MatButtonToggleModule,
-    //MatTreeModule,
-    //OverlayModule,
-    //PortalModule,
-    //MatBadgeModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatCardModule,
+  MatExpansionModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatToolbarModule,
+  MatGridListModule,
+  MatRadioModule,
+  MatDatepickerModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatNativeDateModule,
+  MatSnackBarModule
+  //CdkTreeModule,
+  //MatTooltipModule
+  //MatAutocompleteModule,
+  //MatCheckboxModule,
+  //MatChipsModule,
+  //MatDividerModule,
+  //MatProgressSpinnerModule,
+  //MatRippleModule,
+  //MatSnackBarModule,
+  //MatTabsModule,
+  //MatFormFieldModule,
+  //MatButtonToggleModule,
+  //MatTreeModule,
+  //OverlayModule,
+  //PortalModule,
+  //MatBadgeModule,
 ];
 @NgModule({
-    imports: [
-        CommonModule,
-        ...materialModules
-    ],
-    exports: [
-        ...materialModules
-    ],
-    providers: [{ provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() }]
+  imports: [
+    CommonModule,
+    ...materialModules
+  ],
+  exports: [
+    ...materialModules
+  ],
+  providers: [{ provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() }]
 })
 export class MaterialThemeModule { }

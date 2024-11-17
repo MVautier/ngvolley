@@ -35,7 +35,7 @@ registerLocaleData(localeFr);
   ],
   providers: [
     SsrService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true }
   ],
   exports: [LayoutModule],
   bootstrap: [AppComponent]
