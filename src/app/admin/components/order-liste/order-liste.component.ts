@@ -73,6 +73,7 @@ export class OrderListeComponent implements OnInit {
       this.data = orders.filter(o => o.PaymentMode === 'Helloasso');
       this.all_data_manual = orders.filter(o => o.PaymentMode === 'Manuel');
       this.data_manual = orders.filter(o => o.PaymentMode === 'Manuel');
+      this.setTotaux();
     });
   }
 
