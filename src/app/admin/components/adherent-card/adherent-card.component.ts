@@ -142,12 +142,12 @@ export class AdherentCardComponent implements OnInit, OnChanges {
 
   upload(doc: AdherentDoc) {
     this.selectedType = doc.type;
-    //this.fileInput.nativeElement.click();
     if (doc.blob) {
-      const filename = `${this.selectedType}.pdf`;
+      //const filename = `${this.selectedType}.pdf`;
+      const filename = doc.filename;
       const id = this.adherent.Uid;
       if (this.selectedType === 'autorisation') {
-        this.adherent.Authorization = filename;
+        this.adherent.Authorization = doc.filename;
         this.change.emit(this.adherent);
       }
       const formData = this.fileService.getFormData(id, filename, doc.blob);

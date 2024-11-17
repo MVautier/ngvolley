@@ -8,12 +8,12 @@ import { UtilService } from '@app/core/services/util.service';
   styleUrls: ['./btn-action-doc.component.scss']
 })
 export class BtnActionDocComponent implements OnInit {
-    @Input() doc: AdherentDoc;
-    @Output() download: EventEmitter<AdherentDoc> = new EventEmitter<AdherentDoc>();
-    @Output() upload: EventEmitter<AdherentDoc> = new EventEmitter<AdherentDoc>();
-    @Output() generate: EventEmitter<void> = new EventEmitter<void>();
+  @Input() doc: AdherentDoc;
+  @Output() download: EventEmitter<AdherentDoc> = new EventEmitter<AdherentDoc>();
+  @Output() upload: EventEmitter<AdherentDoc> = new EventEmitter<AdherentDoc>();
+  @Output() generate: EventEmitter<void> = new EventEmitter<void>();
 
-    selectedFile: File | null = null;
+  selectedFile: File | null = null;
   constructor(private util: UtilService) { }
 
   ngOnInit(): void {
@@ -33,18 +33,20 @@ export class BtnActionDocComponent implements OnInit {
 
   handleFileInput(event: any) {
     if (this.doc.type) {
-        this.selectedFile = event.target?.files[0];
-        console.log('selected file: ', this.selectedFile);
-        if (this.selectedFile) {
-            this.util.readFile(this.selectedFile).then(blob => {
-                if (blob) {
-                    this.doc.blob = blob;
-                    this.doc.filename = `${this.doc.type}.pdf`
-                    this.upload.emit(this.doc);
-                } 
-            }); 
-        }
+      this.selectedFile = event.target?.files[0];
+      if (this.selectedFile) {
+        const filename = this.selectedFile.name;
+        const extension = this.selectedFile.name.substring(filename.lastIndexOf('.'));
+        const name = this.selectedFile.name.replace(extension, '');
+        this.util.readFile(this.selectedFile).then(blob => {
+          if (blob) {
+            this.doc.blob = blob;
+            this.doc.filename = this.doc.type + extension;
+            this.upload.emit(this.doc);
+          }
+        });
+      }
     }
-}
+  }
 
 }
