@@ -142,6 +142,10 @@ export class AdherentService {
     });
   }
 
+  setDocs(): Promise<boolean> {
+    return firstValueFrom(this.httpClient.get<boolean>(`${environment.apiUrl}Adherent/documentBySeason`));
+  }
+
   getEmails(filter: AdherentFilter): Promise<any> {
     const url = `${environment.apiUrl}Adherent/export/email`;
     return new Promise((resolve, reject) => {

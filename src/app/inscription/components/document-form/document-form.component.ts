@@ -28,7 +28,7 @@ export class DocumentFormComponent implements OnInit {
     if (data && data.element && data.name) {
       console.log('data received from modal: ', data);
       const name = 'test.pdf';
-      this.pdf.buildAndSendPdf(id, data.name, data.element).then(result => {
+      this.pdf.buildAndSendPdf(id + '/' + this.adherent.Saison.toString(), data.name, data.element).then(result => {
         console.log('pdf was built and sent to server: ', result);
       })
         .catch(err => {

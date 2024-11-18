@@ -86,7 +86,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
         this.adherent.Documents.forEach(d => {
           this.setDoc(d);
           if (d.type === 'photo' || d.type === 'signature') {
-            this.adherentAdminService.downloadFile(this.adherent.Uid, d.filename).then(blob => {
+            this.adherentAdminService.downloadFile(this.adherent.Uid + '/' + this.adherent.Saison.toString(), d.filename).then(blob => {
               this.util.blobToDataURL(blob, (result) => {
                 if (result) {
                   if (d.type === 'photo') {
@@ -133,7 +133,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
   }
 
   download(doc: AdherentDoc) {
-    this.adherentAdminService.downloadFile(this.adherent.Uid, doc.filename).then(blob => {
+    this.adherentAdminService.downloadFile(this.adherent.Uid + '/' + this.adherent.Saison.toString(), doc.filename).then(blob => {
       this.fileService.download(blob, doc.filename);
     }).catch(err => {
       console.error(err);
@@ -150,7 +150,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
         this.adherent.Authorization = doc.filename;
         this.change.emit(this.adherent);
       }
-      const formData = this.fileService.getFormData(id, filename, doc.blob);
+      const formData = this.fileService.getFormData(id + '/' + this.adherent.Saison.toString(), filename, doc.blob);
       this.fileService.sendDoc(formData).then(result => {
         this.updateDocuments(filename, this.selectedType);
         Adherent.addDoc(this.adherent, this.selectedType, filename, doc.blob);
@@ -170,7 +170,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
       console.log('adherent: ', this.adherent);
       const doc = this.adherent.Documents.find(d => d.type === 'adhesion');
       if (doc && doc.blob) {
-        this.pdf.sendDocuments(this.adherent.Uid, [doc]).then(result => {
+        this.pdf.sendDocuments(this.adherent.Uid + '/' + this.adherent.Saison.toString(), [doc]).then(result => {
           if (result) {
             doc.sent = true;
             this.setDoc(doc);
@@ -234,7 +234,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
           this.pdf.buildAdherentForm(this.adherent).then(blob => {
             Adherent.addDoc(this.adherent, 'adhesion', filename, blob);
             console.log('adherent with docs : ', this.adherent);
-            this.pdf.sendDocuments(this.adherent.Uid, this.adherent.Documents).then(() => {
+            this.pdf.sendDocuments(this.adherent.Uid + '/' + this.adherent.Saison.toString(), this.adherent.Documents).then(() => {
               console.log('success send documents');
             });
           }).catch(err => {

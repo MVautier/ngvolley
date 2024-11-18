@@ -17,21 +17,24 @@
           <mat-paginator [length]="adherentsCount" [pageSize]="10" [pageSizeOptions]="[10, 30, 50, 100, 200]"></mat-paginator>
         </div>
         <div class="actions">
-            <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">
-                <mat-icon>person_add</mat-icon>
-            </button>
-            <button type="button" mat-raised-button color="primary" matPrefix (click)="export()">
-                <mat-icon>download</mat-icon>Excel
-            </button>
-            <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">Documents</button>
-            <mat-menu class="sub-menu" #exportMenu="matMenu" yPosition="below">
-                <button mat-menu-item (click)="exportDocs('adhesion')">Adhésions</button>
-                <button mat-menu-item (click)="exportDocs('autorisation')">Autorisations parentales</button>
-                <button mat-menu-item (click)="exportDocs('attestation')">Attestations</button>
-                <button mat-menu-item (click)="exportDocs('certificat')">Certificats</button>
-                <button mat-menu-item (click)="exportDocs('photo')">Photos</button>
-                <button mat-menu-item (click)="exportEmails()">Emails</button>
-            </mat-menu>
+          <button type="button" mat-raised-button color="primary" matPrefix (click)="setDocs()">
+            <mat-icon>gear</mat-icon>
+          </button>
+          <button type="button" mat-raised-button color="primary" matPrefix (click)="manualFill()">
+              <mat-icon>person_add</mat-icon>
+          </button>
+          <button type="button" mat-raised-button color="primary" matPrefix (click)="export()">
+              <mat-icon>download</mat-icon>Excel
+          </button>
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">Documents</button>
+          <mat-menu class="sub-menu" #exportMenu="matMenu" yPosition="below">
+            <button mat-menu-item (click)="exportDocs('adhesion')">Adhésions</button>
+            <button mat-menu-item (click)="exportDocs('autorisation')">Autorisations parentales</button>
+            <button mat-menu-item (click)="exportDocs('attestation')">Attestations</button>
+            <button mat-menu-item (click)="exportDocs('certificat')">Certificats</button>
+            <button mat-menu-item (click)="exportDocs('photo')">Photos</button>
+            <button mat-menu-item (click)="exportEmails()">Emails</button>
+          </mat-menu>
         </div>
     </div>
 
