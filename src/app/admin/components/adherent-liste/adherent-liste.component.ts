@@ -94,13 +94,13 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  setDocs() {
-    this.adherentService.setDocs().then(result => {
-      if (result) {
-        console.log('success setDocs');
-      }
-    }).catch(err => console.log('error during setdocs: ', err));
-  }
+  // setDocs() {
+  //   this.adherentService.setDocs().then(result => {
+  //     if (result) {
+  //       console.log('success setDocs');
+  //     }
+  //   }).catch(err => console.log('error during setdocs: ', err));
+  // }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
