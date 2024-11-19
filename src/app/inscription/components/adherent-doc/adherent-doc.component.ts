@@ -251,7 +251,10 @@ export class AdherentDocComponent implements OnInit {
     if (file) {
       console.log('choosen file: ', file);
       this.util.readFile(file).then(blob => {
-        const filename = `certificat.pdf`;
+        const name = file.name;
+        const extension = file.name.substring(name.lastIndexOf('.'));
+        const filename = `certificat${extension}`;
+        console.log('certificat filename: ', filename);
         Adherent.addDoc(this.adherent, 'certificat', filename, blob);
         this.adherent.CertificateFile = filename;
         console.log('adherent changed: ', this.adherent);
