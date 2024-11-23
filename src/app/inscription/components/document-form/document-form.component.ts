@@ -73,7 +73,7 @@ export class DocumentFormComponent implements OnInit {
 
   async checkValid(adh: Adherent): Promise<boolean> {
     const checked = await this.inscriptionService.checkAdherent(null, this.adherent, 3);
-    return checked.valid && !this.inscriptionService.isNull(adh.Photo);
+    return checked.valid && !this.inscriptionService.isNull(adh.Photo) && (!this.isNull(adh.CertificateFile) || !this.isNull(adh.HealthFile));
   }
 
   onCancelDoc() {
@@ -83,6 +83,10 @@ export class DocumentFormComponent implements OnInit {
   onValidate() {
     // show payment modal
     this.validate.emit(this.adherent);
+  }
+
+  public isNull(value): boolean {
+    return value === null || value === undefined || value === '';
   }
 
 }

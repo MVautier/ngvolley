@@ -213,6 +213,7 @@ export class AdherentDocComponent implements OnInit {
   }
 
   showHealthForm() {
+    this.adherent.HealthFile = null;
     if (this.subModal) {
       this.subModal.unsubscribe();
     }
@@ -242,10 +243,12 @@ export class AdherentDocComponent implements OnInit {
           this.notifier.next();
           this.notifier.complete();
         }
+        this.changed.emit(this.adherent);
       });
   }
 
   onFileChange(event) {
+    this.adherent.CertificateFile = null;
     console.log('onFileChange: ', event.file);
     const file = <File>event.file?.files[0];
     if (file) {
