@@ -143,15 +143,15 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "colomiers-volley:build:production"
+              "buildTarget": "colomiers-volley:build:production"
             },
             "development": {
-              "browserTarget": "colomiers-volley:build:development",
-              "port": 4224
+              "port": 4224,
+              "buildTarget": "colomiers-volley:build:development"
             },
             "local": {
-              "browserTarget": "colomiers-volley:build:local",
-              "port": 4224
+              "port": 4224,
+              "buildTarget": "colomiers-volley:build:local"
             }
           },
           "defaultConfiguration": "local"
@@ -159,7 +159,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "colomiers-volley:build"
+            "buildTarget": "colomiers-volley:build"
           }
         },
         "test": {
@@ -220,7 +220,7 @@
           "defaultConfiguration": "production"
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "configurations": {
             "development": {
               "browserTarget": "colomiers-volley:build:development",
@@ -237,7 +237,7 @@
           "defaultConfiguration": "development"
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "builder": "@angular-devkit/build-angular:prerender",
           "options": {
             "routes": [
               "/"

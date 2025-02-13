@@ -1,11 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
-import { makeStateKey } from '@angular/platform-browser';
+import { Component, Inject, OnDestroy, OnInit, Optional, makeStateKey } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomError } from '@app/core/models/custom-error.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
 import { TransferStateService } from '@app/core/services/transfert-state.service';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../../../express.tokens';
 import { Response } from 'express';
 import { Subscription } from 'rxjs';
 import { SsrService } from '../../services/ssr.service';

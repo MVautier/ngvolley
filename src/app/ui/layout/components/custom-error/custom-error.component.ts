@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
-import { makeStateKey } from '@angular/platform-browser';
+import { Component, Inject, OnInit, Optional, makeStateKey } from '@angular/core';
+
 import { TransferStateService } from '@app/core/services/transfert-state.service';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../../../express.tokens';
 import { Response } from 'express';
 import { SsrService } from '../../services/ssr.service';
 
