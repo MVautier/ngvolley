@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "skipLibCheck": true,
-    "target": "es2015",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2018",
@@ -41,7 +41,8 @@
       "@sass": [
         "src/app/sass"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": true
