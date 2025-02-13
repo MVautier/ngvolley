@@ -11,7 +11,7 @@
   $label: mat-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
 
   $typography-config: map.merge(
-    mat.define-legacy-typography-configmat.define-legacy-typography-config(
+    mat.define-legacy-typography-config(
       $font-family: 'Roboto, "Helvetica Neue", sans-serif',
       $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
       $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
