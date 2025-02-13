@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,28 +18,22 @@ import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 
 registerLocaleData(localeFr);
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'colomiers-volley' }),
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FontAwesomeModule,
-    CoreModule.forRoot(),
-    LayoutModule.forRoot(),
-    //NgxMaskModule.forRoot(),
-    SwiperModule
-  ],
-  providers: [
-    SsrService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true }
-  ],
-  exports: [LayoutModule],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent
+    ],
+    exports: [LayoutModule],
+    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'colomiers-volley' }),
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FontAwesomeModule,
+        CoreModule.forRoot(),
+        LayoutModule.forRoot(),
+        //NgxMaskModule.forRoot(),
+        SwiperModule], providers: [
+        SsrService,
+        { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas, far);
