@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { SwiperModule } from 'swiper/angular';
+//import { SwiperModule } from 'swiper/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +13,7 @@ import { CoreModule } from './core/core.module';
 import { LayoutModule } from './ui/layout/layout.module';
 import { SsrService } from './ui/layout/services/ssr.service';
 import { InterceptorClientSide } from './core/interceptors/interceptor-client-side';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
+//import { NgxMaskModule, IConfig } from 'ngx-mask';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 
@@ -30,7 +30,7 @@ registerLocaleData(localeFr);
     FontAwesomeModule,
     CoreModule.forRoot(),
     LayoutModule.forRoot(),
-    NgxMaskModule.forRoot(),
+    //NgxMaskModule.forRoot(),
     SwiperModule
   ],
   providers: [

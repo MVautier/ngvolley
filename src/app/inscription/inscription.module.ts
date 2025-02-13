@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
-import { NgxMaskModule } from 'ngx-mask';
 import { MainFormComponent } from './components/main-form/main-form.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
 import { InscriptionService } from './services/inscription.service';
@@ -16,7 +15,6 @@ import { CartInfoComponent } from './components/cart-info/cart-info.component';
 import { LayoutModule } from '@app/ui/layout/layout.module';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { SignatureFormComponent } from './components/signature-form/signature-form.component';
-import { NgxDropzoneModule } from 'ngx-dropzone';
 import { PhotoTakerComponent } from './components/photo-taker/photo-taker.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { WebcamModule } from 'ngx-webcam';
@@ -70,10 +68,10 @@ import { PopupErrorComponent } from './components/popup-error/popup-error.compon
     MaterialThemeModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    NgxMaskModule,
+    //NgxMaskModule,
     InscriptionRoutingModule,
     MaterialFileInputModule,
-    NgxDropzoneModule,
+    //NgxDropzoneModule,
     ImageCropperModule,
     WebcamModule
   ],
