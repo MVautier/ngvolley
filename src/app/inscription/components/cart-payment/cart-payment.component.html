@@ -56,7 +56,7 @@
             <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
                 <mat-form-field class="first first-25">
                     <mat-label>Code postal</mat-label>
-                    <input matInput [mask]="cpInputMask" placeholder="Code postal" formControlName="postalcode">
+                    <input matInput mask="cpInputMask" placeholder="Code postal" formControlName="postalcode">
                     <mat-error
                         *ngIf="!formGroup.controls['postalcode'].valid && formGroup.controls['postalcode'].touched">
                         {{ getCpError('postalcode') }}

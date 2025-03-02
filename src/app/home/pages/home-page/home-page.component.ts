@@ -5,7 +5,6 @@ import { ThemeService } from '@app/core/services/theme.service';
 import { distinctUntilChanged, Observable, Subject, tap } from 'rxjs';
 import { MatGridList } from '@angular/material/grid-list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { SsrService } from '@app/ui/layout/services/ssr.service';
 
 
 @Component({
@@ -30,8 +29,8 @@ export class HomePageComponent implements OnInit {
   ];
 
   Breakpoints = Breakpoints;
-  currentBreakpoint:string = '';
-  
+  currentBreakpoint: string = '';
+
   readonly breakpoint$ = this.breakpointObserver
     .observe([Breakpoints.Large, Breakpoints.Medium, Breakpoints.Small, '(min-width: 500px)'])
     .pipe(
@@ -41,11 +40,10 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private slideService: SliderService, 
-    private ssrService: SsrService,
+    private slideService: SliderService,
     private themeService: ThemeService) {
 
-     }
+  }
 
   ngOnInit(): void {
     this.breakpoint$.subscribe((value) => {
@@ -53,22 +51,20 @@ export class HomePageComponent implements OnInit {
     }
     );
     this.isDarkTheme = this.themeService.isDarkTheme;
-    if (!this.ssrService.isServer()) {
-      this.initSlides();
-    }
+    this.initSlides();
   }
 
   private breakpointChanged() {
-    if(this.breakpointObserver.isMatched(Breakpoints.Large)) {
+    if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
       this.currentBreakpoint = Breakpoints.Large;
       this.cols = 3;
-    } else if(this.breakpointObserver.isMatched(Breakpoints.Medium)) {
+    } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
       this.currentBreakpoint = Breakpoints.Medium;
       this.cols = 2;
-    } else if(this.breakpointObserver.isMatched(Breakpoints.Small)) {
+    } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
       this.currentBreakpoint = Breakpoints.Small;
       this.cols = 1;
-    } else if(this.breakpointObserver.isMatched('(min-width: 500px)')) {
+    } else if (this.breakpointObserver.isMatched('(min-width: 500px)')) {
       this.currentBreakpoint = '(min-width: 500px)';
       this.cols = 1;
     } else {

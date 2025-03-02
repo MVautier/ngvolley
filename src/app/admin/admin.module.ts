@@ -4,7 +4,6 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { LayoutService } from './services/layout.service';
 import { IsLoggedGuard } from './guard/is-logged.guard';
-import { ClickOutsideModule } from 'ng-click-outside';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { GestionPageComponent } from './pages/gestion-page/gestion-page.component';
 import { ItemCardComponent } from './components/item-card/item-card.component';
@@ -34,13 +33,13 @@ import { AdherentCardComponent } from './components/adherent-card/adherent-card.
 //import { AdherentAdminService } from './services/adherent-admin.service';
 import { InscriptionModule } from '@app/inscription/inscription.module';
 import { AdherentFormComponent } from './components/adherent-form/adherent-form.component';
-import { NgxMaskModule } from 'ngx-mask';
 import { GenericModalComponent } from './components/generic-modal/generic-modal.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { OrderListeComponent } from './components/order-liste/order-liste.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-doc.component';
-
+//import { NgxMaskModule } from 'ngx-mask';
+//import { ClickOutsideModule } from 'ng-click-outside';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -74,10 +73,11 @@ import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-do
     MaterialThemeModule,
     DragDropModule,
     BuilderEditorModule,
-    ClickOutsideModule,
+
     AdminRoutingModule,
     NgxChartsModule,
-    NgxMaskModule
+    //ClickOutsideModule,
+    //NgxMaskModule
   ],
   providers: [
     IsLoggedGuard,

@@ -4,11 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomError } from '@app/core/models/custom-error.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
-import { TransferStateService } from '@app/core/services/transfert-state.service';
 import { RESPONSE } from '../../../../../express.tokens';
 import { Response } from 'express';
 import { Subscription } from 'rxjs';
-import { SsrService } from '../../services/ssr.service';
 
 @Component({
   selector: 'app-page',
@@ -24,10 +22,8 @@ export class PageComponent implements OnInit, OnDestroy {
     private router: Router,
     @Optional() @Inject(RESPONSE) private response: Response,
     private routeService: RouteService,
-    private ssrService: SsrService,
-    private transferState: TransferStateService,
     private route: ActivatedRoute
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     //console.log('===================== init page');
@@ -66,15 +62,7 @@ export class PageComponent implements OnInit, OnDestroy {
         status: 404,
         message: 'Cette page n\'existe pas ou a été déplacée'
       };
-      this.transferState.set(errorKey, [...[error]]);
-      if (this.ssrService.isServer()) {
-        if (this.response) {
-          console.log('response in page: ', this.response);
-          this.response.status(404);
-        }
-      } else {
-        this.router.navigateByUrl('/error', {skipLocationChange: true});
-      }
+      this.router.navigateByUrl('/error', { skipLocationChange: true });
     }
   }
 }

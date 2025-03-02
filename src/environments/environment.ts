@@ -27,21 +27,14 @@ export const environment = {
   },
   minage: 13,
   debug: true,
-  ssrMode: false,
-  inscriptionOpened: false,
+  inscriptionOpened: true,
   reinscription: false,
   inscriptionFilter: '',
   basePath: 'https://localhost:4224/',
-  basePathSsr: 'https://localhost:4200/',
   cookiePath: '/',
   cookieDomain: 'localhost',
   isSecure: true,
   sidenavOpened: false,
-  ssr: {
-    serverTimeoutMs: 30000,
-    distFolder: 'dist/colomiers-volley/browser',
-    stateTransferAppId: 'colomiers-volley'
-  },
   helloasso: {
     authServer: 'https://api.helloasso-sandbox.com/oauth2',
     apiServer: 'https://api.helloasso-sandbox.com/v5',

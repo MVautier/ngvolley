@@ -2,9 +2,7 @@ import { Component, HostListener, OnInit, ViewChild, ViewEncapsulation, makeStat
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { RouteService } from '@app/core/services/route.services';
-import { TransferStateService } from '@app/core/services/transfert-state.service';
 import { Observable } from 'rxjs';
-import { SsrService } from '../../services/ssr.service';
 import { ThemeService } from '@app/core/services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { environment } from '@env/environment';
@@ -28,20 +26,12 @@ export class MainComponent implements OnInit {
   }
 
   constructor(
-    private routeService: RouteService, 
+    private routeService: RouteService,
     private layoutService: LayoutService,
-    private ssrService: SsrService,
-    private transferState: TransferStateService,
     private themeService: ThemeService) { }
 
   ngOnInit(): void {
-    if (!this.ssrService.isServer()) {
-      const errorKey = makeStateKey<any>('CUSTOM_ERRORS');
-      const errors = this.transferState.get(errorKey, []);
-      console.log('errors in main : ', errors);
-      this.checkWindowSize();
-    }
-    
+    this.checkWindowSize();
     this.init();
   }
 
@@ -68,15 +58,12 @@ export class MainComponent implements OnInit {
   }
 
   isBiggerScreen(): boolean {
-    if (!this.ssrService.isServer()) {
-      const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-      if (width < 768) {
-        return true;
-      } else {
-        return false;
-      }
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (width < 768) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   toggleTheme(isDarkTheme: boolean) {

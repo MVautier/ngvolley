@@ -6,7 +6,7 @@ import { InscriptionPageComponent } from './pages/inscription-page/inscription-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MainFormComponent } from './components/main-form/main-form.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
 import { InscriptionService } from './services/inscription.service';
@@ -17,7 +17,6 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { SignatureFormComponent } from './components/signature-form/signature-form.component';
 import { PhotoTakerComponent } from './components/photo-taker/photo-taker.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { WebcamModule } from 'ngx-webcam';
 import { CropperComponent } from './components/cropper/cropper.component';
 import { ImageComponent } from './components/image/image.component';
 import { CameraComponent } from './components/camera/camera.component';
@@ -35,6 +34,7 @@ import { HealthFormComponent } from './components/health-form/health-form.compon
 import { FormInfoComponent } from './components/form-info/form-info.component';
 import { PopupAddComponent } from './components/popup-add/popup-add.component';
 import { PopupErrorComponent } from './components/popup-error/popup-error.component';
+import { WebcamModule } from 'ngx-webcam';
 @NgModule({
   declarations: [
     InscriptionPageComponent,
@@ -68,11 +68,11 @@ import { PopupErrorComponent } from './components/popup-error/popup-error.compon
     MaterialThemeModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    //NgxMaskModule,
     InscriptionRoutingModule,
     MaterialFileInputModule,
-    //NgxDropzoneModule,
     ImageCropperModule,
+    //NgxMaskModule,
+    //NgxDropzoneModule,
     WebcamModule
   ],
   providers: [

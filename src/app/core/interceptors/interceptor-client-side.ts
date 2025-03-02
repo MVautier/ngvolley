@@ -2,9 +2,6 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable, makeStateKey } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { CustomError } from '@app/core/models/custom-error.model';
-import { TransferStateService } from '@app/core/services/transfert-state.service';
-import { SsrService } from '@app/ui/layout/services/ssr.service';
 import { environment } from '@env/environment';
 import { Observable, from, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -20,56 +17,39 @@ import { LoginService } from '../../authentication/services/login.service';
 export class InterceptorClientSide implements HttpInterceptor {
   constructor(
     private authService: AuthorizeApiService,
-    private transferState: TransferStateService,
     private connexionInfo: ConnectionInfoService,
-    private ssrService: SsrService,
     private login: LoginService,
     private router: Router,
   ) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // const errorKey = makeStateKey<any>('CUSTOM_ERRORS');
-    // if(this.ssrService.isServer()) {
-    //   this.transferState.set(errorKey, [...[{
-    //     url: request.url,
-    //     status: 404,
-    //     message: 'client interceptor - not found in server side'
-    //   }]]);
-    // } else {
-    //   this.transferState.get(errorKey, [...[{
-    //     url: request.url,
-    //     status: 404,
-    //     message: 'client interceptor - not found in client side'
-    //   }]]);
+    // if (request.url.includes('ping')) {
+    //   const blocName = 'ping';
+    //   const blockKey = makeStateKey<any>(blocName);
+    //   const blockValue = this.transferState.get(blockKey, null);
+    //   if (blockValue) {
+    //     console.log('value for ', blocName, ' was in viewState');
+    //     const response = new HttpResponse({ body: JSON.parse(decodeURIComponent(escape(atob(blockValue)))), status: 200 });
+    //     return of(response);
+    //   } else {
+    //     console.log('value for ', blocName, ' was not in viewState');
+    //     //console.log('========== call cms in client side: ', req.url);
+    //     return next.handle(request).pipe(
+    //       tap(event => {
+    //         if ((event instanceof HttpResponse && (event.status === 200))) {
+    //           if (request.url.includes('ping')) {
+    //             this.transferState.set(blockKey, btoa(unescape(encodeURIComponent(JSON.stringify(event.body)))))
+    //           }
+    //         }
+    //       }),
+    //       catchError(error => {
+    //         throw error;
+    //       })
+    //     );
+    //   }
     // }
 
-    if (request.url.includes('ping')) {
-      const blocName = 'ping';
-      const blockKey = makeStateKey<any>(blocName);
-      const blockValue = this.transferState.get(blockKey, null);
-      if (blockValue) {
-        console.log('value for ', blocName, ' was in viewState');
-        const response = new HttpResponse({ body: JSON.parse(decodeURIComponent(escape(atob(blockValue)))), status: 200 });
-        return of(response);
-      } else {
-        console.log('value for ', blocName, ' was not in viewState');
-        //console.log('========== call cms in client side: ', req.url);
-        return next.handle(request).pipe(
-            tap(event => {
-                if ((event instanceof HttpResponse && (event.status === 200))) {
-                  if (request.url.includes('ping')) {
-                        this.transferState.set(blockKey, btoa(unescape(encodeURIComponent(JSON.stringify(event.body)))))
-                    }
-                }
-            }),
-            catchError(error => {
-                throw error;
-            })
-        );
-      }
-    }
-
     if (request.url.includes('helloasso')) {
-        return next.handle(request);
+      return next.handle(request);
     }
 
     if (!this.connexionInfo.Token) {
@@ -95,11 +75,11 @@ export class InterceptorClientSide implements HttpInterceptor {
         }
 
         if (
-          this.connexionInfo.Token 
-          && new Date((this.connexionInfo.Token as UserToken).expire_in) > new Date() 
-          && !request.url.includes('/geolocation-db.com') 
+          this.connexionInfo.Token
+          && new Date((this.connexionInfo.Token as UserToken).expire_in) > new Date()
+          && !request.url.includes('/geolocation-db.com')
           && !request.url.endsWith('/anonymous')
-          && !request.url.endsWith('/token') 
+          && !request.url.endsWith('/token')
           && !request.url.endsWith('/login')) {
           return from(this.authService.RefreshToken((this.connexionInfo.Token as UserToken).refresh_token)).pipe(switchMap(t => {
             if (t) {

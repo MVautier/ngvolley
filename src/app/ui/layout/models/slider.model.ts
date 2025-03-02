@@ -1,7 +1,7 @@
-import { SwiperOptions } from "swiper";
+import { SwiperOptions } from "swiper/types";
 import { Slide } from "./slide.model";
 
 export class Slider {
-    config: SwiperOptions;
-    slides: Slide[]
+  config: SwiperOptions;
+  slides: Slide[]
 }

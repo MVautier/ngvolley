@@ -83,7 +83,7 @@
   <div class="form-element row-item flex" [ngClass]="{'mobile': isMobile}">
     <mat-form-field class="first first-25">
       <mat-label>Téléphone</mat-label>
-      <input matInput [mask]="phoneInputMask" placeholder="Téléphone" formControlName="phone">
+      <input matInput mask="phoneInputMask" placeholder="Téléphone" formControlName="phone">
       <mat-error *ngIf="!formGroup.controls['phone'].valid && formGroup.controls['phone'].touched">
         {{ getInputError('phone') }}
       </mat-error>

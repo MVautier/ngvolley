@@ -14,8 +14,8 @@
             <input type="radio" class="radio" name="statut" (change)="checkValid()" [(ngModel)]="data.status" [value]="'Tuteur légal'"> Tuteur légal
         </div>
         <div class="center">
-            <input class="form-control telephone" type="text" [mask]="phoneInputMask" name="telfixe" placeholder="Tél fixe" (input)="checkValid()" [(ngModel)]="data.telfixe" required [ngClass]="{error: telError}">
-            <input class="form-control mobile" type="text" [mask]="phoneInputMask" name="mobile" placeholder="Tél mobile" (input)="checkValid()" [(ngModel)]="data.mobile" required [ngClass]="{error: telError}">
+            <input class="form-control telephone" type="text" mask="phoneInputMask" name="telfixe" placeholder="Tél fixe" (input)="checkValid()" [(ngModel)]="data.telfixe" required [ngClass]="{error: telError}">
+            <input class="form-control mobile" type="text" mask="phoneInputMask" name="mobile" placeholder="Tél mobile" (input)="checkValid()" [(ngModel)]="data.mobile" required [ngClass]="{error: telError}">
         </div>
         <div>
             autorise mon enfant

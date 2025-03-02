@@ -15,11 +15,9 @@ import { CenterComponent } from './components/center/center.component';
 import { PageComponent } from "@app/ui/layout/components/page/page.component";
 import { ModalComponent } from './components/modal/modal.component';
 import { CoreModule } from "@app/core/core.module";
-import { CustomErrorComponent } from './components/custom-error/custom-error.component';
 import { LayoutService } from "./services/layout.service";
 import { ModalService } from "./services/modal.service";
 import { DynamicDirective } from "./directives/dynamic.directive";
-import { InscriptionService } from "@app/inscription/services/inscription.service";
 import { LoaderService } from "./services/loader.service";
 import { LoaderComponent } from "./components/loader/loader.component";
 
@@ -33,7 +31,6 @@ import { LoaderComponent } from "./components/loader/loader.component";
     CenterComponent,
     PageComponent,
     ModalComponent,
-    CustomErrorComponent,
     DynamicDirective,
     LoaderComponent
   ],
@@ -52,21 +49,20 @@ import { LoaderComponent } from "./components/loader/loader.component";
     TileComponent,
     MaterialThemeModule,
     ModalComponent,
-    CustomErrorComponent,
     LoaderComponent
   ]
 })
 export class LayoutModule {
-    static forRoot(): ModuleWithProviders<LayoutModule> {
-      return {
-        ngModule: LayoutModule,
-        providers: [
-          SliderService,
-          BsModalService,
-          LayoutService,
-          ModalService,
-          LoaderService
-        ]
-      };
-    }
+  static forRoot(): ModuleWithProviders<LayoutModule> {
+    return {
+      ngModule: LayoutModule,
+      providers: [
+        SliderService,
+        BsModalService,
+        LayoutService,
+        ModalService,
+        LoaderService
+      ]
+    };
+  }
 }

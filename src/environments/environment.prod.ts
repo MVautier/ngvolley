@@ -23,21 +23,14 @@ export const environment = {
   },
   minage: 13,
   debug: false,
-  ssrMode: false,
   inscriptionOpened: false,
   reinscription: false,
   inscriptionFilter: '*',
   basePath: 'https://inscription-colomiers-volley.fr/',
-  basePathSsr: 'https://inscription-colomiers-volley.fr/',
   cookiePath: '/',
   cookieDomain: 'inscription-colomiers-volley.fr',
   isSecure: true,
   sidenavOpened: true,
-  ssr: {
-    serverTimeoutMs: 30000,
-    distFolder: 'dist/colomiers-volley/browser',
-    stateTransferAppId: 'colomiers-volley'
-  },
   helloasso: {
     // authServer: 'https://api.helloasso-sandbox.com/oauth2',
     // apiServer: 'https://api.helloasso-sandbox.com/v5',
