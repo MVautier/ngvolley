@@ -25,7 +25,7 @@ export const environment = {
   debug: false,
   ssrMode: false,
   inscriptionOpened: true,
-  reinscription: false,
+  reinscription: true,
   inscriptionFilter: '*',
   basePath: 'https://inscription-colomiers-volley.fr/',
   basePathSsr: 'https://inscription-colomiers-volley.fr/',
