@@ -272,7 +272,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
   isFormValid(): boolean {
     //let valid = !this.formGroup.invalid && this.checked.valid;
     let valid = this.getFormValid() && this.checked.valid;
-    if (valid) {
+    if (valid && this.adherent.Membres) {
       for (let i = 0; i < this.adherent.Membres.length; i++) {
         if (!this.adherent.Membres[i].valid) {
           valid = false;
@@ -310,7 +310,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       Phone: this.formGroup.get('phone').value,
       Email: this.formGroup.get('email').value,
       Age: age,
-      Membres: [...this.adherent.Membres],
+      Membres: [...this.adherent.Membres || []],
       Relationship: null,
       Alert1: this.formGroup.get('alert1').value,
       Alert2: this.formGroup.get('alert2').value,
