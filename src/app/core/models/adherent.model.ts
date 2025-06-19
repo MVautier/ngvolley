@@ -64,10 +64,10 @@ export class Adherent {
     this.IdParent = base && !isMember ? base.IdParent : null;
     this.Category = base && !isMember ? base.Category : Adherent.debug ? 'C' : null; // convert to int for bdd
     this.Authorization = base ? base.Authorization : null;
-    this.LastName = base ? base.LastName : Adherent.debug ? 'Lacroix' : null;
-    this.FirstName = base && !isMember ? base.FirstName : Adherent.debug ? 'Stéphanie' : null;
+    this.LastName = base ? base.LastName : Adherent.debug ? 'Le floch' : null;
+    this.FirstName = base && !isMember ? base.FirstName : Adherent.debug ? 'Lucie' : null;
     this.Genre = base && !isMember ? base.Genre : Adherent.debug ? 'F' : null;
-    this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? new Date(1974, 5, 4) : null;
+    this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? new Date(2011, 2, 9) : null;
     this.InscriptionDate = base?.InscriptionDate || null;
     this.Age = base && !isMember ? base.Age : Adherent.debug ? 49 : null;
     this.HealthStatementDate = null;
@@ -116,6 +116,9 @@ export class Adherent {
       blob: blob,
       sent: false
     };
+    if (!adherent.Documents) {
+      adherent.Documents = [];
+    }
     const docs = adherent.Documents.filter(d => d.type !== type);
     docs.push(doc);
     adherent.Documents = docs;
