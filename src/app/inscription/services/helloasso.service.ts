@@ -11,108 +11,109 @@ import { CheckoutIntentResult } from '../models/checkout-intent-result.model';
 @Injectable()
 export class HelloAssoService {
 
-    apiAuth = environment.helloasso.authServer;
-    apiUrl = environment.helloasso.apiServer;
-    private _token: HelloassoToken;
-    constructor(private http: HttpDataService<any>, private ssrService: SsrService) {
+  apiAuth = environment.helloasso.authServer;
+  apiUrl = environment.helloasso.apiServer;
+  private _token: HelloassoToken;
+  constructor(private http: HttpDataService<any>, private ssrService: SsrService) {
 
-    }
+  }
 
-    sendCheckoutIntent(cart: Cart): Promise<CheckoutIntentResult> {
-        return new Promise((resolve, reject) => {
-            this.getToken().then(token => {
-                console.log('success auth to helloasso: ', token);
-                const baseUrl = this.ssrService.isServer() ? environment.basePathSsr : environment.basePath;
-                const body = new PaymentRequest(cart, baseUrl);
-                console.log('intent body: ', body);
-                const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents';
-                const headers = new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token
-                });
-                resolve(this.http.post<PaymentRequest>(url, body, {headers}));
-            }).catch(err => {
-                reject('error sendCheckoutIntent: ' + err.message);
-            });
-        });
-    }
+  sendCheckoutIntent(cart: Cart): Promise<CheckoutIntentResult> {
+    return new Promise((resolve, reject) => {
+      this.getToken().then(token => {
+        console.log('success auth to helloasso: ', token);
+        const baseUrl = this.ssrService.isServer() ? environment.basePathSsr : environment.basePath;
+        const body = new PaymentRequest(cart, baseUrl);
+        console.log('intent body: ', body);
+        const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents';
+        const headers = new HttpHeaders(
+          {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          });
+        resolve(this.http.post<PaymentRequest>(url, body, { headers: headers }));
+      }).catch(err => {
+        reject('error sendCheckoutIntent: ' + err.message);
+      });
+    });
+  }
 
-    getCheckoutIntent(intentId: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.getToken().then(token => {
-                const headers = new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token
-                });
-                const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents/' + intentId;
-                resolve(this.http.getWithOptions<any>(url, {headers}));
-            }).catch(err => {
-                reject('error getCheckoutIntent: ' + err.message);
-            });
-        });
-    }
-
-    private token(): Promise<HelloassoToken> {
+  getCheckoutIntent(intentId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getToken().then(token => {
         const headers = new HttpHeaders({
-            'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
         });
-        const options = { headers: headers };
-        const body = new URLSearchParams();
-        body.set('client_id', environment.helloasso.clienId);
-        body.set('client_secret', environment.helloasso.clientSecret);
-        body.set('grant_type', 'client_credentials');
-        return this.http.post<any>(this.apiAuth + '/token', body, options);
-    }
+        const url = environment.helloasso.apiServer + '/organizations/' + environment.helloasso.organizationSlug + '/checkout-intents/' + intentId;
+        resolve(this.http.getWithOptions<any>(url, { headers }));
+      }).catch(err => {
+        reject('error getCheckoutIntent: ' + err.message);
+      });
+    });
+  }
 
-    private refresh(refresh_token: string): Promise<HelloassoToken> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/x-www-form-urlencoded'
+  private token(): Promise<HelloassoToken> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const options = { headers: headers };
+    const body = new URLSearchParams();
+    body.set('client_id', environment.helloasso.clienId);
+    body.set('client_secret', environment.helloasso.clientSecret);
+    body.set('grant_type', 'client_credentials');
+    return this.http.post<any>(this.apiAuth + '/token', body, options);
+  }
+
+  private refresh(refresh_token: string): Promise<HelloassoToken> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const options = { headers: headers };
+    const body = new URLSearchParams();
+    body.set('client_id', environment.helloasso.clienId);
+    body.set('refresh_token', refresh_token);
+    body.set('grant_type', 'refresh_token');
+    return this.http.post<any>(this.apiAuth + '/token', body, options);
+  }
+
+  private getToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (this._token) {
+        if (!this.isExpired(this._token)) {
+          resolve(this._token.access_token);
+        } else {
+          this.refresh(this._token.refresh_token).then(token => {
+            this._token = this.renew(token);
+            resolve(this._token.access_token);
+          }).catch(err => {
+            reject('error refreshing token: ' + err.message);
+          });
+        }
+      } else {
+        this.token().then(token => {
+          this._token = this.renew(token);
+          resolve(this._token.access_token);
+        }).catch(err => {
+          reject('error getting token: ' + err.message);
         });
-        const options = { headers: headers };
-        const body = new URLSearchParams();
-        body.set('client_id', environment.helloasso.clienId);
-        body.set('refresh_token', refresh_token);
-        body.set('grant_type', 'refresh_token');
-        return this.http.post<any>(this.apiAuth + '/token', body, options);
-    }
+      }
+    });
+  }
 
-    private getToken(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            if (this._token) {
-                if (!this.isExpired(this._token)) {
-                    resolve(this._token.access_token);
-                } else {
-                    this.refresh(this._token.refresh_token).then(token => {
-                        this._token = this.renew(token);
-                        resolve(this._token.access_token);
-                    }).catch(err => {
-                        reject('error refreshing token: ' +  err.message);
-                    });
-                }
-            } else {
-                this.token().then(token => {
-                    this._token = this.renew(token);
-                    resolve(this._token.access_token);
-                }).catch(err => {
-                    reject('error getting token: ' +  err.message);
-                });
-            }
-        });
-    }
+  private renew(token: any): HelloassoToken {
+    const now = new Date();
+    const expire = new Date(now);
+    expire.setMinutes(now.getMinutes() + 30);
+    return {
+      access_token: token.access_token,
+      refresh_token: token.refresh_token,
+      expires_in: expire,
+      token_type: token.token_type
+    };
+  }
 
-    private renew(token: any): HelloassoToken {
-        const now = new Date();
-        const expire = new Date(now);
-        expire.setMinutes (now.getMinutes() + 30 );
-        return {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            expires_in: expire,
-            token_type: token.token_type
-        };
-    }
-
-    private isExpired(token: HelloassoToken): boolean {
-        return new Date().getTime() > token.expires_in.getTime();
-    }
+  private isExpired(token: HelloassoToken): boolean {
+    return new Date().getTime() > token.expires_in.getTime();
+  }
 }

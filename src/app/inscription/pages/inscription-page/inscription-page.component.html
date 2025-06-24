@@ -5,8 +5,17 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
+          <p>
+            <b>
+              Les réinscriptions sont momentanément impossibles car nous rencontrons des problèmes avec la plateforme de paiement HelloAsso.
+              <br>
+              Elles pourront reprendre dès que le problème sera résolu.
+            </b>
+            <br><br>
 
-          <p *ngIf="!inscriptionOpened">
+            Merci de votre compréhension.
+          </p>
+          <!-- <p *ngIf="!inscriptionOpened">
             <b>
               Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison 2025-2026.
               <br>
@@ -25,7 +34,7 @@
              <b>Pour le moment, les inscriptions 2025-2026 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
             <br><br>
             <b>Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l’année dernière. </b>
-          </p> 
+          </p>  -->
 
            <!-- <p>
             <b>
@@ -41,7 +50,8 @@
             <br><br>
           </p> -->
             
-            Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
+          <!-- A réafficher -->
+            <!-- Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
             l'adhésion
             en ligne.
             Cela peut être une adhésion familiale ou individuelle.
@@ -52,13 +62,14 @@
 
             Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)  
 
-            <!-- <b>il est nécessaire de télécharger au préalable <a [href]="docurl" target="_blank">un certificat médical ou une attestation de santé</a></b> -->
             <br><br>
             Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
             <br><br>
             <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
             <br>
             Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227">https://colomiers-volley.fr/?page_id=227</a>.
+             -->
+            <!-- FIN A réafficher -->
         </div>
 
         <div class="form" *ngIf="reinscription || inscriptionOpened">

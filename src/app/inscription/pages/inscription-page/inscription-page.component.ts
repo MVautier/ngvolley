@@ -165,9 +165,9 @@ export class InscriptionPageComponent implements OnInit {
             }
           }
         }
-        console.log('suuccess: ', result);
+        console.log('success getPaymentDoc : ', result);
       }).catch(err => {
-        console.log('error: ', err)
+        console.log('error getPaymentDoc : ', err);
         reject(err);
       });
     });
