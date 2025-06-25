@@ -109,7 +109,6 @@ export class InscriptionPageComponent implements OnInit {
             console.log('payment refused - ', this.paymentId, this.paymentError);
           }
           this.step = 5;
-
         }
         this.location.replaceState(url);
       }
@@ -434,7 +433,7 @@ export class InscriptionPageComponent implements OnInit {
           this.adherent.Membres.forEach(m => {
             const d = new Date(m.BirthdayDate);
             m.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-            membres.push(this.prepareAdherentForBdd(m, false));
+            membres.push(this.prepareAdherentForBdd(m, false, paymentCallback));
           });
         }
         const adherent = this.prepareAdherentForBdd(this.adherent, true, paymentCallback);
@@ -455,7 +454,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   prepareAdherentForBdd(adherent: Adherent, main = true, paymentCallback: boolean = true): Adherent {
-    if (!adherent.Saved && this.saison) {
+    if (!adherent.Saved && this.saison && paymentCallback) {
       adherent.Saison = this.saison;
     }
     const d = new Date(adherent.BirthdayDate);
