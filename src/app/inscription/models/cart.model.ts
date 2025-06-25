@@ -9,6 +9,7 @@ export class Cart {
   date: Date;
   total: number;
   client?: Client;
+  token: string;
 
   constructor() {
     this.id = 0;

@@ -20,25 +20,35 @@ export class HelloAssoService {
 
   sendCheckoutIntent(cart: Cart): Promise<CheckoutIntentResult> {
     return new Promise((resolve, reject) => {
-      this.http.post<Cart>(environment.apiUrl + 'Helloasso/initiate', cart).then((result: CheckoutIntentResult) => {
-        resolve(result);
+      this.token().then(res => {
+        cart.token = res.access_token;
+        this.http.post<Cart>(environment.apiUrl + 'Helloasso/initiate', cart).then((result: CheckoutIntentResult) => {
+          resolve(result);
+        }).catch(err => {
+          reject('error sendCheckoutIntent: ' + err.message);
+        });
       }).catch(err => {
-        reject('error sendCheckoutIntent: ' + err.message);
+        reject('error token: ' + err.message);
       });
     });
   }
 
   getCheckoutIntent(intentId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.get<any>(environment.apiUrl + 'Helloasso/receipt/' + intentId).then((result: any) => {
-        resolve(result);
+      this.token().then(res => {
+        this.http.post<any>(environment.apiUrl + 'Helloasso/receipt/' + intentId, res).then((result: any) => {
+          resolve(result);
+        }).catch(err => {
+          reject('error getCheckoutIntent: ' + err.message);
+        });
       }).catch(err => {
-        reject('error getCheckoutIntent: ' + err.message);
+        reject('error token: ' + err.message);
       });
+
     });
   }
 
-  private token(): Promise<HelloassoToken> {
+  public token(): Promise<HelloassoToken> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });

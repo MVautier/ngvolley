@@ -28,8 +28,8 @@ export const environment = {
   minage: 13,
   debug: true,
   ssrMode: false,
-  inscriptionOpened: true,
-  reinscription: true,
+  inscriptionOpened: false,
+  reinscription: false,
   inscriptionFilter: '',
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
@@ -51,8 +51,8 @@ export const environment = {
     organizationSlug: 'clll-colomiers-volley-ball'
     // authServer: 'https://api.helloasso.com/oauth2',
     // apiServer: 'https://api.helloasso.com/v5',
-    // clienId: 'c37c15b8790f4e69ae36e629bad01916',
-    // clientSecret: 'nT/IobgQODPH+/QLpqI1iW1FYqq5nhFl',
+    // clienId: 'a01bca66c38647608f7f635e732aea1e',
+    // clientSecret: 'IdHXqbeiL31Ft3L2tmKGHcq6AtjwHY98',
     // itemName: 'Adhésion CLLL - Section Voley-Ball',
     // organizationSlug: 'clll-volley-ball'
   }
