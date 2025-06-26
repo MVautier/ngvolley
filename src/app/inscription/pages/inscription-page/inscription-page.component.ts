@@ -88,6 +88,7 @@ export class InscriptionPageComponent implements OnInit {
       this.step = Number(params.step) || 1;
       this.paymentStatus = params.payment || null;
       if (this.paymentStatus) {
+        this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
         this.cart = JSON.parse(localStorage.getItem('cart'));
         if (this.paymentStatus === 'cancel') {
@@ -454,7 +455,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   prepareAdherentForBdd(adherent: Adherent, main = true, paymentCallback: boolean = true): Adherent {
-    if (!adherent.Saved && this.saison && paymentCallback) {
+    if (this.saison && paymentCallback && adherent.Saison !== this.saison) {
       adherent.Saison = this.saison;
     }
     const d = new Date(adherent.BirthdayDate);

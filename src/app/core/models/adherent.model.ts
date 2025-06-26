@@ -89,7 +89,7 @@ export class Adherent {
     this.Sections = base ? base.Sections : [];
     this.Rgpd = base ? base.Rgpd : false;
     this.ImageRight = true;
-    this.Signature = base ? base.Signature : null;
+    this.Signature = null; //base ? base.Signature : null;
     this.Saison = base ? base.Saison : season;
 
     this.Payment = base ? base.Payment : null;

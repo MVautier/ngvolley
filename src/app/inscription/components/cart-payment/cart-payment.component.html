@@ -85,6 +85,9 @@
             <div class="ins-buttons">
                 <button type="button" mat-raised-button (click)="onCancel()">Retour</button>
                 <button type="button" mat-raised-button color="primary" (click)="sendCheckout()" [disabled]="!isFormValid()">Payer</button>
+                <p class="mat-error error" *ngIf="helloAssoError">
+                  Une erreur est survenue avec le module de paiement Helloasso
+                </p>
             </div>
         </section>
         
