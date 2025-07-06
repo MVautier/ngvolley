@@ -61,7 +61,7 @@ export class PdfMakerService {
   sendAllDocuments(adherent: Adherent): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const promises: Promise<boolean>[] = [];
-      if (adherent.Membres.length) {
+      if (adherent.Membres?.length) {
         adherent.Membres.forEach(m => {
           if (m.Documents.length) {
             promises.push(this.sendDocuments(m.Uid + '/' + m.Saison.toString(), m.Documents));
