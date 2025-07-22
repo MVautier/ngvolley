@@ -3,6 +3,7 @@ import { Adherent } from '@app/core/models/adherent.model';
 import { PdfInfo } from '@app/core/models/pdf-info.model';
 import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
+import { AdherentService } from '@app/core/services/adherent.service';
 
 @Component({
   selector: 'app-document-form',
@@ -17,7 +18,7 @@ export class DocumentFormComponent implements OnInit {
 
 
   constructor(
-    private inscriptionService: InscriptionService,
+    private inscriptionService: InscriptionService, private adherentService: AdherentService,
     private pdf: PdfMakerService) { }
 
   async ngOnInit() {
@@ -28,7 +29,7 @@ export class DocumentFormComponent implements OnInit {
     if (data && data.element && data.name) {
       console.log('data received from modal: ', data);
       const name = 'test.pdf';
-      this.pdf.buildAndSendPdf(id + '/' + this.adherent.Saison.toString(), data.name, data.element).then(result => {
+      this.pdf.buildAndSendPdf(id + '/' + this.adherentService.obsSeason.value.toString(), data.name, data.element).then(result => {
         console.log('pdf was built and sent to server: ', result);
       })
         .catch(err => {

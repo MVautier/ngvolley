@@ -61,14 +61,15 @@ export class PdfMakerService {
   sendAllDocuments(adherent: Adherent): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const promises: Promise<boolean>[] = [];
+      const saison = this.adherentService.obsSeason.value.toString();
       if (adherent.Membres?.length) {
         adherent.Membres.forEach(m => {
           if (m.Documents.length) {
-            promises.push(this.sendDocuments(m.Uid + '/' + m.Saison.toString(), m.Documents));
+            promises.push(this.sendDocuments(m.Uid + '/' + saison, m.Documents));
           }
         });
       }
-      promises.push(this.sendDocuments(adherent.Uid + '/' + adherent.Saison.toString(), adherent.Documents));
+      promises.push(this.sendDocuments(adherent.Uid + '/' + saison, adherent.Documents));
       Promise.all(promises).then(results => {
         const ok = results.filter(r => !r).length === 0;
         resolve(ok);
