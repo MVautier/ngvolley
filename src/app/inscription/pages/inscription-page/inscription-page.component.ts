@@ -27,7 +27,7 @@ import { UtilService } from '@app/core/services/util.service';
 })
 export class InscriptionPageComponent implements OnInit {
   title: string;
-  title2: string = environment.assoTitle;
+  title2: string;
   step = 1;
   reinscription: boolean = environment.reinscription;
   inscriptionOpened: boolean = environment.inscriptionOpened;
@@ -137,7 +137,8 @@ export class InscriptionPageComponent implements OnInit {
     localStorage.removeItem('adherent');
     localStorage.removeItem('cart');
     this.saison = this.adherentService.obsSeason.value;
-    this.title = `Bulletin d\'adhésion ${this.saison}-${this.saison + 1}`;
+    this.title = `Formulaire d\'inscription et de paiement en ligne au ${environment.assoTitle} pour la saison ${this.saison}-${this.saison + 1}`;
+    this.title2 = 'Réservé aux adultes, l\'école de Volley étant complète';
     this.startIns = {
       local: true,
       already: false,

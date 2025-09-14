@@ -76,6 +76,14 @@
   a {
     color: var(--accent);
   }
+  p {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    &.info-warning {
+      font-weight: 600;
+    }
+  }
 }
 aside {
   // position: fixed;

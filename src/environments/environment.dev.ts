@@ -26,9 +26,9 @@ export const environment = {
     ado: 60
   },
   minage: 13,
-  debug: true,
+  debug: false,
   ssrMode: false,
-  inscriptionOpened: false,
+  inscriptionOpened: true,
   reinscription: false,
   inscriptionFilter: '10,66,89,90',
   basePath: 'https://localhost:4224/',

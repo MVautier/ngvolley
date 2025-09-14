@@ -1,5 +1,10 @@
 <div class="title">
-    <h1>{{title}} au {{title2}}</h1>
+    <h1>
+      {{title}}
+    </h1>
+    <h2 *ngIf="!reinscription">
+      {{title2}}
+    </h2>
 </div>
 
 <div class="main" [ngClass]="{'mobile': isMobile}">
@@ -24,17 +29,16 @@
             <br><br>
           </p>
 
-           <p *ngIf="!reinscription"> 
-            <b>Les inscriptions pour les mineurs ne sont plus possibles, l'école de Volley étant complète.</b>
-             <b>Les inscriptions pour la formule Loisir sont réouvertes pour quelques places supplémentaires.</b>
-            <br><br>
-           </p>
-
           <p *ngIf="reinscription"> 
              <b>Pour le moment, les inscriptions 2025-2026 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
             <br><br>
             <b>Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l’année dernière. </b>
           </p> 
+
+           <!-- <p *ngIf="!reinscription"> 
+            <b>Les inscriptions pour les mineurs ne sont plus possibles, l'école de Volley étant complète.</b>
+             <b>Les inscriptions pour la formule Loisir sont réouvertes pour quelques places supplémentaires.</b>
+           </p> -->
 
            <!-- <p>
             <b>
@@ -51,24 +55,29 @@
           </p> -->
             
 <!-- A remettre-->
-            Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
-            l'adhésion
-            en ligne.
-            Cela peut être une adhésion familiale ou individuelle.
+        <p>
+           Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
+          l'adhésion en ligne.<br><br>
+          Cela peut être une adhésion familiale ou individuelle.<br><br>
+        
+          Un tarif préférentiel est accordé aux Columérins (19€ au lieu de 27€). <br><br>
 
-            Un tarif préférentiel est accordé aux Columérins (19€ au lieu de 27€). 
-            Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de 6€ chacun.
-            <br><br>
+          Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de 6€ chacun.
+        </p>
+        <p class="info-warning">
+          Les inscriptions pour la formule Compétition FSGT ne peuvent se faire qu'avec l'accord du capitaine de l'équipe.
+        </p>
+        <p>
+          Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)  
 
-            Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)  
+          <br><br>
+          Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
+          <br><br>
+          <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
+          <br>
+          Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>. 
+        </p>
 
-            <br><br>
-            Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
-            <br><br>
-            <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
-            <br>
-            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227">https://colomiers-volley.fr/?page_id=227</a>.
-            
 <!-- A remettre-->
         </div>
 
