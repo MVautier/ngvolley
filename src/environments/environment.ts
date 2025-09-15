@@ -28,7 +28,7 @@ export const environment = {
   minage: 13,
   debug: false,
   ssrMode: false,
-  inscriptionOpened: true,
+  inscriptionOpened: false,
   reinscription: false,
   inscriptionFilter: '',
   basePath: 'https://localhost:4224/',
