@@ -10,7 +10,7 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
-          <p>
+          <!-- <p>
             <b>
               Les réinscriptions sont momentanément fermées.
               <br>
@@ -18,15 +18,15 @@
             <br><br>
 
             Merci de votre compréhension.
-          </p>
-          <!-- <p *ngIf="!inscriptionOpened">
+          </p> -->
+          <p *ngIf="!inscriptionOpened">
             <b>
               Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison 2025-2026.
               <br>
               Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l’Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.
             </b>
             <br><br>
-          </p> -->
+          </p>
 
           <p *ngIf="reinscription"> 
              <b>Pour le moment, les inscriptions 2025-2026 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
@@ -54,7 +54,7 @@
           </p> -->
             
 <!-- A remettre-->
-        <!-- <p>
+        <p>
            Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
           l'adhésion en ligne.<br><br>
           Cela peut être une adhésion familiale ou individuelle.<br><br>
@@ -75,7 +75,7 @@
           <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
           <br>
           Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>. 
-        </p> -->
+        </p>
 
 <!-- A remettre-->
         </div>

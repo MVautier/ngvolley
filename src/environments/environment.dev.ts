@@ -21,8 +21,8 @@ export const environment = {
     local: 19,
     exterior: 27,
     member: 6,
-    loisir: 34,
-    license: 74,
+    loisir: 40,
+    license: 80,
     ado: 60
   },
   minage: 13,
