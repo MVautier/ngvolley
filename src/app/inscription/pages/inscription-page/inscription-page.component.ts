@@ -138,7 +138,7 @@ export class InscriptionPageComponent implements OnInit {
     localStorage.removeItem('cart');
     this.saison = this.adherentService.obsSeason.value;
     this.title = `Formulaire d\'inscription et de paiement en ligne au ${environment.assoTitle} pour la saison ${this.saison}-${this.saison + 1}`;
-    this.title2 = 'Réservé aux adultes, l\'école de Volley étant complète';
+    this.title2 = 'Réservé aux adultes pour la compétition, l\'école de Volley et les adultes en loisir étant complets';
     this.startIns = {
       local: true,
       already: false,
