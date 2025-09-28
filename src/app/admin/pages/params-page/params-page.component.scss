@@ -1,0 +1,47 @@
+@import "form";
+
+.params-card {
+  display: flex;
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    &.mobile {
+      flex-direction: column;
+      height: auto;
+    }
+    .fields {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid var(--border);
+      h3 {
+        text-align: center;
+      }
+      * {
+        margin-top: 10px;
+      }
+      mat-form-field {
+        margin-left: 20px;
+        &.number {
+          max-width: 150px;
+        }
+      }
+    }
+    .footer {
+      text-align: right;
+      button {
+        width: 200px;
+      }
+    }
+    .buttons {
+      align-self: center;
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+}

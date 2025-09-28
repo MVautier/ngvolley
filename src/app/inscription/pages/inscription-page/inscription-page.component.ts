@@ -19,6 +19,7 @@ import { AuthorizeApiService } from '@app/authentication/services/authorize-api.
 import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Order } from '@app/core/models/order.model';
 import { UtilService } from '@app/core/services/util.service';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Component({
   selector: 'app-inscription-page',
@@ -29,8 +30,8 @@ export class InscriptionPageComponent implements OnInit {
   title: string;
   title2: string;
   step = 1;
-  reinscription: boolean = environment.reinscription;
-  inscriptionOpened: boolean = environment.inscriptionOpened;
+  reinscription: boolean;
+  inscriptionOpened: boolean;
   public isMobile = false;
   private scrollPos = 0;
   otherSections: string[] = [];
@@ -50,6 +51,7 @@ export class InscriptionPageComponent implements OnInit {
   subModal: Subscription;
   saison: number;
   redirectUrl = 'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/edbd162482a640d1ac05710a05943f38';
+  params: Parameters;
 
   constructor(
     private inscriptionService: InscriptionService,
@@ -121,7 +123,12 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.adherentService.getParams().then(result => {
+      this.params = result;
+      this.inscriptionOpened = this.params.InscriptionOpened;
+      this.reinscription = this.params.Reinscription;
+      console.log('parameters: ', this.params);
+    });
   }
 
   private getAdherentFromLocalstorage(): Adherent {
@@ -212,7 +219,7 @@ export class InscriptionPageComponent implements OnInit {
       }
 
       this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-      const montant = already ? 0 : (already2 ? environment.tarifs.member : (info.local ? environment.tarifs.local : environment.tarifs.exterior));
+      const montant = already ? 0 : (already2 ? this.params.TarifMember : (info.local ? this.params.TarifLocal : this.params.TarifExterior));
       this.cart.addItem({
         type: 'adhesion',
         libelle: 'Adhésion ' + environment.asso,
@@ -342,7 +349,7 @@ export class InscriptionPageComponent implements OnInit {
     this.cart.addItem({
       type: 'membre',
       libelle: 'Membre',
-      montant: environment.tarifs.member,
+      montant: this.params.TarifMember,
       user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
     });
     this.setCategTarifs(this.adherent);
@@ -509,7 +516,7 @@ export class InscriptionPageComponent implements OnInit {
     return {
       type: type,
       libelle: categ === 'C' ? 'Adultes avec Licence FSGT' : (categ === 'L' ? 'Adultes en loisirs détente' : 'Ados 13/17 ans avec licence FSGT'),
-      montant: categ === 'C' ? environment.tarifs.license : (categ === 'L' ? environment.tarifs.loisir : environment.tarifs.ado),
+      montant: categ === 'C' ? this.params.TarifLicense : (categ === 'L' ? this.params.TarifLoisir : this.params.TarifAdo),
       user: [user]
     }
   }

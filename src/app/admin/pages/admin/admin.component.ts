@@ -9,6 +9,7 @@ import { Tree } from '@app/core/models/tree.model';
 import { RouteService } from '@app/core/services/route.services';
 import { environment } from '@env/environment';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
+import { Parameters } from '@app/core/models/parameters.model';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -22,6 +23,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   fullApp = environment.fullApp;
   isAdmin = false;
   isManager = false;
+  params: Parameters;
 
   constructor(
     private routeService: RouteService,
@@ -46,6 +48,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     // }).catch((err) => {
     //   console.log('error getting adherents: ', err);
     // });
+    this.adherentService.getParams().then(result => {
+      this.params = result;
+      console.log('parameters: ', this.params);
+    });
   }
 
   ngOnDestroy(): void {

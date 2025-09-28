@@ -22,6 +22,7 @@ import { DynamicDirective } from "./directives/dynamic.directive";
 import { InscriptionService } from "@app/inscription/services/inscription.service";
 import { LoaderService } from "./services/loader.service";
 import { LoaderComponent } from "./components/loader/loader.component";
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
 
@@ -44,6 +45,7 @@ import { LoaderComponent } from "./components/loader/loader.component";
     CoreModule,
     RouterModule,
     FontAwesomeModule,
+    ToastrModule.forRoot(),
     ModalModule.forRoot(),
     AuthenticationModule.forRoot()
   ],
@@ -57,16 +59,16 @@ import { LoaderComponent } from "./components/loader/loader.component";
   ]
 })
 export class LayoutModule {
-    static forRoot(): ModuleWithProviders<LayoutModule> {
-      return {
-        ngModule: LayoutModule,
-        providers: [
-          SliderService,
-          BsModalService,
-          LayoutService,
-          ModalService,
-          LoaderService
-        ]
-      };
-    }
+  static forRoot(): ModuleWithProviders<LayoutModule> {
+    return {
+      ngModule: LayoutModule,
+      providers: [
+        SliderService,
+        BsModalService,
+        LayoutService,
+        ModalService,
+        LoaderService
+      ]
+    };
+  }
 }

@@ -28,6 +28,10 @@
                   <mat-icon class="icon" (click)="goMenu('users', true)">open_in_new</mat-icon>
                   Utilisateurs
                 </button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('params')">
+                  <mat-icon class="icon" (click)="goMenu('params', true)">open_in_new</mat-icon>
+                  Paramètres
+                </button>
                 <!-- <button mat-menu-item (click)="goMenu('posts')">Export</button>
                 <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button> -->
             </mat-menu>

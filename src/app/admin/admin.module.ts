@@ -40,6 +40,7 @@ import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { OrderListeComponent } from './components/order-liste/order-liste.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-doc.component';
+import { ParamsPageComponent } from './pages/params-page/params-page.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-do
     OrdersPageComponent,
     OrderListeComponent,
     OrderCardComponent,
-    BtnActionDocComponent
+    BtnActionDocComponent,
+    ParamsPageComponent
   ],
   imports: [
     CommonModule,

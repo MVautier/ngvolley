@@ -1,0 +1,74 @@
+<div class="center-container">
+    <div class="title">
+        <h1>
+            Paramètres
+        </h1>
+    </div>
+
+    <div class="params-card">
+      <form *ngIf="formGroup" [formGroup]="formGroup" class="form" (ngSubmit)="onFormSubmit(formGroup.value)" [ngClass]="{'mobile': isMobile}">
+        <div class="fields">
+          <h3>Général</h3>
+          <mat-slide-toggle formControlName="InscriptionOpened">Inscriptions ouvertes</mat-slide-toggle>
+
+          <mat-slide-toggle formControlName="Reinscription">Mode Réinscription</mat-slide-toggle>
+
+          <mat-form-field class="form-element row-item">
+            <mat-label>Filtre (identifiants séparés par des virgules ou *)</mat-label>
+            <input matInput placeholder="Filtre" formControlName="InscriptionFilter">
+          </mat-form-field>
+        </div>
+
+        <div class="fields">
+          <h3>Sections</h3>
+          <mat-slide-toggle formControlName="AdoOpened">Jeunes</mat-slide-toggle>
+
+          <mat-slide-toggle formControlName="LoisirOpened">Loisirs</mat-slide-toggle>
+
+          <mat-slide-toggle formControlName="CompetOpened">FSGT</mat-slide-toggle>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Ados max</mat-label>
+            <input matInput placeholder="Ados max" formControlName="NbAdoMax">
+          </mat-form-field>
+        </div>
+
+        <div class="fields">
+          <h3>Tarifs</h3>
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Columérins</mat-label>
+            <input matInput formControlName="TarifLocal">
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Non columérins</mat-label>
+            <input matInput formControlName="TarifExterior">
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Membre supplémentaire</mat-label>
+            <input matInput formControlName="TarifMember">
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Jeunes</mat-label>
+            <input matInput formControlName="TarifAdo">
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>Loisirs</mat-label>
+            <input matInput formControlName="TarifLoisir">
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item number">
+            <mat-label>FSGT</mat-label>
+            <input matInput formControlName="TarifLicense">
+          </mat-form-field>
+        </div>
+
+        <div class="footer">
+          <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+</div>

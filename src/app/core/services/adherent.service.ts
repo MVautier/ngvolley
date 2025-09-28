@@ -13,6 +13,7 @@ import { OrderFull } from "../models/order-full.model";
 import { AdherentSearch } from "../models/adherent-search.model";
 import { OrderSearch } from "../models/order-search.model";
 import { AdherentStat } from "@app/admin/models/adherent-stat.model";
+import { Parameters } from "../models/parameters.model";
 
 @Injectable()
 export class AdherentService {
@@ -34,6 +35,24 @@ export class AdherentService {
 
   getStats(): Promise<AdherentStat[]> {
     return firstValueFrom(this.httpClient.get<AdherentStat[]>(environment.apiUrl + 'Adherent/stats'));
+  }
+
+  getParams(): Promise<Parameters> {
+    return firstValueFrom(this.httpClient.get<Parameters>(environment.apiUrl + 'Adherent/parametres'));
+  }
+
+  setParams(param: Parameters): Promise<Parameters> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.http.post<Parameters>(environment.apiUrl + 'Adherent/parametres', param).then((result: Parameters) => {
+          resolve(result);
+        }).catch(err => {
+          reject(err);
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   getOrders(search: OrderSearch): Promise<OrderFull[]> {

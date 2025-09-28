@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Adherent } from '@app/core/models/adherent.model';
+import { Parameters } from '@app/core/models/parameters.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { StartInscription } from '@app/inscription/models/start-inscription.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
@@ -14,6 +15,7 @@ import { environment } from '@env/environment';
 })
 export class StartFormComponent implements OnInit {
   @Input() start: StartInscription;
+  @Input() params: Parameters;
   @Output() validate: EventEmitter<StartInscription> = new EventEmitter<StartInscription>();
   birthday: Date;
   selectedSection: string;
@@ -23,8 +25,8 @@ export class StartFormComponent implements OnInit {
   asso = environment.asso;
   year: string;
   public isMobile = false;
-  reinscription: boolean = environment.reinscription;
-  inscriptionFilter: string = environment.inscriptionFilter;
+  reinscription: boolean;
+  inscriptionFilter: string;
   inscriptionFilterIds: number[] = [];
   showForm = false;
   adofound: Adherent = undefined;
@@ -60,6 +62,10 @@ export class StartFormComponent implements OnInit {
       this.year = y.toString() + '-' + (y + 1).toString();
       this.sections = this.inscriptionService.sections;
       this.sectionsWithoutVolley = this.inscriptionService.sections.filter(s => s !== 'Volley-ball');
+    }
+    if (this.params) {
+      this.reinscription = this.params.Reinscription;
+      this.inscriptionFilter = this.params.InscriptionFilter;
     }
   }
 

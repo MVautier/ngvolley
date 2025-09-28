@@ -12,22 +12,26 @@ import { ThemePageComponent } from './pages/theme-page/theme-page.component';
 import { AdherentPageComponent } from './pages/adherent-page/adherent-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
+import { ParamsPageComponent } from './pages/params-page/params-page.component';
 
 const routes: Routes = [
-  { path: '', component: AdminComponent, children: [
-    { path: '', canActivate: [IsLoggedGuard], component: DashboardComponent},
-    { path: 'pages', canActivate: [IsLoggedGuard], component: GestionPageComponent},
-    { path: 'pages/:id/edit',  canActivate: [IsLoggedGuard], component: ItemEditComponent},
-    { path: 'posts', canActivate: [IsLoggedGuard], component: PostsPageComponent },
-    { path: 'posts/:id/edit',  canActivate: [IsLoggedGuard], component: ItemEditComponent},
-    { path: 'comments', canActivate: [IsLoggedGuard], component: CommentsPageComponent },
-    { path: 'media', canActivate: [IsLoggedGuard], component: MediaPageComponent },
-    { path: 'theme', canActivate: [IsLoggedGuard],  component: ThemePageComponent },
-    { path: 'adherents', canActivate: [IsLoggedGuard],  component: AdherentPageComponent },
-    { path: 'orders', canActivate: [IsLoggedGuard],  component: OrdersPageComponent },
-    { path: 'users', canActivate: [IsLoggedGuard],  component: UserPageComponent }
-  ] },
-  
+  {
+    path: '', component: AdminComponent, children: [
+      { path: '', canActivate: [IsLoggedGuard], component: DashboardComponent },
+      { path: 'pages', canActivate: [IsLoggedGuard], component: GestionPageComponent },
+      { path: 'pages/:id/edit', canActivate: [IsLoggedGuard], component: ItemEditComponent },
+      { path: 'posts', canActivate: [IsLoggedGuard], component: PostsPageComponent },
+      { path: 'posts/:id/edit', canActivate: [IsLoggedGuard], component: ItemEditComponent },
+      { path: 'comments', canActivate: [IsLoggedGuard], component: CommentsPageComponent },
+      { path: 'media', canActivate: [IsLoggedGuard], component: MediaPageComponent },
+      { path: 'theme', canActivate: [IsLoggedGuard], component: ThemePageComponent },
+      { path: 'adherents', canActivate: [IsLoggedGuard], component: AdherentPageComponent },
+      { path: 'orders', canActivate: [IsLoggedGuard], component: OrdersPageComponent },
+      { path: 'users', canActivate: [IsLoggedGuard], component: UserPageComponent },
+      { path: 'params', canActivate: [IsLoggedGuard], component: ParamsPageComponent }
+    ]
+  },
+
 ];
 
 @NgModule({
