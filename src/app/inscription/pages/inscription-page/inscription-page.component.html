@@ -109,7 +109,7 @@
             </div>
 
             <div class="inscription" [ngClass]="{'mobile': isMobile}">
-                <app-start-form *ngIf="step === 1" [start]="startIns" (validate)="onStep1Validate($event)"></app-start-form>
+                <app-start-form *ngIf="step === 1" [start]="startIns" [params]="params" (validate)="onStep1Validate($event)"></app-start-form>
 
                 <app-main-form *ngIf="step === 2" [adherent]="adherent" [local]="startIns.local" [isMobile]="isMobile"
                     (change)="onAdherentChange($event)"

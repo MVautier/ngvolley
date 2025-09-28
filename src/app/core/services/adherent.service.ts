@@ -90,16 +90,22 @@ export class AdherentService {
   getCategories(): Promise<Category[]> {
     return new Promise((resolve, reject) => {
       try {
-        if (this.obsCategories.value?.length) {
-          resolve(this.obsCategories.value);
-        } else {
-          this.http.get(environment.apiUrl + 'Adherent/category').then((categs: Category[]) => {
-            this.obsCategories.next(categs);
-            resolve(categs);
-          }).catch(err => {
-            reject(err);
-          });
-        }
+        this.http.get(environment.apiUrl + 'Adherent/category').then((categs: Category[]) => {
+          this.obsCategories.next(categs);
+          resolve(categs);
+        }).catch(err => {
+          reject(err);
+        });
+        // if (this.obsCategories.value?.length) {
+        //   resolve(this.obsCategories.value);
+        // } else {
+        //   this.http.get(environment.apiUrl + 'Adherent/category').then((categs: Category[]) => {
+        //     this.obsCategories.next(categs);
+        //     resolve(categs);
+        //   }).catch(err => {
+        //     reject(err);
+        //   });
+        // }
       } catch (err) {
         reject(err);
       }

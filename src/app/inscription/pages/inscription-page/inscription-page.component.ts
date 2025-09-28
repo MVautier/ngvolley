@@ -123,6 +123,9 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  private getParams() {
     this.adherentService.getParams().then(result => {
       this.params = result;
       this.inscriptionOpened = this.params.InscriptionOpened;
@@ -140,9 +143,11 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   init() {
+    console.log('======================== init inscription');
     this.step = 1;
     localStorage.removeItem('adherent');
     localStorage.removeItem('cart');
+    this.getParams();
     this.saison = this.adherentService.obsSeason.value;
     this.title = `Formulaire d\'inscription et de paiement en ligne au ${environment.assoTitle} pour la saison ${this.saison}-${this.saison + 1}`;
     this.title2 = 'Réservé aux adultes pour la compétition, l\'école de Volley et les adultes en loisir étant complets';
