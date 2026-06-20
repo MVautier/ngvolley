@@ -77,6 +77,12 @@ export class StartFormComponent implements OnInit {
         this.adofound = result;
         if (this.adofound && this.inscriptionFilterIds.length) {
           if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {
+            // Trouve cote serveur (nom+prenom+date de naissance) mais exclu par la liste
+            // blanche InscriptionFilter de cette saison. Le message reste generique pour
+            // l'utilisateur (ne pas reveler l'existence du filtre), mais on distingue ce
+            // cas du "non trouve" dans les logs pour pouvoir diagnostiquer une demande
+            // de parent legitime.
+            console.log('réinscription : adhérent trouvé mais exclu par InscriptionFilter', this.adofound.IdAdherent);
             this.adofound = null;
           }
         }
@@ -86,6 +92,7 @@ export class StartFormComponent implements OnInit {
           this.start.found = this.adofound;
           this.showForm = true;
         } else {
+          console.log('réinscription : aucun adhérent trouvé pour', this.start.nom, this.start.prenom, this.birthday);
           this.notFoundError = true;
           this.showForm = false;
         }
