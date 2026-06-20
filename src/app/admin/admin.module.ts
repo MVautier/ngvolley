@@ -34,7 +34,7 @@ import { AdherentCardComponent } from './components/adherent-card/adherent-card.
 //import { AdherentAdminService } from './services/adherent-admin.service';
 import { InscriptionModule } from '@app/inscription/inscription.module';
 import { AdherentFormComponent } from './components/adherent-form/adherent-form.component';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective } from 'ngx-mask';
 import { GenericModalComponent } from './components/generic-modal/generic-modal.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { OrderListeComponent } from './components/order-liste/order-liste.component';
@@ -79,7 +79,7 @@ import { ParamsPageComponent } from './pages/params-page/params-page.component';
     ClickOutsideModule,
     AdminRoutingModule,
     NgxChartsModule,
-    NgxMaskModule
+    NgxMaskDirective
   ],
   providers: [
     IsLoggedGuard,

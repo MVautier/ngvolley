@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective } from 'ngx-mask';
 import { MainFormComponent } from './components/main-form/main-form.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
 import { InscriptionService } from './services/inscription.service';
@@ -19,7 +19,7 @@ import { ByteFormatPipe } from './components/file-input/byte-format.pipe';
 import { SignatureFormComponent } from './components/signature-form/signature-form.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { PhotoTakerComponent } from './components/photo-taker/photo-taker.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 import { WebcamModule } from 'ngx-webcam';
 import { CropperComponent } from './components/cropper/cropper.component';
 import { ImageComponent } from './components/image/image.component';
@@ -73,10 +73,10 @@ import { PopupErrorComponent } from './components/popup-error/popup-error.compon
     MaterialThemeModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    NgxMaskModule,
+    NgxMaskDirective,
     InscriptionRoutingModule,
     NgxDropzoneModule,
-    ImageCropperModule,
+    ImageCropperComponent,
     WebcamModule
   ],
   providers: [

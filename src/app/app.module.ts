@@ -13,7 +13,7 @@ import { CoreModule } from './core/core.module';
 import { LayoutModule } from './ui/layout/layout.module';
 import { SsrService } from './ui/layout/services/ssr.service';
 import { InterceptorClientSide } from './core/interceptors/interceptor-client-side';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { provideNgxMask } from 'ngx-mask';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 
@@ -28,11 +28,11 @@ registerLocaleData(localeFr);
         FontAwesomeModule,
         CoreModule.forRoot(),
         LayoutModule.forRoot(),
-        NgxMaskModule.forRoot(),
         SwiperModule], providers: [
         SsrService,
         { provide: HTTP_INTERCEPTORS, useClass: InterceptorClientSide, multi: true },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        provideNgxMask()
     ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
