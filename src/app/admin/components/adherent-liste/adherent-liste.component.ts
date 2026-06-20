@@ -16,9 +16,10 @@ import { UtilService } from '@app/core/services/util.service';
 import { Subscription, filter, merge, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-adherent-liste',
-  templateUrl: './adherent-liste.component.html',
-  styleUrls: ['./adherent-liste.component.scss']
+    selector: 'app-adherent-liste',
+    templateUrl: './adherent-liste.component.html',
+    styleUrls: ['./adherent-liste.component.scss'],
+    standalone: false
 })
 export class AdherentListeComponent implements OnInit, AfterViewInit {
   dataSource: AdherentDataSource;

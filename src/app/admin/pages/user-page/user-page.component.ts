@@ -3,9 +3,10 @@ import { UserService } from '@app/admin/services/user.service';
 import { UserRole } from '@app/core/models/user-role.model';
 
 @Component({
-  selector: 'app-user-page',
-  templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.scss']
+    selector: 'app-user-page',
+    templateUrl: './user-page.component.html',
+    styleUrls: ['./user-page.component.scss'],
+    standalone: false
 })
 export class UserPageComponent implements OnInit {
   users: UserRole[] = [];

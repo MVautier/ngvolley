@@ -9,9 +9,10 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-start-form',
-  templateUrl: './start-form.component.html',
-  styleUrls: ['./start-form.component.scss'],
+    selector: 'app-start-form',
+    templateUrl: './start-form.component.html',
+    styleUrls: ['./start-form.component.scss'],
+    standalone: false
 })
 export class StartFormComponent implements OnInit {
   @Input() start: StartInscription;

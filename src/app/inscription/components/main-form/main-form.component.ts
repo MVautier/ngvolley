@@ -19,9 +19,10 @@ import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { UtilService } from '@app/core/services/util.service';
 
 @Component({
-  selector: 'app-main-form',
-  templateUrl: './main-form.component.html',
-  styleUrls: ['./main-form.component.scss']
+    selector: 'app-main-form',
+    templateUrl: './main-form.component.html',
+    styleUrls: ['./main-form.component.scss'],
+    standalone: false
 })
 export class MainFormComponent implements OnInit, OnDestroy {
   @Input() adherent: Adherent;

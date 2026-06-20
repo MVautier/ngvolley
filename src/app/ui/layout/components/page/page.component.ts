@@ -8,9 +8,10 @@ import { TransferStateService } from '@app/core/services/transfert-state.service
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.scss']
+    selector: 'app-page',
+    templateUrl: './page.component.html',
+    styleUrls: ['./page.component.scss'],
+    standalone: false
 })
 export class PageComponent implements OnInit, OnDestroy {
   page: WebItem;

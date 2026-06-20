@@ -2,7 +2,8 @@ import { Directive, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/co
 import { Router } from '@angular/router';
 
 @Directive({
-  selector: '[hrefToRouterLink]'
+    selector: '[hrefToRouterLink]',
+    standalone: false
 })
 export class HrefToRouterLinkDirective implements OnInit, OnDestroy {
   private _listeners: { destroy: () => void }[] = [];

@@ -22,9 +22,10 @@ import { UtilService } from '@app/core/services/util.service';
 import { Parameters } from '@app/core/models/parameters.model';
 
 @Component({
-  selector: 'app-inscription-page',
-  templateUrl: './inscription-page.component.html',
-  styleUrls: ['./inscription-page.component.scss']
+    selector: 'app-inscription-page',
+    templateUrl: './inscription-page.component.html',
+    styleUrls: ['./inscription-page.component.scss'],
+    standalone: false
 })
 export class InscriptionPageComponent implements OnInit {
   title: string;

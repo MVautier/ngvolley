@@ -13,9 +13,10 @@ import { ImageRequest } from 'projects/editor/src/lib/models/image-request.model
 import { AngularEditorConfig, FocusedItem } from 'projects/editor/src/public-api';
 
 @Component({
-  selector: 'app-item-edit',
-  templateUrl: './item-edit.component.html',
-  styleUrls: ['./item-edit.component.scss']
+    selector: 'app-item-edit',
+    templateUrl: './item-edit.component.html',
+    styleUrls: ['./item-edit.component.scss'],
+    standalone: false
 })
 export class ItemEditComponent implements OnInit {
   tree: Tree;

@@ -21,17 +21,18 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'ng-select',
-  templateUrl: './ng-select.component.html',
-  styleUrls: ['./ng-select.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NgSelectComponent),
-      multi: true,
-    }
-  ]
+    selector: 'ng-select',
+    templateUrl: './ng-select.component.html',
+    styleUrls: ['./ng-select.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => NgSelectComponent),
+            multi: true,
+        }
+    ],
+    standalone: false
 })
 export class NgSelectComponent implements OnInit, ControlValueAccessor {
   @Input() options: SelectOption[] = [];

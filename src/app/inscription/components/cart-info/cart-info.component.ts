@@ -4,7 +4,8 @@ import { Cart } from '@app/inscription/models/cart.model';
 @Component({
     selector: 'app-cart-info',
     templateUrl: './cart-info.component.html',
-    styleUrls: ['./cart-info.component.scss']
+    styleUrls: ['./cart-info.component.scss'],
+    standalone: false
 })
 export class CartInfoComponent implements OnInit {
     @Input() dark: boolean;

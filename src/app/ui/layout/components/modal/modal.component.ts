@@ -17,9 +17,10 @@ import { HealthFormComponent } from '@app/inscription/components/health-form/hea
 import { PopupAddComponent } from '@app/inscription/components/popup-add/popup-add.component';
 import { PopupErrorComponent } from '@app/inscription/components/popup-error/popup-error.component';
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss'],
+    standalone: false
 })
 export class ModalComponent implements OnInit, OnDestroy {
 

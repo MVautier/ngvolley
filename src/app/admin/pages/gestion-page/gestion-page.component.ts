@@ -10,9 +10,10 @@ import { ModalComponent } from '@app/ui/layout/components/modal/modal.component'
 import { first } from 'rxjs';
 
 @Component({
-  selector: 'app-gestion-page',
-  templateUrl: './gestion-page.component.html',
-  styleUrls: ['./gestion-page.component.scss']
+    selector: 'app-gestion-page',
+    templateUrl: './gestion-page.component.html',
+    styleUrls: ['./gestion-page.component.scss'],
+    standalone: false
 })
 export class GestionPageComponent implements OnInit {
   tree: Tree;

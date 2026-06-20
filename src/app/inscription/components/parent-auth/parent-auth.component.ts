@@ -11,7 +11,8 @@ import SignaturePad from "signature_pad";
 @Component({
     selector: 'app-parent-auth',
     templateUrl: './parent-auth.component.html',
-    styleUrls: ['./parent-auth.component.scss']
+    styleUrls: ['./parent-auth.component.scss'],
+    standalone: false
 })
 export class ParentAuthComponent implements OnInit {
     config: ModalConfig;

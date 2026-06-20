@@ -8,7 +8,8 @@ import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 @Component({
     selector: 'app-health-form',
     templateUrl: './health-form.component.html',
-    styleUrls: ['./health-form.component.scss']
+    styleUrls: ['./health-form.component.scss'],
+    standalone: false
 })
 export class HealthFormComponent implements OnInit {
     config: ModalConfig;

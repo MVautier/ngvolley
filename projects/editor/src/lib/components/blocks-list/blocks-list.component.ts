@@ -4,9 +4,10 @@ import { Block } from '../../models/block.model';
 import { BlocksService } from '../../services/blocks.service';
 
 @Component({
-  selector: 'lib-blocks-list',
-  templateUrl: './blocks-list.component.html',
-  styleUrls: ['./blocks-list.component.scss']
+    selector: 'lib-blocks-list',
+    templateUrl: './blocks-list.component.html',
+    styleUrls: ['./blocks-list.component.scss'],
+    standalone: false
 })
 export class BlocksListComponent implements OnInit, OnDestroy {
   ipsum: string = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras metus diam, lacinia at aliquam sed, 

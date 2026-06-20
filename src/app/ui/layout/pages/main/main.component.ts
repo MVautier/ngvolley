@@ -11,10 +11,11 @@ import { environment } from '@env/environment';
 
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-main',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MainComponent implements OnInit {
   opened = environment.sidenavOpened;

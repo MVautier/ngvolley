@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-item-edit-buttons',
-  templateUrl: './item-edit-buttons.component.html',
-  styleUrls: ['./item-edit-buttons.component.scss']
+    selector: 'app-item-edit-buttons',
+    templateUrl: './item-edit-buttons.component.html',
+    styleUrls: ['./item-edit-buttons.component.scss'],
+    standalone: false
 })
 export class ItemEditButtonsComponent implements OnInit {
   @Input() isExpert: boolean = false;

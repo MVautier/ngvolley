@@ -4,9 +4,10 @@ import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { Dimensions, ImageCroppedEvent, ImageTransform, LoadedImage } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'app-cropper',
-  templateUrl: './cropper.component.html',
-  styleUrls: ['./cropper.component.scss']
+    selector: 'app-cropper',
+    templateUrl: './cropper.component.html',
+    styleUrls: ['./cropper.component.scss'],
+    standalone: false
 })
 export class CropperComponent implements OnInit {
   config: ModalConfig;

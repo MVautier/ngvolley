@@ -6,9 +6,10 @@ import { InscriptionService } from '@app/inscription/services/inscription.servic
 import { AdherentService } from '@app/core/services/adherent.service';
 
 @Component({
-  selector: 'app-document-form',
-  templateUrl: './document-form.component.html',
-  styleUrls: ['./document-form.component.scss']
+    selector: 'app-document-form',
+    templateUrl: './document-form.component.html',
+    styleUrls: ['./document-form.component.scss'],
+    standalone: false
 })
 export class DocumentFormComponent implements OnInit {
   @Input() adherent: Adherent;

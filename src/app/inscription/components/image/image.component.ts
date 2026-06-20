@@ -3,9 +3,10 @@ import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 
 @Component({
-  selector: 'app-image',
-  templateUrl: './image.component.html',
-  styleUrls: ['./image.component.scss']
+    selector: 'app-image',
+    templateUrl: './image.component.html',
+    styleUrls: ['./image.component.scss'],
+    standalone: false
 })
 export class ImageComponent implements OnInit {
   config: ModalConfig;

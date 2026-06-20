@@ -18,9 +18,10 @@ import { TagMap } from '../../../lib/models/tag-map.model';
 import { UtilService } from '../../../lib/services/util.service';
 
 @Component({
-  selector: 'ng-editor-toolbar',
-  templateUrl: './ng-editor-toolbar.component.html',
-  styleUrls: ['./ng-editor-toolbar.component.scss']
+    selector: 'ng-editor-toolbar',
+    templateUrl: './ng-editor-toolbar.component.html',
+    styleUrls: ['./ng-editor-toolbar.component.scss'],
+    standalone: false
 })
 
 export class NgEditorToolbarComponent implements AfterViewInit {

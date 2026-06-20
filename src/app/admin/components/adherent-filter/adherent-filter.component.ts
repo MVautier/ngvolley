@@ -9,9 +9,10 @@ import { EnumPayment } from '@app/core/enums/payment.enum';
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-adherent-filter',
-  templateUrl: './adherent-filter.component.html',
-  styleUrls: ['./adherent-filter.component.scss']
+    selector: 'app-adherent-filter',
+    templateUrl: './adherent-filter.component.html',
+    styleUrls: ['./adherent-filter.component.scss'],
+    standalone: false
 })
 export class AdherentFilterComponent implements OnInit, OnDestroy {
 

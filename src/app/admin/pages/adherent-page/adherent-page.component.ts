@@ -8,7 +8,8 @@ import { AdherentService } from '@app/core/services/adherent.service';
 @Component({
     selector: 'app-adherent-page',
     templateUrl: './adherent-page.component.html',
-    styleUrls: ['./adherent-page.component.scss']
+    styleUrls: ['./adherent-page.component.scss'],
+    standalone: false
 })
 export class AdherentPageComponent implements OnInit {
     adherents: Adherent[] = [];

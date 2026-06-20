@@ -11,9 +11,10 @@ import { environment } from '@env/environment';
 import { AuthorizeApiService } from '@app/authentication/services/authorize-api.service';
 import { Parameters } from '@app/core/models/parameters.model';
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+    selector: 'app-admin',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss'],
+    standalone: false
 })
 export class AdminComponent implements OnInit, OnDestroy {
   tree: Tree;

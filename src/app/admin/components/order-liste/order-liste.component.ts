@@ -10,9 +10,10 @@ import { UtilService } from '@app/core/services/util.service';
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-order-liste',
-  templateUrl: './order-liste.component.html',
-  styleUrls: ['./order-liste.component.scss']
+    selector: 'app-order-liste',
+    templateUrl: './order-liste.component.html',
+    styleUrls: ['./order-liste.component.scss'],
+    standalone: false
 })
 export class OrderListeComponent implements OnInit {
   data: OrderFull[] = [];

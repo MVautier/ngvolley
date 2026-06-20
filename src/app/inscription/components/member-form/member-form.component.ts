@@ -13,9 +13,10 @@ import { Subscription } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 
 @Component({
-  selector: 'app-member-form',
-  templateUrl: './member-form.component.html',
-  styleUrls: ['./member-form.component.scss']
+    selector: 'app-member-form',
+    templateUrl: './member-form.component.html',
+    styleUrls: ['./member-form.component.scss'],
+    standalone: false
 })
 export class MemberFormComponent implements OnInit {
   @Input() adherent: Adherent;

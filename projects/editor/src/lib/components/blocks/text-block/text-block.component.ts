@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-text-block',
-  templateUrl: './text-block.component.html',
-  styleUrls: ['./text-block.component.scss']
+    selector: 'app-text-block',
+    templateUrl: './text-block.component.html',
+    styleUrls: ['./text-block.component.scss'],
+    standalone: false
 })
 export class TextBlockComponent implements OnInit {
 

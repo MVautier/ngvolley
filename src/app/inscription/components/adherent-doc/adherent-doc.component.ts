@@ -18,9 +18,10 @@ import { AdherentDoc } from '@app/core/models/adherent-doc.model';
 import { UtilService } from '@app/core/services/util.service';
 
 @Component({
-  selector: 'app-adherent-doc',
-  templateUrl: './adherent-doc.component.html',
-  styleUrls: ['./adherent-doc.component.scss']
+    selector: 'app-adherent-doc',
+    templateUrl: './adherent-doc.component.html',
+    styleUrls: ['./adherent-doc.component.scss'],
+    standalone: false
 })
 export class AdherentDocComponent implements OnInit {
   @Input() adherent: Adherent;

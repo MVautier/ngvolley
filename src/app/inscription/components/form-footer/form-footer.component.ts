@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-form-footer',
-  templateUrl: './form-footer.component.html',
-  styleUrls: ['./form-footer.component.scss']
+    selector: 'app-form-footer',
+    templateUrl: './form-footer.component.html',
+    styleUrls: ['./form-footer.component.scss'],
+    standalone: false
 })
 export class FormFooterComponent implements OnInit {
 

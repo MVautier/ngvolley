@@ -8,7 +8,8 @@ import { Subscription, takeUntil, Subject } from 'rxjs';
 @Component({
     selector: 'app-photo-taker',
     templateUrl: './photo-taker.component.html',
-    styleUrls: ['./photo-taker.component.scss']
+    styleUrls: ['./photo-taker.component.scss'],
+    standalone: false
 })
 export class PhotoTakerComponent implements OnInit, OnChanges, OnDestroy {
     @Input() checked: CheckAdherent;

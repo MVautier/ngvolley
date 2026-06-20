@@ -3,9 +3,10 @@ import { Component, OnInit, makeStateKey } from '@angular/core';
 import { TransferStateService } from '@app/core/services/transfert-state.service';
 
 @Component({
-  selector: 'app-custom-error',
-  templateUrl: './custom-error.component.html',
-  styleUrls: ['./custom-error.component.scss']
+    selector: 'app-custom-error',
+    templateUrl: './custom-error.component.html',
+    styleUrls: ['./custom-error.component.scss'],
+    standalone: false
 })
 export class CustomErrorComponent implements OnInit {
 

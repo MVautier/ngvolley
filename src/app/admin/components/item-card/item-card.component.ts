@@ -6,9 +6,10 @@ import { WebItem } from '@app/core/models/web-item.model';
 import { RouteService } from '@app/core/services/route.services';
 
 @Component({
-  selector: 'app-item-card',
-  templateUrl: './item-card.component.html',
-  styleUrls: ['./item-card.component.scss']
+    selector: 'app-item-card',
+    templateUrl: './item-card.component.html',
+    styleUrls: ['./item-card.component.scss'],
+    standalone: false
 })
 export class ItemCardComponent implements OnInit {
   @Input() tree: Tree;

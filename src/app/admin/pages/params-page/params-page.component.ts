@@ -5,9 +5,10 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-params-page',
-  templateUrl: './params-page.component.html',
-  styleUrls: ['./params-page.component.scss']
+    selector: 'app-params-page',
+    templateUrl: './params-page.component.html',
+    styleUrls: ['./params-page.component.scss'],
+    standalone: false
 })
 export class ParamsPageComponent implements OnInit {
 

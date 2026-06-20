@@ -3,9 +3,10 @@ import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 
 @Component({
-  selector: 'app-popup-remove',
-  templateUrl: './popup-remove.component.html',
-  styleUrls: ['./popup-remove.component.scss']
+    selector: 'app-popup-remove',
+    templateUrl: './popup-remove.component.html',
+    styleUrls: ['./popup-remove.component.scss'],
+    standalone: false
 })
 export class PopupRemoveComponent implements OnInit {
     config: ModalConfig;

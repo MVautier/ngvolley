@@ -16,9 +16,10 @@ import { DatePipe } from '@angular/common';
 import { LoaderService } from '@app/ui/layout/services/loader.service';
 
 @Component({
-  selector: 'app-adherent-card',
-  templateUrl: './adherent-card.component.html',
-  styleUrls: ['./adherent-card.component.scss']
+    selector: 'app-adherent-card',
+    templateUrl: './adherent-card.component.html',
+    styleUrls: ['./adherent-card.component.scss'],
+    standalone: false
 })
 export class AdherentCardComponent implements OnInit, OnChanges {
   @Input() adherent: Adherent;
