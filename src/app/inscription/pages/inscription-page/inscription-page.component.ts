@@ -51,7 +51,6 @@ export class InscriptionPageComponent implements OnInit {
   notifier = new Subject<void>();
   subModal: Subscription;
   saison: number;
-  redirectUrl = 'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/edbd162482a640d1ac05710a05943f38';
   params: Parameters;
 
   constructor(

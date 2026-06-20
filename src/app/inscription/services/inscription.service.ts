@@ -14,7 +14,6 @@ import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 export class InscriptionService {
   private obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(new Adherent(null, null, null, null));
   public obsAddMember: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
-  private adherents: Adherent[] = [];
   requiredAlert: string = 'Ce champ est requis';
   phoneInputMask = '00 00 00 00 00||(+99) 0 00 00 00 00';
   cpInputMask = '00000';
@@ -55,11 +54,7 @@ export class InscriptionService {
   ];
 
 
-  constructor(private adherentService: AdherentService) {
-    // this.adherentService.getListe(false, false).then(list => {
-    //   this.adherents = list;
-    // });
-  }
+  constructor(private adherentService: AdherentService) { }
 
   setManualFill(value: boolean) {
     this.manualFill = value;
@@ -87,12 +82,6 @@ export class InscriptionService {
         resolve(null);
       }
     });
-    // if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
-    //   return this.adherents.find(a => a.BirthdayDate && this.normalize(a.FirstName) === this.normalize(adherent.FirstName)
-    //     && this.normalize(a.LastName) === this.normalize(adherent.LastName)
-    //     && this.compareDate(a.BirthdayDate, adherent.BirthdayDate) === 0);
-    // }
-    // return null;
   }
 
   findAdo(nom: string, prenom: string, birthday: Date): Promise<Adherent> {
@@ -101,9 +90,6 @@ export class InscriptionService {
         this.adherentService.searchAdherent(nom, prenom, birthday).then(adherent => {
           resolve(adherent);
         }).catch(err => reject(err));
-        // return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(prenom)
-        //   && this.normalize(a.LastName) === this.normalize(nom)
-        //   && this.compareDate(a.BirthdayDate, birthday) === 0);
       } else {
         resolve(null);
       }
@@ -264,10 +250,6 @@ export class InscriptionService {
       && check.accept
       : true);
     return check;
-  }
-
-  private normalize(s: string): string {
-    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
   }
 
   public isNull(value): boolean {
