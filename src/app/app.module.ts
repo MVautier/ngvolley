@@ -23,7 +23,7 @@ registerLocaleData(localeFr);
     AppComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'colomiers-volley' }),
+    BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
