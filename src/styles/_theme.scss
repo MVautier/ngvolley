@@ -2,46 +2,46 @@
 @use "@angular/material" as mat;
 @include mat.core();
 :root {
-    $label: mat.define-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
+    $label: mat.m2-define-typography-level(16px, 27px, 300, $font-family: 'Roboto, "Helvetica Neue", sans-serif');
 
     $typography-config: map.merge(
-        mat.define-typography-config(
+        mat.m2-define-typography-config(
             $font-family: 'Roboto, "Helvetica Neue", sans-serif',
-            $headline-1: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
-            $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-            $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-            $headline-4: mat.define-typography-level(34px, 40px, 400),
-            $headline-5: mat.define-typography-level(20px, 27px, 500),
-            $headline-6: mat.define-typography-level(20px, 27px, 400),
-            $subtitle-2: mat.define-typography-level(15px, 17px, 400),
-            $subtitle-1: mat.define-typography-level(16px, 21px, 500),
-            $body-2: mat.define-typography-level(16px, 21px, 400),
-            $body-1: mat.define-typography-level(16px, 25px, 500),
-            $caption: mat.define-typography-level(14px, 21px, 400),
-            $button: mat.define-typography-level(16px, 21px, 400),
+            $headline-1: mat.m2-define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+            $headline-2: mat.m2-define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+            $headline-3: mat.m2-define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+            $headline-4: mat.m2-define-typography-level(34px, 40px, 400),
+            $headline-5: mat.m2-define-typography-level(20px, 27px, 500),
+            $headline-6: mat.m2-define-typography-level(20px, 27px, 400),
+            $subtitle-2: mat.m2-define-typography-level(15px, 17px, 400),
+            $subtitle-1: mat.m2-define-typography-level(16px, 21px, 500),
+            $body-2: mat.m2-define-typography-level(16px, 21px, 400),
+            $body-1: mat.m2-define-typography-level(16px, 25px, 500),
+            $caption: mat.m2-define-typography-level(14px, 21px, 400),
+            $button: mat.m2-define-typography-level(16px, 21px, 400),
         ),
         (
             "label": $label,
         )
     );
 
-    $light-app-theme: mat.define-light-theme(
+    $light-app-theme: mat.m2-define-light-theme(
         (
             color: (
-                primary: mat.define-palette(mat.$indigo-palette),
-                accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400),
-                warn: mat.define-palette(mat.$red-palette),
+                primary: mat.m2-define-palette(mat.$m2-indigo-palette),
+                accent: mat.m2-define-palette(mat.$m2-indigo-palette, A200, A100, A400),
+                warn: mat.m2-define-palette(mat.$m2-red-palette),
             ),
             typography: $typography-config,
         )
     );
 
-    $dark-app-theme: mat.define-dark-theme(
+    $dark-app-theme: mat.m2-define-dark-theme(
         (
             color: (
-                primary: mat.define-palette(mat.$yellow-palette, 700),
-                accent: mat.define-palette(mat.$amber-palette, 800),
-                warn: mat.define-palette(mat.$amber-palette),
+                primary: mat.m2-define-palette(mat.$m2-yellow-palette, 700),
+                accent: mat.m2-define-palette(mat.$m2-amber-palette, 800),
+                warn: mat.m2-define-palette(mat.$m2-amber-palette),
             ),
             typography: $typography-config,
         )
@@ -52,10 +52,10 @@
     @include mat.all-component-themes($dark-app-theme);
 
     @mixin typography($theme) {
-        $typography-config: mat.get-typography-config($theme);
+        $typography-config: mat.m2-get-typography-config($theme);
 
         .mat-mdc-form-field .mat-mdc-floating-label {
-            @include mat.typography-level($typography-config, "label");
+            @include mat.m2-typography-level($typography-config, "label");
         }
     }
 
@@ -64,16 +64,16 @@
         $_foreground: map-get($theme, foreground);
         $_primary: map-get($theme, primary);
         $_accent: map-get($theme, accent);
-        $background-color: mat.get-color-from-palette($_background, background);
-        $background-color-dialog: mat.get-color-from-palette($_background, dialog);
-        $foreground-color: mat.get-color-from-palette($_foreground, text);
-        $border-color: mat.get-color-from-palette($_foreground, divider, 0.3);
-        $primary-color: mat.get-color-from-palette($_primary);
-        $accent-color: mat.get-color-from-palette($_accent);
+        $background-color: mat.m2-get-color-from-palette($_background, background);
+        $background-color-dialog: mat.m2-get-color-from-palette($_background, dialog);
+        $foreground-color: mat.m2-get-color-from-palette($_foreground, text);
+        $border-color: mat.m2-get-color-from-palette($_foreground, divider, 0.3);
+        $primary-color: mat.m2-get-color-from-palette($_primary);
+        $accent-color: mat.m2-get-color-from-palette($_accent);
         @if $theme == $dark-app-theme {
-            $border-color: mat.get-color-from-palette($_foreground, divider, 0.3);
+            $border-color: mat.m2-get-color-from-palette($_foreground, divider, 0.3);
         } @else {
-            $border-color: mat.get-color-from-palette($_foreground, divider);
+            $border-color: mat.m2-get-color-from-palette($_foreground, divider);
         }
         --background: #{$background-color};
         --background-dialog: #{$background-color-dialog};
@@ -110,7 +110,7 @@
 // );
 
 // .dark-theme {
-//   /* ======== angular material dark theme ======== */
+//   __<<ngM2ThemingMigrationEscapedComment0>>__
 //   $dark-primary: mat-palette($mat-yellow, 700);
 //   $dark-accent: mat-palette($mat-amber, 800);
 //   $dark-warn: mat-palette($mat-yellow);

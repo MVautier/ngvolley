@@ -3,11 +3,11 @@
 @mixin tile-theme($theme) {
     $accent: map-get($theme, accent);
     $background: map-get($theme, background);
-    $background-color: mat.get-color-from-palette($background, card);
+    $background-color: mat.m2-get-color-from-palette($background, card);
 
     .tile {
         @include mat.elevation(2);
-        background: mat.get-color-from-palette($accent);
+        background: mat.m2-get-color-from-palette($accent);
         border: 1rem solid $background-color;
         border-radius: 5px;
         padding: 2rem;
