@@ -131,6 +131,13 @@
                         </div>
                     </div>
 
+                    <div class="error" *ngIf="paymentCode === 'refused'">
+                        <h3>Paiement refusé</h3>
+                        <div class="payment-error">
+                            Votre paiement a été refusé par Helloasso. Votre inscription n'est pas finalisée : aucune somme n'a été débitée. Vous pouvez réessayer ou contacter {{asso}} si le problème persiste.
+                        </div>
+                    </div>
+
                     <div class="success" *ngIf="paymentStatus === 'success' && paymentCode === 'succeeded'">
                         <h3 class="title">Paiement effectué</h3>
                         <div class="title">
