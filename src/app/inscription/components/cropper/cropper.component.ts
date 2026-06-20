@@ -86,8 +86,8 @@ zoomIn() {
         scale: this.scale
     };
 }
-  onOpacity(event: any) {
-    this.opacity = event.value;
+  onOpacity(event: Event) {
+    this.opacity = +(event.target as HTMLInputElement).value;
     const img = document.querySelector('#cropped');
     this.renderer.setStyle(img, 'opacity', this.opacity / 100);
   }

@@ -45,15 +45,8 @@
             <img id="cropped" [src]="croppedImage" />
         </div>
         <div class="crop-slider">
-            <mat-slider
-                thumbLabel
-                (input)="onOpacity($event)"
-                tickInterval="1"
-                min="0"
-                max="100"
-                step="1"
-                [value]="opacity"
-                >
+            <mat-slider discrete min="0" max="100" step="1">
+                <input matSliderThumb [value]="opacity" (input)="onOpacity($event)">
             </mat-slider>
         </div>
     </div>
