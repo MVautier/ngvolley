@@ -7,6 +7,7 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { StartInscription } from '@app/inscription/models/start-inscription.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { environment } from '@env/environment';
+import { LIENS_PRINCIPAL_MAJEUR, LIENS_PRINCIPAL_MINEUR } from '@app/inscription/validators/member-tariff';
 
 @Component({
     selector: 'app-start-form',
@@ -32,7 +33,7 @@ export class StartFormComponent implements OnInit {
   showForm = false;
   adofound: Adherent = undefined;
   notFoundError: boolean = false;
-  liens: string[] = ['Pére', 'Mère', 'Frère mineur', 'Soeur mineure'];
+  liens: string[] = [...LIENS_PRINCIPAL_MAJEUR, ...LIENS_PRINCIPAL_MINEUR];
   selectedLien: string;
   notFoundText = 'Un nom, un prénom et une date de naissance valides doivents être fournis pour la réinscription.';
 

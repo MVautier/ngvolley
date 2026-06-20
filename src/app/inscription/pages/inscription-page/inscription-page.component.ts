@@ -20,6 +20,8 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Order } from '@app/core/models/order.model';
 import { UtilService } from '@app/core/services/util.service';
 import { Parameters } from '@app/core/models/parameters.model';
+import { getAdultCutoffDate } from '@app/inscription/validators/eligibility';
+import { isMemberTariffEligible } from '@app/inscription/validators/member-tariff';
 
 @Component({
     selector: 'app-inscription-page',
@@ -187,7 +189,42 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   onAdherentChange(adherent: Adherent) {
+    this.updateAdhesionMontant(adherent);
     this.setCategTarifs(adherent);
+  }
+
+  /**
+   * Calcule le montant de la ligne d'adhesion. Cas "already2" (un autre membre de la
+   * famille est deja inscrit) : le tarif reduit (TarifMember) ne s'applique que si le
+   * lien declare est compatible avec le statut majeur/mineur du principal (voir
+   * member-tariff.ts). Tant que la date de naissance du principal n'est pas encore
+   * connue (saisie a l'etape 2), le tarif plein est applique par defaut -- voir
+   * updateAdhesionMontant() qui corrige le montant une fois la date de naissance connue.
+   */
+  private computeAdhesionMontant(adherent: Adherent): number {
+    const already = this.startIns?.already && this.startIns.section !== null;
+    const already2 = this.startIns?.already2 && this.startIns.nom2 !== null && this.startIns.prenom2 !== null && this.startIns.lien != null && this.startIns.section !== null;
+    if (already) {
+      return 0;
+    }
+    const tarifPlein = this.startIns?.local ? this.params.TarifLocal : this.params.TarifExterior;
+    if (!already2 || !adherent?.BirthdayDate) {
+      return tarifPlein;
+    }
+    const principalIsAdult = getAdultCutoffDate(this.saison) > new Date(adherent.BirthdayDate);
+    return isMemberTariffEligible(principalIsAdult, this.startIns.lien) ? this.params.TarifMember : tarifPlein;
+  }
+
+  private updateAdhesionMontant(adherent: Adherent) {
+    if (!this.cart || !this.startIns?.already2 || !adherent?.Uid) {
+      return;
+    }
+    this.cart.addItem({
+      type: 'adhesion',
+      libelle: 'Adhésion ' + environment.asso,
+      montant: this.computeAdhesionMontant(adherent),
+      user: [adherent.Uid]
+    });
   }
 
   // onAddMemberFromCart() {
@@ -224,11 +261,10 @@ export class InscriptionPageComponent implements OnInit {
       }
 
       this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-      const montant = already ? 0 : (already2 ? this.params.TarifMember : (info.local ? this.params.TarifLocal : this.params.TarifExterior));
       this.cart.addItem({
         type: 'adhesion',
         libelle: 'Adhésion ' + environment.asso,
-        montant: montant,
+        montant: this.computeAdhesionMontant(this.adherent),
         user: [this.adherent.Uid]
       });
       if (this.adherent.Category) {
