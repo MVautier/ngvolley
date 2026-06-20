@@ -268,6 +268,12 @@ export class InscriptionService {
    * Filtre les categories proposees a l'inscription selon les interrupteurs admin
    * AdoOpened ('E')/LoisirOpened ('L')/CompetOpened ('C'). Une categorie deja bloquee
    * par le backend (Category.Blocked) reste filtree independamment de ces parametres.
+   *
+   * Parameters.NbAdoMax (plafond du nombre d'ados) n'est volontairement pas applique ici :
+   * cela demanderait un decompte fiable en temps reel des inscriptions Ados deja prises
+   * cette saison, qu'aucun endpoint frontend ne fournit de maniere verifiable a ce jour
+   * (Adherent/stats renvoie des libelles generiques sans garantie de correspondance avec
+   * la categorie). A implementer si un decompte fiable devient disponible.
    */
   public filterOpenCategories(categories: Category[], params: Parameters): Category[] {
     if (!params) {
