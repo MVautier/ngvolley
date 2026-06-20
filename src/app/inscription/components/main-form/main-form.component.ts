@@ -115,7 +115,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
+      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
       'address': [this.adherent.Address, [Validators.required]],
       'postalcode': [this.adherent.PostalCode, [Validators.required, Validators.pattern(this.local ? patterns.localpostalcode.pattern : patterns.postalcode.pattern)]],
       'city': [this.adherent.City, [Validators.required, Validators.pattern(patterns.onlystring.pattern)]],

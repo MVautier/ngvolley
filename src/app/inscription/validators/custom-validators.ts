@@ -1,14 +1,20 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 import { environment } from "@env/environment";
 import { CheckAdherent } from "../models/check-adherent.model";
+import { getMinAgeCutoffDate } from "./eligibility";
 
 export class CustomValidators {
-  static dateCheck(checked: CheckAdherent): ValidatorFn {
+  /**
+   * Verifie l'age minimum (environment.minage) sur la base de la saison admin, et la
+   * coherence avec checked.birthdayDateValid (calcule par InscriptionService.checkAdherent
+   * avec la meme reference de saison -- voir eligibility.ts).
+   */
+  static dateCheck(checked: CheckAdherent, seasonYear: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {
         return null;
       }
-      const valideDate = new Date(new Date().getFullYear() - environment.minage, 11, 31);
+      const valideDate = getMinAgeCutoffDate(seasonYear, environment.minage);
       const minDate = valideDate >= new Date(control.value);
       return minDate && checked.birthdayDateValid ? null : (!minDate ? {
         'date-minimum': {

@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { CartItem } from '../models/cart-item.model';
 import { Cart } from '../models/cart.model';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
+import { environment } from '@env/environment';
+import { getAdultCutoffDate, getMinAgeCutoffDate } from '../validators/eligibility';
 
 @Injectable()
 export class InscriptionService {
@@ -184,11 +186,7 @@ export class InscriptionService {
     check.certifLabel = 'Attestation ou certificat';
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';
     let dateValid = false;
-    const d = new Date();
     const y = this.adherentService.obsSeason.value;
-    const nextY = y + 1; // d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
-
-
 
     // Traitement certificat
     // Desactive intentionnellement depuis le commit 4d4800e (2023-09-06, "evol certificat
@@ -230,9 +228,8 @@ export class InscriptionService {
 
     // Traitement date de naissance
     if (adherent.BirthdayDate) {
-      //const date18 = new Date(nextY - 18, 6, 1);
-      const date18 = new Date(y - 18, 11, 31);
-      const date13 = new Date(nextY - 13, 11, 31);
+      const date18 = getAdultCutoffDate(y);
+      const date13 = getMinAgeCutoffDate(y, environment.minage);
       if (['C', 'L'].includes(adherent.Category)) {
         dateValid = this.compareDate(date18, adherent.BirthdayDate) > 0;
         check.parentAuthNeeded = false;

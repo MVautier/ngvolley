@@ -7,7 +7,6 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
 import { FileValidator } from '../file-input/file-validator';
-import { environment } from '@env/environment';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subscription } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
@@ -68,13 +67,12 @@ export class MemberFormComponent implements OnInit {
     this._locale = 'fr';
     this._adapter.setLocale(this._locale);
     const patterns = this.inscriptionService.patterns;
-    const minYear = new Date().getFullYear() - environment.minage;
     this.formGroup = this.formBuilder.group({
       'id': [this.adherent.IdAdherent],
       'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
+      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
       'phone': [this.adherent.Phone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
       'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
       'relationship': [this.adherent.Relationship, [Validators.required]],
