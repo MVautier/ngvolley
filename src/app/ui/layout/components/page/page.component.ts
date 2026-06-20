@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { makeStateKey } from '@angular/platform-browser';
+import { Component, OnDestroy, OnInit, makeStateKey } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomError } from '@app/core/models/custom-error.model';
 import { WebItem } from '@app/core/models/web-item.model';

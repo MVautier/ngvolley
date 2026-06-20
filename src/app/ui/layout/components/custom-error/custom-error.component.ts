@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { makeStateKey } from '@angular/platform-browser';
+import { Component, OnInit, makeStateKey } from '@angular/core';
+
 import { TransferStateService } from '@app/core/services/transfert-state.service';
 
 @Component({
