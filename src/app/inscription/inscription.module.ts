@@ -6,7 +6,7 @@ import { InscriptionPageComponent } from './pages/inscription-page/inscription-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialThemeModule } from '@app/material-theme/material-theme.module';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { NgxMaskModule } from 'ngx-mask';
 import { MainFormComponent } from './components/main-form/main-form.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
