@@ -100,4 +100,18 @@ export class UtilService {
         const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
         return new Date(UTCDate);
     }
+
+    /**
+     * JSON.parse qui ne leve pas d'exception sur un contenu corrompu ou incompatible
+     * (ex: localStorage rempli par une version anterieure de l'application).
+     */
+    public safeJsonParse<T>(value: string | null): T | null {
+        if (!value) return null;
+        try {
+            return JSON.parse(value) as T;
+        } catch (err) {
+            console.error('safeJsonParse: contenu invalide, ignore: ', value, err);
+            return null;
+        }
+    }
 }

@@ -92,7 +92,7 @@ export class InscriptionPageComponent implements OnInit {
       if (this.paymentStatus) {
         this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
-        this.cart = JSON.parse(localStorage.getItem('cart') as string);
+        this.cart = this.util.safeJsonParse<Cart>(localStorage.getItem('cart'));
         if (this.paymentStatus === 'cancel') {
           this.step = 4;
         } else {
@@ -135,7 +135,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   private getAdherentFromLocalstorage(): Adherent {
-    const adherent = JSON.parse(localStorage.getItem('adherent') as string);
+    const adherent = this.util.safeJsonParse<Adherent>(localStorage.getItem('adherent'));
     if (adherent && adherent.BirthdayDate) {
       adherent.BirthdayDate = new Date(adherent.BirthdayDate);
     }
@@ -316,15 +316,13 @@ export class InscriptionPageComponent implements OnInit {
             this.onAddMember();
           } else {
             if (this.adherent.Membres?.length) {
-              this.adherent.Membres.forEach(async m => {
+              for (const m of this.adherent.Membres) {
                 const found = await this.inscriptionService.getExistingAdherent(m);
-                if (found) {
-                  if (found.Saison === this.saison) {
-                    error = true;
-                    message += `<br>Le membre ${m.FirstName} ${m.LastName} est déjà inscrit(e) pour cette saison`;
-                  }
+                if (found && found.Saison === this.saison) {
+                  error = true;
+                  message += `<br>Le membre ${m.FirstName} ${m.LastName} est déjà inscrit(e) pour cette saison`;
                 }
-              });
+              }
             }
             if (!error) {
               this.inscriptionService.setAdherent(this.adherent);
