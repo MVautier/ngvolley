@@ -191,6 +191,12 @@ export class InscriptionService {
 
 
     // Traitement certificat
+    // Desactive intentionnellement depuis le commit 4d4800e (2023-09-06, "evol certificat
+    // + mode normal"), au profit du questionnaire de sante auto-declare (cf. Questionary /
+    // AdherentDocComponent.showHealthForm()) qui a remplace la verification de validite a
+    // 3 ans du certificat uploade ci-dessous. Ne pas reactiver sans verifier que cette
+    // logique de renouvellement automatique est toujours pertinente vis-a-vis du
+    // questionnaire de sante.
     check.certifNeeded = false;
     // if (adherent.HealthFile || adherent.CertificateFile) {
     //     check.certifNeeded = false;
@@ -212,6 +218,9 @@ export class InscriptionService {
     // }
 
     // Traitement licence
+    // Desactive intentionnellement depuis le commit 37eda52 (2023-06-05, "evol reinscription").
+    // Ne pas reactiver sans confirmer que l'obligation de licence existante pour les
+    // categories C/E (commentee ci-dessous) est toujours la regle metier voulue.
     //check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
     check.licenceNeeded = false;
     check.licenceError = false;

@@ -9,7 +9,6 @@ export class CustomValidators {
         return null;
       }
       const valideDate = new Date(new Date().getFullYear() - environment.minage, 11, 31);
-      const valideDateAdulte = new Date(new Date().getFullYear() - 18, 8, 1);
       const minDate = valideDate >= new Date(control.value);
       return minDate && checked.birthdayDateValid ? null : (!minDate ? {
         'date-minimum': {
@@ -25,6 +24,12 @@ export class CustomValidators {
     };
   }
 
+  /**
+   * Verifie que le payeur (formulaire de paiement) est majeur. Seuil intentionnellement
+   * distinct de l'eligibilite par categorie (InscriptionService.checkAdherent, 31/12 de
+   * la saison admin) : ici on reste sur l'annee calendaire reelle et le 1er septembre.
+   * Ne pas aligner sur l'autre seuil sans verifier que ca ne change pas qui peut payer.
+   */
   static checkAdult(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {
