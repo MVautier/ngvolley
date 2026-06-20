@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -22,25 +21,28 @@
     ],
     "paths": {
       "@angular/*": [
-        "node_modules/@angular/*"
+        "./node_modules/@angular/*"
       ],
       "@app/*": [
-        "src/app/*"
+        "./src/app/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
       "@env/*": [
-        "src/environments/*"
+        "./src/environments/*"
       ],
       "@core/*": [
-        "src/app/core/*"
+        "./src/app/core/*"
       ],
       "@editor": [
-        "projects/editor"
+        "./projects/editor"
+      ],
+      "@editor/*": [
+        "./projects/editor/src/*"
       ],
       "@sass": [
-        "src/app/sass"
+        "./src/app/sass"
       ]
     },
     "useDefineForClassFields": false

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { EditorService } from 'projects/editor/src/public-api';
+import { EditorService } from '@editor/public-api';
 import { GalleryService } from './gallery.service';
 
 
