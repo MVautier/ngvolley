@@ -11,6 +11,8 @@ import { Cart } from '../models/cart.model';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { environment } from '@env/environment';
 import { getAdultCutoffDate, getMinAgeCutoffDate } from '../validators/eligibility';
+import { Category } from '@app/core/models/category.model';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Injectable()
 export class InscriptionService {
@@ -260,5 +262,22 @@ export class InscriptionService {
 
   public isNull(value): boolean {
     return value === null || value === undefined || value === '';
+  }
+
+  /**
+   * Filtre les categories proposees a l'inscription selon les interrupteurs admin
+   * AdoOpened ('E')/LoisirOpened ('L')/CompetOpened ('C'). Une categorie deja bloquee
+   * par le backend (Category.Blocked) reste filtree independamment de ces parametres.
+   */
+  public filterOpenCategories(categories: Category[], params: Parameters): Category[] {
+    if (!params) {
+      return categories;
+    }
+    const openByCode: { [code: string]: boolean } = {
+      'E': params.AdoOpened,
+      'L': params.LoisirOpened,
+      'C': params.CompetOpened
+    };
+    return categories.filter(c => openByCode[c.Code] !== false);
   }
 }

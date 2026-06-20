@@ -188,7 +188,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <section class="inscription" [ngClass]="{'mobile': isMobile}">
-                <app-member-form [adherent]="member" [isMobile]="isMobile"
+                <app-member-form [adherent]="member" [isMobile]="isMobile" [params]="params"
                     (change)="onMemberChange($event)"></app-member-form>
             </section>
         </mat-expansion-panel>

@@ -17,6 +17,7 @@ import { PdfMakerService } from '@app/core/services/pdf-maker.service';
 import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { UtilService } from '@app/core/services/util.service';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Component({
     selector: 'app-main-form',
@@ -29,6 +30,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
   @Input() members: Adherent[] = [];
   @Input() local: boolean;
   @Input() isMobile: boolean;
+  @Input() params: Parameters;
   @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   @Output() validateForm: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   @Output() cancelForm: EventEmitter<void> = new EventEmitter<void>();
@@ -74,7 +76,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
         }
       });
       this.adherentService.getCategories().then(liste => {
-        this.categories = liste.filter(c => !c.Blocked);
+        this.categories = this.inscriptionService.filterOpenCategories(liste.filter(c => !c.Blocked), this.params);
         this.initForm();
         this.formGroup.markAllAsTouched();
         console.log('categories: ', this.categories);

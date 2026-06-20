@@ -10,6 +10,7 @@ import { FileValidator } from '../file-input/file-validator';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subscription } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Component({
     selector: 'app-member-form',
@@ -20,6 +21,7 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 export class MemberFormComponent implements OnInit {
   @Input() adherent: Adherent;
   @Input() isMobile: boolean;
+  @Input() params: Parameters;
   @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   //@Output() remove: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   formGroup: FormGroup;
@@ -47,7 +49,7 @@ export class MemberFormComponent implements OnInit {
     this.choosenSection = this.adherent.Category !== null;
     this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
     this.adherentService.getCategories().then(async liste => {
-      this.categories = liste.filter(c => !c.Blocked);
+      this.categories = this.inscriptionService.filterOpenCategories(liste.filter(c => !c.Blocked), this.params);
       this.initForm();
       await this.checkAdherent(this.adherent);
       this.formGroup.markAllAsTouched();
