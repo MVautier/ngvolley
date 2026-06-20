@@ -92,7 +92,7 @@ export class InscriptionPageComponent implements OnInit {
       if (this.paymentStatus) {
         this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
-        this.cart = JSON.parse(localStorage.getItem('cart'));
+        this.cart = JSON.parse(localStorage.getItem('cart') as string);
         if (this.paymentStatus === 'cancel') {
           this.step = 4;
         } else {
@@ -135,7 +135,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   private getAdherentFromLocalstorage(): Adherent {
-    const adherent = JSON.parse(localStorage.getItem('adherent'));
+    const adherent = JSON.parse(localStorage.getItem('adherent') as string);
     if (adherent && adherent.BirthdayDate) {
       adherent.BirthdayDate = new Date(adherent.BirthdayDate);
     }
