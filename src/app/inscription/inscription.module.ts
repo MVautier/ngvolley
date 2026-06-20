@@ -14,7 +14,8 @@ import { InscriptionService } from './services/inscription.service';
 import { StartFormComponent } from './components/start-form/start-form.component';
 import { CartInfoComponent } from './components/cart-info/cart-info.component';
 import { LayoutModule } from '@app/ui/layout/layout.module';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { FileInputComponent } from './components/file-input/file-input.component';
+import { ByteFormatPipe } from './components/file-input/byte-format.pipe';
 import { SignatureFormComponent } from './components/signature-form/signature-form.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { PhotoTakerComponent } from './components/photo-taker/photo-taker.component';
@@ -59,7 +60,9 @@ import { PopupErrorComponent } from './components/popup-error/popup-error.compon
     HealthFormComponent,
     FormInfoComponent,
     PopupAddComponent,
-    PopupErrorComponent
+    PopupErrorComponent,
+    FileInputComponent,
+    ByteFormatPipe
   ],
   imports: [
     CommonModule,
@@ -72,7 +75,6 @@ import { PopupErrorComponent } from './components/popup-error/popup-error.compon
     MatAutocompleteModule,
     NgxMaskModule,
     InscriptionRoutingModule,
-    MaterialFileInputModule,
     NgxDropzoneModule,
     ImageCropperModule,
     WebcamModule

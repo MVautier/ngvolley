@@ -6,7 +6,7 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Observable, Subject, Subscription, takeUntil, fromEvent } from 'rxjs';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FileValidator, FileInput } from 'ngx-material-file-input';
+import { FileValidator } from '../file-input/file-validator';
 import { map } from 'rxjs/operators';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';

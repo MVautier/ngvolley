@@ -6,7 +6,7 @@ import { Category } from '@app/core/models/category.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
-import { FileValidator } from 'ngx-material-file-input';
+import { FileValidator } from '../file-input/file-validator';
 import { environment } from '@env/environment';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subscription } from 'rxjs';
