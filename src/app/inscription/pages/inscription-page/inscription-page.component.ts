@@ -22,6 +22,7 @@ import { UtilService } from '@app/core/services/util.service';
 import { Parameters } from '@app/core/models/parameters.model';
 import { getAdultCutoffDate } from '@app/inscription/validators/eligibility';
 import { isMemberTariffEligible } from '@app/inscription/validators/member-tariff';
+import { applySeasonToken } from '@app/inscription/validators/season-text';
 
 @Component({
     selector: 'app-inscription-page',
@@ -128,12 +129,21 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   /**
+   * Bandeau d'information toujours affiche si renseigne. Editable depuis /admin ->
+   * Parametres (params.SubHeader). Le jeton {saison} y est remplace par la plage
+   * "annee-annee+1" -- voir applySeasonToken().
+   */
+  get subHeader(): string {
+    return applySeasonToken(this.params?.SubHeader, this.saison);
+  }
+
+  /**
    * Message affiche quand les inscriptions sont fermees. Editable depuis /admin ->
    * Parametres (params.Text1) ; a defaut (champ vide), repli sur un message generique
    * base sur la saison admin pour ne jamais afficher un texte completement absent.
    */
   get closedInscriptionsMessage(): string {
-    return this.params?.Text1 ||
+    return applySeasonToken(this.params?.Text1, this.saison) ||
       `Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison ${this.saison}-${this.saison + 1}.\n` +
       `Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l'Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.`;
   }
@@ -143,9 +153,17 @@ export class InscriptionPageComponent implements OnInit {
    * (params.Text2), meme logique de repli que closedInscriptionsMessage.
    */
   get reinscriptionMessage(): string {
-    return this.params?.Text2 ||
+    return applySeasonToken(this.params?.Text2, this.saison) ||
       `Pour le moment, les inscriptions ${this.saison}-${this.saison + 1} ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.\n` +
       `Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l'année dernière.`;
+  }
+
+  /**
+   * Paragraphe d'information complementaire, toujours affiche si renseigne. Editable
+   * depuis /admin -> Parametres (params.Text3), meme substitution {saison}.
+   */
+  get text3(): string {
+    return applySeasonToken(this.params?.Text3, this.saison);
   }
 
   private getParams() {

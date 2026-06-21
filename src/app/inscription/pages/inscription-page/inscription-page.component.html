@@ -10,7 +10,7 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
-          <p *ngIf="params?.SubHeader" class="dynamic-text">{{params.SubHeader}}</p>
+          <p *ngIf="subHeader" class="dynamic-text">{{subHeader}}</p>
 
           <p *ngIf="!inscriptionOpened" class="dynamic-text">
             <b>{{closedInscriptionsMessage}}</b>
@@ -43,7 +43,7 @@
             <br>
             Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>.
           </p>
-          <p *ngIf="params?.Text3" class="dynamic-text">{{params.Text3}}</p>
+          <p *ngIf="text3" class="dynamic-text">{{text3}}</p>
         </div>
 
         <div class="form" *ngIf="reinscription || inscriptionOpened">
