@@ -127,6 +127,27 @@ export class InscriptionPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Message affiche quand les inscriptions sont fermees. Editable depuis /admin ->
+   * Parametres (params.Text1) ; a defaut (champ vide), repli sur un message generique
+   * base sur la saison admin pour ne jamais afficher un texte completement absent.
+   */
+  get closedInscriptionsMessage(): string {
+    return this.params?.Text1 ||
+      `Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison ${this.saison}-${this.saison + 1}.\n` +
+      `Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l'Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.`;
+  }
+
+  /**
+   * Message affiche en mode reinscription. Editable depuis /admin -> Parametres
+   * (params.Text2), meme logique de repli que closedInscriptionsMessage.
+   */
+  get reinscriptionMessage(): string {
+    return this.params?.Text2 ||
+      `Pour le moment, les inscriptions ${this.saison}-${this.saison + 1} ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.\n` +
+      `Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l'année dernière.`;
+  }
+
   private getParams() {
     this.adherentService.getParams().then(result => {
       this.params = result;

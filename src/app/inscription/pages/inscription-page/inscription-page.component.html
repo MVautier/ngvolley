@@ -10,74 +10,40 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
-          <!-- <p>
-            <b>
-              Les réinscriptions sont momentanément fermées.
-              <br>
-            </b>
-            <br><br>
+          <p *ngIf="params?.SubHeader" class="dynamic-text">{{params.SubHeader}}</p>
 
-            Merci de votre compréhension.
-          </p> -->
-          <p *ngIf="!inscriptionOpened">
-            <b>
-              Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison 2025-2026.
-              <br>
-              Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l’Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.
-            </b>
+          <p *ngIf="!inscriptionOpened" class="dynamic-text">
+            <b>{{closedInscriptionsMessage}}</b>
             <br><br>
           </p>
 
-          <p *ngIf="reinscription"> 
-             <b>Pour le moment, les inscriptions 2025-2026 ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.</b>
+          <p *ngIf="reinscription" class="dynamic-text">
+            <b>{{reinscriptionMessage}}</b>
+          </p>
+
+          <p>
+             Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
+            l'adhésion en ligne.<br><br>
+            Cela peut être une adhésion familiale ou individuelle.<br><br>
+
+            Un tarif préférentiel est accordé aux Columérins ({{params?.TarifLocal}}€ au lieu de {{params?.TarifExterior}}€). <br><br>
+
+            Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de {{params?.TarifMember}}€ chacun.
+          </p>
+          <p class="info-warning">
+            Les inscriptions pour la formule Compétition FSGT ne peuvent se faire qu'avec l'accord du capitaine de l'équipe.
+          </p>
+          <p>
+            Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)
+
             <br><br>
-            <b>Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l’année dernière. </b>
-          </p> 
-
-           <!-- <p *ngIf="!reinscription"> 
-            <b>Les inscriptions pour les mineurs ne sont plus possibles, l'école de Volley étant complète.</b>
-            <b>Les inscriptions pour la formule Loisir sont réouvertes pour quelques places supplémentaires.</b>
-           </p> -->
-
-           <!-- <p>
-            <b>
-              Les derniers joueurs en équipe FSGT ne peuvent s'inscrire qu'avec l'accord du capitaine de l'équipe.
-              <br><br>
-              Les inscriptions pour les mineurs sont closes. 
-            </b>
+            Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
             <br><br>
-          </p>  -->
-
-          <!-- <p *ngIf="!reinscription && !inscriptionOpened">
-            <b>Les inscriptions adultes seront prochainement ouvertes.</b>
-            <br><br>
-          </p> -->
-            
-<!-- A remettre-->
-        <p>
-           Ce formulaire vous permet de vous inscrire au Club Loisirs Léo Lagrange de Colomiers (CLLLC) et de payer
-          l'adhésion en ligne.<br><br>
-          Cela peut être une adhésion familiale ou individuelle.<br><br>
-        
-          Un tarif préférentiel est accordé aux Columérins (19€ au lieu de 27€). <br><br>
-
-          Pour les autres adhérents de la même famille (parent, conjoint, enfants ou frère ou sœur mineurs) et à la même adresse, le montant est de 6€ chacun.
-        </p>
-        <p class="info-warning">
-          Les inscriptions pour la formule Compétition FSGT ne peuvent se faire qu'avec l'accord du capitaine de l'équipe.
-        </p>
-        <p>
-          Pour réaliser cette inscription, il est <b>obligatoire</b> de remplir une attestation de santé en ligne (ou sinon de présenter et téléverser un certificat médical de moins d'un an)  
-
-          <br><br>
-          Ne pas oublier aussi de préparer votre <b>n° de licence</b> si vous en avez un.
-          <br><br>
-          <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
-          <br>
-          Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>. 
-        </p>
-
-<!-- A remettre-->
+            <b>IMPORTANT</b> Le paiement se fait exclusivement en ligne.
+            <br>
+            Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>.
+          </p>
+          <p *ngIf="params?.Text3" class="dynamic-text">{{params.Text3}}</p>
         </div>
 
         <div class="form" *ngIf="reinscription || inscriptionOpened">

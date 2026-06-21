@@ -66,6 +66,29 @@
           </mat-form-field>
         </div>
 
+        <div class="fields">
+          <h3>Textes de la page d'inscription</h3>
+          <mat-form-field class="form-element row-item">
+            <mat-label>Bandeau d'information (toujours affiché si rempli)</mat-label>
+            <textarea matInput formControlName="SubHeader" rows="2"></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item">
+            <mat-label>Message affiché quand les inscriptions sont fermées</mat-label>
+            <textarea matInput formControlName="Text1" rows="4"></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item">
+            <mat-label>Message affiché en mode Réinscription</mat-label>
+            <textarea matInput formControlName="Text2" rows="4"></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item">
+            <mat-label>Information complémentaire (toujours affichée si remplie)</mat-label>
+            <textarea matInput formControlName="Text3" rows="4"></textarea>
+          </mat-form-field>
+        </div>
+
         <div class="footer">
           <button mat-raised-button color="primary" type="submit">Enregistrer</button>
         </div>
