@@ -82,6 +82,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       this.adherentService.getCategories().then(liste => {
         this.categories = this.inscriptionService.filterOpenCategories(liste.filter(c => !c.Blocked), this.params);
         this.initForm();
+        this.updateTeamValidator();
         this.formGroup.markAllAsTouched();
         console.log('categories: ', this.categories);
         this.formGroup.valueChanges.subscribe(async val => {
@@ -90,6 +91,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
           this.choosenSection = adh.Category !== null;
           this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
           this.isCompet = this.choosenSection && adh.Category === 'C';
+          this.updateTeamValidator();
           await this.checkAdherent(adh);
           this.inscriptionService.checkControl(this.formGroup, 'birthdate');
           this.titles[0] = this.getTitle(adh, false);
@@ -135,6 +137,24 @@ export class MainFormComponent implements OnInit, OnDestroy {
       'team1': [this.adherent.Team1],
       'sections': [this.adherent.Sections]
     });
+  }
+
+  /**
+   * L'equipe (team1) n'est obligatoire que pour la categorie Competition FSGT ('C') --
+   * voir isCompet. Appele a l'initialisation du formulaire et a chaque changement de
+   * categorie.
+   */
+  private updateTeamValidator() {
+    const teamControl = this.formGroup.get('team1');
+    if (this.isCompet) {
+      teamControl.setValidators([Validators.required]);
+    } else {
+      teamControl.setValidators([]);
+      if (teamControl.value) {
+        teamControl.setValue(null, { emitEvent: false });
+      }
+    }
+    teamControl.updateValueAndValidity({ emitEvent: false });
   }
 
   async checkAdherent(adherent: Adherent) {

@@ -25,6 +25,9 @@
                     <mat-select formControlName="team1">
                         <mat-option *ngFor="let t of teams" [value]="t">{{t}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="!formGroup.controls['team1'].valid && formGroup.controls['team1'].touched">
+                        {{ getInputError('team1') }}
+                    </mat-error>
                 </mat-form-field>
 
                 <div *ngIf="choosenSection && noLicenceRequired" class="border-div">
