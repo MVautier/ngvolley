@@ -40,8 +40,10 @@ export class MainFormComponent implements OnInit, OnDestroy {
   cpInputMask: string;
   choosenSection = false;
   noLicenceRequired = false;
+  isCompet = false;
   checked: CheckAdherent;
   categories: Category[] = [];
+  teams: string[] = [];
   subAddAdherent: Subscription;
   titles: string[] = [];
   notifier = new Subject<void>();
@@ -63,12 +65,14 @@ export class MainFormComponent implements OnInit, OnDestroy {
     this.all_sections = this.inscriptionService.sections;
     this.phoneInputMask = this.inscriptionService.phoneInputMask;
     this.cpInputMask = this.inscriptionService.cpInputMask;
+    this.teams = this.adherentService.obsTeams.value;
     if (this.adherent) {
       this.titles.push(this.getTitle(this.adherent, false));
       await this.checkAdherent(this.adherent);
       this.members = [].concat(this.adherent.Membres || []);
       this.choosenSection = this.adherent.Category !== null;
       this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
+      this.isCompet = this.choosenSection && this.adherent.Category === 'C';
       this.subAddAdherent = this.inscriptionService.obsAddMember.subscribe(member => {
         if (member) {
           member.Membres = [];
@@ -85,6 +89,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
           this.adherent.Sections = adh.Sections;
           this.choosenSection = adh.Category !== null;
           this.noLicenceRequired = this.choosenSection && adh.Category === 'L';
+          this.isCompet = this.choosenSection && adh.Category === 'C';
           await this.checkAdherent(adh);
           this.inscriptionService.checkControl(this.formGroup, 'birthdate');
           this.titles[0] = this.getTitle(adh, false);
@@ -127,6 +132,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       'alert2': [this.adherent.Alert2, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
       'alert3': [this.adherent.Alert3, [Validators.minLength(0), Validators.maxLength(500), Validators.pattern(patterns.alert.pattern)]],
       'category': [this.adherent.Category, [Validators.required]],
+      'team1': [this.adherent.Team1],
       'sections': [this.adherent.Sections]
     });
   }
@@ -332,6 +338,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       TrainingTE: category !== null && category === 'L' ? this.adherent.TrainingTE : null,
       TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
       TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
+      Team1: category === 'C' ? this.formGroup.get('team1').value : null,
       Documents: this.adherent.Documents,
       Saison: this.adherent.Saison,
       VerifC3L: this.adherent.VerifC3L,

@@ -19,7 +19,7 @@ import { Parameters } from "../models/parameters.model";
 export class AdherentService {
   public obsAdherents: BehaviorSubject<Adherent[]> = new BehaviorSubject<Adherent[]>([]);
   public obsCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
-  public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4', 'Mixte 1', 'Mixte 2', 'Mixte 3']);
+  public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Mixte 1', 'Mixte 2', 'Mixte 3', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4']);
   public obsSeason: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(
