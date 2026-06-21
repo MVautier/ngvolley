@@ -32,7 +32,13 @@
       }
     }
     .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      background: var(--background, #fff);
       text-align: right;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
       button {
         width: 200px;
       }
