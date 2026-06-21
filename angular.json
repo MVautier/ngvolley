@@ -140,6 +140,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "prebundle": {
+              "exclude": ["@fortawesome/angular-fontawesome", "mime-db"]
+            }
+          },
           "configurations": {
             "production": {
               "buildTarget": "colomiers-volley:build:production"
