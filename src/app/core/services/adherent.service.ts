@@ -182,6 +182,17 @@ export class AdherentService {
     });
   }
 
+  sendMailing(mailing: { subject: string, body: string, emails: string[] }): Promise<void> {
+    const url = `${environment.apiUrl}Adherent/mailing/send`;
+    return new Promise((resolve, reject) => {
+      this.http.post(url, { Subject: mailing.subject, Body: mailing.body, Emails: mailing.emails }).then(() => {
+        resolve();
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
   prepareAdherentForBdd(adherent: Adherent): Adherent {
     let d: Date;
     if (adherent.BirthdayDate) {

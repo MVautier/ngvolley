@@ -14,6 +14,9 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
 import { UtilService } from '@app/core/services/util.service';
 import { Subscription, filter, merge, tap } from 'rxjs';
+import { MailingListService } from '@app/admin/services/mailing-list.service';
+import { MailingListModalComponent } from '../mailing-list-modal/mailing-list-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'app-adherent-liste',
@@ -45,6 +48,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   sub_router: Subscription;
   selectedAdherent: Adherent;
+  mailingListCount: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +59,8 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     private util: UtilService,
     private adherentAdminService: AdherentAdminService,
     private snackBar: MatSnackBar,
+    private mailingListService: MailingListService,
+    private bsModal: BsModalService,
     private adherentService: AdherentService) {
     this.sub_router = this.router.events
       .pipe(
@@ -78,6 +84,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     this.filter.Payment = EnumPayment.Tous;
     this.dataSource.loadData(this.filter);
     console.log('dataSource: ', this.dataSource);
+    this.mailingListService.list$.subscribe(list => this.mailingListCount = list.length);
   }
 
   ngAfterViewInit(): void {
@@ -195,6 +202,20 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
 
   hideCard() {
     this.selectedAdherent = null;
+  }
+
+  onSwitchAdherent(adherent: Adherent) {
+    this.selectedAdherent = adherent;
+  }
+
+  openMailingList() {
+    const modalRef = this.bsModal.show(
+      MailingListModalComponent,
+      Object.assign({}, { class: 'gray modal-xlg' })
+    );
+    modalRef.content.cancel.subscribe(() => {
+      modalRef.hide();
+    });
   }
 
   manualFill() {

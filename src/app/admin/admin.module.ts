@@ -41,6 +41,9 @@ import { OrderListeComponent } from './components/order-liste/order-liste.compon
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-doc.component';
 import { ParamsPageComponent } from './pages/params-page/params-page.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MailingListModalComponent } from './components/mailing-list-modal/mailing-list-modal.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,8 @@ import { ParamsPageComponent } from './pages/params-page/params-page.component';
     OrderListeComponent,
     OrderCardComponent,
     BtnActionDocComponent,
-    ParamsPageComponent
+    ParamsPageComponent,
+    MailingListModalComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +83,9 @@ import { ParamsPageComponent } from './pages/params-page/params-page.component';
     ClickOutsideModule,
     AdminRoutingModule,
     NgxChartsModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    MatAutocompleteModule,
+    MatBadgeModule
   ],
   providers: [
     IsLoggedGuard,

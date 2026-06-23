@@ -14,6 +14,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { DatePipe } from '@angular/common';
 import { LoaderService } from '@app/ui/layout/services/loader.service';
+import { AdherentFilter } from '@app/core/models/adherent-filter.model';
+import { MailingListService } from '@app/admin/services/mailing-list.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-adherent-card',
@@ -26,6 +29,9 @@ export class AdherentCardComponent implements OnInit, OnChanges {
   @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   @Output() reload: EventEmitter<void> = new EventEmitter<void>();
   @Output() hide: EventEmitter<void> = new EventEmitter<void>();
+  @Output() switchAdherent: EventEmitter<Adherent> = new EventEmitter<Adherent>();
+  search: string;
+  searchResults: Adherent[] = [];
   photo_default = 'assets/images/user-default.png';
   photo: string;
   signature: string;
@@ -56,6 +62,8 @@ export class AdherentCardComponent implements OnInit, OnChanges {
     private datePipe: DatePipe,
     private loader: LoaderService,
     private pdf: PdfMakerService,
+    private mailingListService: MailingListService,
+    private toastr: ToastrService,
     private fileService: FileService) { }
 
   ngOnInit(): void {
@@ -268,5 +276,33 @@ export class AdherentCardComponent implements OnInit, OnChanges {
 
   returnToListe() {
     this.hide.emit();
+  }
+
+  onSearch() {
+    if (this.search && this.search.length >= 2) {
+      const filter = new AdherentFilter(null, 'LastName', 'Contains', this.search, null);
+      this.adherentService.findAdherents(filter).subscribe(result => {
+        this.searchResults = result.Datas || [];
+      });
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+  onSelectResult(adherent: Adherent) {
+    this.search = '';
+    this.searchResults = [];
+    this.switchAdherent.emit(this.util.bindDates(adherent));
+  }
+
+  addToMailingList() {
+    if (!this.adherent?.Email) {
+      return;
+    }
+    if (this.mailingListService.add(this.adherent.Email)) {
+      this.toastr.success(this.adherent.Email, 'Ajouté à la liste de diffusion');
+    } else {
+      this.toastr.info(this.adherent.Email, 'Déjà présent dans la liste de diffusion');
+    }
   }
 }

@@ -8,7 +8,17 @@
             <button type="button" mat-raised-button color="primary" matPrefix (click)="openEdit()">
                 <mat-icon>edit</mat-icon>Modifier la fiche
             </button>
+            <button type="button" mat-raised-button color="primary" matPrefix [disabled]="!adherent?.Email" (click)="addToMailingList()">
+                <mat-icon>mail</mat-icon>Ajouter à la liste de diffusion
+            </button>
         </div>
+        <mat-form-field class="search">
+            <mat-label>Basculer vers un autre adhérent</mat-label>
+            <input matInput placeholder="Nom" [(ngModel)]="search" (ngModelChange)="onSearch()" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectResult($event.option.value)">
+                <mat-option *ngFor="let a of searchResults" [value]="a">{{a.LastName}} {{a.FirstName}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
     </div>
 
     <div class="adherent-card" *ngIf="adherent">

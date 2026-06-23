@@ -1,0 +1,34 @@
+@import "modal";
+
+.ng-modal-body {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 70px;
+}
+
+.mailing-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.mailing-emails {
+  flex: 0 1 220px;
+  min-height: 0;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.mailing-email-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.mailing-empty {
+  color: #888;
+}
