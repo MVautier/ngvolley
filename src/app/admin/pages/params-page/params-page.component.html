@@ -71,6 +71,12 @@
           <p class="hint">Astuce : écrivez <code>{{ '{saison}' }}</code> n'importe où dans ces textes pour qu'il soit automatiquement remplacé par la saison en cours (ex. 2026-2027) — inutile de le réécrire chaque saison.</p>
 
           <mat-form-field class="form-element row-item">
+            <mat-label>Sous-titre (affiché sous le titre principal, sur toutes les étapes, si rempli)</mat-label>
+            <textarea matInput formControlName="Text3" rows="4"></textarea>
+            <mat-hint>Jeton disponible : {{ '{saison}' }}</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="form-element row-item">
             <mat-label>Bandeau d'information (toujours affiché si rempli)</mat-label>
             <textarea matInput formControlName="SubHeader" rows="2"></textarea>
             <mat-hint>Jeton disponible : {{ '{saison}' }}</mat-hint>
@@ -85,12 +91,6 @@
           <mat-form-field class="form-element row-item">
             <mat-label>Message affiché en mode Réinscription</mat-label>
             <textarea matInput formControlName="Text2" rows="4"></textarea>
-            <mat-hint>Jeton disponible : {{ '{saison}' }}</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field class="form-element row-item">
-            <mat-label>Information complémentaire (toujours affichée si remplie)</mat-label>
-            <textarea matInput formControlName="Text3" rows="4"></textarea>
             <mat-hint>Jeton disponible : {{ '{saison}' }}</mat-hint>
           </mat-form-field>
         </div>

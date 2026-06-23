@@ -2,8 +2,8 @@
     <h1>
       {{title}}
     </h1>
-    <h2 *ngIf="!reinscription">
-      {{title2}}
+    <h2 *ngIf="!reinscription && text3">
+      {{text3}}
     </h2>
 </div>
 
@@ -43,7 +43,6 @@
             <br>
             Pour les paiements pass-sport, tickets sport et chèques vacances, l'inscription reste manuelle avec des documents papier à récupérer sur le site <a href="https://colomiers-volley.fr/?page_id=227" target="_blank">https://colomiers-volley.fr/?page_id=227</a>.
           </p>
-          <p *ngIf="text3" class="dynamic-text">{{text3}}</p>
         </div>
 
         <div class="form" *ngIf="reinscription || inscriptionOpened">

@@ -32,7 +32,6 @@ import { applySeasonToken } from '@app/inscription/validators/season-text';
 })
 export class InscriptionPageComponent implements OnInit {
   title: string;
-  title2: string;
   step = 1;
   reinscription: boolean;
   inscriptionOpened: boolean;
@@ -166,8 +165,9 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   /**
-   * Paragraphe d'information complementaire, toujours affiche si renseigne. Editable
-   * depuis /admin -> Parametres (params.Text3), meme substitution {saison}.
+   * Sous-titre affiche sous le titre principal, sur toutes les etapes (sauf en mode
+   * reinscription). Editable depuis /admin -> Parametres (params.Text3), meme
+   * substitution {saison}.
    */
   get text3(): string {
     return applySeasonToken(this.params?.Text3, this.saison);
@@ -198,7 +198,6 @@ export class InscriptionPageComponent implements OnInit {
     this.getParams();
     this.saison = this.adherentService.obsSeason.value;
     this.title = `Formulaire d\'inscription et de paiement en ligne au ${environment.assoTitle} pour la saison ${this.saison}-${this.saison + 1}`;
-    this.title2 = 'Réservé aux adultes pour la compétition, l\'école de Volley et les adultes en loisir étant complets';
     this.startIns = {
       local: true,
       already: false,
