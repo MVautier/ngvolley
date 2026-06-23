@@ -9,12 +9,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { CartItem } from '../models/cart-item.model';
 import { Cart } from '../models/cart.model';
 import { AdherentFilter } from '@app/core/models/adherent-filter.model';
+import { environment } from '@env/environment';
+import { getAdultCutoffDate, getMinAgeCutoffDate } from '../validators/eligibility';
+import { Category } from '@app/core/models/category.model';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Injectable()
 export class InscriptionService {
   private obsAdherent: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(new Adherent(null, null, null, null));
   public obsAddMember: BehaviorSubject<Adherent> = new BehaviorSubject<Adherent>(null);
-  private adherents: Adherent[] = [];
   requiredAlert: string = 'Ce champ est requis';
   phoneInputMask = '00 00 00 00 00||(+99) 0 00 00 00 00';
   cpInputMask = '00000';
@@ -55,11 +58,7 @@ export class InscriptionService {
   ];
 
 
-  constructor(private adherentService: AdherentService) {
-    // this.adherentService.getListe(false, false).then(list => {
-    //   this.adherents = list;
-    // });
-  }
+  constructor(private adherentService: AdherentService) { }
 
   setManualFill(value: boolean) {
     this.manualFill = value;
@@ -87,12 +86,6 @@ export class InscriptionService {
         resolve(null);
       }
     });
-    // if (adherent && adherent.FirstName && adherent.LastName && adherent.BirthdayDate) {
-    //   return this.adherents.find(a => a.BirthdayDate && this.normalize(a.FirstName) === this.normalize(adherent.FirstName)
-    //     && this.normalize(a.LastName) === this.normalize(adherent.LastName)
-    //     && this.compareDate(a.BirthdayDate, adherent.BirthdayDate) === 0);
-    // }
-    // return null;
   }
 
   findAdo(nom: string, prenom: string, birthday: Date): Promise<Adherent> {
@@ -101,9 +94,6 @@ export class InscriptionService {
         this.adherentService.searchAdherent(nom, prenom, birthday).then(adherent => {
           resolve(adherent);
         }).catch(err => reject(err));
-        // return this.adherents.find(a => this.normalize(a.FirstName) === this.normalize(prenom)
-        //   && this.normalize(a.LastName) === this.normalize(nom)
-        //   && this.compareDate(a.BirthdayDate, birthday) === 0);
       } else {
         resolve(null);
       }
@@ -198,13 +188,15 @@ export class InscriptionService {
     check.certifLabel = 'Attestation ou certificat';
     check.certifPlaceHolder = 'Importer un certificat médical ou une attestation de santé';
     let dateValid = false;
-    const d = new Date();
     const y = this.adherentService.obsSeason.value;
-    const nextY = y + 1; // d.getFullYear() + (d.getMonth() > 5 ? 0 : 1);
-
-
 
     // Traitement certificat
+    // Desactive intentionnellement depuis le commit 4d4800e (2023-09-06, "evol certificat
+    // + mode normal"), au profit du questionnaire de sante auto-declare (cf. Questionary /
+    // AdherentDocComponent.showHealthForm()) qui a remplace la verification de validite a
+    // 3 ans du certificat uploade ci-dessous. Ne pas reactiver sans verifier que cette
+    // logique de renouvellement automatique est toujours pertinente vis-a-vis du
+    // questionnaire de sante.
     check.certifNeeded = false;
     // if (adherent.HealthFile || adherent.CertificateFile) {
     //     check.certifNeeded = false;
@@ -226,6 +218,9 @@ export class InscriptionService {
     // }
 
     // Traitement licence
+    // Desactive intentionnellement depuis le commit 37eda52 (2023-06-05, "evol reinscription").
+    // Ne pas reactiver sans confirmer que l'obligation de licence existante pour les
+    // categories C/E (commentee ci-dessous) est toujours la regle metier voulue.
     //check.licenceNeeded = ['C', 'E'].includes(adherent.Category) && this.isNull(adherent.Licence);
     check.licenceNeeded = false;
     check.licenceError = false;
@@ -235,9 +230,8 @@ export class InscriptionService {
 
     // Traitement date de naissance
     if (adherent.BirthdayDate) {
-      //const date18 = new Date(nextY - 18, 6, 1);
-      const date18 = new Date(y - 18, 11, 31);
-      const date13 = new Date(nextY - 13, 11, 31);
+      const date18 = getAdultCutoffDate(y);
+      const date13 = getMinAgeCutoffDate(y, environment.minage);
       if (['C', 'L'].includes(adherent.Category)) {
         dateValid = this.compareDate(date18, adherent.BirthdayDate) > 0;
         check.parentAuthNeeded = false;
@@ -266,11 +260,30 @@ export class InscriptionService {
     return check;
   }
 
-  private normalize(s: string): string {
-    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-  }
-
   public isNull(value): boolean {
     return value === null || value === undefined || value === '';
+  }
+
+  /**
+   * Filtre les categories proposees a l'inscription selon les interrupteurs admin
+   * AdoOpened ('E')/LoisirOpened ('L')/CompetOpened ('C'). Une categorie deja bloquee
+   * par le backend (Category.Blocked) reste filtree independamment de ces parametres.
+   *
+   * Parameters.NbAdoMax (plafond du nombre d'ados) n'est volontairement pas applique ici :
+   * cela demanderait un decompte fiable en temps reel des inscriptions Ados deja prises
+   * cette saison, qu'aucun endpoint frontend ne fournit de maniere verifiable a ce jour
+   * (Adherent/stats renvoie des libelles generiques sans garantie de correspondance avec
+   * la categorie). A implementer si un decompte fiable devient disponible.
+   */
+  public filterOpenCategories(categories: Category[], params: Parameters): Category[] {
+    if (!params) {
+      return categories;
+    }
+    const openByCode: { [code: string]: boolean } = {
+      'E': params.AdoOpened,
+      'L': params.LoisirOpened,
+      'C': params.CompetOpened
+    };
+    return categories.filter(c => openByCode[c.Code] !== false);
   }
 }

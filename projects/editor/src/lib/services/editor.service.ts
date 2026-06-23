@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {CustomClass} from './config';
 import { UndoManagerService } from './undo-manager.service';
 import { UndoItem } from '../../lib/models/undo-item.model';

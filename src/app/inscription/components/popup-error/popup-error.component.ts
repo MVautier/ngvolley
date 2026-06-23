@@ -3,9 +3,10 @@ import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 
 @Component({
-  selector: 'app-popup-error',
-  templateUrl: './popup-error.component.html',
-  styleUrls: ['./popup-error.component.scss']
+    selector: 'app-popup-error',
+    templateUrl: './popup-error.component.html',
+    styleUrls: ['./popup-error.component.scss'],
+    standalone: false
 })
 export class PopupErrorComponent implements OnInit {
   config: ModalConfig;

@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormService } from './services/form.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WysiswygService } from './services/wysiswyg.service';
-import { BuilderEditorModule } from 'projects/editor/src/lib/builder-editor.module';
+import { BuilderEditorModule } from '@editor/lib/builder-editor.module';
 import { UtilService } from './services/util.service';
 import { CoreModule } from '@app/core/core.module';
 import { GalleryService } from './services/gallery.service';
@@ -34,13 +34,16 @@ import { AdherentCardComponent } from './components/adherent-card/adherent-card.
 //import { AdherentAdminService } from './services/adherent-admin.service';
 import { InscriptionModule } from '@app/inscription/inscription.module';
 import { AdherentFormComponent } from './components/adherent-form/adherent-form.component';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective } from 'ngx-mask';
 import { GenericModalComponent } from './components/generic-modal/generic-modal.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { OrderListeComponent } from './components/order-liste/order-liste.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { BtnActionDocComponent } from './components/btn-action-doc/btn-action-doc.component';
 import { ParamsPageComponent } from './pages/params-page/params-page.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MailingListModalComponent } from './components/mailing-list-modal/mailing-list-modal.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,8 @@ import { ParamsPageComponent } from './pages/params-page/params-page.component';
     OrderListeComponent,
     OrderCardComponent,
     BtnActionDocComponent,
-    ParamsPageComponent
+    ParamsPageComponent,
+    MailingListModalComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +83,9 @@ import { ParamsPageComponent } from './pages/params-page/params-page.component';
     ClickOutsideModule,
     AdminRoutingModule,
     NgxChartsModule,
-    NgxMaskModule
+    NgxMaskDirective,
+    MatAutocompleteModule,
+    MatBadgeModule
   ],
   providers: [
     IsLoggedGuard,

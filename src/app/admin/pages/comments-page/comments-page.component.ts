@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-comments-page',
-  templateUrl: './comments-page.component.html',
-  styleUrls: ['./comments-page.component.scss']
+    selector: 'app-comments-page',
+    templateUrl: './comments-page.component.html',
+    styleUrls: ['./comments-page.component.scss'],
+    standalone: false
 })
 export class CommentsPageComponent implements OnInit {
 

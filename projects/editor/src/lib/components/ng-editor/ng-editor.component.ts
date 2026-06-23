@@ -31,17 +31,18 @@ import { FocusedItem } from '../../../lib/models/focused-item.model';
 import { TableService } from '../../../lib/services/table.service';
 
 @Component({
-  selector: 'ng-editor',
-  templateUrl: './ng-editor.component.html',
-  styleUrls: ['./ng-editor.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NgEditorComponent),
-      multi: true
-    },
-    //AngularEditorService
-  ]
+    selector: 'ng-editor',
+    templateUrl: './ng-editor.component.html',
+    styleUrls: ['./ng-editor.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => NgEditorComponent),
+            multi: true
+        },
+        //AngularEditorService
+    ],
+    standalone: false
 })
 export class NgEditorComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnDestroy {
 

@@ -8,7 +8,8 @@ import SignaturePad from "signature_pad";
     styleUrls: ['./signature-form.component.scss'],
     host: {
         '(keyup.ctrl.k)': 'clear()'
-    }
+    },
+    standalone: false
 })
 export class SignatureFormComponent implements OnInit {
     @Input() signature: string;

@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -13,35 +12,21 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "skipLibCheck": true,
-    "target": "es2015",
+    "strictPropertyInitialization": false,
+    "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "paths": {
-      "@angular/*": [
-        "node_modules/@angular/*"
-      ],
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@env/*": [
-        "src/environments/*"
-      ],
-      "@core/*": [
-        "src/app/core/*"
-      ],
-      "@editor": [
-        "projects/editor"
-      ],
-      "@sass": [
-        "src/app/sass"
-      ]
-    }
+      "@angular/*": ["./node_modules/@angular/*"],
+      "@app/*": ["./src/app/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@env/*": ["./src/environments/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@editor": ["./projects/editor"],
+      "@editor/*": ["./projects/editor/src/*"],
+      "@sass": ["./src/app/sass"]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": true

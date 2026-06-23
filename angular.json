@@ -15,12 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "browser": "src/main.ts",
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -45,7 +45,11 @@
               "core-js",
               "ngx-charts",
               "rfdc",
-              "rgbcolor"
+              "rgbcolor",
+              "dom-to-image",
+              "mime-db",
+              "html2canvas",
+              "dompurify"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -87,14 +91,10 @@
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             },
             "development": {
-              "buildOptimizer": true,
               "optimization": true,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
@@ -118,9 +118,7 @@
               ]
             },
             "local": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
@@ -142,17 +140,22 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "prebundle": {
+              "exclude": ["@fortawesome/angular-fontawesome", "mime-db"]
+            }
+          },
           "configurations": {
             "production": {
-              "browserTarget": "colomiers-volley:build:production"
+              "buildTarget": "colomiers-volley:build:production"
             },
             "development": {
-              "browserTarget": "colomiers-volley:build:development",
-              "port": 4224
+              "port": 4224,
+              "buildTarget": "colomiers-volley:build:development"
             },
             "local": {
-              "browserTarget": "colomiers-volley:build:local",
-              "port": 4224
+              "port": 4224,
+              "buildTarget": "colomiers-volley:build:local"
             }
           },
           "defaultConfiguration": "local"
@@ -160,7 +163,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "colomiers-volley:build"
+            "buildTarget": "colomiers-volley:build"
           }
         },
         "test": {
@@ -173,74 +176,16 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
-            "scripts": []
-          }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/colomiers-volley/server",
-            "main": "server.ts",
-            "tsConfig": "tsconfig.server.json",
+            "scripts": [],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/sass", "src/sass/settings", "src/styles"]
-            },
-            "inlineStyleLanguage": "scss"
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true
-            },
-            "development": {
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false
+              "includePaths": [
+                "src/sass",
+                "src/sass/elements",
+                "src/sass/settings",
+                "src/styles"
+              ]
             }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "colomiers-volley:build:development",
-              "serverTarget": "colomiers-volley:server:development",
-              "ssl": true,
-              "sslCert": "./src/ssl/localhost.crt",
-              "sslKey": "./src/ssl/localhost.key"
-            },
-            "production": {
-              "browserTarget": "colomiers-volley:build:production",
-              "serverTarget": "colomiers-volley:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": ["/"]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "colomiers-volley:build:production",
-              "serverTarget": "colomiers-volley:server:production"
-            },
-            "development": {
-              "browserTarget": "colomiers-volley:build:development",
-              "serverTarget": "colomiers-volley:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
+          }
         }
       }
     },

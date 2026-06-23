@@ -4,9 +4,10 @@ import { Block } from '../../models/block.model';
 import { BlocksService } from '../../services/blocks.service';
 
 @Component({
-  selector: 'lib-block-container',
-  templateUrl: './block-container.component.html',
-  styleUrls: ['./block-container.component.scss']
+    selector: 'lib-block-container',
+    templateUrl: './block-container.component.html',
+    styleUrls: ['./block-container.component.scss'],
+    standalone: false
 })
 export class BlockContainerComponent implements OnInit {
   blocks: Block[] = [];

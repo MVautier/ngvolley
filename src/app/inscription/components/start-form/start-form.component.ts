@@ -7,11 +7,13 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { StartInscription } from '@app/inscription/models/start-inscription.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { environment } from '@env/environment';
+import { LIENS_PRINCIPAL_MAJEUR, LIENS_PRINCIPAL_MINEUR } from '@app/inscription/validators/member-tariff';
 
 @Component({
-  selector: 'app-start-form',
-  templateUrl: './start-form.component.html',
-  styleUrls: ['./start-form.component.scss'],
+    selector: 'app-start-form',
+    templateUrl: './start-form.component.html',
+    styleUrls: ['./start-form.component.scss'],
+    standalone: false
 })
 export class StartFormComponent implements OnInit {
   @Input() start: StartInscription;
@@ -31,7 +33,7 @@ export class StartFormComponent implements OnInit {
   showForm = false;
   adofound: Adherent = undefined;
   notFoundError: boolean = false;
-  liens: string[] = ['Pére', 'Mère', 'Frère mineur', 'Soeur mineure'];
+  liens: string[] = [...LIENS_PRINCIPAL_MAJEUR, ...LIENS_PRINCIPAL_MINEUR];
   selectedLien: string;
   notFoundText = 'Un nom, un prénom et une date de naissance valides doivents être fournis pour la réinscription.';
 
@@ -76,6 +78,12 @@ export class StartFormComponent implements OnInit {
         this.adofound = result;
         if (this.adofound && this.inscriptionFilterIds.length) {
           if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {
+            // Trouve cote serveur (nom+prenom+date de naissance) mais exclu par la liste
+            // blanche InscriptionFilter de cette saison. Le message reste generique pour
+            // l'utilisateur (ne pas reveler l'existence du filtre), mais on distingue ce
+            // cas du "non trouve" dans les logs pour pouvoir diagnostiquer une demande
+            // de parent legitime.
+            console.log('réinscription : adhérent trouvé mais exclu par InscriptionFilter', this.adofound.IdAdherent);
             this.adofound = null;
           }
         }
@@ -85,6 +93,7 @@ export class StartFormComponent implements OnInit {
           this.start.found = this.adofound;
           this.showForm = true;
         } else {
+          console.log('réinscription : aucun adhérent trouvé pour', this.start.nom, this.start.prenom, this.birthday);
           this.notFoundError = true;
           this.showForm = false;
         }

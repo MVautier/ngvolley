@@ -6,9 +6,10 @@ import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { ModalService } from '@app/ui/layout/services/modal.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   config: ModalConfig;

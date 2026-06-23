@@ -4,9 +4,10 @@ import { ModalResult } from '@app/ui/layout/models/modal-result.model';
 import { Dimensions, ImageCroppedEvent, ImageTransform, LoadedImage } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'app-cropper',
-  templateUrl: './cropper.component.html',
-  styleUrls: ['./cropper.component.scss']
+    selector: 'app-cropper',
+    templateUrl: './cropper.component.html',
+    styleUrls: ['./cropper.component.scss'],
+    standalone: false
 })
 export class CropperComponent implements OnInit {
   config: ModalConfig;
@@ -86,8 +87,8 @@ zoomIn() {
         scale: this.scale
     };
 }
-  onOpacity(event: any) {
-    this.opacity = event.value;
+  onOpacity(event: Event) {
+    this.opacity = +(event.target as HTMLInputElement).value;
     const img = document.querySelector('#cropped');
     this.renderer.setStyle(img, 'opacity', this.opacity / 100);
   }

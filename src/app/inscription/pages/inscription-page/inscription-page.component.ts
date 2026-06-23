@@ -20,11 +20,15 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Order } from '@app/core/models/order.model';
 import { UtilService } from '@app/core/services/util.service';
 import { Parameters } from '@app/core/models/parameters.model';
+import { getAdultCutoffDate } from '@app/inscription/validators/eligibility';
+import { isMemberTariffEligible } from '@app/inscription/validators/member-tariff';
+import { applySeasonToken } from '@app/inscription/validators/season-text';
 
 @Component({
   selector: 'app-inscription-page',
   templateUrl: './inscription-page.component.html',
-  styleUrls: ['./inscription-page.component.scss']
+  styleUrls: ['./inscription-page.component.scss'],
+  standalone: false
 })
 export class InscriptionPageComponent implements OnInit {
   title: string;
@@ -50,7 +54,6 @@ export class InscriptionPageComponent implements OnInit {
   notifier = new Subject<void>();
   subModal: Subscription;
   saison: number;
-  redirectUrl = 'https://www.helloasso-sandbox.com/associations/clll-colomiers-volley-ball/checkout/edbd162482a640d1ac05710a05943f38';
   params: Parameters;
 
   constructor(
@@ -97,7 +100,7 @@ export class InscriptionPageComponent implements OnInit {
         this.getParams();
         this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
-        this.cart = JSON.parse(localStorage.getItem('cart'));
+        this.cart = this.util.safeJsonParse<Cart>(localStorage.getItem('cart'));
         if (this.paymentStatus === 'cancel') {
           this.step = 4;
         } else {
@@ -130,6 +133,46 @@ export class InscriptionPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Bandeau d'information toujours affiche si renseigne. Editable depuis /admin ->
+   * Parametres (params.SubHeader). Le jeton {saison} y est remplace par la plage
+   * "annee-annee+1" -- voir applySeasonToken().
+   */
+  get subHeader(): string {
+    return applySeasonToken(this.params?.SubHeader, this.saison);
+  }
+
+  /**
+   * Message affiche quand les inscriptions sont fermees. Editable depuis /admin ->
+   * Parametres (params.Text1) ; a defaut (champ vide), repli sur un message generique
+   * base sur la saison admin pour ne jamais afficher un texte completement absent.
+   */
+  get closedInscriptionsMessage(): string {
+    return applySeasonToken(this.params?.Text1, this.saison)
+    // ||
+    //   `Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison ${this.saison}-${this.saison + 1}.\n` +
+    //   `Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l'Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.`;
+  }
+
+  /**
+   * Message affiche en mode reinscription. Editable depuis /admin -> Parametres
+   * (params.Text2), meme logique de repli que closedInscriptionsMessage.
+   */
+  get reinscriptionMessage(): string {
+    return applySeasonToken(this.params?.Text2, this.saison)
+    // ||
+    //   `Pour le moment, les inscriptions ${this.saison}-${this.saison + 1} ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.\n` +
+    //   `Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l'année dernière.`;
+  }
+
+  /**
+   * Paragraphe d'information complementaire, toujours affiche si renseigne. Editable
+   * depuis /admin -> Parametres (params.Text3), meme substitution {saison}.
+   */
+  get text3(): string {
+    return applySeasonToken(this.params?.Text3, this.saison);
+  }
+
   private getParams() {
     this.adherentService.getParams().then(result => {
       this.params = result;
@@ -140,7 +183,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   private getAdherentFromLocalstorage(): Adherent {
-    const adherent = JSON.parse(localStorage.getItem('adherent'));
+    const adherent = this.util.safeJsonParse<Adherent>(localStorage.getItem('adherent'));
     if (adherent && adherent.BirthdayDate) {
       adherent.BirthdayDate = new Date(adherent.BirthdayDate);
     }
@@ -192,7 +235,42 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   onAdherentChange(adherent: Adherent) {
+    this.updateAdhesionMontant(adherent);
     this.setCategTarifs(adherent);
+  }
+
+  /**
+   * Calcule le montant de la ligne d'adhesion. Cas "already2" (un autre membre de la
+   * famille est deja inscrit) : le tarif reduit (TarifMember) ne s'applique que si le
+   * lien declare est compatible avec le statut majeur/mineur du principal (voir
+   * member-tariff.ts). Tant que la date de naissance du principal n'est pas encore
+   * connue (saisie a l'etape 2), le tarif plein est applique par defaut -- voir
+   * updateAdhesionMontant() qui corrige le montant une fois la date de naissance connue.
+   */
+  private computeAdhesionMontant(adherent: Adherent): number {
+    const already = this.startIns?.already && this.startIns.section !== null;
+    const already2 = this.startIns?.already2 && this.startIns.nom2 !== null && this.startIns.prenom2 !== null && this.startIns.lien != null && this.startIns.section !== null;
+    if (already) {
+      return 0;
+    }
+    const tarifPlein = this.startIns?.local ? this.params.TarifLocal : this.params.TarifExterior;
+    if (!already2 || !adherent?.BirthdayDate) {
+      return tarifPlein;
+    }
+    const principalIsAdult = getAdultCutoffDate(this.saison) > new Date(adherent.BirthdayDate);
+    return isMemberTariffEligible(principalIsAdult, this.startIns.lien) ? this.params.TarifMember : tarifPlein;
+  }
+
+  private updateAdhesionMontant(adherent: Adherent) {
+    if (!this.cart || !this.startIns?.already2 || !adherent?.Uid) {
+      return;
+    }
+    this.cart.addItem({
+      type: 'adhesion',
+      libelle: 'Adhésion ' + environment.asso,
+      montant: this.computeAdhesionMontant(adherent),
+      user: [adherent.Uid]
+    });
   }
 
   // onAddMemberFromCart() {
@@ -229,11 +307,10 @@ export class InscriptionPageComponent implements OnInit {
       }
 
       this.adherent.Sections = this.inscriptionService.sections.filter(s => s === environment.section);
-      const montant = already ? 0 : (already2 ? this.params.TarifMember : (info.local ? this.params.TarifLocal : this.params.TarifExterior));
       this.cart.addItem({
         type: 'adhesion',
         libelle: 'Adhésion ' + environment.asso,
-        montant: montant,
+        montant: this.computeAdhesionMontant(this.adherent),
         user: [this.adherent.Uid]
       });
       if (this.adherent.Category) {
@@ -321,15 +398,13 @@ export class InscriptionPageComponent implements OnInit {
             this.onAddMember();
           } else {
             if (this.adherent.Membres?.length) {
-              this.adherent.Membres.forEach(async m => {
+              for (const m of this.adherent.Membres) {
                 const found = await this.inscriptionService.getExistingAdherent(m);
-                if (found) {
-                  if (found.Saison === this.saison) {
-                    error = true;
-                    message += `<br>Le membre ${m.FirstName} ${m.LastName} est déjà inscrit(e) pour cette saison`;
-                  }
+                if (found && found.Saison === this.saison) {
+                  error = true;
+                  message += `<br>Le membre ${m.FirstName} ${m.LastName} est déjà inscrit(e) pour cette saison`;
                 }
-              });
+              }
             }
             if (!error) {
               this.inscriptionService.setAdherent(this.adherent);

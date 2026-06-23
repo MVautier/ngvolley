@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { OrderFull } from '@app/core/models/order-full.model';
 
 @Component({
-  selector: 'app-order-card',
-  templateUrl: './order-card.component.html',
-  styleUrls: ['./order-card.component.scss']
+    selector: 'app-order-card',
+    templateUrl: './order-card.component.html',
+    styleUrls: ['./order-card.component.scss'],
+    standalone: false
 })
 export class OrderCardComponent implements OnInit {
   @Input() data: OrderFull;

@@ -3,9 +3,10 @@ import { AdherentDoc } from '@app/core/models/adherent-doc.model';
 import { UtilService } from '@app/core/services/util.service';
 
 @Component({
-  selector: 'app-btn-action-doc',
-  templateUrl: './btn-action-doc.component.html',
-  styleUrls: ['./btn-action-doc.component.scss']
+    selector: 'app-btn-action-doc',
+    templateUrl: './btn-action-doc.component.html',
+    styleUrls: ['./btn-action-doc.component.scss'],
+    standalone: false
 })
 export class BtnActionDocComponent implements OnInit {
   @Input() doc: AdherentDoc;

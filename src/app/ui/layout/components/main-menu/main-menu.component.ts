@@ -15,7 +15,8 @@ import { InscriptionPageComponent } from '@app/inscription/pages/inscription-pag
 @Component({
     selector: 'app-main-menu',
     templateUrl: './main-menu.component.html',
-    styleUrls: ['./main-menu.component.scss']
+    styleUrls: ['./main-menu.component.scss'],
+    standalone: false
 })
 export class MainMenuComponent implements OnInit {
     @Output() close: EventEmitter<void> = new EventEmitter<void>();

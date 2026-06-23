@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { makeStateKey } from '@angular/platform-browser';
+import { Injectable, makeStateKey } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { CustomError } from '@app/core/models/custom-error.model';
 import { TransferStateService } from '@app/core/services/transfert-state.service';

@@ -5,9 +5,10 @@ import { AdherentService } from '@app/core/services/adherent.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-params-page',
-  templateUrl: './params-page.component.html',
-  styleUrls: ['./params-page.component.scss']
+    selector: 'app-params-page',
+    templateUrl: './params-page.component.html',
+    styleUrls: ['./params-page.component.scss'],
+    standalone: false
 })
 export class ParamsPageComponent implements OnInit {
 
@@ -47,10 +48,10 @@ export class ParamsPageComponent implements OnInit {
         'TarifLicense': [this.params.TarifLicense, [Validators.required]],
 
 
-        'SubHeader': [this.params.SubHeader, [Validators.required]],
-        'Text1': [this.params.Text1, [Validators.required]],
-        'Text2': [this.params.Text2, [Validators.required]],
-        'Text3': [this.params.Text3, [Validators.required]]
+        'SubHeader': [this.params.SubHeader],
+        'Text1': [this.params.Text1],
+        'Text2': [this.params.Text2],
+        'Text3': [this.params.Text3]
       });
     }
 

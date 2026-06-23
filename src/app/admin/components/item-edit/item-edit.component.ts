@@ -8,14 +8,15 @@ import { Tree } from '@app/core/models/tree.model';
 import { WebItem } from '@app/core/models/web-item.model';
 import { AdminService } from '@app/core/services/admin.service';
 import { RouteService } from '@app/core/services/route.services';
-import { Block } from 'projects/editor/src/lib/models/block.model';
-import { ImageRequest } from 'projects/editor/src/lib/models/image-request.model';
-import { AngularEditorConfig, FocusedItem } from 'projects/editor/src/public-api';
+import { Block } from '@editor/lib/models/block.model';
+import { ImageRequest } from '@editor/lib/models/image-request.model';
+import { AngularEditorConfig, FocusedItem } from '@editor/public-api';
 
 @Component({
-  selector: 'app-item-edit',
-  templateUrl: './item-edit.component.html',
-  styleUrls: ['./item-edit.component.scss']
+    selector: 'app-item-edit',
+    templateUrl: './item-edit.component.html',
+    styleUrls: ['./item-edit.component.scss'],
+    standalone: false
 })
 export class ItemEditComponent implements OnInit {
   tree: Tree;

@@ -19,7 +19,7 @@ import { Parameters } from "../models/parameters.model";
 export class AdherentService {
   public obsAdherents: BehaviorSubject<Adherent[]> = new BehaviorSubject<Adherent[]>([]);
   public obsCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
-  public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4', 'Mixte 1', 'Mixte 2', 'Mixte 3']);
+  public obsTeams: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['Féminine', 'Mixte 1', 'Mixte 2', 'Mixte 3', 'Masculine 1', 'Masculine 2', 'Masculine 3', 'Masculine 4']);
   public obsSeason: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(
@@ -176,6 +176,17 @@ export class AdherentService {
     return new Promise((resolve, reject) => {
       this.http.post<AdherentFilter>(url, filter, { responseType: 'blob', withCredentials: true }).then(result => {
         resolve(result);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
+  sendMailing(mailing: { subject: string, body: string, emails: string[] }): Promise<void> {
+    const url = `${environment.apiUrl}Adherent/mailing/send`;
+    return new Promise((resolve, reject) => {
+      this.http.post(url, { Subject: mailing.subject, Body: mailing.body, Emails: mailing.emails }).then(() => {
+        resolve();
       }).catch(err => {
         reject(err);
       });

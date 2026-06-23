@@ -1,15 +1,20 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 import { environment } from "@env/environment";
 import { CheckAdherent } from "../models/check-adherent.model";
+import { getMinAgeCutoffDate } from "./eligibility";
 
 export class CustomValidators {
-  static dateCheck(checked: CheckAdherent): ValidatorFn {
+  /**
+   * Verifie l'age minimum (environment.minage) sur la base de la saison admin, et la
+   * coherence avec checked.birthdayDateValid (calcule par InscriptionService.checkAdherent
+   * avec la meme reference de saison -- voir eligibility.ts).
+   */
+  static dateCheck(checked: CheckAdherent, seasonYear: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {
         return null;
       }
-      const valideDate = new Date(new Date().getFullYear() - environment.minage, 11, 31);
-      const valideDateAdulte = new Date(new Date().getFullYear() - 18, 8, 1);
+      const valideDate = getMinAgeCutoffDate(seasonYear, environment.minage);
       const minDate = valideDate >= new Date(control.value);
       return minDate && checked.birthdayDateValid ? null : (!minDate ? {
         'date-minimum': {
@@ -25,6 +30,12 @@ export class CustomValidators {
     };
   }
 
+  /**
+   * Verifie que le payeur (formulaire de paiement) est majeur. Seuil intentionnellement
+   * distinct de l'eligibilite par categorie (InscriptionService.checkAdherent, 31/12 de
+   * la saison admin) : ici on reste sur l'annee calendaire reelle et le 1er septembre.
+   * Ne pas aligner sur l'autre seuil sans verifier que ca ne change pas qui peut payer.
+   */
   static checkAdult(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {

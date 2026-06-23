@@ -6,20 +6,22 @@ import { Category } from '@app/core/models/category.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
-import { FileValidator } from 'ngx-material-file-input';
-import { environment } from '@env/environment';
+import { FileValidator } from '../file-input/file-validator';
 import { CheckAdherent } from '@app/inscription/models/check-adherent.model';
 import { Subscription } from 'rxjs';
 import { ModalService } from '@app/ui/layout/services/modal.service';
+import { Parameters } from '@app/core/models/parameters.model';
 
 @Component({
-  selector: 'app-member-form',
-  templateUrl: './member-form.component.html',
-  styleUrls: ['./member-form.component.scss']
+    selector: 'app-member-form',
+    templateUrl: './member-form.component.html',
+    styleUrls: ['./member-form.component.scss'],
+    standalone: false
 })
 export class MemberFormComponent implements OnInit {
   @Input() adherent: Adherent;
   @Input() isMobile: boolean;
+  @Input() params: Parameters;
   @Output() change: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   //@Output() remove: EventEmitter<Adherent> = new EventEmitter<Adherent>();
   formGroup: FormGroup;
@@ -47,7 +49,7 @@ export class MemberFormComponent implements OnInit {
     this.choosenSection = this.adherent.Category !== null;
     this.noLicenceRequired = this.choosenSection && this.adherent.Category === 'L';
     this.adherentService.getCategories().then(async liste => {
-      this.categories = liste.filter(c => !c.Blocked);
+      this.categories = this.inscriptionService.filterOpenCategories(liste.filter(c => !c.Blocked), this.params);
       this.initForm();
       await this.checkAdherent(this.adherent);
       this.formGroup.markAllAsTouched();
@@ -67,13 +69,12 @@ export class MemberFormComponent implements OnInit {
     this._locale = 'fr';
     this._adapter.setLocale(this._locale);
     const patterns = this.inscriptionService.patterns;
-    const minYear = new Date().getFullYear() - environment.minage;
     this.formGroup = this.formBuilder.group({
       'id': [this.adherent.IdAdherent],
       'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
+      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
       'phone': [this.adherent.Phone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
       'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
       'relationship': [this.adherent.Relationship, [Validators.required]],

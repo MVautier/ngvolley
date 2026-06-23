@@ -7,7 +7,8 @@ import { ModalConfig } from '@app/ui/layout/models/modal-config.model';
 @Component({
     selector: 'app-generic-modal',
     templateUrl: './generic-modal.component.html',
-    styleUrls: ['./generic-modal.component.scss']
+    styleUrls: ['./generic-modal.component.scss'],
+    standalone: false
 })
 export class GenericModalComponent implements OnInit {
     //@Input() 

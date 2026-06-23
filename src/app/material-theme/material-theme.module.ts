@@ -20,20 +20,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { CdkTreeModule } from '@angular/cdk/tree';
-import { PortalModule } from '@angular/cdk/portal';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { getFrenchPaginatorIntl } from './custom/french-paginator-intl';
 
 const materialModules = [
@@ -59,21 +51,10 @@ const materialModules = [
   MatProgressSpinnerModule,
   MatNativeDateModule,
   MatSnackBarModule
-  //CdkTreeModule,
-  //MatTooltipModule
-  //MatAutocompleteModule,
-  //MatCheckboxModule,
-  //MatChipsModule,
   //MatDividerModule,
-  //MatProgressSpinnerModule,
   //MatRippleModule,
-  //MatSnackBarModule,
-  //MatTabsModule,
-  //MatFormFieldModule,
   //MatButtonToggleModule,
   //MatTreeModule,
-  //OverlayModule,
-  //PortalModule,
   //MatBadgeModule,
 ];
 @NgModule({

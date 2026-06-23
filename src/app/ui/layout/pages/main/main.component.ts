@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ViewEncapsulation, makeStateKey } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { makeStateKey } from '@angular/platform-browser';
+
 import { RouteService } from '@app/core/services/route.services';
 import { TransferStateService } from '@app/core/services/transfert-state.service';
 import { Observable } from 'rxjs';
@@ -11,10 +11,11 @@ import { environment } from '@env/environment';
 
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-main',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MainComponent implements OnInit {
   opened = environment.sidenavOpened;

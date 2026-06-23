@@ -13,9 +13,10 @@ import { ModalService } from '@app/ui/layout/services/modal.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-adherent-form',
-  templateUrl: './adherent-form.component.html',
-  styleUrls: ['./adherent-form.component.scss']
+    selector: 'app-adherent-form',
+    templateUrl: './adherent-form.component.html',
+    styleUrls: ['./adherent-form.component.scss'],
+    standalone: false
 })
 export class AdherentFormComponent implements OnInit, OnDestroy {
   @Input() adherent: Adherent;

@@ -1,0 +1,34 @@
+<div class="ng-modal light-theme" [ngStyle]="{'width': '100%', 'height': '700px'}">
+    <div class="ng-modal-content">
+        <div class="ng-modal-header">
+            <h1>Liste de diffusion ({{emails.length}})</h1>
+            <mat-icon class="close" (click)="onCancel()">close</mat-icon>
+        </div>
+        <div class="ng-modal-body">
+            <div class="mailing-emails">
+                <div class="mailing-email-row" *ngFor="let email of emails">
+                    <span>{{email}}</span>
+                    <button type="button" mat-icon-button (click)="remove(email)" title="Retirer">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <p *ngIf="!emails.length" class="mailing-empty">Aucune adresse dans la liste de diffusion.</p>
+            </div>
+
+            <mat-form-field class="mailing-field">
+                <mat-label>Sujet</mat-label>
+                <input matInput [(ngModel)]="subject" placeholder="Sujet du message">
+            </mat-form-field>
+
+            <mat-form-field class="mailing-field">
+                <mat-label>Message</mat-label>
+                <textarea matInput rows="8" [(ngModel)]="body" placeholder="Contenu du message"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="ng-modal-footer">
+            <button type="button" mat-raised-button (click)="onCancel()">Annuler</button>
+            <button type="button" mat-raised-button color="primary" [disabled]="!canSend()" (click)="onSend()">Envoyer</button>
+        </div>
+    </div>
+</div>

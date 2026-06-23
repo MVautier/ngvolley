@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Block } from '../../models/block.model';
 
 @Component({
-  selector: 'lib-block',
-  templateUrl: './block.component.html',
-  styleUrls: ['./block.component.scss']
+    selector: 'lib-block',
+    templateUrl: './block.component.html',
+    styleUrls: ['./block.component.scss'],
+    standalone: false
 })
 export class BlockComponent implements OnInit {
   @Input() block: Block;

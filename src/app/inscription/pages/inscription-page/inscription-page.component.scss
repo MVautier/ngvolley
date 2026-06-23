@@ -83,6 +83,12 @@
     &.info-warning {
       font-weight: 600;
     }
+    &.dynamic-text {
+      white-space: pre-line;
+      &.bold {
+        font-weight: 700;
+      }
+    }
   }
 }
 aside {

@@ -2,9 +2,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { CKFinderImage } from 'projects/editor/src/lib/models/ckfinder-image.model';
-import { ImageRequest } from 'projects/editor/src/lib/models/image-request.model';
-import { Script } from 'projects/editor/src/lib/models/script.model';
+import { CKFinderImage } from '@editor/lib/models/ckfinder-image.model';
+import { ImageRequest } from '@editor/lib/models/image-request.model';
+import { Script } from '@editor/lib/models/script.model';
 import { BehaviorSubject } from 'rxjs';
 import { SelectedImage } from '../models/selected-image.model';
 

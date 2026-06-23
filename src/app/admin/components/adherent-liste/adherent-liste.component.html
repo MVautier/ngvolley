@@ -35,6 +35,9 @@
             <button mat-menu-item (click)="exportDocs('photo')">Photos</button>
             <button mat-menu-item (click)="exportEmails()">Emails</button>
           </mat-menu>
+          <button type="button" mat-raised-button color="primary" matPrefix (click)="openMailingList()">
+              <mat-icon [matBadge]="mailingListCount" [matBadgeHidden]="!mailingListCount" matBadgeColor="warn" matBadgeSize="small">mail</mat-icon>Liste de diffusion
+          </button>
         </div>
     </div>
 
@@ -120,6 +123,6 @@
     </div>
 
     <div *ngIf="selectedAdherent">
-        <app-adherent-card [adherent]="selectedAdherent" (change)="adherentChange($event)" (reload)="reload()" (hide)="hideCard()"></app-adherent-card>
+        <app-adherent-card [adherent]="selectedAdherent" (change)="adherentChange($event)" (reload)="reload()" (hide)="hideCard()" (switchAdherent)="onSwitchAdherent($event)"></app-adherent-card>
     </div>
 </div>

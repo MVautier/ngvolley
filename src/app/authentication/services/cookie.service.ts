@@ -1,26 +1,14 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Request, Response } from 'express';
 
 
 @Injectable()
 export class CookieService {
   private document!: any;
   private documentIsAccessible!: any;
-  cookies: any = {};
-  constructor(
-    @Optional() @Inject(REQUEST) private req: Request<any>,
-    @Optional() @Inject(RESPONSE) private res: Response<any>
-  ) {
-    if (this.req !== null) {
-      this.cookies = this.req.cookies;
-    } else {
-      this.document = document;
-      this.documentIsAccessible = window.document !== undefined;
-    }
-    // this.document = window.document;
-    //   this.documentIsAccessible = window.document !== undefined;
+  constructor() {
+    this.document = document;
+    this.documentIsAccessible = window.document !== undefined;
   }
 
   Check(name: string): boolean {
@@ -124,18 +112,14 @@ export class CookieService {
   }
 
   private getPairs(): { [key: string]: string | null } {
-    if (this.req === null) {
-      const parsed = this.document.cookie.split('; ');
-      const cookies: { [key: string]: string | null } = {};
-      parsed.forEach((element: string) => {
-        if (element) {
-          const pair = element.split('=');
-          cookies[pair[0]] = typeof pair[1] !== 'undefined' ? pair[1] : null;
-        }
-      });
-      return cookies;
-    } else {
-      return this.cookies;
-    }
+    const parsed = this.document.cookie.split('; ');
+    const cookies: { [key: string]: string | null } = {};
+    parsed.forEach((element: string) => {
+      if (element) {
+        const pair = element.split('=');
+        cookies[pair[0]] = typeof pair[1] !== 'undefined' ? pair[1] : null;
+      }
+    });
+    return cookies;
   }
 }

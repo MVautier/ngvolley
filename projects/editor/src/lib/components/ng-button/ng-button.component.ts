@@ -2,10 +2,11 @@ import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angula
 
 
 @Component({
-  selector: 'ng-button',
-  templateUrl: './ng-button.component.html',
-  styleUrls: ['./ng-button.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'ng-button',
+    templateUrl: './ng-button.component.html',
+    styleUrls: ['./ng-button.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class NgButtonComponent {
 

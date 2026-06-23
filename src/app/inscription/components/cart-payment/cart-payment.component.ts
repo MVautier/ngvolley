@@ -14,9 +14,10 @@ import { LoaderService } from '@app/ui/layout/services/loader.service';
 import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-cart-payment',
-  templateUrl: './cart-payment.component.html',
-  styleUrls: ['./cart-payment.component.scss']
+    selector: 'app-cart-payment',
+    templateUrl: './cart-payment.component.html',
+    styleUrls: ['./cart-payment.component.scss'],
+    standalone: false
 })
 export class CartPaymentComponent implements OnInit {
   @Input() cart: Cart;

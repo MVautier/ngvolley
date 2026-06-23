@@ -20,6 +20,16 @@
                     </mat-error>
                 </mat-form-field>
 
+                <mat-form-field *ngIf="choosenSection && isCompet" class="form-element row-item">
+                    <mat-label>Équipe</mat-label>
+                    <mat-select formControlName="team1">
+                        <mat-option *ngFor="let t of teams" [value]="t">{{t}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!formGroup.controls['team1'].valid && formGroup.controls['team1'].touched">
+                        {{ getInputError('team1') }}
+                    </mat-error>
+                </mat-form-field>
+
                 <div *ngIf="choosenSection && noLicenceRequired" class="border-div">
 
                     <div class="training">
@@ -188,7 +198,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <section class="inscription" [ngClass]="{'mobile': isMobile}">
-                <app-member-form [adherent]="member" [isMobile]="isMobile"
+                <app-member-form [adherent]="member" [isMobile]="isMobile" [params]="params"
                     (change)="onMemberChange($event)"></app-member-form>
             </section>
         </mat-expansion-panel>
