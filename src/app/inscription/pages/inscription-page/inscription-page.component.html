@@ -10,14 +10,14 @@
 <div class="main" [ngClass]="{'mobile': isMobile}">
     <div class="col-steps mat-body" [ngClass]="{'no-menu': !isMenuOpened}">
         <div *ngIf="step === 1" class="ins_info">
-          <p *ngIf="subHeader" class="dynamic-text">{{subHeader}}</p>
+          <p *ngIf="subHeader" class="dynamic-text bold">{{subHeader}}</p>
 
-          <p *ngIf="!inscriptionOpened" class="dynamic-text">
+          <p *ngIf="!inscriptionOpened && !reinscription" class="dynamic-text bold">
             <b>{{closedInscriptionsMessage}}</b>
             <br><br>
           </p>
 
-          <p *ngIf="reinscription" class="dynamic-text">
+          <p *ngIf="reinscription" class="dynamic-text bold">
             <b>{{reinscriptionMessage}}</b>
           </p>
 

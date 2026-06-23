@@ -25,10 +25,10 @@ import { isMemberTariffEligible } from '@app/inscription/validators/member-tarif
 import { applySeasonToken } from '@app/inscription/validators/season-text';
 
 @Component({
-    selector: 'app-inscription-page',
-    templateUrl: './inscription-page.component.html',
-    styleUrls: ['./inscription-page.component.scss'],
-    standalone: false
+  selector: 'app-inscription-page',
+  templateUrl: './inscription-page.component.html',
+  styleUrls: ['./inscription-page.component.scss'],
+  standalone: false
 })
 export class InscriptionPageComponent implements OnInit {
   title: string;
@@ -93,6 +93,11 @@ export class InscriptionPageComponent implements OnInit {
       this.step = Number(params.step) || 1;
       this.paymentStatus = params.payment || null;
       if (this.paymentStatus) {
+        // Retour direct depuis Helloasso (rechargement de page) : init() ne s'exécute
+        // que pour step===1, donc inscriptionOpened/reinscription ne seraient jamais
+        // renseignés sinon, ce qui masque tout le bloc .form (cf *ngIf en template),
+        // y compris la vue de confirmation de paiement (step 5) -- page vide.
+        this.getParams();
         this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
         this.cart = this.util.safeJsonParse<Cart>(localStorage.getItem('cart'));
@@ -143,9 +148,10 @@ export class InscriptionPageComponent implements OnInit {
    * base sur la saison admin pour ne jamais afficher un texte completement absent.
    */
   get closedInscriptionsMessage(): string {
-    return applySeasonToken(this.params?.Text1, this.saison) ||
-      `Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison ${this.saison}-${this.saison + 1}.\n` +
-      `Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l'Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.`;
+    return applySeasonToken(this.params?.Text1, this.saison)
+    // ||
+    //   `Nous vous informons que toutes les inscriptions au Club de Volley de Colomiers C3L sont terminées pour cette saison ${this.saison}-${this.saison + 1}.\n` +
+    //   `Nous ne prenons plus de nouvelles inscriptions, que ce soit au niveau de l'Ecole des Jeunes, en compétition FSGT et en formule Loisirs Détente.`;
   }
 
   /**
@@ -153,9 +159,10 @@ export class InscriptionPageComponent implements OnInit {
    * (params.Text2), meme logique de repli que closedInscriptionsMessage.
    */
   get reinscriptionMessage(): string {
-    return applySeasonToken(this.params?.Text2, this.saison) ||
-      `Pour le moment, les inscriptions ${this.saison}-${this.saison + 1} ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.\n` +
-      `Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l'année dernière.`;
+    return applySeasonToken(this.params?.Text2, this.saison)
+    // ||
+    //   `Pour le moment, les inscriptions ${this.saison}-${this.saison + 1} ne sont possibles que pour les jeunes déjà adhérents de la saison qui se termine.\n` +
+    //   `Pour y avoir accès, vous devez mettre votre nom, prénom et date de naissance que vous aviez utilisés l'année dernière.`;
   }
 
   /**

@@ -85,6 +85,9 @@
     }
     &.dynamic-text {
       white-space: pre-line;
+      &.bold {
+        font-weight: 700;
+      }
     }
   }
 }
