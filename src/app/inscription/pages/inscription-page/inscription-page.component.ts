@@ -90,6 +90,11 @@ export class InscriptionPageComponent implements OnInit {
       this.step = Number(params.step) || 1;
       this.paymentStatus = params.payment || null;
       if (this.paymentStatus) {
+        // Retour direct depuis Helloasso (rechargement de page) : init() ne s'exécute
+        // que pour step===1, donc inscriptionOpened/reinscription ne seraient jamais
+        // renseignés sinon, ce qui masque tout le bloc .form (cf *ngIf en template),
+        // y compris la vue de confirmation de paiement (step 5) -- page vide.
+        this.getParams();
         this.saison = this.adherentService.obsSeason.value;
         this.adherent = this.getAdherentFromLocalstorage();
         this.cart = JSON.parse(localStorage.getItem('cart'));
