@@ -49,11 +49,15 @@ export class StartFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.params) {
+      this.reinscription = this.params.Reinscription;
+      this.inscriptionFilter = this.params.InscriptionFilter;
+      this.inscriptionFilterIds = this.inscriptionFilter && this.inscriptionFilter !== '*' ? this.inscriptionFilter.split(',').map((x) => parseInt(x)) : [];
+      console.log('filter ids: ', this.inscriptionFilterIds);
+    }
     if (this.start) {
       this._locale = 'fr';
       this._adapter.setLocale(this._locale);
-      this.inscriptionFilterIds = this.inscriptionFilter && this.inscriptionFilter !== '*' ? this.inscriptionFilter.split(',').map((x) => parseInt(x)) : [];
-      console.log('filter ids: ', this.inscriptionFilterIds);
       if (this.reinscription && environment.debug) {
         this.start.nom = 'lacroix';
         this.start.prenom = 'stephanie';
@@ -64,10 +68,6 @@ export class StartFormComponent implements OnInit {
       this.year = y.toString() + '-' + (y + 1).toString();
       this.sections = this.inscriptionService.sections;
       this.sectionsWithoutVolley = this.inscriptionService.sections.filter(s => s !== 'Volley-ball');
-    }
-    if (this.params) {
-      this.reinscription = this.params.Reinscription;
-      this.inscriptionFilter = this.params.InscriptionFilter;
     }
   }
 

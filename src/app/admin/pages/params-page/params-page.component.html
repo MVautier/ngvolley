@@ -13,10 +13,56 @@
 
           <mat-slide-toggle formControlName="Reinscription">Mode Réinscription</mat-slide-toggle>
 
-          <mat-form-field class="form-element row-item">
-            <mat-label>Filtre (identifiants séparés par des virgules ou *)</mat-label>
-            <input matInput placeholder="Filtre" formControlName="InscriptionFilter">
-          </mat-form-field>
+          <div class="filter-section">
+            <p class="filter-label">Filtre d'inscription</p>
+            <mat-slide-toggle [(ngModel)]="filterAll" [ngModelOptions]="{standalone: true}" (change)="onFilterModeChange()">
+              Ouvert à tous (aucun filtre)
+            </mat-slide-toggle>
+
+            <div *ngIf="!filterAll" class="filter-search">
+              <p class="hint">Recherchez un adhérent par nom, prénom et date de naissance pour l'ajouter à la liste des personnes autorisées à s'inscrire.</p>
+              <div class="search-row">
+                <mat-form-field class="form-element">
+                  <mat-label>Nom</mat-label>
+                  <input matInput [(ngModel)]="searchNom" [ngModelOptions]="{standalone: true}" (keyup.enter)="onSearchAdherent()">
+                </mat-form-field>
+                <mat-form-field class="form-element">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput [(ngModel)]="searchPrenom" [ngModelOptions]="{standalone: true}" (keyup.enter)="onSearchAdherent()">
+                </mat-form-field>
+                <mat-form-field class="form-element">
+                  <mat-label>Date de naissance</mat-label>
+                  <input matInput [matDatepicker]="filterPicker" [(ngModel)]="searchBirthday" [ngModelOptions]="{standalone: true}" (keyup.enter)="onSearchAdherent()">
+                  <mat-datepicker-toggle matSuffix [for]="filterPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #filterPicker></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button type="button" color="primary" (click)="onSearchAdherent()" [disabled]="searching || !canSearch()">
+                  <mat-icon *ngIf="!searching">search</mat-icon>
+                  <mat-spinner *ngIf="searching" diameter="18"></mat-spinner>
+                  Rechercher
+                </button>
+              </div>
+
+              <div *ngIf="searchResult" class="search-result">
+                <span>{{ searchResult.FirstName }} {{ searchResult.LastName }} <small>(ID : {{ searchResult.IdAdherent }})</small></span>
+                <button mat-icon-button type="button" color="primary" (click)="addToFilter(searchResult)" title="Ajouter à la liste">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+              <p *ngIf="searchError" class="search-error">Aucun adhérent trouvé.</p>
+
+              <div class="filter-list">
+                <p class="filter-list-label">Adhérents autorisés ({{ selectedAdherents.length }}) :</p>
+                <div *ngFor="let item of selectedAdherents" class="filter-item">
+                  <span>{{ item.displayName }}</span>
+                  <button mat-icon-button type="button" (click)="removeFromFilter(item.id)" title="Retirer">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </div>
+                <p *ngIf="selectedAdherents.length === 0" class="hint">Aucun adhérent sélectionné — les inscriptions seront bloquées pour tout le monde.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="fields">
