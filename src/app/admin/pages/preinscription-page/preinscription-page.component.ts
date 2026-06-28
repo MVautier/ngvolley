@@ -139,6 +139,11 @@ export class PreinscriptionPageComponent {
   async addToFilter(replace: boolean) {
     if (!this.params || !this.createdIds.length) return;
 
+    if (!replace && this.params.InscriptionFilter === '*') {
+      this.toastr.info('Le filtre est déjà ouvert à tous (*) — aucune modification nécessaire.', 'Pré-inscription');
+      return;
+    }
+
     const existing = !replace && this.params.InscriptionFilter && this.params.InscriptionFilter !== '*'
       ? this.params.InscriptionFilter.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
       : [];
