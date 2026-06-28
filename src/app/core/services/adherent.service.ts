@@ -14,6 +14,7 @@ import { AdherentSearch } from "../models/adherent-search.model";
 import { OrderSearch } from "../models/order-search.model";
 import { AdherentStat } from "@app/admin/models/adherent-stat.model";
 import { Parameters } from "../models/parameters.model";
+import { BatchAdherentResult } from "../models/batch-adherent-result.model";
 
 @Injectable()
 export class AdherentService {
@@ -70,6 +71,12 @@ export class AdherentService {
       .pipe(
         map(res => res)
       );
+  }
+
+  addOrUpdateBatch(adherents: Adherent[]): Promise<BatchAdherentResult[]> {
+    return firstValueFrom(this.httpClient.post<BatchAdherentResult[]>(
+      environment.apiUrl + 'Adherent/batch', adherents
+    ));
   }
 
   searchAdherent(nom: string, prenom: string, birthdayDate: Date = null): Promise<Adherent> {

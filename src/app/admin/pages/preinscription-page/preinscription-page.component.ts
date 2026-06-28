@@ -3,6 +3,7 @@ import { Adherent } from '@app/core/models/adherent.model';
 import { Parameters } from '@app/core/models/parameters.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { ToastrService } from 'ngx-toastr';
+import { BatchAdherentResult } from '@app/core/models/batch-adherent-result.model';
 
 type EntryStatus = 'new' | 'exists' | 'parse-error' | 'created' | 'create-error';
 
@@ -110,22 +111,33 @@ export class PreinscriptionPageComponent {
 
   async onCreateNew() {
     this.creating = true;
-    const saison = this.adherentService.obsSeason.value;
+    const saison = this.adherentService.obsSeason.value - 1;
     const toCreate = [...this.newEntries];
 
-    for (const entry of toCreate) {
-      try {
-        const adh = new Adherent(null, null, false, saison);
-        adh.LastName = entry.lastName;
-        adh.FirstName = entry.firstName;
-        adh.BirthdayDate = entry.birthday;
-        const created = await this.adherentService.addOrUpdate(adh);
-        entry.status = 'created';
-        entry.createdId = created.IdAdherent;
-      } catch (err: any) {
-        entry.status = 'create-error';
-        entry.message = err?.message || 'Erreur inconnue';
-      }
+    const payload = toCreate.map(entry => {
+      const adh = new Adherent(null, null, false, saison);
+      adh.LastName = entry.lastName;
+      adh.FirstName = entry.firstName;
+      adh.BirthdayDate = entry.birthday;
+      return adh;
+    });
+
+    try {
+      const results: BatchAdherentResult[] = await this.adherentService.addOrUpdateBatch(payload);
+      results.forEach((res, i) => {
+        if (res.adherent) {
+          toCreate[i].status = 'created';
+          toCreate[i].createdId = res.adherent.IdAdherent;
+        } else {
+          toCreate[i].status = 'create-error';
+          toCreate[i].message = res.error || 'Erreur inconnue';
+        }
+      });
+    } catch (err: any) {
+      toCreate.forEach(e => {
+        e.status = 'create-error';
+        e.message = err?.message || 'Erreur inconnue';
+      });
     }
 
     this.entries = [...this.entries];
