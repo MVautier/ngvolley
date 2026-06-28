@@ -32,6 +32,10 @@
                   <mat-icon class="icon" (click)="goMenu('params', true)">open_in_new</mat-icon>
                   Paramètres
                 </button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goMenu('preinscription')">
+                  <mat-icon class="icon" (click)="goMenu('preinscription', true)">open_in_new</mat-icon>
+                  Pré-inscriptions
+                </button>
                 <!-- <button mat-menu-item (click)="goMenu('posts')">Export</button>
                 <button mat-menu-item (click)="goMenu('comments')">Inscriptions</button> -->
             </mat-menu>

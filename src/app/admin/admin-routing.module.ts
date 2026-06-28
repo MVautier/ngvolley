@@ -13,6 +13,7 @@ import { AdherentPageComponent } from './pages/adherent-page/adherent-page.compo
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { ParamsPageComponent } from './pages/params-page/params-page.component';
+import { PreinscriptionPageComponent } from './pages/preinscription-page/preinscription-page.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,8 @@ const routes: Routes = [
       { path: 'adherents', canActivate: [IsLoggedGuard], component: AdherentPageComponent },
       { path: 'orders', canActivate: [IsLoggedGuard], component: OrdersPageComponent },
       { path: 'users', canActivate: [IsLoggedGuard], component: UserPageComponent },
-      { path: 'params', canActivate: [IsLoggedGuard], component: ParamsPageComponent }
+      { path: 'params', canActivate: [IsLoggedGuard], component: ParamsPageComponent },
+      { path: 'preinscription', canActivate: [IsLoggedGuard], component: PreinscriptionPageComponent }
     ]
   },
 

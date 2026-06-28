@@ -17,20 +17,9 @@ export const environment = {
   city: 'Colomiers',
   section: 'Volley-ball',
   firstSeason: 2022,
-  // tarifs: {
-  //   local: 19,
-  //   exterior: 27,
-  //   member: 6,
-  //   loisir: 40,
-  //   license: 80,
-  //   ado: 60
-  // },
   minage: 13,
   debug: false,
   ssrMode: false,
-  // inscriptionOpened: true,
-  // reinscription: false,
-  // inscriptionFilter: '',
   basePath: 'https://localhost:4224/',
   basePathSsr: 'https://localhost:4200/',
   cookiePath: '/',
@@ -43,12 +32,3 @@ export const environment = {
     stateTransferAppId: 'colomiers-volley'
   }
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

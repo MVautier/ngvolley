@@ -1,0 +1,114 @@
+<div class="center-container">
+  <div class="title">
+    <h1>Pré-inscriptions en lot</h1>
+  </div>
+
+  <div class="preinscription-card">
+
+    <div class="section">
+      <h3>Saisie</h3>
+      <p class="hint">
+        Saisissez une personne par ligne au format <code>NOM;Prénom;JJ/MM/AAAA</code>.
+        Les adhérents déjà présents en base ne seront pas recréés.
+      </p>
+      <textarea
+        class="batch-textarea"
+        [(ngModel)]="inputText"
+        [readonly]="hasAnalysis"
+        rows="10"
+        placeholder="DUPONT;Jean;15/03/1985&#10;MARTIN;Sophie;22/07/1990"
+      ></textarea>
+      <div class="buttons">
+        <button *ngIf="!hasAnalysis" mat-raised-button color="primary"
+          (click)="onAnalyze()" [disabled]="!inputText.trim() || analyzing">
+          <mat-spinner *ngIf="analyzing" diameter="18"></mat-spinner>
+          <mat-icon *ngIf="!analyzing">analytics</mat-icon>
+          Analyser
+        </button>
+        <button *ngIf="hasAnalysis" mat-button (click)="reset()">
+          <mat-icon>edit</mat-icon>
+          Modifier la saisie
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="hasAnalysis" class="section">
+      <h3>Résultats de l'analyse</h3>
+
+      <table mat-table [dataSource]="entries" class="batch-table">
+
+        <ng-container matColumnDef="line">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let e">{{ e.line }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="status-badge" [ngClass]="'status-' + e.status">
+              <mat-icon>{{ e.status === 'new' ? 'fiber_new' : e.status === 'exists' ? 'person' : e.status === 'created' ? 'check_circle' : 'error' }}</mat-icon>
+              {{ statusLabel(e.status) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nom Prénom</th>
+          <td mat-cell *matCellDef="let e">{{ e.lastName }} {{ e.firstName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="birthday">
+          <th mat-header-cell *matHeaderCellDef>Date de naissance</th>
+          <td mat-cell *matCellDef="let e">{{ e.birthday | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let e">
+            <span *ngIf="e.existingId" class="id-exists">{{ e.existingId }}</span>
+            <strong *ngIf="e.createdId" class="id-created">{{ e.createdId }}</strong>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef>Détail</th>
+          <td mat-cell *matCellDef="let e" class="message-cell">{{ e.message }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="'row-' + row.status"></tr>
+      </table>
+
+      <div *ngIf="newEntries.length > 0 || creating" class="buttons create-buttons">
+        <button mat-raised-button color="primary" (click)="onCreateNew()" [disabled]="!canCreate">
+          <mat-spinner *ngIf="creating" diameter="18"></mat-spinner>
+          <mat-icon *ngIf="!creating">person_add</mat-icon>
+          Créer {{ newEntries.length }} nouvel(aux) adhérent(s)
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="createdIds.length && params" class="section filter-section">
+      <h3>Filtre d'inscription</h3>
+      <p>
+        {{ createdIds.length }} adhérent(s) créé(s) — identifiants :
+        <strong>{{ createdIds.join(', ') }}</strong>
+      </p>
+      <p class="hint">
+        Valeur actuelle du filtre :
+        <code>{{ params.InscriptionFilter || '(vide — ouvert à tous)' }}</code>
+      </p>
+      <div class="buttons">
+        <button mat-raised-button color="accent" (click)="addToFilter(false)">
+          <mat-icon>add_circle</mat-icon>
+          Ajouter au filtre existant
+        </button>
+        <button mat-raised-button (click)="addToFilter(true)">
+          <mat-icon>swap_horiz</mat-icon>
+          Remplacer le filtre
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
