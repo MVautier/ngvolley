@@ -92,7 +92,7 @@ export class Adherent {
     this.Rgpd = base ? base.Rgpd : false;
     this.ImageRight = true;
     this.Signature = null; //base ? base.Signature : null;
-    this.Saison = base ? base.Saison : season;
+    this.Saison = season;
 
     this.Payment = base ? base.Payment : null;
     this.PaymentComment = base ? base.PaymentComment : null;
