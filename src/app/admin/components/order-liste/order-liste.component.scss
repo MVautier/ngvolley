@@ -47,7 +47,7 @@
 
 .no-data {
   margin-top: 30px;
-  width: 950px;
+  width: 1150px;
   text-align: center;
   color: #ccc;
 }
@@ -62,7 +62,7 @@
 .order-liste {
   margin-top: 30px;
   margin-bottom: 30px;
-  width: 950px;
+  width: 1150px;
   .order-header {
     border-radius: 10px;
     background: var(--accent);
@@ -88,6 +88,9 @@
       }
       &.naissance {
         flex: 0 0 150px;
+      }
+      &.payeur {
+        flex: 0 0 200px;
       }
       &.c3l {
         flex: 0 0 100px;
@@ -117,7 +120,7 @@
       text-align: right;
 
       &.label {
-        flex: 0 0 665px;
+        flex: 0 0 865px;
         text-align: left;
       }
       &.montant {

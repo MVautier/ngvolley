@@ -194,6 +194,7 @@ export class PdfMakerService {
         { content: 'Nom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
         { content: 'Prénom', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
         { content: 'Naissance', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
+        { content: 'Payeur', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
         { content: 'CLLL', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
         { content: 'Club', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } },
         { content: 'Total', styles: { textColor: [0, 0, 0], fillColor: [255, 255, 255], valign: 'bottom', halign: 'center' } }
@@ -220,6 +221,7 @@ export class PdfMakerService {
         { content: d.LastName, styles: { halign: 'left' } },
         { content: d.FirstName, styles: { halign: 'left' } },
         { content: this.datePipe.transform(d.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+        { content: `${d.Prenom} ${d.Nom}`, styles: { halign: 'left' } },
         { content: this.currencyPipe.transform(c3l, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
         { content: this.currencyPipe.transform(club, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } },
         { content: this.currencyPipe.transform(total, 'EUR', 'symbol', '1.2-2', 'fr'), styles: { halign: 'right' } }
@@ -235,6 +237,7 @@ export class PdfMakerService {
               { content: m.LastName, styles: { halign: 'left' } },
               { content: m.FirstName, styles: { halign: 'left' } },
               { content: this.datePipe.transform(m.BirthdayDate, 'dd/MM/yyyy'), styles: { halign: 'left' } },
+              { content: '-', styles: { halign: 'left' } },
               { content: '-', styles: { halign: 'right' } },
               { content: '-', styles: { halign: 'right' } },
               { content: '-', styles: { halign: 'right' } }
@@ -249,7 +252,7 @@ export class PdfMakerService {
     // Totaux
     rows.push([
       {
-        content: 'Totaux', colSpan: 5, styles: { halign: 'center' }
+        content: 'Totaux', colSpan: 6, styles: { halign: 'center' }
       },
       {
         content: this.formatCurrency(totalC3l), styles: { halign: 'right' }
