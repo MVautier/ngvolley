@@ -183,11 +183,7 @@ export class InscriptionPageComponent implements OnInit {
   }
 
   private getAdherentFromLocalstorage(): Adherent {
-    const adherent = this.util.safeJsonParse<Adherent>(localStorage.getItem('adherent'));
-    if (adherent && adherent.BirthdayDate) {
-      adherent.BirthdayDate = new Date(adherent.BirthdayDate);
-    }
-    return adherent;
+    return this.util.safeJsonParse<Adherent>(localStorage.getItem('adherent'));
   }
 
   init() {
@@ -524,8 +520,6 @@ export class InscriptionPageComponent implements OnInit {
       if (!already || paymentCallback) {
         if (this.adherent.Membres?.length) {
           this.adherent.Membres.forEach(m => {
-            const d = new Date(m.BirthdayDate);
-            m.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
             membres.push(this.prepareAdherentForBdd(m, false, paymentCallback));
           });
         }
@@ -550,11 +544,9 @@ export class InscriptionPageComponent implements OnInit {
     if (this.saison && paymentCallback && adherent.Saison !== this.saison) {
       adherent.Saison = this.saison;
     }
-    const d = new Date(adherent.BirthdayDate);
-    adherent.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-    adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.UtcDate(new Date()) : null;
+    adherent.HealthStatementDate = adherent.Documents.find(d => d.type === 'attestation') ? this.util.date2String(new Date()) : null;
     adherent.Photo = adherent.Documents.find(d => d.type === 'photo') ? adherent.Uid + '/' + adherent.Documents.find(d => d.type === 'photo').filename : null;
-    adherent.InscriptionDate = new Date();
+    adherent.InscriptionDate = this.util.date2String(new Date());
     adherent.FirstName = adherent.FirstName ? adherent.FirstName.trim() : adherent.FirstName;
     adherent.LastName = adherent.LastName ? adherent.LastName.trim() : adherent.LastName;
     if (main) {
@@ -566,13 +558,13 @@ export class InscriptionPageComponent implements OnInit {
         IdPaiement: Number(this.paymentId),
         IdAdherent: adherent.IdAdherent,
         Saison: adherent.Saison,
-        Date: this.util.UtcDate(new Date()),
+        Date: new Date(),
         CotisationC3L: toCLLL,
         Total: this.cart.total,
         Nom: client?.LastName,
         Prenom: client?.FirstName,
         Email: client?.Email,
-        DateNaissance: this.util.UtcDate(new Date(client?.BirthdayDate)),
+        DateNaissance: client?.BirthdayDate,
         PaymentLink: this.paymentPrintUrl
       } : null;
       if (!adherent.Orders) {

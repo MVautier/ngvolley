@@ -1,5 +1,5 @@
 export class OrderSearch {
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   season: number;
 }

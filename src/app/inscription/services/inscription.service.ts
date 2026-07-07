@@ -88,7 +88,7 @@ export class InscriptionService {
     });
   }
 
-  findAdo(nom: string, prenom: string, birthday: Date): Promise<Adherent> {
+  findAdo(nom: string, prenom: string, birthday: string): Promise<Adherent> {
     return new Promise((resolve, reject) => {
       if (nom && prenom && birthday) {
         this.adherentService.searchAdherent(nom, prenom, birthday).then(adherent => {
@@ -136,7 +136,7 @@ export class InscriptionService {
     return formGroup.get(field).hasError('pattern') ? 'Le format est invalide' : '';
   }
 
-  compareDate(d1: Date, d2: Date): number {
+  compareDate(d1: Date | string, d2: Date | string): number {
     if (d1 && d2) {
       d1 = new Date(d1);
       d2 = new Date(d2);

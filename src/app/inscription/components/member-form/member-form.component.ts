@@ -4,6 +4,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Adherent } from '@app/core/models/adherent.model';
 import { Category } from '@app/core/models/category.model';
 import { AdherentService } from '@app/core/services/adherent.service';
+import { UtilService } from '@app/core/services/util.service';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
 import { CustomValidators } from '@app/inscription/validators/custom-validators';
 import { FileValidator } from '../file-input/file-validator';
@@ -37,6 +38,7 @@ export class MemberFormComponent implements OnInit {
     private inscriptionService: InscriptionService,
     private modalService: ModalService,
     private adherentService: AdherentService,
+    private util: UtilService,
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
     private formBuilder: FormBuilder
@@ -74,7 +76,7 @@ export class MemberFormComponent implements OnInit {
       'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
+      'birthdate': [this.util.string2Date(this.adherent.BirthdayDate), [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
       'phone': [this.adherent.Phone, [Validators.required, Validators.pattern(patterns.telfixe.pattern)]],
       'email': [this.adherent.Email, [Validators.required, Validators.pattern(patterns.email.pattern)]],
       'relationship': [this.adherent.Relationship, [Validators.required]],
@@ -105,7 +107,8 @@ export class MemberFormComponent implements OnInit {
 
   getFormAdherent(value: any): Adherent {
     const category = this.formGroup.get('category').value;
-    const age = Adherent.getAge(value.birthdate);
+    const birthdate = this.util.date2String(value.birthdate) || null;
+    const age = Adherent.getAge(birthdate);
     const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
     return {
       IdAdherent: value.id,
@@ -114,7 +117,7 @@ export class MemberFormComponent implements OnInit {
       FirstName: value.firstname,
       LastName: value.lastname,
       Genre: value.genre,
-      BirthdayDate: value.birthdate,
+      BirthdayDate: birthdate,
       Address: this.adherent.Address,
       PostalCode: this.adherent.PostalCode,
       City: this.adherent.City,

@@ -15,6 +15,7 @@ export class AdherentFilter {
 
   constructor(saison: number = null, field: string = null, operator: string = 'Equals', value: string = null, payment: EnumPayment = EnumPayment.Tous) {
     const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     this.Payment = payment;
     this.HasPhoto = null;
     this.HasLicence = null;
@@ -29,7 +30,7 @@ export class AdherentFilter {
     };
     this.DateRange = {
       Start: null,
-      End: now
+      End: today
     }
   }
 }

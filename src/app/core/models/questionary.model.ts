@@ -5,7 +5,7 @@ export class Questionary {
     description: string;
     nom?: string;
     prenom?: string;
-    birthdayDate?: Date;
+    birthdayDate?: string;
     birthdayCity?: string;
     age?: number;
     genre?: string;
@@ -148,7 +148,7 @@ Cet examen est prévu à l\'âge de 2 ans, 3 ans, 4 ans, 5 ans, entre 8 et 9 ans
         };
     }
 
-    public static getMajor(nom: string, prenom: string, birthdayDate: Date): Questionary {
+    public static getMajor(nom: string, prenom: string, birthdayDate: string): Questionary {
         return {
             mode: 'major',
             nom: nom,

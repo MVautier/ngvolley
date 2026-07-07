@@ -12,7 +12,6 @@ import { AdherentFilter } from '@app/core/models/adherent-filter.model';
 import { Adherent } from '@app/core/models/adherent.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { FileService } from '@app/core/services/file.service';
-import { UtilService } from '@app/core/services/util.service';
 import { Subscription, filter, merge, tap } from 'rxjs';
 import { MailingListService } from '@app/admin/services/mailing-list.service';
 import { MailingListModalComponent } from '../mailing-list-modal/mailing-list-modal.component';
@@ -56,7 +55,6 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
     private fileService: FileService,
     private _adapter: DateAdapter<any>,
     private router: Router,
-    private util: UtilService,
     private adherentAdminService: AdherentAdminService,
     private snackBar: MatSnackBar,
     private mailingListService: MailingListService,
@@ -191,8 +189,7 @@ export class AdherentListeComponent implements OnInit, AfterViewInit {
   }
 
   rowToAdherent(row: Adherent): Adherent {
-    const adherent = this.util.bindDates(row);
-    return adherent;
+    return row;
   }
 
   adherentChange(adherent: Adherent) {

@@ -106,8 +106,8 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
       //'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked)]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required]],
-      'inscriptiondate': [this.adherent.InscriptionDate],
+      'birthdate': [this.util.string2Date(this.adherent.BirthdayDate), [Validators.required]],
+      'inscriptiondate': [this.util.string2Date(this.adherent.InscriptionDate)],
       'address': [this.adherent.Address],
       'postalcode': [this.adherent.PostalCode],
       'city': [this.adherent.City],
@@ -121,7 +121,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
       'rgpd': [this.adherent.Rgpd],
       'team1': [this.adherent.Team1],
       'team2': [this.adherent.Team2],
-      'certifdate': [this.adherent.CertificateDate],
+      'certifdate': [this.util.string2Date(this.adherent.CertificateDate)],
       'paycomment': [this.adherent.PaymentComment],
       'payment': [this.adherent.Payment],
       'verfic3l': [this.adherent.VerifC3L],
@@ -130,8 +130,7 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
   }
 
   setNow(field: string) {
-    const now = this.util.UtcDate(new Date());
-    this.formGroup.get(field).setValue(now);
+    this.formGroup.get(field).setValue(new Date());
   }
 
   async checkAdherent(adherent: Adherent) {
@@ -235,9 +234,9 @@ export class AdherentFormComponent implements OnInit, OnDestroy {
 
   getFormAdherent(): Adherent {
     const category = this.formGroup.get('category').value;
-    const birthdate = this.util.UtcDate(this.formGroup.get('birthdate').value);
-    const certifdate = this.util.UtcDate(this.formGroup.get('certifdate').value);
-    const inscriptiondate = this.util.UtcDate(this.formGroup.get('inscriptiondate').value);
+    const birthdate = this.util.date2String(this.formGroup.get('birthdate').value) || null;
+    const certifdate = this.util.date2String(this.formGroup.get('certifdate').value) || null;
+    const inscriptiondate = this.util.date2String(this.formGroup.get('inscriptiondate').value) || null;
     const age = Adherent.getAge(birthdate);
     const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
     return {

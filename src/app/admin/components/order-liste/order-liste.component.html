@@ -1,8 +1,8 @@
 
 <div class="order-periode" *ngIf="start && end">
     <div class="dates">
-        <input type="date" id="cal-start" [valueAsDate]="start" [max]="end | date:'yyyy-MM-dd'" (change)="onDateChange('start', $event)" />
-        <input type="date" id="cal-end" [valueAsDate]="end" [min]="start | date:'yyyy-MM-dd'" (change)="onDateChange('end', $event)" />
+        <input type="date" id="cal-start" [value]="start" [max]="end" (change)="onDateChange('start', $event)" />
+        <input type="date" id="cal-end" [value]="end" [min]="start" (change)="onDateChange('end', $event)" />
     </div>
 
     <div class="saison">

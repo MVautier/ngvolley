@@ -1,5 +1,3 @@
-import { Adherent } from "../models/adherent.model";
-
 export class UtilService {
     db = require('mime-db')
 
@@ -27,26 +25,10 @@ export class UtilService {
         return null;
     }
 
-    datesEquals(d1: Date, d2: Date): boolean {
+    datesEquals(d1: Date | string, d2: Date | string): boolean {
         const _d1 = new Date(d1);
         const _d2 = new Date(d2);
         return _d1.getFullYear() === _d2.getFullYear() && _d1.getMonth() === _d2.getMonth() && _d1.getDate() === _d2.getDate();
-    }
-
-    bindDates(adherent: Adherent): Adherent {
-        if (adherent) {
-            adherent.BirthdayDate = this.bindDate(adherent.BirthdayDate?.toString());
-            adherent.InscriptionDate = this.bindDate(adherent.InscriptionDate?.toString());
-            adherent.CertificateDate = this.bindDate(adherent.CertificateDate?.toString());
-        }
-        return adherent;
-    }
-
-    bindDate(date: string): Date {
-        if (date) {
-            return this.UtcDate(new Date(date));
-        }
-        return null;
     }
 
     public readFile(file: File | Blob): Promise<Blob> {
@@ -63,12 +45,13 @@ export class UtilService {
         
     }
 
-    date2String(d: Date, fr: boolean = false): string {
+    date2String(d: Date | string, fr: boolean = false): string {
+        const date = typeof d === 'string' ? this.string2Date(d) : d;
         let s = '';
-        if (d) {
-            const m = d.getMonth() + 1;
-            const j = d.getDate();
-            const y = d.getFullYear();
+        if (date) {
+            const m = date.getMonth() + 1;
+            const j = date.getDate();
+            const y = date.getFullYear();
             const sm = (m < 10 ? '0' : '') + m.toString();
             const sj = (j < 10 ? '0' : '') + j.toString();
             if (fr) {
@@ -76,9 +59,23 @@ export class UtilService {
             } else {
                 return y + '-' + sm + '-' + sj;
             }
-            
+
         }
         return s;
+    }
+
+    /**
+     * Construit un Date en heure locale a partir d'une chaine "yyyy-MM-dd", sans jamais
+     * passer par `new Date(string)` (parsee en UTC par le moteur JS, source du bug de
+     * decalage corrige dans toute l'app). A utiliser pour pre-remplir un datepicker Material
+     * a partir d'un champ modele de type string.
+     */
+    string2Date(s: string): Date {
+        if (!s) return null;
+        const parts = s.split('-').map(Number);
+        if (parts.length !== 3 || parts.some(isNaN)) return null;
+        const [y, m, d] = parts;
+        return new Date(y, m - 1, d);
     }
 
     date2StringForFilter(d: Date): string {
@@ -93,12 +90,6 @@ export class UtilService {
             
         }
         return s;
-    }
-
-    public UtcDate(date: Date): Date {
-        if (!date) return null;
-        const UTCDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) - date.getTimezoneOffset();
-        return new Date(UTCDate);
     }
 
     /**

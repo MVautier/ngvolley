@@ -56,7 +56,7 @@ export class payer {
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   address: string;
   city: string;
   zipCode: string;

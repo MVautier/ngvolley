@@ -12,16 +12,16 @@ export class OrderFull {
   Nom: string;
   Prenom: string;
   Email: string;
-  DateNaissance: Date;
+  DateNaissance: string;
   PaymentLink: string;
 
   IdParent: number;
   Membres: Adherent[];
   LastName: string;
   FirstName: string;
-  BirthdayDate: Date;
+  BirthdayDate: string;
   Payment: string;
-  InscriptionDate: Date;
+  InscriptionDate: string;
   PaymentMode: string;
 
   constructor(adherent: Adherent, order: Order) {

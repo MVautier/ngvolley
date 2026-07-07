@@ -1,7 +1,7 @@
 export class Client {
     FirstName: string;
     LastName: string;
-    BirthdayDate?: Date;
+    BirthdayDate?: string;
     Address: string;
     PostalCode: string;
     City: string;

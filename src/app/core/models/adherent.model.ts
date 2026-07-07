@@ -15,8 +15,8 @@ export class Adherent {
   FirstName: string;
   LastName: string;
   Genre: string;
-  BirthdayDate?: Date;
-  InscriptionDate?: Date;
+  BirthdayDate?: string;
+  InscriptionDate?: string;
   Age?: number;
   Address: string;
   PostalCode: string;
@@ -49,9 +49,9 @@ export class Adherent {
   Signature?: string;
   _opened?: boolean;
   HealthFile?: string;
-  HealthStatementDate?: Date;
+  HealthStatementDate?: string;
   CertificateFile?: string;
-  CertificateDate?: Date;
+  CertificateDate?: string;
   Photo?: string;
   Documents: AdherentDoc[];
   Saison: number;
@@ -67,7 +67,7 @@ export class Adherent {
     this.LastName = base ? base.LastName : Adherent.debug ? 'LACROIX' : null;
     this.FirstName = base && !isMember ? base.FirstName : Adherent.debug ? 'Stéphanie' : null;
     this.Genre = base && !isMember ? base.Genre : Adherent.debug ? 'F' : null;
-    this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? new Date(1974, 5, 4) : null;
+    this.BirthdayDate = base && !isMember ? base.BirthdayDate : Adherent.debug ? '1974-06-04' : null;
     this.InscriptionDate = base?.InscriptionDate || null;
     this.Age = base && !isMember ? base.Age : Adherent.debug ? 49 : null;
     this.HealthStatementDate = null;
@@ -107,8 +107,10 @@ export class Adherent {
     this.Histo = base ? base.Histo : [];
   }
 
-  public static getAge(birthdate: Date): number {
-    return birthdate ? new Date().getFullYear() - new Date(birthdate).getFullYear() : null;
+  public static getAge(birthdate: string): number {
+    if (!birthdate) return null;
+    const year = Number(birthdate.substring(0, 4));
+    return new Date().getFullYear() - year;
   }
 
   public static addDoc(adherent: Adherent, type: string, filename: string, blob: Blob) {
@@ -127,7 +129,6 @@ export class Adherent {
   }
 
   public static fromJson(data: Adherent, admin: boolean = false): Adherent {
-    data.InscriptionDate = new Date(data.InscriptionDate);
     const saison = data.Saison;
 
     return {
@@ -138,8 +139,8 @@ export class Adherent {
       FirstName: data.FirstName,
       LastName: data.LastName,
       Genre: data.Genre,
-      BirthdayDate: data.BirthdayDate ? new Date(data.BirthdayDate) : null,
-      InscriptionDate: data.InscriptionDate ? new Date(data.InscriptionDate) : null,
+      BirthdayDate: data.BirthdayDate,
+      InscriptionDate: data.InscriptionDate,
       Age: 0,
       Address: data.Address,
       PostalCode: data.PostalCode,
@@ -168,9 +169,9 @@ export class Adherent {
       Payment: admin && data.Payment ? data.Payment : null,
       Photo: admin && data.Photo ? data.Photo : null,
       HealthFile: admin && data.HealthFile ? data.HealthFile : null,
-      HealthStatementDate: admin && data.HealthStatementDate ? new Date(data.HealthStatementDate) : null,
+      HealthStatementDate: admin && data.HealthStatementDate ? data.HealthStatementDate : null,
       CertificateFile: admin && data.CertificateFile ? data.CertificateFile : null,
-      CertificateDate: admin && data.CertificateDate ? new Date(data.CertificateDate) : null,
+      CertificateDate: admin && data.CertificateDate ? data.CertificateDate : null,
       Authorization: admin && data.Authorization ? data.Authorization : null,
       // Fin documents
       Documents: [],

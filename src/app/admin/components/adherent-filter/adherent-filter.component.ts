@@ -200,26 +200,12 @@ export class AdherentFilterComponent implements OnInit, OnDestroy {
   }
 
   onDateChange(mode: string, event: any) {
-    const d = this.util.UtcDate(new Date(event.target.value));
+    const d = event.target.value || null;
     if (mode === 'start') {
       this.filter.DateRange.Start = d;
     }
     if (mode === 'end') {
       this.filter.DateRange.End = d;
-    }
-  }
-
-  setDate(event: any, type: string) {
-    if (!this.filter.DateRange) {
-      this.filter.DateRange = {
-        Start: null,
-        End: null
-      }
-    }
-    if (type === 'start') {
-      this.filter.DateRange.Start = event.value;
-    } else {
-      this.filter.DateRange.End = event.value;
     }
   }
 }

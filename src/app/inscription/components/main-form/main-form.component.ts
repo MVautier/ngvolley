@@ -124,7 +124,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
       'lastname': [this.adherent.LastName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'firstname': [this.adherent.FirstName, [Validators.required, Validators.minLength(0), Validators.maxLength(100), Validators.pattern(patterns.onlystring.pattern)]],
       'genre': [this.adherent.Genre, [Validators.required]],
-      'birthdate': [this.adherent.BirthdayDate, [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
+      'birthdate': [this.util.string2Date(this.adherent.BirthdayDate), [Validators.required, CustomValidators.dateCheck(this.checked, this.adherentService.obsSeason.value)]],
       'address': [this.adherent.Address, [Validators.required]],
       'postalcode': [this.adherent.PostalCode, [Validators.required, Validators.pattern(this.local ? patterns.localpostalcode.pattern : patterns.postalcode.pattern)]],
       'city': [this.adherent.City, [Validators.required, Validators.pattern(patterns.onlystring.pattern)]],
@@ -322,7 +322,7 @@ export class MainFormComponent implements OnInit, OnDestroy {
 
   getFormAdherent(): Adherent {
     const category = this.formGroup.get('category').value;
-    const birthdate = this.util.bindDate(this.formGroup.get('birthdate').value);
+    const birthdate = this.util.date2String(this.formGroup.get('birthdate').value) || null;
     const age = Adherent.getAge(birthdate);
     const section = age <= 16 ? 'U16' : (age <= 18 ? 'U18' : 'Adulte');
     return {

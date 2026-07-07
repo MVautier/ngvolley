@@ -20,8 +20,8 @@ export class OrderListeComponent implements OnInit {
   data_manual: OrderFull[] = [];
   all_data: OrderFull[] = [];
   all_data_manual: OrderFull[] = [];
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   totalC3l: number = 0;
   totalClub: number = 0;
   total: number = 0;
@@ -45,8 +45,8 @@ export class OrderListeComponent implements OnInit {
     this.saison = this.adherentService.obsSeason.value;
     this.initSeasons();
     const d = new Date();
-    this.start = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), 1));
-    this.end = this.util.UtcDate(d);
+    this.start = this.util.date2String(new Date(d.getFullYear(), d.getMonth(), 1));
+    this.end = this.util.date2String(d);
 
     this.getData('date');
   }
@@ -61,8 +61,8 @@ export class OrderListeComponent implements OnInit {
   }
 
   getData(mode: string) {
-    const start = mode === 'date' ? this.util.UtcDate(this.start) : null;
-    const end = mode === 'date' ? this.util.UtcDate(this.end) : null;
+    const start = mode === 'date' ? this.start : null;
+    const end = mode === 'date' ? this.end : null;
     const season = mode === 'season' ? this.saison : null;
     const search: OrderSearch = {
       start: start,
@@ -115,7 +115,7 @@ export class OrderListeComponent implements OnInit {
   }
 
   onDateChange(mode: string, event: any) {
-    const d = this.util.UtcDate(new Date(event.target.value));
+    const d = event.target.value || null;
     console.log('date changed in ', mode, ' mode: ', d);
     if (mode === 'start') {
       this.start = d;

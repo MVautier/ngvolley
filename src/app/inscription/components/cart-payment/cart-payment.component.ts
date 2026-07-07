@@ -54,7 +54,7 @@ export class CartPaymentComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       'lastname': [this.cart.client.Age >= 18 ? this.cart.client.LastName : null, [Validators.required, CustomValidators.checkName()]],
       'firstname': [this.cart.client.Age >= 18 ? this.cart.client.FirstName : null, [Validators.required, CustomValidators.checkName()]],
-      'birthdate': [this.cart.client.Age >= 18 ? this.cart.client.BirthdayDate : null, [Validators.required, CustomValidators.checkAdult()]],
+      'birthdate': [this.cart.client.Age >= 18 ? this.util.string2Date(this.cart.client.BirthdayDate) : null, [Validators.required, CustomValidators.checkAdult()]],
       'address': [this.cart.client.Address, [Validators.required]],
       'postalcode': [this.cart.client.PostalCode, [Validators.required, Validators.pattern(patterns.postalcode.pattern)]],
       'city': [this.cart.client.City, [Validators.required, Validators.pattern(patterns.onlystring.pattern)]],
@@ -75,7 +75,7 @@ export class CartPaymentComponent implements OnInit {
   }
 
   getClient(): Client {
-    const birthDate = this.util.bindDate(this.formGroup.get('birthdate').value);
+    const birthDate = this.util.date2String(this.formGroup.get('birthdate').value) || null;
     const age = Adherent.getAge(birthDate);
     return {
       FirstName: this.formGroup.get('firstname').value,
@@ -100,8 +100,15 @@ export class CartPaymentComponent implements OnInit {
 
   sendCheckout() {
     this.helloAssoError = false;
-    this.cart.client = this.getClient();
     this.loaderService.setLoading(true);
+    try {
+      this.cart.client = this.getClient();
+    } catch (err) {
+      console.log('error building client from form: ', err);
+      this.helloAssoError = true;
+      this.loaderService.setLoading(false);
+      return;
+    }
     this.helloasso.sendCheckoutIntent(this.cart).then(result => {
       console.log('API HelloAsso call succeded: ', result);
       this.cart.client.IdCommand = result.id;

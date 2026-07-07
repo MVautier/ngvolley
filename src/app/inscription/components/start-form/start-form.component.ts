@@ -6,6 +6,7 @@ import { Parameters } from '@app/core/models/parameters.model';
 import { AdherentService } from '@app/core/services/adherent.service';
 import { StartInscription } from '@app/inscription/models/start-inscription.model';
 import { InscriptionService } from '@app/inscription/services/inscription.service';
+import { UtilService } from '@app/core/services/util.service';
 import { environment } from '@env/environment';
 import { LIENS_PRINCIPAL_MAJEUR, LIENS_PRINCIPAL_MINEUR } from '@app/inscription/validators/member-tariff';
 
@@ -40,6 +41,7 @@ export class StartFormComponent implements OnInit {
   constructor(
     private inscriptionService: InscriptionService,
     private adherentService: AdherentService,
+    private util: UtilService,
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string
   ) {
@@ -74,7 +76,7 @@ export class StartFormComponent implements OnInit {
   onValidateAdo() {
     this.notFoundError = false;
     if (this.start.nom && this.start.prenom && this.birthday) {
-      this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.birthday).then(result => {
+      this.inscriptionService.findAdo(this.start.nom, this.start.prenom, this.util.date2String(this.birthday)).then(result => {
         this.adofound = result;
         if (this.adofound && this.inscriptionFilterIds.length) {
           if (!this.inscriptionFilterIds.find(id => id === this.adofound.IdAdherent)) {

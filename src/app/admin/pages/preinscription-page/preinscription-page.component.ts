@@ -11,7 +11,7 @@ interface BatchEntry {
   line: number;
   lastName: string;
   firstName: string;
-  birthday: Date | null;
+  birthday: string | null;
   status: EntryStatus;
   existingId?: number;
   createdId?: number;
@@ -84,7 +84,8 @@ export class PreinscriptionPageComponent {
         if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1900 || y > 2100) {
           return { line: i + 1, lastName, firstName, birthday: null, status: 'parse-error', message: 'Date hors limites' } as BatchEntry;
         }
-        return { line: i + 1, lastName, firstName, birthday: new Date(y, m - 1, d), status: 'new' } as BatchEntry;
+        const birthday = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        return { line: i + 1, lastName, firstName, birthday, status: 'new' } as BatchEntry;
       });
   }
 

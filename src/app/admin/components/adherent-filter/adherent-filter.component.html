@@ -26,9 +26,9 @@
           <mat-label>Date d'inscription</mat-label>
         </div>
         <div class="input">
-          <input type="date" id="cal-start" [valueAsDate]="filter.DateRange?.Start" [max]="filter.DateRange?.End | date : 'yyyy-MM-dd'" (change)="onDateChange('start', $event)"
+          <input type="date" id="cal-start" [value]="filter.DateRange?.Start" [max]="filter.DateRange?.End" (change)="onDateChange('start', $event)"
           />
-          <input type="date" id="cal-end" [valueAsDate]="filter.DateRange?.End" [min]="filter.DateRange?.Start | date : 'yyyy-MM-dd'" (change)="onDateChange('end', $event)"
+          <input type="date" id="cal-end" [value]="filter.DateRange?.End" [min]="filter.DateRange?.Start" (change)="onDateChange('end', $event)"
           />
         </div>
       </div>

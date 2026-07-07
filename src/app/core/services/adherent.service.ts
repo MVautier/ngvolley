@@ -79,12 +79,12 @@ export class AdherentService {
     ));
   }
 
-  searchAdherent(nom: string, prenom: string, birthdayDate: Date = null): Promise<Adherent> {
+  searchAdherent(nom: string, prenom: string, birthdayDate: string = null): Promise<Adherent> {
     return new Promise((resolve, reject) => {
       const search: AdherentSearch = {
         nom: nom,
         prenom: prenom,
-        birthdayDate: this.util.UtcDate(new Date(birthdayDate))
+        birthdayDate: birthdayDate
       };
       this.http.post<AdherentSearch>(environment.apiUrl + 'Adherent/search', search).then((result: Adherent) => {
         resolve(result);
@@ -145,7 +145,7 @@ export class AdherentService {
     });
   }
 
-  exportOrders(start: Date, end: Date): Promise<Blob> {
+  exportOrders(start: string, end: string): Promise<Blob> {
     return new Promise((resolve, reject) => {
       const url = `${environment.apiUrl}Adherent/export/order`;
       const filter: AdherentFilter = {
@@ -201,20 +201,6 @@ export class AdherentService {
   }
 
   prepareAdherentForBdd(adherent: Adherent): Adherent {
-    let d: Date;
-    if (adherent.BirthdayDate) {
-      d = new Date(adherent.BirthdayDate);
-      adherent.BirthdayDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-    }
-    if (adherent.HealthStatementDate) {
-      d = new Date(adherent.HealthStatementDate);
-      adherent.HealthStatementDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-    }
-
-    if (adherent.InscriptionDate) {
-      d = new Date(adherent.InscriptionDate);
-      adherent.InscriptionDate = this.util.UtcDate(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0));
-    }
     if (!adherent.Orders) {
       adherent.Orders = [];
     }

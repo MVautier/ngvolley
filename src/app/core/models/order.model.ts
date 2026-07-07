@@ -9,7 +9,7 @@ export class Order {
   Nom: string;
   Prenom: string;
   Email: string;
-  DateNaissance: Date;
+  DateNaissance: string;
   PaymentLink: string;
 
   public static fromJson(data: Order): Order {

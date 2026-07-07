@@ -229,16 +229,12 @@ export class AdherentCardComponent implements OnInit, OnChanges {
 
     this.modalRef.content.config = this.config;
     this.modalRef.content.validate.subscribe((result: Adherent) => {
-      if (result.BirthdayDate) {
-        var d = result.BirthdayDate;
-        result.BirthdayDate = this.util.bindDate(this.util.date2String(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0), false));
-      }
       console.log('validate adherent form: ', result);
       this.loader.setLoading(true);
       const reload = result.IdAdherent === 0;
       const filename = `adhesion.pdf`;
       this.adherentService.addOrUpdate(result).then(a => {
-        this.adherent = this.util.bindDates(a);
+        this.adherent = a;
         if (!this.adherent.Documents.find(d => d.type === 'adhesion')) {
           this.pdf.buildAdherentForm(this.adherent).then(blob => {
             Adherent.addDoc(this.adherent, 'adhesion', filename, blob);
@@ -292,7 +288,7 @@ export class AdherentCardComponent implements OnInit, OnChanges {
   onSelectResult(adherent: Adherent) {
     this.search = '';
     this.searchResults = [];
-    this.switchAdherent.emit(this.util.bindDates(adherent));
+    this.switchAdherent.emit(adherent);
   }
 
   addToMailingList() {

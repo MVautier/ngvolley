@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Adherent } from '@app/core/models/adherent.model';
 import { Parameters } from '@app/core/models/parameters.model';
 import { AdherentService } from '@app/core/services/adherent.service';
+import { UtilService } from '@app/core/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -26,7 +27,7 @@ export class ParamsPageComponent implements OnInit {
   searchError = false;
   searching = false;
 
-  constructor(private adherentService: AdherentService, private fb: FormBuilder, private toastr: ToastrService) { }
+  constructor(private adherentService: AdherentService, private fb: FormBuilder, private toastr: ToastrService, private util: UtilService) { }
 
   ngOnInit(): void {
     if (window.matchMedia('(max-width: 1025px)').matches) {
@@ -94,7 +95,7 @@ export class ParamsPageComponent implements OnInit {
       const result = await this.adherentService.searchAdherent(
         this.searchNom.trim(),
         this.searchPrenom.trim(),
-        this.searchBirthday
+        this.util.date2String(this.searchBirthday) || null
       );
       if (result) {
         this.searchResult = result;
