@@ -144,7 +144,10 @@ export class MemberFormComponent implements OnInit {
       TrainingFM: category !== null && category === 'L' ? this.adherent.TrainingFM : null,
       TrainingFE: category !== null && category === 'L' ? this.adherent.TrainingFE : null,
       Documents: value.Documents || [],
-      Saison: value.Saison,
+      // Le formulaire membre n'a pas de controle 'Saison' : la lire dans value donnait
+      // undefined, donc un membre enregistre sans saison -- invisible dans /orders et
+      // ignore par la finalisation du webhook, qui filtrent tous deux sur la saison.
+      Saison: this.adherent.Saison,
       Orders: [],
       Histo: this.adherent.Histo
     };

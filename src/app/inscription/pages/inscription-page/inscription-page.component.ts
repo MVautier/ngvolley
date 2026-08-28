@@ -516,12 +516,31 @@ export class InscriptionPageComponent implements OnInit {
         if (!adherent.IdAdherent || adherent.IdAdherent !== adh.IdAdherent) {
           adherent.IdAdherent = adh.IdAdherent;
         }
+        this.applyMemberIds(adherent, adh);
         adherent.Saved = adh.Saved;
         this.sendDocuments(adherent).then(() => {
           localStorage.setItem('adherent', JSON.stringify(adherent));
           this.step++;
         });
       });
+    });
+  }
+
+  /**
+   * Reporte sur les membres du panier l'identifiant que la base vient de leur attribuer.
+   * Sans cela ils repartent avec IdAdherent a 0 au retour de paiement, et l'API les insere
+   * une seconde fois au lieu de les mettre a jour : chaque inscription laissait une ligne
+   * orpheline par membre, restee "En attente" et sans saison.
+   */
+  private applyMemberIds(adherent: Adherent, saved: Adherent) {
+    if (!adherent?.Membres?.length || !saved?.Membres?.length) {
+      return;
+    }
+    adherent.Membres.forEach(membre => {
+      const savedMembre = saved.Membres.find(m => m.Uid === membre.Uid);
+      if (savedMembre?.IdAdherent) {
+        membre.IdAdherent = savedMembre.IdAdherent;
+      }
     });
   }
 

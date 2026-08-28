@@ -21,7 +21,9 @@
     <div class="order-item prenom">{{data.FirstName}}</div>
     <div class="order-item date">{{data.BirthdayDate | date: 'dd/MM/yyyy'}}</div>
     <div *ngIf="isHelloAsso" class="order-item payeur"></div>
-    <div *ngIf="isHelloAsso" class="order-item c3l">{{montantC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
+    <!-- Part CLLL du membre : un detail de la commande du payeur, pas une ligne de plus.
+         Ne s'additionne donc pas a la ligne du payeur, qui porte deja le total CLLL. -->
+    <div *ngIf="isHelloAsso" class="order-item c3l detail">dont {{montantC3l | currency: "EUR":"symbol":"1.2-2":"fr"}}</div>
     <div *ngIf="isHelloAsso" class="order-item club"></div>
     <div *ngIf="isHelloAsso" class="order-item total"></div>
     <div *ngIf="!isHelloAsso" class="order-item manual">-</div>
