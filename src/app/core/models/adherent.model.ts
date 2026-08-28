@@ -58,6 +58,13 @@ export class Adherent {
   Orders: Order[];
   Saved?: boolean;
   Histo: Histo[];
+  /**
+   * Part de la commande revenant au CLLL pour cet adherent (adhesion principale ou ligne
+   * membre du foyer). Renseignee a l'inscription pour chaque personne, la commande ne
+   * portant que le total. Permet a /orders de ventiler CLLL/CLUB ligne par ligne, y compris
+   * pour les membres qui n'ont pas de commande propre.
+   */
+  CotisationC3L?: number;
 
   constructor(base: Adherent, cp: string = null, isMember = false, season: number) {
     this.IdAdherent = base && !isMember ? base.IdAdherent : 0;
@@ -105,6 +112,7 @@ export class Adherent {
     this._opened = true;
     this.Orders = base ? base.Orders : [];
     this.Histo = base ? base.Histo : [];
+    this.CotisationC3L = null;
   }
 
   public static getAge(birthdate: string): number {
@@ -177,7 +185,8 @@ export class Adherent {
       Documents: [],
       Saison: data.Saison,
       Orders: Order.fromJsonList(data.Orders),
-      Histo: Histo.fromJsonList(data.Histo)
+      Histo: Histo.fromJsonList(data.Histo),
+      CotisationC3L: data.CotisationC3L
     }
   }
 }

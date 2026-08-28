@@ -23,6 +23,12 @@ export class OrderFull {
   Payment: string;
   InscriptionDate: string;
   PaymentMode: string;
+  /**
+   * Part CLLL de cette personne, portee par l'adherent et non par la commande. Seule donnee
+   * disponible pour ventiler la ligne d'un membre du foyer, qui n'a pas de commande propre :
+   * CotisationC3L, lui, porte le total CLLL de toute la commande du payeur.
+   */
+  C3lShare: number;
 
   constructor(adherent: Adherent, order: Order) {
     return {
@@ -45,7 +51,8 @@ export class OrderFull {
       BirthdayDate: adherent.BirthdayDate,
       Payment: adherent.PaymentComment,
       InscriptionDate: adherent.InscriptionDate,
-      PaymentMode: order ? 'Helloasso' : 'Manuel'
+      PaymentMode: order ? 'Helloasso' : 'Manuel',
+      C3lShare: adherent.CotisationC3L
     };
   }
 }

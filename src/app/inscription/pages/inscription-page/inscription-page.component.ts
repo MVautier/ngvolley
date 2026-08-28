@@ -21,7 +21,7 @@ import { Order } from '@app/core/models/order.model';
 import { UtilService } from '@app/core/services/util.service';
 import { Parameters } from '@app/core/models/parameters.model';
 import { getAdultCutoffDate } from '@app/inscription/validators/eligibility';
-import { isMemberTariffEligible } from '@app/inscription/validators/member-tariff';
+import { isCartMemberTariffEligible, isMemberTariffEligible } from '@app/inscription/validators/member-tariff';
 import { applySeasonToken } from '@app/inscription/validators/season-text';
 
 @Component({
@@ -231,7 +231,49 @@ export class InscriptionPageComponent implements OnInit {
 
   onAdherentChange(adherent: Adherent) {
     this.updateAdhesionMontant(adherent);
+    this.updateMembresMontant(adherent);
     this.setCategTarifs(adherent);
+  }
+
+  private isAdult(birthdayDate: string): boolean {
+    return !!birthdayDate && getAdultCutoffDate(this.saison) > new Date(birthdayDate);
+  }
+
+  /**
+   * Montant de la ligne d'adhesion CLLL d'un membre du foyer. Le tarif reduit (TarifMember)
+   * ne s'applique que si le lien declare est compatible avec les statuts majeur/mineur du
+   * principal et du membre (voir member-tariff.ts) : un enfant majeur, par exemple, paie le
+   * tarif plein. Tant que la date de naissance ou le lien du membre ne sont pas saisis
+   * (etape 2), le tarif reduit est applique par defaut, puis corrige par
+   * updateMembresMontant() a chaque modification du formulaire.
+   */
+  private computeMembreMontant(principal: Adherent, member: Adherent): number {
+    if (!member?.BirthdayDate || !member?.Relationship) {
+      return this.params.TarifMember;
+    }
+    const tarifPlein = this.startIns?.local ? this.params.TarifLocal : this.params.TarifExterior;
+    const eligible = isCartMemberTariffEligible(
+      this.isAdult(principal?.BirthdayDate),
+      member.Relationship,
+      this.isAdult(member.BirthdayDate));
+    return eligible ? this.params.TarifMember : tarifPlein;
+  }
+
+  private updateMembresMontant(adherent: Adherent) {
+    if (!this.cart || !adherent?.Membres?.length) {
+      return;
+    }
+    adherent.Membres.forEach(member => {
+      if (!member?.Uid) {
+        return;
+      }
+      this.cart.addItem({
+        type: 'membre',
+        libelle: 'Membre',
+        montant: this.computeMembreMontant(adherent, member),
+        user: [member.Uid]
+      });
+    });
   }
 
   /**
@@ -429,7 +471,7 @@ export class InscriptionPageComponent implements OnInit {
     this.cart.addItem({
       type: 'membre',
       libelle: 'Membre',
-      montant: this.params.TarifMember,
+      montant: this.computeMembreMontant(this.adherent, member),
       user: [this.adherent.Membres[this.adherent.Membres.length - 1].Uid]
     });
     this.setCategTarifs(this.adherent);
@@ -549,9 +591,14 @@ export class InscriptionPageComponent implements OnInit {
     adherent.InscriptionDate = this.util.date2String(new Date());
     adherent.FirstName = adherent.FirstName ? adherent.FirstName.trim() : adherent.FirstName;
     adherent.LastName = adherent.LastName ? adherent.LastName.trim() : adherent.LastName;
+    // Part CLLL de cette personne : la commande ne porte que le total, /orders a besoin du
+    // detail pour ventiler CLLL/CLUB sur les membres, qui n'ont pas de commande propre.
+    adherent.CotisationC3L = this.cart.getC3lAmount(adherent.Uid);
     if (main) {
       adherent.Payment = paymentCallback ? 'Terminé' : 'En attente';
-      const toCLLL = this.cart.items.filter(i => i.type === 'adhesion').map(i => i.montant).reduce((a, b) => a + b, 0);
+      // L'adhesion CLLL couvre le principal (type 'adhesion') et chaque membre du foyer
+      // (type 'membre'). Seules les lignes 'categorie' (licence/loisir) reviennent au club.
+      const toCLLL = this.cart.items.filter(i => i.type === 'adhesion' || i.type === 'membre').map(i => i.montant).reduce((a, b) => a + b, 0);
       const client = this.cart.client;
       const order: Order = paymentCallback ? {
         Id: 0,

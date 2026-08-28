@@ -1,4 +1,4 @@
-import { isMemberTariffEligible } from './member-tariff';
+import { isCartMemberTariffEligible, isMemberTariffEligible } from './member-tariff';
 
 describe('isMemberTariffEligible', () => {
   describe('principal majeur', () => {
@@ -48,5 +48,51 @@ describe('isMemberTariffEligible', () => {
   it('non éligible pour un lien inconnu', () => {
     expect(isMemberTariffEligible(true, 'Autre')).toBeFalse();
     expect(isMemberTariffEligible(false, 'Autre')).toBeFalse();
+  });
+});
+
+describe('isCartMemberTariffEligible', () => {
+  describe('principal majeur', () => {
+    it('éligible si le membre est le conjoint, majeur', () => {
+      expect(isCartMemberTariffEligible(true, 'C', true)).toBeTrue();
+    });
+
+    it('éligible si le membre est un enfant mineur', () => {
+      expect(isCartMemberTariffEligible(true, 'E', false)).toBeTrue();
+    });
+
+    it("non éligible si le membre est un enfant majeur (il paie le tarif plein)", () => {
+      expect(isCartMemberTariffEligible(true, 'E', true)).toBeFalse();
+    });
+
+    it('non éligible pour un lien réservé au principal mineur (parent)', () => {
+      expect(isCartMemberTariffEligible(true, 'P', true)).toBeFalse();
+    });
+  });
+
+  describe('principal mineur', () => {
+    it('éligible si le membre est un parent', () => {
+      expect(isCartMemberTariffEligible(false, 'P', true)).toBeTrue();
+    });
+
+    it('éligible si le membre est un frère mineur', () => {
+      expect(isCartMemberTariffEligible(false, 'F', false)).toBeTrue();
+    });
+
+    it('éligible si le membre est une soeur mineure', () => {
+      expect(isCartMemberTariffEligible(false, 'S', false)).toBeTrue();
+    });
+
+    it('non éligible si le frère est majeur', () => {
+      expect(isCartMemberTariffEligible(false, 'F', true)).toBeFalse();
+    });
+
+    it('non éligible pour un lien réservé au principal majeur (conjoint)', () => {
+      expect(isCartMemberTariffEligible(false, 'C', true)).toBeFalse();
+    });
+  });
+
+  it('non éligible tant que le lien n\'est pas saisi', () => {
+    expect(isCartMemberTariffEligible(true, null, false)).toBeFalse();
   });
 });

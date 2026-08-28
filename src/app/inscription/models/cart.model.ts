@@ -51,6 +51,20 @@ export class Cart {
     this.total = this.items.map(i => i.montant).reduce((a, b) => { return a + b; });
   }
 
+  /**
+   * Part CLLL revenant a une personne du panier : sa ligne d'adhesion principale ou sa ligne
+   * membre. Les lignes 'categorie' (licence/loisir) reviennent au club et sont exclues.
+   */
+  public getC3lAmount(uid: string): number {
+    if (!uid) {
+      return 0;
+    }
+    return this.getFlatItems(this.items)
+      .filter(i => (i.type === 'adhesion' || i.type === 'membre') && i.user[0] === uid)
+      .map(i => i.montant)
+      .reduce((a, b) => a + b, 0);
+  }
+
   public setClient(adherent: Adherent) {
     this.client = this.mapAdherentToClient(adherent);
   }
@@ -110,7 +124,18 @@ export class Cart {
       }
     }
     if (m.length) {
-      liste.push(this.groupItems(m));
+      // Les membres n'ont pas tous le meme tarif (cf. computeMembreMontant : un enfant majeur
+      // paie le tarif plein). On ne regroupe que ceux de montant identique, sinon getFlatItems
+      // redistribuerait le montant groupe a parts egales et fausserait chaque ligne.
+      const montants: number[] = [];
+      m.forEach(i => {
+        if (!montants.includes(i.montant)) {
+          montants.push(i.montant);
+        }
+      });
+      montants.forEach(montant => {
+        liste.push(this.groupItems(m.filter(i => i.montant === montant)));
+      });
     }
     if (c.length) {
       const categs: string[] = [];

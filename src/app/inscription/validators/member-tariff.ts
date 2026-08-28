@@ -24,3 +24,33 @@ export function isMemberTariffEligible(principalIsAdult: boolean, lien: string):
   const liensEligibles = principalIsAdult ? LIENS_ELIGIBLES_PRINCIPAL_MAJEUR : LIENS_ELIGIBLES_PRINCIPAL_MINEUR;
   return liensEligibles.includes(lien);
 }
+
+/**
+ * Meme regle, appliquee cette fois aux membres ajoutes au panier (etape 2, member-form) :
+ * ceux-la declarent leur lien via des codes courts ('relationship'), et leur propre statut
+ * majeur/mineur est connu par leur date de naissance.
+ *
+ * - Principal majeur : conjoint, ou enfant mineur. Un enfant majeur paie le tarif plein.
+ * - Principal mineur : parent, ou frere/soeur mineur(e).
+ */
+export const RELATIONSHIP_PARENT = 'P';
+export const RELATIONSHIP_SPOUSE = 'C';
+export const RELATIONSHIP_CHILD = 'E';
+export const RELATIONSHIP_BROTHER = 'F';
+export const RELATIONSHIP_SISTER = 'S';
+
+export function isCartMemberTariffEligible(principalIsAdult: boolean, relationship: string, memberIsAdult: boolean): boolean {
+  if (!relationship) {
+    return false;
+  }
+  if (principalIsAdult) {
+    if (relationship === RELATIONSHIP_SPOUSE) {
+      return true;
+    }
+    return relationship === RELATIONSHIP_CHILD && !memberIsAdult;
+  }
+  if (relationship === RELATIONSHIP_PARENT) {
+    return true;
+  }
+  return (relationship === RELATIONSHIP_BROTHER || relationship === RELATIONSHIP_SISTER) && !memberIsAdult;
+}
