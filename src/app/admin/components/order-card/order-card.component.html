@@ -16,7 +16,7 @@
 </div>
 <div class="order-row member" *ngIf="data && data.IdParent">
     <div class="order-item id"></div>
-    <div class="order-item date">membre</div>
+    <div class="order-item date">{{memberLabel}}</div>
     <div class="order-item nom">{{data.LastName}}</div>
     <div class="order-item prenom">{{data.FirstName}}</div>
     <div class="order-item date">{{data.BirthdayDate | date: 'dd/MM/yyyy'}}</div>

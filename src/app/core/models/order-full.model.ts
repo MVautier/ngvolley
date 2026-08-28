@@ -29,6 +29,8 @@ export class OrderFull {
    * CotisationC3L, lui, porte le total CLLL de toute la commande du payeur.
    */
   C3lShare: number;
+  /** Lien de parente d'un membre du foyer avec le payeur (P, C, E, F, S). */
+  Relationship: string;
 
   constructor(adherent: Adherent, order: Order) {
     return {
@@ -52,7 +54,8 @@ export class OrderFull {
       Payment: adherent.PaymentComment,
       InscriptionDate: adherent.InscriptionDate,
       PaymentMode: order ? 'Helloasso' : 'Manuel',
-      C3lShare: adherent.CotisationC3L
+      C3lShare: adherent.CotisationC3L,
+      Relationship: adherent.Relationship
     };
   }
 }

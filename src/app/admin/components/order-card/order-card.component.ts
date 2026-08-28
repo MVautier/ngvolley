@@ -16,7 +16,26 @@ export class OrderCardComponent implements OnInit {
   montantTotal: number = 0;
   memberOrders: OrderFull[] = [];
   isHelloAsso: boolean = true;
+
+  /**
+   * Libelles des liens de parente, tels que saisis par le membre a l'inscription. Affiches
+   * ici parce que le lien conditionne l'eligibilite au tarif reduit : sans lui, rien ne
+   * permet de verifier qu'une part CLLL reduite etait justifiee.
+   */
+  private static readonly RELATIONSHIP_LABELS: { [code: string]: string } = {
+    P: 'parent',
+    C: 'conjoint',
+    E: 'enfant',
+    F: 'frère',
+    S: 'soeur'
+  };
+
   constructor() { }
+
+  get memberLabel(): string {
+    const label = OrderCardComponent.RELATIONSHIP_LABELS[this.data?.Relationship];
+    return label ? 'membre (' + label + ')' : 'membre';
+  }
 
   ngOnInit(): void {
     this.isHelloAsso = this.data.PaymentMode === 'Helloasso';

@@ -37,7 +37,6 @@ export class Adherent {
   Alert1?: string;
   Alert2?: string;
   Alert3?: string;
-  RelationShip?: string;
   valid: boolean;
   OldUid: string;
   Uid: string;
@@ -113,6 +112,8 @@ export class Adherent {
     this.Orders = base ? base.Orders : [];
     this.Histo = base ? base.Histo : [];
     this.CotisationC3L = null;
+    // Renseigne par le formulaire membre (member-form) ; toujours nul pour le payeur.
+    this.Relationship = null;
   }
 
   public static getAge(birthdate: string): number {
@@ -162,7 +163,8 @@ export class Adherent {
       Membres: data.Membres || [],
       Sections: data.Sections || [],
       VerifC3L: data.VerifC3L,
-      Relationship: data.RelationShip,
+      // L'API renvoie Relationship : lire RelationShip donnait toujours undefined.
+      Relationship: data.Relationship,
       Alert1: data.Alert1,
       Alert2: data.Alert2,
       Alert3: data.Alert3,
