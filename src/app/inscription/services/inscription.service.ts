@@ -180,8 +180,16 @@ export class InscriptionService {
             adherent.Uid = uuidv4();
           }
         }
-      } else if (check.found.Uid) {
-        adherent.Uid = check.found.Uid;
+      } else {
+        // L'adherent passe ici a chaque frappe (main-form recree l'objet depuis le
+        // formulaire) : reprendre aussi son IdAdherent, sinon l'uid existant part avec
+        // IdAdherent = 0 et l'API cree une seconde ligne pour la meme personne.
+        if (!adherent.IdAdherent) {
+          adherent.IdAdherent = check.found.IdAdherent;
+        }
+        if (check.found.Uid) {
+          adherent.Uid = check.found.Uid;
+        }
       }
     }
 

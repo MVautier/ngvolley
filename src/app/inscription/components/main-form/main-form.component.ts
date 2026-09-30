@@ -160,6 +160,18 @@ export class MainFormComponent implements OnInit, OnDestroy {
   async checkAdherent(adherent: Adherent) {
     this.checked = await this.inscriptionService.checkAdherent(this.checked, adherent, 2);
     console.log('checked: ', this.checked);
+    // Ancien adherent retrouve en cours de saisie (parcours "Nouvelle inscription") :
+    // getFormAdherent() relit IdAdherent depuis le controle 'id', qui doit donc porter
+    // l'id existant pour que l'enregistrement mette a jour sa ligne au lieu d'en creer une.
+    const found = this.checked?.found;
+    const idControl = this.formGroup?.get('id');
+    if (found?.IdAdherent && idControl && !idControl.value) {
+      idControl.setValue(found.IdAdherent, { emitEvent: false });
+      this.adherent.IdAdherent = found.IdAdherent;
+      if (!this.adherent.Histo?.length) {
+        this.adherent.Histo = found.Histo;
+      }
+    }
   }
 
   getInputError(field: string) {

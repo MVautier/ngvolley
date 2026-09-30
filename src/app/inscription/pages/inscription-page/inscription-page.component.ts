@@ -321,7 +321,7 @@ export class InscriptionPageComponent implements OnInit {
         return;
       }
     }
-    this.cart = new Cart();
+    this.cart = new Cart(this.saison);
     if (this.reinscription && info.found) {
       this.adherent = new Adherent(info.found, info.local ? environment.postalcode : null, null, this.saison);
     } else {

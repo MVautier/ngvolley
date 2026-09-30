@@ -17,8 +17,11 @@ describe('InscriptionService', () => {
     service = new InscriptionService(adherentService);
   });
 
+  // BirthdayDate est une date calendaire 'yyyy-mm-dd' cote front (cf. commit a3957df).
   function adherent(category: string, birthdayDate: Date): Adherent {
-    return { Category: category, BirthdayDate: birthdayDate, Authorization: null, Rgpd: true, Signature: null, Age: 0 } as any;
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const date = `${birthdayDate.getFullYear()}-${pad(birthdayDate.getMonth() + 1)}-${pad(birthdayDate.getDate())}`;
+    return { Category: category, BirthdayDate: date, Authorization: null, Rgpd: true, Signature: null, Age: 0 } as any;
   }
 
   describe('checkAdherent - éligibilité par catégorie', () => {
@@ -63,6 +66,27 @@ describe('InscriptionService', () => {
     it('licenceNeeded reste toujours faux (désactivé intentionnellement)', async () => {
       const check = await service.checkAdherent(new CheckAdherent(), adherent('C', new Date(2000, 0, 1)), 3);
       expect(check.licenceNeeded).toBeFalse();
+    });
+  });
+
+  describe('checkAdherent - ancien adhérent retrouvé en cours de saisie', () => {
+    const existing = { IdAdherent: 421, Uid: 'uid-existant', Saison: 2024 } as Adherent;
+
+    it("reprend l'IdAdherent et l'uid à la première recherche", async () => {
+      adherentService.searchAdherent.and.resolveTo(existing);
+      const adh = { ...adherent('C', new Date(1988, 10, 17)), IdAdherent: 0, Uid: 'uid-nouveau', FirstName: 'Nixon', LastName: 'BELANGER' } as any;
+      await service.checkAdherent(new CheckAdherent(), adh, 2);
+      expect(adh.IdAdherent).toBe(421);
+      expect(adh.Uid).toBe('uid-existant');
+    });
+
+    it("reprend aussi l'IdAdherent aux appels suivants (objet recréé depuis le formulaire avec id = 0)", async () => {
+      const check = new CheckAdherent();
+      check.found = existing;
+      const adh = { ...adherent('C', new Date(1988, 10, 17)), IdAdherent: 0, Uid: 'uid-nouveau' } as any;
+      await service.checkAdherent(check, adh, 2);
+      expect(adh.IdAdherent).toBe(421);
+      expect(adh.Uid).toBe('uid-existant');
     });
   });
 

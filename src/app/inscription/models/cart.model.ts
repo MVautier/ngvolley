@@ -9,12 +9,18 @@ export class Cart {
   date: Date;
   total: number;
   client?: Client;
+  /**
+   * Saison de l'inscription. Le panier part en metadata Helloasso et revient dans le
+   * webhook : sans elle, l'API retombait sur la saison de la ligne adherent trouvee.
+   */
+  saison?: number;
 
-  constructor() {
+  constructor(saison?: number) {
     this.id = 0;
     this.items = [];
     this.date = new Date();
     this.total = 0;
+    this.saison = saison;
   }
 
   // type = adhesion || membre || categorie
