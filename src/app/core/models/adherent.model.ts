@@ -83,7 +83,9 @@ export class Adherent {
     this.PostalCode = base ? base.PostalCode : Adherent.debug ? '31770' : cp;
     this.City = base ? base.City : Adherent.debug ? 'Colomiers' : base?.City;
     this.Email = base && !isMember ? base.Email : Adherent.debug ? 'fanny.dominici@orange.fr' : null;
-    this.Photo = base ? base.Photo : null;
+    // Un membre ajoute ne reprend pas la photo du payeur : elle validait l'etape documents
+    // sans qu'il fournisse la sienne, et l'inscription du membre restait sans photo.
+    this.Photo = base && !isMember ? base.Photo : null;
     this.Licence = base && !isMember ? base.Licence : Adherent.debug ? '297368' : null;
     this.Team1 = base && !isMember ? base.Team1 : null;
     this.Team2 = base && !isMember ? base.Team2 : null;
@@ -105,7 +107,7 @@ export class Adherent {
     this.CertificateDate = base ? base.CertificateDate : null;
     this.CertificateFile = base ? base.CertificateFile : null;
     this.HealthFile = base ? base.HealthFile : null;
-    this.Documents = base ? base.Documents : [];
+    this.Documents = base && !isMember ? base.Documents : [];
     this.VerifC3L = base ? base.VerifC3L : null;
     this.valid = false;
     this._opened = true;
